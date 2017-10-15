@@ -99,12 +99,12 @@
                                     </TableView>
                                     <GridPane layoutX="10.0" layoutY="28.0" prefHeight="116.0" prefWidth="662.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="5.0">
                                        <children>
-                                          <Label text="Número de Factura:">
+                                          <Label text="Factura:">
                                              <font>
                                                 <Font size="18.0" />
                                              </font>
                                           </Label>
-                                          <ComboBox prefHeight="25.0" prefWidth="208.0" GridPane.columnIndex="1" />
+                                          <ComboBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" />
                                           <RadioButton mnemonicParsing="false" text="Toda la Factura" GridPane.rowIndex="2">
                                              <font>
                                                 <Font size="16.0" />
