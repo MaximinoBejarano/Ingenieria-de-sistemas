@@ -8,7 +8,22 @@
   </information>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
+<<<<<<< HEAD
     <jar href="Ferreteria_Las_Vegas.jar" size="198542" download="eager" />
+=======
+    <jar href="Ferreteria_Las_Vegas.jar" size="286211" download="eager" />
+    <jar href="lib\javax.persistence.jar" size="160564" download="eager" />
+    <jar href="lib\mysql-5.1.44.jar" size="999635" download="eager" />
+    <jar href="lib\org.eclipse.persistence.antlr.jar" size="189645" download="eager" />
+    <jar href="lib\org.eclipse.persistence.asm.jar" size="271204" download="eager" />
+    <jar href="lib\org.eclipse.persistence.core.jar" size="5056217" download="eager" />
+    <jar href="lib\org.eclipse.persistence.dbws.jar" size="280280" download="eager" />
+    <jar href="lib\org.eclipse.persistence.jpa.jar" size="1364245" download="eager" />
+    <jar href="lib\org.eclipse.persistence.jpa.jpql.jar" size="1366247" download="eager" />
+    <jar href="lib\org.eclipse.persistence.jpa.modelgen.processor.jar" size="51953" download="eager" />
+    <jar href="lib\org.eclipse.persistence.moxy.jar" size="516317" download="eager" />
+    <jar href="lib\org.eclipse.persistence.oracle.jar" size="86155" download="eager" />
+>>>>>>> 386749bbc6b8eb16692d6e1d0b50c8f2e626adb1
   </resources>
   <applet-desc  width="800" height="600" main-class="com.javafx.main.NoJavaFXFallback"  name="Ferreteria_Las_Vegas" >
     <param name="requiredFXVersion" value="8.0+"/>

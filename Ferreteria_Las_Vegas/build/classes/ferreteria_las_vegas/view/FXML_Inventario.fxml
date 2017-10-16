@@ -250,6 +250,7 @@
                   </GridPane>
                   <TableView editable="true" layoutX="14.0" layoutY="182.0" prefHeight="335.0" prefWidth="785.0" AnchorPane.bottomAnchor="81.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="182.0">
                      <columns>
+<<<<<<< HEAD
                         <TableColumn maxWidth="1.7976931348623157E308" minWidth="100.0" prefWidth="150.0" text="Código de Producto" />
                         <TableColumn maxWidth="1.7976931348623157E308" minWidth="100.0" prefWidth="150.0" text="Código de Barras" />
                         <TableColumn maxWidth="1.7976931348623157E308" minWidth="100.0" prefWidth="150.0" text="Nombre" />
@@ -258,6 +259,16 @@
                         <TableColumn maxWidth="1.7976931348623157E308" minWidth="100.0" prefWidth="150.0" text="Descripción" />
                         <TableColumn maxWidth="1.7976931348623157E308" minWidth="100.0" prefWidth="150.0" text="Precio" />
                         <TableColumn maxWidth="1.7976931348623157E308" minWidth="100.0" prefWidth="150.0" text="Cantidad" />
+=======
+                        <TableColumn maxWidth="-Infinity" minWidth="100.0" prefWidth="100.0" text="Código de Producto" />
+                        <TableColumn maxWidth="-Infinity" minWidth="100.0" prefWidth="100.0" text="Código de Barras" />
+                        <TableColumn maxWidth="-Infinity" minWidth="100.0" prefWidth="100.0" text="Nombre" />
+                        <TableColumn maxWidth="-Infinity" minWidth="100.0" prefWidth="100.0" text="Marca" />
+                        <TableColumn maxWidth="-Infinity" minWidth="100.0" prefWidth="100.0" text="Unidad/Medida" />
+                        <TableColumn maxWidth="-Infinity" minWidth="100.0" prefWidth="100.0" text="Descripción" />
+                        <TableColumn maxWidth="-Infinity" minWidth="100.0" prefWidth="100.0" text="Precio" />
+                        <TableColumn maxWidth="-Infinity" minWidth="70.0" prefWidth="70.0" text="Cantidad" />
+>>>>>>> 386749bbc6b8eb16692d6e1d0b50c8f2e626adb1
                      </columns>
                      <columnResizePolicy>
                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
