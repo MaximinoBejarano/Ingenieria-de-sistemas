@@ -5,6 +5,10 @@
  */
 package ferreteria_las_vegas.model.controller;
 
+import ferreteria_las_vegas.utils.EntityManagerHelper;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
+
 /**
  *
  * @author Usuario
@@ -33,5 +37,7 @@ public class PersonaJpaController {
         }
         return INSTANCE;
     }
-
+    
+    private EntityManager em = EntityManagerHelper.getInstance().getManager();
+    private EntityTransaction et;
 }
