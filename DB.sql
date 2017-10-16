@@ -104,9 +104,9 @@ ENGINE = InnoDB;
 -- Table `BD_FV`.`tb_Contactos`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `BD_FV`.`tb_Contactos` (
-  `Con_ID` INT NOT NULL AUTO_INCREMENT,
+  `Con_ID` INT GENERATED ALWAYS AS () VIRTUAL,
   `Con_Contacto` VARCHAR(30) NOT NULL,
-  `Con_TipoContacto` INT NOT NULL,
+  `Con_TipoContacto` INT NULL,
   PRIMARY KEY (`Con_ID`),
   INDEX `idx_Contactos_TipoContactos` (`Con_TipoContacto` ASC),
   CONSTRAINT `fk_Contactos_TipoContactos`
