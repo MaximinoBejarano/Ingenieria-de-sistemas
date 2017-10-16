@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ferreteria_las_vegas.controller;
+package ferreteria_las_vegas.Controller;
 
 import ferreteria_las_vegas.model.controller.UsuarioJpaController;
 import java.net.URL;
