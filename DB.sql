@@ -104,11 +104,12 @@ ENGINE = InnoDB;
 -- Table `BD_FV`.`tb_Contactos`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `BD_FV`.`tb_Contactos` (
-  `Con_ID` INT GENERATED ALWAYS AS () VIRTUAL,
+  `Con_ID` INT NOT NULL AUTO_INCREMENT,
   `Con_Contacto` VARCHAR(30) NOT NULL,
   `Con_TipoContacto` INT NULL,
   PRIMARY KEY (`Con_ID`),
   INDEX `idx_Contactos_TipoContactos` (`Con_TipoContacto` ASC),
+  UNIQUE INDEX `Con_TipoContacto_UNIQUE` (`Con_TipoContacto` ASC),
   CONSTRAINT `fk_Contactos_TipoContactos`
     FOREIGN KEY (`Con_TipoContacto`)
     REFERENCES `BD_FV`.`tb_TiposContacto` (`Tip_ID`)
@@ -154,7 +155,7 @@ ENGINE = InnoDB;
 -- Table `BD_FV`.`tb_Direcciones`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `BD_FV`.`tb_Direcciones` (
-  `Dir_ID` INT NOT NULL,
+  `Dir_ID` INT NOT NULL AUTO_INCREMENT,
   `Dir_Provincia` INT NULL,
   `Dir_Canton` INT NULL,
   `Dir_Distrito` INT NULL,
