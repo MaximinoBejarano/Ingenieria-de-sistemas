@@ -59,7 +59,7 @@ CREATE TABLE IF NOT EXISTS `BD_FV`.`tb_Usuarios` (
   `Usu_Persona` VARCHAR(30) NOT NULL,
   `Usu_Nombre` VARCHAR(10) NOT NULL,
   `Usu_Contraseña` VARCHAR(10) NOT NULL,
-  `Usu_Rol` INT NOT NULL,
+  `Usu_Rol` INT NULL,
   PRIMARY KEY (`Usu_Persona`),
   INDEX `idx_Usuario_Rol` (`Usu_Rol` ASC),
   UNIQUE INDEX `Usu_Nombre_UNIQUE` (`Usu_Nombre` ASC),
