@@ -3,7 +3,7 @@
 -fx-background-position: center 5px;
 -fx-background-color:white;
 }
-.boton-dePro:hover, .boton-Emp:hover, .boton-Inv:hover, .boton-Anu:hover, .boton-Fac:hover, .boton-Cli:hover, .boton-Abo:hover, .boton-deCli:hover { 
+.boton-dePro:hover, .boton-Emp:hover, .boton-Inv:hover, .boton-Anu:hover, .boton-Fac:hover, .boton-Cli:hover,.boton-Facturacion:hover ,.boton-Abo:hover, .boton-deCli:hover { 
 -fx-background-color:#5D6D7E;
 -fx-background-size: 150px;
 -fx-text-fill: white;
@@ -19,6 +19,11 @@
 -fx-background-position: center 5px;
 -fx-background-color:white;
 }
+.boton-Facturacion { 
+-fx-background-repeat: no-repeat;
+-fx-background-position: center 5px;
+}
+
 .boton-deCli { 
 -fx-background-repeat: no-repeat;
 -fx-background-position: center 5px;

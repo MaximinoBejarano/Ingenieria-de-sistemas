@@ -111,7 +111,7 @@
                               <Font name="Arial Unicode MS" size="24.0" />
                            </font>
                         </Button>
-                        <Button alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" prefHeight="195.0" prefWidth="220.0" styleClass="boton-Fac" stylesheets="@../../styles/style.css" text="Facturación" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                        <Button alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" onAction="#accesoFacturacion" prefHeight="195.0" prefWidth="220.0" styleClass="boton-Fac" stylesheets="@../../styles/style.css" text="Facturación" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                            <graphic>
                               <ImageView fitHeight="150.0" fitWidth="186.0" pickOnBounds="true" preserveRatio="true">
                                  <image>

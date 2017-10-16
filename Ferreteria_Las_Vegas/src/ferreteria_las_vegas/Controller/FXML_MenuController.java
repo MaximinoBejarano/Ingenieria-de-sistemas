@@ -184,11 +184,33 @@ public class FXML_MenuController implements Initializable {
 
     }
     
-      @FXML
+    @FXML
     private void accesoVales(ActionEvent e) {
         try {
             if (true) {
                  setDataPane(cargarScena("/ferreteria_las_vegas/view/FXML_Vales.fxml"));
+                 
+            } else {
+
+                Alert alert = new Alert(AlertType.WARNING);
+                alert.setTitle("Error de Acceso");
+                alert.setHeaderText("¡Cuidado!");
+                String s = "Este usuario no cuenta con los permisos necesarios para acceder a esta página";
+                alert.setContentText(s);
+                alert.show();
+            }
+        } catch (Exception ex) {
+            // mandar al servidor al log de errores
+            JOptionPane.showMessageDialog(null, ex.toString());
+        }
+
+    }
+    
+     @FXML
+    private void accesoFacturacion(ActionEvent e) {
+        try {
+            if (true) {
+                 setDataPane(cargarScena("/ferreteria_las_vegas/view/FXML_Facturación.fxml"));
                  
             } else {
 
