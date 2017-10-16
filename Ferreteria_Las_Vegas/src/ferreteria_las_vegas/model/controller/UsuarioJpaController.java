@@ -14,10 +14,11 @@ import javax.persistence.Query;
 /**
  *
  * @author Usuario
+ * Singlenton para gestion de las operaciones sobre la entidad Usuario (tb_Usuarios)
  */
 public class UsuarioJpaController {
     private static UsuarioJpaController INSTANCE = null;
-
+    
     private static void createInstance() {
         if (INSTANCE == null) {
             
@@ -37,6 +38,13 @@ public class UsuarioJpaController {
         return INSTANCE;
     }
     
+    
+    /**
+     * Metodo que verifica el ingreso de un usuario y una contraseña validos o no de un empleado del sistema.
+     * @param pusuario
+     * @param pcontraseña
+     * @return 
+     */    
     public Usuario SolicitarAcceso(String pusuario, String pcontraseña) {
         try {
             Query qryUsuario = em.createNamedQuery("Usuario.findByUsuLogin", Usuario.class);
