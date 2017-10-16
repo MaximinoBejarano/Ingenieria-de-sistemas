@@ -6,22 +6,16 @@
 package ferreteria_las_vegas.model.entities;
 
 import java.io.Serializable;
-import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -44,16 +38,6 @@ public class Direccion implements Serializable {
     @Basic(optional = false)
     @Column(name = "Dir_DirExacta")
     private String dirDirExacta;
-    @JoinTable(name = "tb_personas_direcciones", joinColumns = {
-        @JoinColumn(name = "RPD_Direccion", referencedColumnName = "Dir_ID")}, inverseJoinColumns = {
-        @JoinColumn(name = "RPD_Persona", referencedColumnName = "Per_Cedula")})
-    @ManyToMany
-    private List<Persona> personaList;
-    @JoinTable(name = "tb_direcciones_proveedores", joinColumns = {
-        @JoinColumn(name = "RDP_Direccion", referencedColumnName = "Dir_ID")}, inverseJoinColumns = {
-        @JoinColumn(name = "RDP_Proveedor", referencedColumnName = "Pro_ID")})
-    @ManyToMany
-    private List<Proveedor> proveedorList;
     @JoinColumn(name = "Dir_Canton", referencedColumnName = "Can_ID")
     @ManyToOne
     private Canton dirCanton;
@@ -63,8 +47,6 @@ public class Direccion implements Serializable {
     @JoinColumn(name = "Dir_Provincia", referencedColumnName = "Pro_ID")
     @ManyToOne
     private Provincia dirProvincia;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "bobDireccion")
-    private List<Bodega> bodegaList;
 
     public Direccion() {
     }
@@ -94,24 +76,6 @@ public class Direccion implements Serializable {
         this.dirDirExacta = dirDirExacta;
     }
 
-    @XmlTransient
-    public List<Persona> getPersonaList() {
-        return personaList;
-    }
-
-    public void setPersonaList(List<Persona> personaList) {
-        this.personaList = personaList;
-    }
-
-    @XmlTransient
-    public List<Proveedor> getProveedorList() {
-        return proveedorList;
-    }
-
-    public void setProveedorList(List<Proveedor> proveedorList) {
-        this.proveedorList = proveedorList;
-    }
-
     public Canton getDirCanton() {
         return dirCanton;
     }
@@ -134,15 +98,6 @@ public class Direccion implements Serializable {
 
     public void setDirProvincia(Provincia dirProvincia) {
         this.dirProvincia = dirProvincia;
-    }
-
-    @XmlTransient
-    public List<Bodega> getBodegaList() {
-        return bodegaList;
-    }
-
-    public void setBodegaList(List<Bodega> bodegaList) {
-        this.bodegaList = bodegaList;
     }
 
     @Override
