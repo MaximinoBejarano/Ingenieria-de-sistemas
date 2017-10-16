@@ -6,19 +6,24 @@
 package ferreteria_las_vegas.model.entities;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
- *
+ *Entidad DB
  * @author Usuario
  */
 @Entity
@@ -43,6 +48,16 @@ public class Contacto implements Serializable {
     @Basic(optional = false)
     @Column(name = "Con_TipoContacto")
     private String conTipoContacto;
+    @JoinTable(name = "tb_personas_contactos", joinColumns = {
+        @JoinColumn(name = "RPC_Contacto", referencedColumnName = "Con_ID")}, inverseJoinColumns = {
+        @JoinColumn(name = "RPC_Persona", referencedColumnName = "Per_Cedula")})
+    @ManyToMany
+    private List<Persona> personaList;
+    @JoinTable(name = "tb_contactos_proveedores", joinColumns = {
+        @JoinColumn(name = "RCP_Contacto", referencedColumnName = "Con_ID")}, inverseJoinColumns = {
+        @JoinColumn(name = "RCP_Proveedor", referencedColumnName = "Pro_ID")})
+    @ManyToMany
+    private List<Proveedor> proveedorList;
 
     public Contacto() {
     }
@@ -79,6 +94,24 @@ public class Contacto implements Serializable {
 
     public void setConTipoContacto(String conTipoContacto) {
         this.conTipoContacto = conTipoContacto;
+    }
+
+    @XmlTransient
+    public List<Persona> getPersonaList() {
+        return personaList;
+    }
+
+    public void setPersonaList(List<Persona> personaList) {
+        this.personaList = personaList;
+    }
+
+    @XmlTransient
+    public List<Proveedor> getProveedorList() {
+        return proveedorList;
+    }
+
+    public void setProveedorList(List<Proveedor> proveedorList) {
+        this.proveedorList = proveedorList;
     }
 
     @Override

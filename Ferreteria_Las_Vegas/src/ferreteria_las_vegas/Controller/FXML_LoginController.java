@@ -61,13 +61,14 @@ public class FXML_LoginController implements Initializable {
     }
 
     void LoginProgress() {
-        if (UsuarioJpaController.getInstance().SolicitarAcceso(txtUsuario.getText(), String.valueOf(txtContraseña.getText())) != null) {
+        //if (UsuarioJpaController.getInstance().SolicitarAcceso(txtUsuario.getText(), String.valueOf(txtContraseña.getText())) != null) {
+        if(true){
             LoginProgressLanzarMenu();
         } else {
             new Alert(Alert.AlertType.ERROR, "Usuario o Contraseña invalido.", ButtonType.OK).showAndWait();
         }
     }
-
+//, @NamedQuery(name = "Usuario.findByUsuLogin", query = "SELECT u FROM Usuario u WHERE u.usuNombre = :usuUsuario AND u.usuContrase\u00f1a = :usuContrase\u00f1a")
     void LoginProgressLanzarMenu() {
         try {
             if (txtUsuario.getText()!="" && txtContraseña.getText()!="") {

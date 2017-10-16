@@ -22,7 +22,7 @@ import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- *
+ *Entidad DB
  * @author Usuario
  */
 @Entity
