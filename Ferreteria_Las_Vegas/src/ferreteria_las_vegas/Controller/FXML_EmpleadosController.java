@@ -101,6 +101,22 @@ public class FXML_EmpleadosController {
 
     @FXML
     void SalirClick(ActionEvent event) {
+        
+        try {            
+                /*Parent root = FXMLLoader.load(getClass().getResource("/ferreteria_las_vegas/view/FXML_Menu.fxml"));
+                Stage stage = new Stage();
+                Scene scene = new Scene(root);
+                stage.setScene(scene);
+                stage.resizableProperty().set(true);
+                stage.setMaximized(true);                
+                stage.show();*/
+                
+        Stage stage = (Stage) btnSalir.getScene().getWindow();
+        stage.close();
+            
+        } catch (Exception ex) {
+            // mandar al servidor al log de errores
+        }
 
     }
 
@@ -114,9 +130,9 @@ public class FXML_EmpleadosController {
         Direccion direcion = new Direccion(Integer.SIZE, txtDireccionEmp.getText());
 
         persona.setUsuario(usuario);
-        persona.getContactoList().add(contactoTel);
-        persona.getContactoList().add(contactoEma);
-        persona.getDireccionList().add(direcion);
+        //persona.getContactoList().add(contactoTel);
+        //persona.getContactoList().add(contactoEma);
+        //persona.getDireccionList().add(direcion);
 
         if (PersonaJpaController.getInstance().AgregarPersona(persona) != null) {
             new Alert(Alert.AlertType.INFORMATION, "Aviso: Empleado Agregado Corectamente.", ButtonType.OK).showAndWait();
@@ -144,9 +160,9 @@ public class FXML_EmpleadosController {
         txtNombreEmp.setText("");
         txtPrimerAEmp.setText("");
         txtSegundoAEmp.setText("");
-        txtCedulaEmp.setText("");
         txtTelefonoEmp.setText("");
-        txtTelefonoEmp.setText("");
+        txtCorreoEmp.setText("");
+        txtContraseñaEmp.setText("");
         txtDireccionEmp.setText("");
     }
 
