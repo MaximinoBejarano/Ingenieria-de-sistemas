@@ -70,7 +70,7 @@ public class FXML_LoginController implements Initializable {
 
     void LoginProgressLanzarMenu() {
         try {
-            if (txtUsuario.getText().equals("") && txtContraseña.getText().equals("")) {
+            if (txtUsuario.getText()!="" && txtContraseña.getText()!="") {
                 Parent root = FXMLLoader.load(getClass().getResource("/ferreteria_las_vegas/view/FXML_Menu.fxml"));
                 Stage stage = new Stage();
                 Scene scene = new Scene(root);
