@@ -12,8 +12,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -29,7 +27,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Contacto.findAll", query = "SELECT c FROM Contacto c")
     , @NamedQuery(name = "Contacto.findByConID", query = "SELECT c FROM Contacto c WHERE c.conID = :conID")
-    , @NamedQuery(name = "Contacto.findByConContacto", query = "SELECT c FROM Contacto c WHERE c.conContacto = :conContacto")})
+    , @NamedQuery(name = "Contacto.findByConContacto", query = "SELECT c FROM Contacto c WHERE c.conContacto = :conContacto")
+    , @NamedQuery(name = "Contacto.findByConTipoContacto", query = "SELECT c FROM Contacto c WHERE c.conTipoContacto = :conTipoContacto")})
 public class Contacto implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -41,9 +40,9 @@ public class Contacto implements Serializable {
     @Basic(optional = false)
     @Column(name = "Con_Contacto")
     private String conContacto;
-    @JoinColumn(name = "Con_TipoContacto", referencedColumnName = "Tip_ID")
-    @ManyToOne
-    private TipoContacto conTipoContacto;
+    @Basic(optional = false)
+    @Column(name = "Con_TipoContacto")
+    private String conTipoContacto;
 
     public Contacto() {
     }
@@ -52,9 +51,10 @@ public class Contacto implements Serializable {
         this.conID = conID;
     }
 
-    public Contacto(Integer conID, String conContacto) {
+    public Contacto(Integer conID, String conContacto, String conTipoContacto) {
         this.conID = conID;
         this.conContacto = conContacto;
+        this.conTipoContacto = conTipoContacto;
     }
 
     public Integer getConID() {
@@ -73,11 +73,11 @@ public class Contacto implements Serializable {
         this.conContacto = conContacto;
     }
 
-    public TipoContacto getConTipoContacto() {
+    public String getConTipoContacto() {
         return conTipoContacto;
     }
 
-    public void setConTipoContacto(TipoContacto conTipoContacto) {
+    public void setConTipoContacto(String conTipoContacto) {
         this.conTipoContacto = conTipoContacto;
     }
 

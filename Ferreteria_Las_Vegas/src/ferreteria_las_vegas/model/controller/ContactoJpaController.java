@@ -49,7 +49,7 @@ public class ContactoJpaController {
      * @param pPersona
      * @return
      */
-    public Contacto ConsultarContactoPersona(Persona pPersona) {
+    public Contacto ConsultarContactoPersona(Persona pPersona, String pTipo) {
         try {
             Query qry = em.createNamedQuery("Persona.findByPerCedula", Persona.class);// consulta definida 
             qry.setParameter("perCedula", pPersona.getPerCedula());
@@ -70,8 +70,12 @@ public class ContactoJpaController {
      */
     public Contacto AgregarContactoPersona(Persona pPersona, Contacto pContacto) {
         et = em.getTransaction();
-        try {
-            pPersona.getContactoList().clear();
+        try {            
+            Contacto auxCon = BuscarContactoTipo(pPersona, pContacto.getConTipoContacto());
+            if(auxCon!=null)
+            {
+                pPersona.getContactoList().remove(auxCon);
+            }            
             pPersona.getContactoList().add(pContacto);
             em.lock(pPersona, LockModeType.PESSIMISTIC_WRITE);
             et.begin();
@@ -94,8 +98,13 @@ public class ContactoJpaController {
      */
     public Contacto ModificarContactoPersona(Persona pPersona, Contacto pContacto) {
         et = em.getTransaction();
-        try {
-            pPersona.getContactoList().clear();
+        
+        try {            
+            Contacto auxCon = BuscarContactoTipo(pPersona, pContacto.getConTipoContacto());
+            if(auxCon!=null)
+            {
+                pPersona.getContactoList().remove(auxCon);
+            }            
             pPersona.getContactoList().add(pContacto);
             em.lock(pPersona, LockModeType.PESSIMISTIC_WRITE);
             et.begin();
@@ -106,6 +115,16 @@ public class ContactoJpaController {
             et.rollback();
             return null;
         }
+    }
+    
+    Contacto BuscarContactoTipo(Persona pPersona, String Tipo)
+    {
+        for (Contacto con : pPersona.getContactoList()) {
+            if(con.getConTipoContacto().equalsIgnoreCase(Tipo)){
+                return con;
+            }
+        }
+        return null;
     }
     
     private EntityManager em = EntityManagerHelper.getInstance().getManager();
