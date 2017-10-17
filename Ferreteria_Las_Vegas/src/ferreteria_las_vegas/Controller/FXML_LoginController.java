@@ -59,39 +59,18 @@ public class FXML_LoginController implements Initializable {
         }
     }
 
-<<<<<<< HEAD
-    void LoginProgress() {
-        
-        if (UsuarioJpaController.getInstance().SolicitarAcceso(txtUsuario.getText(), String.valueOf(txtContraseña.getText())) != null) {
-            LoginProgressLanzarMenu();
-=======
     void ProcesoLogeo() {
         Usuario usuario = UsuarioJpaController.getInstance().SolicitarAcceso(txtUsuario.getText(), String.valueOf(txtContraseña.getText()));
         if (usuario != null) {
             //if(true){
             AppContext.getInstance().set("user", usuario);
             LanzarMenu();
->>>>>>> a37f8fa45708c33a54156166ea5c88040c0cee3b
+
         } else {
             new Alert(Alert.AlertType.WARNING, "Usuario o Contraseña invalido.", ButtonType.OK).showAndWait();
         }
     }
 
-<<<<<<< HEAD
-    void LoginProgressLanzarMenu() {
-        try {
-            if (!"".equals(txtUsuario.getText()) && !"".equals(txtContraseña.getText())) {
-                Parent root = FXMLLoader.load(getClass().getResource("/ferreteria_las_vegas/view/FXML_Menu.fxml"));
-                Stage stage = new Stage();
-                Scene scene = new Scene(root);
-                stage.setScene(scene);
-                stage.resizableProperty().set(true);
-                stage.setMaximized(true);
-                stage.show();
-            } else {
-                lblError.setVisible(true);
-            }
-=======
     void LanzarMenu() {
         try {            
             
@@ -105,7 +84,7 @@ public class FXML_LoginController implements Initializable {
             stage.resizableProperty().set(true);
             stage.setMaximized(true);
             stage.show();                                    
->>>>>>> a37f8fa45708c33a54156166ea5c88040c0cee3b
+
         } catch (Exception ex) {
             // mandar al servidor al log de errores
         }
