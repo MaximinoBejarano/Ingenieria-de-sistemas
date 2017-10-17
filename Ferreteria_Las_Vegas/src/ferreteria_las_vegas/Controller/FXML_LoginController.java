@@ -6,6 +6,7 @@
 package ferreteria_las_vegas.Controller;
 
 import ferreteria_las_vegas.model.controller.UsuarioJpaController;
+import ferreteria_las_vegas.utils.AppContext;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.application.Platform;
@@ -61,6 +62,7 @@ public class FXML_LoginController implements Initializable {
     }
 
     void LoginProgress() {
+        
         if (UsuarioJpaController.getInstance().SolicitarAcceso(txtUsuario.getText(), String.valueOf(txtContraseña.getText())) != null) {
             LoginProgressLanzarMenu();
         } else {
@@ -70,7 +72,7 @@ public class FXML_LoginController implements Initializable {
 
     void LoginProgressLanzarMenu() {
         try {
-            if (txtUsuario.getText()!="" && txtContraseña.getText()!="") {
+            if (!"".equals(txtUsuario.getText()) && !"".equals(txtContraseña.getText())) {
                 Parent root = FXMLLoader.load(getClass().getResource("/ferreteria_las_vegas/view/FXML_Menu.fxml"));
                 Stage stage = new Stage();
                 Scene scene = new Scene(root);
