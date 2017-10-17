@@ -6,13 +6,13 @@
 package ferreteria_las_vegas.Controller;
 
 import ferreteria_las_vegas.model.controller.UsuarioJpaController;
-<<<<<<< HEAD
-import ferreteria_las_vegas.utils.AppContext;
-=======
+
+
+
 import ferreteria_las_vegas.model.entities.Usuario;
 import ferreteria_las_vegas.utils.AppContext;
 import javafx.fxml.FXML;
->>>>>>> a37f8fa45708c33a54156166ea5c88040c0cee3b
+
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
