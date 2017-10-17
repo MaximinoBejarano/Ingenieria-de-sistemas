@@ -8,7 +8,7 @@
   </information>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
-    <jar href="Ferreteria_Las_Vegas.jar" size="366041" download="eager" />
+    <jar href="Ferreteria_Las_Vegas.jar" size="369684" download="eager" />
     <jar href="lib\javax.persistence.jar" size="160564" download="eager" />
     <jar href="lib\mysql-5.1.44.jar" size="999635" download="eager" />
     <jar href="lib\org.eclipse.persistence.antlr.jar" size="189645" download="eager" />

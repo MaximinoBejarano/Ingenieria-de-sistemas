@@ -130,7 +130,7 @@
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="txtCedCliente" GridPane.columnIndex="1">
+                        <TextField fx:id="txtCedCliente" promptText="Campo Requerido" GridPane.columnIndex="1">
                            <font>
                               <Font size="16.0" />
                            </font>
@@ -138,7 +138,7 @@
                               <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
                            </GridPane.margin>
                         </TextField>
-                        <TextField fx:id="txtNombreCliente" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                        <TextField fx:id="txtNombreCliente" promptText="Campo Requerido" GridPane.columnIndex="1" GridPane.rowIndex="1">
                            <font>
                               <Font size="16.0" />
                            </font>
@@ -146,7 +146,7 @@
                               <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
                            </GridPane.margin>
                         </TextField>
-                        <TextField fx:id="txtPApellidoCliente" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                        <TextField fx:id="txtPApellidoCliente" promptText="Campo Requerido" GridPane.columnIndex="1" GridPane.rowIndex="2">
                            <font>
                               <Font size="16.0" />
                            </font>
@@ -154,7 +154,7 @@
                               <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
                            </GridPane.margin>
                         </TextField>
-                        <TextField fx:id="txtSApellidoCliente" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                        <TextField fx:id="txtSApellidoCliente" promptText="Campo Requerido" GridPane.columnIndex="1" GridPane.rowIndex="3">
                            <font>
                               <Font size="16.0" />
                            </font>
@@ -162,7 +162,7 @@
                               <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
                            </GridPane.margin>
                         </TextField>
-                        <TextField fx:id="txtTelefono1Cliente" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                        <TextField fx:id="txtTelefono1Cliente" promptText="Campo Requerido" GridPane.columnIndex="1" GridPane.rowIndex="4">
                            <font>
                               <Font size="16.0" />
                            </font>
@@ -186,7 +186,7 @@
                               <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
                            </GridPane.margin>
                         </TextField>
-                        <TextArea fx:id="TxtDireccionCliente" prefHeight="68.0" prefWidth="295.0" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                        <TextArea fx:id="TxtDireccionCliente" prefHeight="68.0" prefWidth="295.0" promptText="Campo Requerido" GridPane.columnIndex="1" GridPane.rowIndex="7">
                            <font>
                               <Font size="16.0" />
                            </font>

@@ -9,6 +9,7 @@ import ferreteria_las_vegas.model.controller.PersonaJpaController;
 import ferreteria_las_vegas.model.entities.Contacto;
 import ferreteria_las_vegas.model.entities.Direccion;
 import ferreteria_las_vegas.model.entities.Persona;
+import ferreteria_las_vegas.utils.AppContext;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -142,22 +143,46 @@ public class FXML_ClientesController implements Initializable {
     
     @FXML
     private void buscarCliente(ActionEvent event) {
-         try {
-            if (txtCedCliente.getText().equals("")) {
-                Parent root = FXMLLoader.load(getClass().getResource("/ferreteria_las_vegas/view/FXML_Buscar_Clientes.fxml"));
-                Stage stage = new Stage(StageStyle.UTILITY);
-
-                stage.setScene(new Scene(root));
-                stage.initModality(Modality.WINDOW_MODAL);
-                stage.initOwner(txtCedCliente.getScene().getWindow());
-                stage.showAndWait();
-            
-            
-            } else if (!txtCedCliente.getText().equals("")) {
-                //rellenar los datos del formulario
+        
+         LanzarBusqueda();
+        Persona persona = (Persona) AppContext.getInstance().get("selected-persona");
+        if (persona != null) {
+            CargarDatosUsuario(persona);
+        }
+          
+    }
+    
+      Contacto BuscarContactoTipo(Persona pPersona, String Tipo) {
+        for (Contacto con : pPersona.getContactoList()) {
+            if (con.getConTipoContacto().equalsIgnoreCase(Tipo)) {
+                return con;
             }
+        }
+        return null;
+    }
+      
+    void CargarDatosUsuario(Persona persona) {
+        txtCedCliente.setText(persona.getPerCedula());
+        txtNombreCliente.setText(persona.getPerNombre());
+        txtPApellidoCliente.setText(persona.getPerPApellido());
+        txtSApellidoCliente.setText(persona.getPerSApellido());
+        txtTelefono1Cliente.setText(BuscarContactoTipo(persona, "TEL").getConContacto());
+        txtCorreoCliente.setText(BuscarContactoTipo(persona, "EMAIL").getConContacto());
+        TxtDireccionCliente.setText(persona.getDireccionList().get(0).getDirDirExacta());
+    }
+    void LanzarBusqueda() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/ferreteria_las_vegas/view/FXML_Buscar_Clientes.fxml"));
+            Parent root = (Parent) fxmlLoader.load();
+            Stage stage = new Stage(StageStyle.UTILITY);
+            stage.initOwner(btnBuscarCliente.getScene().getWindow());
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.showAndWait();
+
         } catch (Exception ex) {
             // mandar al servidor al log de errores
+            System.err.println(ex);
         }
     }
 

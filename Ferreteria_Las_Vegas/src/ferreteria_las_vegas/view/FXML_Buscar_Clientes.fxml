@@ -1,18 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.text.*?>
-<?import javafx.scene.effect.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.image.*?>
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="635.0" prefWidth="730.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ferreteria_las_vegas.Controller.FXML_Buscar_ClientesController">
+<AnchorPane id="AnchorPane" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ferreteria_las_vegas.Controller.FXML_Buscar_ClientesController">
    <children>
-      <BorderPane prefHeight="608.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <BorderPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <center>
             <AnchorPane style="-fx-background-color: white;">
                <children>
@@ -27,7 +34,6 @@
                         <ColumnConstraints hgrow="SOMETIMES" maxWidth="227.0" minWidth="10.0" prefWidth="211.0" />
                       <ColumnConstraints hgrow="SOMETIMES" maxWidth="135.0" minWidth="10.0" prefWidth="83.0" />
                         <ColumnConstraints hgrow="SOMETIMES" maxWidth="238.0" minWidth="10.0" prefWidth="222.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                     </columnConstraints>
                     <rowConstraints>
                         <RowConstraints maxHeight="49.0" minHeight="10.0" prefHeight="49.0" vgrow="SOMETIMES" />
@@ -43,7 +49,7 @@
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <TextField GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                        <TextField fx:id="txtCedualCliente" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                            <GridPane.margin>
                               <Insets right="10.0" />
                            </GridPane.margin>
@@ -51,7 +57,7 @@
                               <Font size="18.0" />
                            </font>
                         </TextField>
-                        <TextField prefHeight="39.0" prefWidth="207.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                        <TextField fx:id="txtNombreCliente" prefHeight="39.0" prefWidth="207.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                            <GridPane.margin>
                               <Insets right="10.0" />
                            </GridPane.margin>
@@ -59,40 +65,20 @@
                               <Font size="18.0" />
                            </font>
                         </TextField>
-                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="55.0" prefWidth="78.0" styleClass="boton-Conf" stylesheets="@../../styles/style.css" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-                           <graphic>
-                              <ImageView fitHeight="47.0" fitWidth="61.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../../pictures/buscar.png" />
-                                 </image>
-                                 <effect>
-                                    <DropShadow />
-                                 </effect>
-                              </ImageView>
-                           </graphic>
-                        </Button>
                      </children>
                   </GridPane>
-                  <ScrollPane layoutX="14.0" layoutY="120.0" prefHeight="301.0" prefWidth="687.0" AnchorPane.bottomAnchor="16.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="16.0" AnchorPane.topAnchor="118.0">
-                     <content>
-                        <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="360.0" prefWidth="1360.0">
-                           <children>
-                              <TableView editable="true" layoutX="-309.0" layoutY="4.0" prefHeight="196.0" prefWidth="785.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                 <columns>
-                                    <TableColumn maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="150.0" resizable="false" text="Cédula" />
-                                    <TableColumn minWidth="-Infinity" prefWidth="150.0" resizable="false" text="Nombre" />
-                                    <TableColumn minWidth="-Infinity" prefWidth="150.0" resizable="false" text="P.Apellido" />
-                                    <TableColumn minWidth="-Infinity" prefWidth="150.0" resizable="false" text="S.Apellido" />
-                                    <TableColumn minWidth="-Infinity" prefWidth="150.0" resizable="false" text="Teléfono1" />
-                                    <TableColumn minWidth="-Infinity" prefWidth="150.0" resizable="false" text="Teléfono2" />
-                                    <TableColumn minWidth="-Infinity" prefWidth="200.0" resizable="false" text="Corre Electrónico" />
-                                    <TableColumn minWidth="-Infinity" prefWidth="250.0" resizable="false" text="Dirección" />
-                                 </columns>
-                              </TableView>
-                           </children>
-                        </AnchorPane>
-                     </content>
-                  </ScrollPane>
+                  <TableView fx:id="tblClientes" editable="true" layoutX="14.0" layoutY="131.0" prefHeight="400.0" prefWidth="794.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="120.0">
+                     <columns>
+                        <TableColumn fx:id="colCedula" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="100.0" resizable="false" text="Cédula" />
+                        <TableColumn fx:id="colNombre" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="100.0" resizable="false" text="Nombre" />
+                        <TableColumn fx:id="colPApellido" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="100.0" resizable="false" text="P.Apellido" />
+                        <TableColumn fx:id="colSApellido" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="100.0" resizable="false" text="S.Apellido" />
+                        <TableColumn fx:id="colTelefono1" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="100.0" resizable="false" text="Teléfono1" />
+                        <TableColumn fx:id="colTelefono2" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="100.0" resizable="false" text="Teléfono2" />
+                        <TableColumn fx:id="colCorreo" minWidth="-Infinity" prefWidth="100.0" resizable="false" text="Corre Electrónico" />
+                        <TableColumn fx:id="colDierccion" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="100.0" resizable="false" text="Dirección" />
+                     </columns>
+                  </TableView>
                </children>
             </AnchorPane>
          </center>
@@ -113,7 +99,7 @@
          <bottom>
             <AnchorPane prefHeight="90.0" prefWidth="720.0" style="-fx-background-color: #2E4053;" BorderPane.alignment="CENTER">
                <children>
-                  <Button layoutX="664.0" layoutY="20.0" mnemonicParsing="false" prefWidth="104.0" styleClass="boton-Exit" stylesheets="@../../styles/style.css" AnchorPane.bottomAnchor="6.0" AnchorPane.rightAnchor="6.0" AnchorPane.topAnchor="6.0">
+                  <Button fx:id="btnSalir" layoutX="664.0" layoutY="20.0" mnemonicParsing="false" prefWidth="104.0" styleClass="boton-Exit" stylesheets="@../../styles/style.css" AnchorPane.bottomAnchor="6.0" AnchorPane.rightAnchor="6.0" AnchorPane.topAnchor="6.0">
                      <graphic>
                         <ImageView fitHeight="65.0" fitWidth="91.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -125,7 +111,7 @@
                         <DropShadow />
                      </effect>
                   </Button>
-                  <Button layoutX="535.0" layoutY="33.0" mnemonicParsing="false" prefHeight="78.0" prefWidth="104.0" styleClass="boton_Seleccionado" stylesheets="@../../styles/style.css" AnchorPane.bottomAnchor="6.0" AnchorPane.rightAnchor="125.0" AnchorPane.topAnchor="6.0">
+                  <Button fx:id="btnSeleccionarCliente" layoutX="535.0" layoutY="33.0" mnemonicParsing="false" prefHeight="78.0" prefWidth="104.0" styleClass="boton_Seleccionado" stylesheets="@../../styles/style.css" AnchorPane.bottomAnchor="6.0" AnchorPane.rightAnchor="125.0" AnchorPane.topAnchor="6.0">
                      <graphic>
                         <ImageView fitHeight="65.0" fitWidth="91.0" pickOnBounds="true" preserveRatio="true">
                            <image>
