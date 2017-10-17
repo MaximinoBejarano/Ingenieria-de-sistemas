@@ -88,7 +88,7 @@ public class ArticuloJpaController {
     
   //***********************************Area de procedimientos*******************************
     /**
-     * Procedimiento para consultar todos los articulos
+     * Procedimiento para consultar todos los articulos que se encuentren en la BD_FV
      * @return 
      */
      public List<Articulo> ConsultarTodosArticulos() {
