@@ -54,7 +54,7 @@ public class FXML_LoginController implements Initializable {
     @FXML
     private void verificarAcceso(ActionEvent e) {
         if (txtUsuario.getText().isEmpty() || txtContraseña.getText().isEmpty()) {
-            new Alert(Alert.AlertType.WARNING, "Advertencia: Debe completar todos los campos requeridos.", ButtonType.OK).showAndWait();
+            new Alert(Alert.AlertType.WARNING, "Debe completar todos los campos requeridos.", ButtonType.OK).showAndWait();
         } else {
             LoginProgress();
         }
@@ -65,7 +65,7 @@ public class FXML_LoginController implements Initializable {
         if(true){
             LoginProgressLanzarMenu();
         } else {
-            new Alert(Alert.AlertType.ERROR, "Usuario o Contraseña invalido.", ButtonType.OK).showAndWait();
+            new Alert(Alert.AlertType.WARNING, "Usuario o Contraseña invalido.", ButtonType.OK).showAndWait();
         }
     }
 //, @NamedQuery(name = "Usuario.findByUsuLogin", query = "SELECT u FROM Usuario u WHERE u.usuNombre = :usuUsuario AND u.usuContrase\u00f1a = :usuContrase\u00f1a")

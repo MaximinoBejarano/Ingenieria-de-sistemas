@@ -58,9 +58,15 @@ public class Persona implements Serializable {
         @JoinColumn(name = "RFP_Ferreteria", referencedColumnName = "Fer_ID")})
     @ManyToMany
     private List<Ferreteria> ferreteriaList;    
-    @ManyToMany(mappedBy = "personaList")
-    private List<Direccion> direccionList;
-    @ManyToMany(mappedBy = "personaList")
+    @JoinTable(name = "tb_personas_direcciones", joinColumns = {
+        @JoinColumn(name = "RPD_Persona", referencedColumnName = "Per_Cedula")}, inverseJoinColumns = {
+        @JoinColumn(name = "RPD_Direccion", referencedColumnName = "Dir_ID")})
+    @ManyToMany
+    private List<Direccion> direccionList;        
+    @JoinTable(name = "tb_personas_contactos", joinColumns = {
+        @JoinColumn(name = "RPC_Persona", referencedColumnName = "Per_Cedula")}, inverseJoinColumns = {
+        @JoinColumn(name = "RPC_Contacto", referencedColumnName = "Con_ID")})
+    @ManyToMany
     private List<Contacto> contactoList;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "persona")
     private Usuario usuario;

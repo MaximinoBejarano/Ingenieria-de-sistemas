@@ -6,6 +6,7 @@
 package ferreteria_las_vegas.model.controller;
 
 import ferreteria_las_vegas.model.entities.Direccion;
+import ferreteria_las_vegas.model.entities.Ferreteria;
 import ferreteria_las_vegas.model.entities.Persona;
 import ferreteria_las_vegas.utils.EntityManagerHelper;
 import javax.persistence.EntityManager;
@@ -88,13 +89,20 @@ public class DireccionJpaController {
      */
     public Direccion AgregarDireccionPersona(Persona pPersona, Direccion pDireccion) {
         et = em.getTransaction();
-        try {
-            pPersona.getDireccionList().clear();
+        try {                                                
+            //pPersona.getDireccionList().clear();
             pPersona.getDireccionList().add(pDireccion);            
-            et.begin();
-            em.lock(pPersona, LockModeType.PESSIMISTIC_WRITE);
-            em.persist(pPersona);
+            
+            et.begin();            
+            em.merge(pPersona);
             et.commit();
+            
+           /* pDireccion.getPersonaList().add(pPersona);
+            
+            et.begin();            
+            em.merge(pDireccion);
+            et.commit();*/
+            
             return pDireccion;
         } catch (Exception ex) {
             et.rollback();

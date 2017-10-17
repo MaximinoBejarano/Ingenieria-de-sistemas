@@ -48,10 +48,7 @@ public class Contacto implements Serializable {
     @Basic(optional = false)
     @Column(name = "Con_TipoContacto")
     private String conTipoContacto;
-    @JoinTable(name = "tb_personas_contactos", joinColumns = {
-        @JoinColumn(name = "RPC_Contacto", referencedColumnName = "Con_ID")}, inverseJoinColumns = {
-        @JoinColumn(name = "RPC_Persona", referencedColumnName = "Per_Cedula")})
-    @ManyToMany
+    @ManyToMany(mappedBy = "contactoList")
     private List<Persona> personaList;
     @JoinTable(name = "tb_contactos_proveedores", joinColumns = {
         @JoinColumn(name = "RCP_Contacto", referencedColumnName = "Con_ID")}, inverseJoinColumns = {

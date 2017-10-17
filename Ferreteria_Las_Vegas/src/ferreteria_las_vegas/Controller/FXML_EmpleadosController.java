@@ -131,17 +131,16 @@ public class FXML_EmpleadosController {
         Contacto contactoTel = new Contacto(Integer.SIZE, txtTelefonoEmp.getText(), "TEL");
         Contacto contactoEma = new Contacto(Integer.SIZE, txtCorreoEmp.getText(), "EMAIL");
         Direccion direcion = new Direccion(Integer.SIZE, txtDireccionEmp.getText());
-                                
-        //DireccionJpaController.getInstance().AgregarDireccion(direcion)
+        //persona.setUsuario(usuario);
+                                        
         
-        persona = PersonaJpaController.getInstance().AgregarPersona(persona);
+        persona = PersonaJpaController.getInstance().AgregarPersona(persona,direcion,contactoTel,contactoEma);
         if (persona != null) {            
-            DireccionJpaController.getInstance().AgregarDireccionPersona(persona, direcion);
-                    
-            new Alert(Alert.AlertType.INFORMATION, "Aviso: Empleado Agregado Corectamente.", ButtonType.OK).showAndWait();
+            //PersonaJpaController.getInstance().getInstance().AgregarDireccionPersona(persona, direcion);                                
+            new Alert(Alert.AlertType.INFORMATION, "Empleado Agregado Corectamente.", ButtonType.OK).showAndWait();
             LimpiarControles();
         } else {
-            new Alert(Alert.AlertType.ERROR, "Error: No se pudo Agregar al Empleado.", ButtonType.OK).showAndWait();
+            new Alert(Alert.AlertType.ERROR, "No se pudo Agregar al Empleado.", ButtonType.OK).showAndWait();
         }
     }
 

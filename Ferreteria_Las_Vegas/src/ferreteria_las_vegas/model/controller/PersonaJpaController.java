@@ -5,6 +5,8 @@
  */
 package ferreteria_las_vegas.model.controller;
 
+import ferreteria_las_vegas.model.entities.Contacto;
+import ferreteria_las_vegas.model.entities.Direccion;
 import ferreteria_las_vegas.model.entities.Persona;
 import ferreteria_las_vegas.utils.EntityManagerHelper;
 import java.util.List;
@@ -94,7 +96,7 @@ public class PersonaJpaController {
             et.rollback();
             return null;
         }
-    }
+    }    
 
     /**
      * Metodo que edita una persona en la base de datos en tabla tb_Personas
@@ -115,7 +117,45 @@ public class PersonaJpaController {
             return null;
         }
     }
+    
+    public Direccion AgregarDireccionPersona(Persona pPersona, Direccion pDireccion) {
+        et = em.getTransaction();
+        try {                                                
+            pPersona.getDireccionList().clear();
+            pPersona.getDireccionList().add(pDireccion);            
+            
+            et.begin();            
+            em.merge(pPersona);
+            et.commit();                       
+            
+            return pDireccion;
+        } catch (Exception ex) {
+            et.rollback();
+            return null;
+        }
+    }
 
+    public Persona AgregarPersona(Persona pPersona, Direccion pDireccion, Contacto pTel, Contacto pEmail) {
+        et = em.getTransaction();
+        try {
+            et.begin();
+            em.persist(pPersona);
+            em.flush();
+                        
+            pPersona.getDireccionList().add(pDireccion);
+            pPersona.getContactoList().add(pTel);
+            pPersona.getContactoList().add(pEmail);
+            em.merge(pPersona);
+            et.commit();
+            
+            return pPersona;
+        } catch (Exception ex) {
+            et.rollback();
+            System.err.println(ex);
+            return null;
+        }
+    }
+    
     private EntityManager em = EntityManagerHelper.getInstance().getManager();
     private EntityTransaction et;
 }

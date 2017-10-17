@@ -47,11 +47,10 @@ public class Direccion implements Serializable {
     @Basic(optional = false)
     @Column(name = "Dir_DirExacta")
     private String dirDirExacta;
-    @JoinTable(name = "tb_personas_direcciones", joinColumns = {
-        @JoinColumn(name = "RPD_Direccion", referencedColumnName = "Dir_ID")}, inverseJoinColumns = {
-        @JoinColumn(name = "RPD_Persona", referencedColumnName = "Per_Cedula")})
-    @ManyToMany
+    
+    @ManyToMany(mappedBy = "direccionList")    
     private List<Persona> personaList;
+    
     @JoinTable(name = "tb_direcciones_proveedores", joinColumns = {
         @JoinColumn(name = "RDP_Direccion", referencedColumnName = "Dir_ID")}, inverseJoinColumns = {
         @JoinColumn(name = "RDP_Proveedor", referencedColumnName = "Pro_ID")})
