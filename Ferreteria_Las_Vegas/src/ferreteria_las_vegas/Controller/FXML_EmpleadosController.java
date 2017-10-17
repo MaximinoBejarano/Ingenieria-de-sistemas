@@ -178,7 +178,7 @@ public class FXML_EmpleadosController {
 
             contactoTel.setConContacto(txtTelefonoEmp.getText());
             contactoEma.setConContacto(txtDireccionEmp.getText());
-            direcion.setDirDirExacta(txtDireccionEmp.getText());
+            direcion.setDirDirExacta(txtCorreoEmp.getText());
 
             persona.getUsuario().setUsuContraseña(String.valueOf(txtContraseñaEmp.getText()));
 

@@ -10,6 +10,7 @@ import ferreteria_las_vegas.model.entities.Direccion;
 import ferreteria_las_vegas.model.entities.Persona;
 import ferreteria_las_vegas.utils.EntityManagerHelper;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.LockModeType;
@@ -74,6 +75,26 @@ public class PersonaJpaController {
             Query qry = em.createNamedQuery("Persona.findAll", Persona.class);// consulta definida por folio
             List<Persona> personas = qry.getResultList();// Recibe el resultado de la consulta  
             return personas;
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+    
+    public List<Persona> ConsultarPersonasEmpleados() {
+        try {
+            Query qry = em.createNamedQuery("Persona.findAll", Persona.class);// consulta definida por folio
+            List<Persona> personas = qry.getResultList();// Recibe el resultado de la consulta         
+            return personas.stream().filter(e->e.getUsuario()!=null).collect(Collectors.toList());
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+    
+    public List<Persona> ConsultarPersonasNoEmpleados() {
+        try {
+            Query qry = em.createNamedQuery("Persona.findAll", Persona.class);// consulta definida por folio
+            List<Persona> personas = qry.getResultList();// Recibe el resultado de la consulta         
+            return personas.stream().filter(e->e.getUsuario()==null).collect(Collectors.toList());
         } catch (Exception ex) {
             return null;
         }
@@ -227,3 +248,4 @@ Contacto
 @ManyToMany(mappedBy = "contactoList")
     private List<Persona> personaList;
 */
+

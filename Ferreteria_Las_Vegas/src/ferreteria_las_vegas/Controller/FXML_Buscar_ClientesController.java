@@ -69,18 +69,6 @@ public class FXML_Buscar_ClientesController implements Initializable {
         stageAct.close();
     }
 
-    @FXML
-    void SelecionarClick(ActionEvent event) {
-
-        if (tblCliente.getSelectionModel().getSelectedItem() != null) {
-            AppContext.getInstance().set("selected-persona", tblCliente.getSelectionModel().getSelectedItem());
-
-            Stage stageAct = (Stage) btnSalir.getScene().getWindow();
-            stageAct.close();
-        } else {
-            new Alert(Alert.AlertType.WARNING, "Debe selecionar una fila de la tabla.", ButtonType.OK).showAndWait();
-        }
-    }
     
     /**
      * Initializes the controller class.
@@ -134,6 +122,4 @@ public class FXML_Buscar_ClientesController implements Initializable {
         sortedData.comparatorProperty().bind(tblCliente.comparatorProperty());
         tblCliente.setItems(sortedData);
     }
-    
-    
 }

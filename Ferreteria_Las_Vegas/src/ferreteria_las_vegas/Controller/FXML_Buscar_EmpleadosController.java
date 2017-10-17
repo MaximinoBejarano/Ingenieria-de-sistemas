@@ -1,3 +1,4 @@
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -75,8 +76,7 @@ public class FXML_Buscar_EmpleadosController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-        CargarDatosTabla();
-        //FiltroDatosTabla();
+        CargarDatosTabla();        
     }
 
     void CargarDatosTabla() {
@@ -85,24 +85,22 @@ public class FXML_Buscar_EmpleadosController implements Initializable {
         TableColumn<Persona, String> colNombrePersona = new TableColumn<>("Nombre");
         TableColumn<Persona, String> colAppellidoPersona = new TableColumn<>("Apellido");
         colInfoPersona.getColumns().addAll(colCedulaPersona, colNombrePersona, colAppellidoPersona);
-        tblUsuarios.getColumns().add(colInfoPersona);
-
-        /*colCedulaPersona.setCellValueFactory(new PropertyValueFactory<>("perCedula"));
-        colNombrePersona.setCellValueFactory(new PropertyValueFactory<>("perNombre"));
-        colAppellidoPersona.setCellValueFactory(new PropertyValueFactory<>("perPApellido"));*/
-
-        List<Persona> PersonaList = PersonaJpaController.getInstance().ConsultarPersonasTodos();
-        ObservableList<Persona> OLecturaList = FXCollections.observableArrayList(PersonaList);
-        tblUsuarios.setItems(OLecturaList);
+        tblUsuarios.getColumns().add(colInfoPersona);       
         
         colCedulaPersona.setCellValueFactory((cellData) -> new SimpleStringProperty(cellData.getValue().getPerCedula()));
         colNombrePersona.setCellValueFactory((cellData) -> new SimpleStringProperty(cellData.getValue().getPerNombre()));
         colAppellidoPersona.setCellValueFactory((cellData) -> new SimpleStringProperty(cellData.getValue().getPerPApellido()));        
+
+        List<Persona> PersonaList = PersonaJpaController.getInstance().ConsultarPersonasEmpleados();
+        ObservableList<Persona> OLecturaList = FXCollections.observableArrayList(PersonaList);
+        tblUsuarios.setItems(OLecturaList);         
+        
+        FiltroDatosTabla(OLecturaList);
     }
 
-    void FiltroDatosTabla() {                      
+    void FiltroDatosTabla(ObservableList<Persona> OLecturaList) {                      
         
-        FilteredList<Persona> filteredData = new FilteredList<>(FXCollections.observableArrayList(), p -> true);
+        FilteredList<Persona> filteredData = new FilteredList<>(OLecturaList, p -> true);
         txtFiltro.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
             filteredData.setPredicate((Persona persona) -> {
                 if (newValue == null || newValue.isEmpty()) {
@@ -124,3 +122,4 @@ public class FXML_Buscar_EmpleadosController implements Initializable {
         tblUsuarios.setItems(sortedData);
     }
 }
+
