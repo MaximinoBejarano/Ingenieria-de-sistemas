@@ -47,8 +47,7 @@ CREATE TABLE IF NOT EXISTS `BD_FV`.`tb_Personas` (
   `Per_SNombre` VARCHAR(30) NULL,
   `Per_PApellido` VARCHAR(30) NOT NULL,
   `Per_SApellido` VARCHAR(30) NULL,
-  PRIMARY KEY (`Per_Cedula`),
-  UNIQUE INDEX `Per_PApellido_UNIQUE` (`Per_PApellido` ASC))
+  PRIMARY KEY (`Per_Cedula`))
 ENGINE = InnoDB;
 
 
