@@ -248,3 +248,4 @@ Contacto
 @ManyToMany(mappedBy = "contactoList")
     private List<Persona> personaList;
 */
+
