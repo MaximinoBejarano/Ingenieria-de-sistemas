@@ -173,10 +173,6 @@ public class FXML_EmpleadosController {
         txtContraseñaEmp.setText("");
         txtDireccionEmp.setText("");
     }
-    void ControlesModoEditar(){
-        
-    }
-
     /*-----------------------------------------------------------------------------*/
     void LanzarBusqueda() {
         try {
