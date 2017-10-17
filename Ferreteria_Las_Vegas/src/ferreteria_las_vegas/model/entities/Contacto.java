@@ -16,7 +16,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -24,7 +23,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
- *
+ *Entidad DB
  * @author Usuario
  */
 @Entity
@@ -33,7 +32,8 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Contacto.findAll", query = "SELECT c FROM Contacto c")
     , @NamedQuery(name = "Contacto.findByConID", query = "SELECT c FROM Contacto c WHERE c.conID = :conID")
-    , @NamedQuery(name = "Contacto.findByConContacto", query = "SELECT c FROM Contacto c WHERE c.conContacto = :conContacto")})
+    , @NamedQuery(name = "Contacto.findByConContacto", query = "SELECT c FROM Contacto c WHERE c.conContacto = :conContacto")
+    , @NamedQuery(name = "Contacto.findByConTipoContacto", query = "SELECT c FROM Contacto c WHERE c.conTipoContacto = :conTipoContacto")})
 public class Contacto implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -45,19 +45,16 @@ public class Contacto implements Serializable {
     @Basic(optional = false)
     @Column(name = "Con_Contacto")
     private String conContacto;
-    @JoinTable(name = "tb_personas_contactos", joinColumns = {
-        @JoinColumn(name = "RPC_Contacto", referencedColumnName = "Con_ID")}, inverseJoinColumns = {
-        @JoinColumn(name = "RPC_Persona", referencedColumnName = "Per_Cedula")})
-    @ManyToMany
+    @Basic(optional = false)
+    @Column(name = "Con_TipoContacto")
+    private String conTipoContacto;
+    @ManyToMany(mappedBy = "contactoList")
     private List<Persona> personaList;
     @JoinTable(name = "tb_contactos_proveedores", joinColumns = {
         @JoinColumn(name = "RCP_Contacto", referencedColumnName = "Con_ID")}, inverseJoinColumns = {
         @JoinColumn(name = "RCP_Proveedor", referencedColumnName = "Pro_ID")})
     @ManyToMany
     private List<Proveedor> proveedorList;
-    @JoinColumn(name = "Con_TipoContacto", referencedColumnName = "Tip_ID")
-    @ManyToOne(optional = false)
-    private TipoContacto conTipoContacto;
 
     public Contacto() {
     }
@@ -66,9 +63,10 @@ public class Contacto implements Serializable {
         this.conID = conID;
     }
 
-    public Contacto(Integer conID, String conContacto) {
+    public Contacto(Integer conID, String conContacto, String conTipoContacto) {
         this.conID = conID;
         this.conContacto = conContacto;
+        this.conTipoContacto = conTipoContacto;
     }
 
     public Integer getConID() {
@@ -87,6 +85,14 @@ public class Contacto implements Serializable {
         this.conContacto = conContacto;
     }
 
+    public String getConTipoContacto() {
+        return conTipoContacto;
+    }
+
+    public void setConTipoContacto(String conTipoContacto) {
+        this.conTipoContacto = conTipoContacto;
+    }
+
     @XmlTransient
     public List<Persona> getPersonaList() {
         return personaList;
@@ -103,14 +109,6 @@ public class Contacto implements Serializable {
 
     public void setProveedorList(List<Proveedor> proveedorList) {
         this.proveedorList = proveedorList;
-    }
-
-    public TipoContacto getConTipoContacto() {
-        return conTipoContacto;
-    }
-
-    public void setConTipoContacto(TipoContacto conTipoContacto) {
-        this.conTipoContacto = conTipoContacto;
     }
 
     @Override

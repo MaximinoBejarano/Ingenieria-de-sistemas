@@ -19,7 +19,7 @@ import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- *
+ *Entidad DB
  * @author Usuario
  */
 @Entity

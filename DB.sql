@@ -47,8 +47,7 @@ CREATE TABLE IF NOT EXISTS `BD_FV`.`tb_Personas` (
   `Per_SNombre` VARCHAR(30) NULL,
   `Per_PApellido` VARCHAR(30) NOT NULL,
   `Per_SApellido` VARCHAR(30) NULL,
-  PRIMARY KEY (`Per_Cedula`),
-  UNIQUE INDEX `Per_PApellido_UNIQUE` (`Per_PApellido` ASC))
+  PRIMARY KEY (`Per_Cedula`))
 ENGINE = InnoDB;
 
 
@@ -59,7 +58,7 @@ CREATE TABLE IF NOT EXISTS `BD_FV`.`tb_Usuarios` (
   `Usu_Persona` VARCHAR(30) NOT NULL,
   `Usu_Nombre` VARCHAR(10) NOT NULL,
   `Usu_Contraseña` VARCHAR(10) NOT NULL,
-  `Usu_Rol` INT NOT NULL,
+  `Usu_Rol` INT NULL,
   PRIMARY KEY (`Usu_Persona`),
   INDEX `idx_Usuario_Rol` (`Usu_Rol` ASC),
   UNIQUE INDEX `Usu_Nombre_UNIQUE` (`Usu_Nombre` ASC),
@@ -90,30 +89,13 @@ COMMENT = 'Registra los permisos de accesso del sistema';
 
 
 -- -----------------------------------------------------
--- Table `BD_FV`.`tb_TiposContacto`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `BD_FV`.`tb_TiposContacto` (
-  `Tip_ID` INT NOT NULL,
-  `Tip_Nombre` VARCHAR(30) NOT NULL,
-  `Tip_Descripcion` VARCHAR(30) NOT NULL,
-  PRIMARY KEY (`Tip_ID`))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
 -- Table `BD_FV`.`tb_Contactos`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `BD_FV`.`tb_Contactos` (
   `Con_ID` INT NOT NULL AUTO_INCREMENT,
   `Con_Contacto` VARCHAR(30) NOT NULL,
-  `Con_TipoContacto` INT NOT NULL,
-  PRIMARY KEY (`Con_ID`),
-  INDEX `idx_Contactos_TipoContactos` (`Con_TipoContacto` ASC),
-  CONSTRAINT `fk_Contactos_TipoContactos`
-    FOREIGN KEY (`Con_TipoContacto`)
-    REFERENCES `BD_FV`.`tb_TiposContacto` (`Tip_ID`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+  `Con_TipoContacto` VARCHAR(10) NOT NULL,
+  PRIMARY KEY (`Con_ID`))
 ENGINE = InnoDB;
 
 
@@ -154,7 +136,7 @@ ENGINE = InnoDB;
 -- Table `BD_FV`.`tb_Direcciones`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `BD_FV`.`tb_Direcciones` (
-  `Dir_ID` INT NOT NULL,
+  `Dir_ID` INT NOT NULL AUTO_INCREMENT,
   `Dir_Provincia` INT NULL,
   `Dir_Canton` INT NULL,
   `Dir_Distrito` INT NULL,
