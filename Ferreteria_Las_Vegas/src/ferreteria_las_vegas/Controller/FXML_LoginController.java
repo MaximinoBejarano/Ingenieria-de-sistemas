@@ -6,9 +6,13 @@
 package ferreteria_las_vegas.Controller;
 
 import ferreteria_las_vegas.model.controller.UsuarioJpaController;
+
+
+
 import ferreteria_las_vegas.model.entities.Usuario;
 import ferreteria_las_vegas.utils.AppContext;
 import javafx.fxml.FXML;
+
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -61,6 +65,7 @@ public class FXML_LoginController implements Initializable {
             //if(true){
             AppContext.getInstance().set("user", usuario);
             LanzarMenu();
+
         } else {
             new Alert(Alert.AlertType.WARNING, "Usuario o Contraseña invalido.", ButtonType.OK).showAndWait();
         }
@@ -79,6 +84,7 @@ public class FXML_LoginController implements Initializable {
             stage.resizableProperty().set(true);
             stage.setMaximized(true);
             stage.show();                                    
+
         } catch (Exception ex) {
             // mandar al servidor al log de errores
         }
