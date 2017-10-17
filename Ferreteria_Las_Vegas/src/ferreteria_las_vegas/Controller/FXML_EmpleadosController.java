@@ -11,6 +11,7 @@ import ferreteria_las_vegas.model.entities.Contacto;
 import ferreteria_las_vegas.model.entities.Direccion;
 import ferreteria_las_vegas.model.entities.Persona;
 import ferreteria_las_vegas.model.entities.Usuario;
+import ferreteria_las_vegas.utils.AppContext;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -96,7 +97,7 @@ public class FXML_EmpleadosController {
 
     @FXML
     void EditarEmpleadoClick(ActionEvent event) {
-
+        
     }
 
     @FXML
@@ -150,6 +151,11 @@ public class FXML_EmpleadosController {
 
     void ProcesoBuscar() {
         LanzarBusqueda();
+        Persona persona = (Persona) AppContext.getInstance().get("selected-persona");
+        
+        if(persona!=null){
+             new Alert(Alert.AlertType.INFORMATION, "Editando", ButtonType.OK).showAndWait();
+        }
     }
 
     void ProcesoEliminar() {
@@ -167,6 +173,9 @@ public class FXML_EmpleadosController {
         txtContraseñaEmp.setText("");
         txtDireccionEmp.setText("");
     }
+    void ControlesModoEditar(){
+        
+    }
 
     /*-----------------------------------------------------------------------------*/
     void LanzarBusqueda() {
@@ -175,7 +184,7 @@ public class FXML_EmpleadosController {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/ferreteria_las_vegas/view/FXML_Buscar_Empleados.fxml"));
             Parent root = (Parent) fxmlLoader.load();
             Stage stage = new Stage(StageStyle.UTILITY);
-
+            stage.initOwner(btnBuscar.getScene().getWindow());
             stage.setScene(new Scene(root));
             stage.initModality(Modality.WINDOW_MODAL);
             stage.showAndWait();

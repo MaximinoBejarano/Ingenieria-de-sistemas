@@ -5,10 +5,16 @@
  */
 package ferreteria_las_vegas.Controller;
 
+import ferreteria_las_vegas.model.entities.Usuario;
+import ferreteria_las_vegas.utils.AppContext;
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDateTime;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.animation.FadeTransition;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -20,6 +26,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -32,6 +39,13 @@ import javax.swing.JOptionPane;
  */
 public class FXML_MenuController implements Initializable {
 
+    
+    @FXML
+    private Label lblDate;
+
+    @FXML
+    private Label lblUserName;
+    
     @FXML
     private VBox dataPane;
 
@@ -230,7 +244,9 @@ public class FXML_MenuController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        Usuario usuario = (Usuario)AppContext.getInstance().get("user");
+        lblUserName.setText(lblUserName.getText() + usuario.getPersona().getPerNombre()+" "+usuario.getPersona().getPerPApellido());
+        lblDate.setText("Bienvenido");
     }
 
 }

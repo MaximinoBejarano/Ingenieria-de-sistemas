@@ -6,6 +6,8 @@
 package ferreteria_las_vegas.Controller;
 
 import ferreteria_las_vegas.model.controller.UsuarioJpaController;
+import ferreteria_las_vegas.model.entities.Usuario;
+import ferreteria_las_vegas.utils.AppContext;
 import javafx.fxml.FXML;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -54,27 +56,29 @@ public class FXML_LoginController implements Initializable {
     }
 
     void ProcesoLogeo() {
-        //if (UsuarioJpaController.getInstance().SolicitarAcceso(txtUsuario.getText(), String.valueOf(txtContraseña.getText())) != null) {
-        if(true){
+        Usuario usuario = UsuarioJpaController.getInstance().SolicitarAcceso(txtUsuario.getText(), String.valueOf(txtContraseña.getText()));
+        if (usuario != null) {
+            //if(true){
+            AppContext.getInstance().set("user", usuario);
             LanzarMenu();
         } else {
             new Alert(Alert.AlertType.WARNING, "Usuario o Contraseña invalido.", ButtonType.OK).showAndWait();
         }
     }
-    
+
     void LanzarMenu() {
-        try {
-            if (txtUsuario.getText()!="" && txtContraseña.getText()!="") {
-                Parent root = FXMLLoader.load(getClass().getResource("/ferreteria_las_vegas/view/FXML_Menu.fxml"));
-                Stage stage = new Stage();
-                Scene scene = new Scene(root);
-                stage.setScene(scene);
-                stage.resizableProperty().set(true);
-                stage.setMaximized(true);
-                stage.show();
-            } else {
-                lblError.setVisible(true);
-            }
+        try {            
+            
+            Stage stageAct = (Stage) btnLogin.getScene().getWindow();
+            stageAct.close();
+            
+            Parent root = FXMLLoader.load(getClass().getResource("/ferreteria_las_vegas/view/FXML_Menu.fxml"));
+            Stage stage = new Stage();
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.resizableProperty().set(true);
+            stage.setMaximized(true);
+            stage.show();                                    
         } catch (Exception ex) {
             // mandar al servidor al log de errores
         }
@@ -85,4 +89,3 @@ public class FXML_LoginController implements Initializable {
         // TODO
     }
 }
-//, @NamedQuery(name = "Usuario.findByUsuLogin", query = "SELECT u FROM Usuario u WHERE u.usuNombre = :usuUsuario AND u.usuContrase\u00f1a = :usuContrase\u00f1a")

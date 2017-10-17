@@ -96,7 +96,7 @@ public class PersonaJpaController {
             et.rollback();
             return null;
         }
-    }    
+    }
 
     /**
      * Metodo que edita una persona en la base de datos en tabla tb_Personas
@@ -117,17 +117,17 @@ public class PersonaJpaController {
             return null;
         }
     }
-    
+
     public Direccion AgregarDireccionPersona(Persona pPersona, Direccion pDireccion) {
         et = em.getTransaction();
-        try {                                                
+        try {
             pPersona.getDireccionList().clear();
-            pPersona.getDireccionList().add(pDireccion);            
-            
-            et.begin();            
+            pPersona.getDireccionList().add(pDireccion);
+
+            et.begin();
             em.merge(pPersona);
-            et.commit();                       
-            
+            et.commit();
+
             return pDireccion;
         } catch (Exception ex) {
             et.rollback();
@@ -135,30 +135,41 @@ public class PersonaJpaController {
         }
     }
 
+    /**
+     * Metodo que agrega una persona en la base de datos en la tabla tb_Personas
+     * Ademas de agregar contacto y direccion (tb_Contactos, tb_Direcciones)
+     * Tambien realiza la union entre las tablas intermedias
+     *
+     * @param pPersona
+     * @param pDireccion
+     * @param pTel
+     * @param pEmail
+     * @return
+     */
     public Persona AgregarPersona(Persona pPersona, Direccion pDireccion, Contacto pTel, Contacto pEmail) {
         et = em.getTransaction();
         try {
             et.begin();
             em.persist(pPersona);
             em.flush();
-                        
+
             em.persist(pDireccion);
             em.flush();
-            
+
             em.persist(pTel);
             em.flush();
-            
+
             em.persist(pEmail);
             em.flush();
-                        
+
             pPersona.getDireccionList().add(pDireccion);
-            pPersona.getContactoList().add(pTel);            
+            pPersona.getContactoList().add(pTel);
             pPersona.getContactoList().add(pEmail);
-                        
-            em.merge(pPersona);            
-            
+
+            em.merge(pPersona);
+
             et.commit();
-            
+
             return pPersona;
         } catch (Exception ex) {
             et.rollback();
@@ -166,7 +177,30 @@ public class PersonaJpaController {
             return null;
         }
     }
-    
+
     private EntityManager em = EntityManagerHelper.getInstance().getManager();
     private EntityTransaction et;
 }
+
+
+/* No Borrar esto
+Persona
+@JoinTable(name = "tb_personas_direcciones", joinColumns = {
+        @JoinColumn(name = "RPD_Persona", referencedColumnName = "Per_Cedula")}, inverseJoinColumns = {
+        @JoinColumn(name = "RPD_Direccion", referencedColumnName = "Dir_ID")})
+    @ManyToMany
+    private List<Direccion> direccionList;        
+    @JoinTable(name = "tb_personas_contactos", joinColumns = {
+        @JoinColumn(name = "RPC_Persona", referencedColumnName = "Per_Cedula")}, inverseJoinColumns = {
+        @JoinColumn(name = "RPC_Contacto", referencedColumnName = "Con_ID")})
+    @ManyToMany
+    private List<Contacto> contactoList;
+
+Direccion
+@ManyToMany(mappedBy = "direccionList")    
+    private List<Persona> personaList;
+
+Contacto
+@ManyToMany(mappedBy = "contactoList")
+    private List<Persona> personaList;
+*/
