@@ -90,7 +90,7 @@ public class FXML_Buscar_EmpleadosController implements Initializable {
         colNombrePersona.setCellValueFactory((cellData) -> new SimpleStringProperty(cellData.getValue().getPerNombre()));
         colAppellidoPersona.setCellValueFactory((cellData) -> new SimpleStringProperty(cellData.getValue().getPerPApellido()));        
 
-        List<Persona> PersonaList = PersonaJpaController.getInstance().ConsultarPersonasTodos();
+        List<Persona> PersonaList = PersonaJpaController.getInstance().ConsultarPersonasEmpleados();
         ObservableList<Persona> OLecturaList = FXCollections.observableArrayList(PersonaList);
         tblUsuarios.setItems(OLecturaList);         
         
