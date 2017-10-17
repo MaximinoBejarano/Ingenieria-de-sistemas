@@ -5,12 +5,15 @@
  */
 package ferreteria_las_vegas.Controller;
 
+import ferreteria_las_vegas.model.controller.DireccionJpaController;
 import ferreteria_las_vegas.model.controller.PersonaJpaController;
 import ferreteria_las_vegas.model.entities.Contacto;
 import ferreteria_las_vegas.model.entities.Direccion;
 import ferreteria_las_vegas.model.entities.Persona;
 import ferreteria_las_vegas.model.entities.Usuario;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -128,13 +131,13 @@ public class FXML_EmpleadosController {
         Contacto contactoTel = new Contacto(Integer.SIZE, txtTelefonoEmp.getText(), "TEL");
         Contacto contactoEma = new Contacto(Integer.SIZE, txtCorreoEmp.getText(), "EMAIL");
         Direccion direcion = new Direccion(Integer.SIZE, txtDireccionEmp.getText());
-
-        persona.setUsuario(usuario);
-        //persona.getContactoList().add(contactoTel);
-        //persona.getContactoList().add(contactoEma);
-        //persona.getDireccionList().add(direcion);
-
-        if (PersonaJpaController.getInstance().AgregarPersona(persona) != null) {
+                                
+        //DireccionJpaController.getInstance().AgregarDireccion(direcion)
+        
+        persona = PersonaJpaController.getInstance().AgregarPersona(persona);
+        if (persona != null) {            
+            DireccionJpaController.getInstance().AgregarDireccionPersona(persona, direcion);
+                    
             new Alert(Alert.AlertType.INFORMATION, "Aviso: Empleado Agregado Corectamente.", ButtonType.OK).showAndWait();
             LimpiarControles();
         } else {

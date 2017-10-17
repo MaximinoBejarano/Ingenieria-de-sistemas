@@ -57,7 +57,7 @@ public class Persona implements Serializable {
         @JoinColumn(name = "RFP_Persona", referencedColumnName = "Per_Cedula")}, inverseJoinColumns = {
         @JoinColumn(name = "RFP_Ferreteria", referencedColumnName = "Fer_ID")})
     @ManyToMany
-    private List<Ferreteria> ferreteriaList;
+    private List<Ferreteria> ferreteriaList;    
     @ManyToMany(mappedBy = "personaList")
     private List<Direccion> direccionList;
     @ManyToMany(mappedBy = "personaList")

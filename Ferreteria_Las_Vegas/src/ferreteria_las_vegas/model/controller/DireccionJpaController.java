@@ -60,6 +60,24 @@ public class DireccionJpaController {
         }
     }
 
+    
+    
+    
+    public Direccion AgregarDireccion(Direccion pDireccion) {
+        et = em.getTransaction();
+        try {                        
+            et.begin();
+            em.persist(pDireccion);
+            et.commit();
+            return pDireccion;
+        } catch (Exception ex) {
+            et.rollback();
+            return null;
+        }
+    }
+    
+    
+    
     /**
      * Metodo que agrega la direccion de una persona en la base de datos en la
      * tabla tb_Direcciones
@@ -72,9 +90,9 @@ public class DireccionJpaController {
         et = em.getTransaction();
         try {
             pPersona.getDireccionList().clear();
-            pPersona.getDireccionList().add(pDireccion);
-            em.lock(pPersona, LockModeType.PESSIMISTIC_WRITE);
+            pPersona.getDireccionList().add(pDireccion);            
             et.begin();
+            em.lock(pPersona, LockModeType.PESSIMISTIC_WRITE);
             em.persist(pPersona);
             et.commit();
             return pDireccion;
