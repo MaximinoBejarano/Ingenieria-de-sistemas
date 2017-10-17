@@ -14,8 +14,12 @@ import javafx.fxml.FXML;
 import java.util.List;
 import java.util.ResourceBundle;
 import static javafx.application.ConditionalFeature.FXML;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
@@ -30,7 +34,7 @@ import javafx.stage.Stage;
 /**
  * FXML Controller class
  *
- * @author wili
+ * @author Usuario
  */
 public class FXML_Buscar_EmpleadosController implements Initializable {
 
@@ -72,6 +76,7 @@ public class FXML_Buscar_EmpleadosController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
         CargarDatosTabla();
+        //FiltroDatosTabla();
     }
 
     void CargarDatosTabla() {
@@ -82,12 +87,40 @@ public class FXML_Buscar_EmpleadosController implements Initializable {
         colInfoPersona.getColumns().addAll(colCedulaPersona, colNombrePersona, colAppellidoPersona);
         tblUsuarios.getColumns().add(colInfoPersona);
 
-        colCedulaPersona.setCellValueFactory(new PropertyValueFactory<>("perCedula"));
+        /*colCedulaPersona.setCellValueFactory(new PropertyValueFactory<>("perCedula"));
         colNombrePersona.setCellValueFactory(new PropertyValueFactory<>("perNombre"));
-        colAppellidoPersona.setCellValueFactory(new PropertyValueFactory<>("perPApellido"));
+        colAppellidoPersona.setCellValueFactory(new PropertyValueFactory<>("perPApellido"));*/
 
         List<Persona> PersonaList = PersonaJpaController.getInstance().ConsultarPersonasTodos();
         ObservableList<Persona> OLecturaList = FXCollections.observableArrayList(PersonaList);
         tblUsuarios.setItems(OLecturaList);
+        
+        colCedulaPersona.setCellValueFactory((cellData) -> new SimpleStringProperty(cellData.getValue().getPerCedula()));
+        colNombrePersona.setCellValueFactory((cellData) -> new SimpleStringProperty(cellData.getValue().getPerNombre()));
+        colAppellidoPersona.setCellValueFactory((cellData) -> new SimpleStringProperty(cellData.getValue().getPerPApellido()));        
+    }
+
+    void FiltroDatosTabla() {                      
+        
+        FilteredList<Persona> filteredData = new FilteredList<>(FXCollections.observableArrayList(), p -> true);
+        txtFiltro.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
+            filteredData.setPredicate((Persona persona) -> {
+                if (newValue == null || newValue.isEmpty()) {
+                    return true;
+                }
+                String lowerCaseFilter = newValue.toLowerCase();
+                if (persona.getPerCedula().toLowerCase().contains(lowerCaseFilter)) {
+                    return true;
+                } else if (persona.getPerNombre().toLowerCase().contains(lowerCaseFilter)) {
+                    return true;
+                } else if (persona.getPerSApellido().toLowerCase().contains(lowerCaseFilter)) {
+                    return true;
+                }
+                return false;
+            });
+        });
+        SortedList<Persona> sortedData = new SortedList<>(filteredData);
+        sortedData.comparatorProperty().bind(tblUsuarios.comparatorProperty());
+        tblUsuarios.setItems(sortedData);
     }
 }

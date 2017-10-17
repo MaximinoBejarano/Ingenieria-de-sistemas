@@ -106,9 +106,9 @@ public class PersonaJpaController {
      */
     public Persona ModificarPersona(Persona pPersona) {
         et = em.getTransaction();
-        try {            
-            et.begin();
-            em.lock(pPersona, LockModeType.PESSIMISTIC_WRITE);
+        try {          
+            //em.lock(pPersona, LockModeType.PESSIMISTIC_WRITE);
+            et.begin();            
             em.merge(pPersona);
             et.commit();            
             return pPersona;
