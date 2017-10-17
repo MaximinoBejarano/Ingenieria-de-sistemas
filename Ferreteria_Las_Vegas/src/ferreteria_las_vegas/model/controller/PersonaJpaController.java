@@ -162,6 +162,45 @@ public class PersonaJpaController {
         }
     }
 
+        public Persona AgregarPersona(Persona pPersona, Direccion pDireccion, Contacto pTel1,Contacto pTel2, Contacto pEmail) {
+        et = em.getTransaction();
+        try {
+            et.begin();
+            em.persist(pPersona);
+            em.flush();
+
+            em.persist(pDireccion);
+            em.flush();
+             pPersona.getDireccionList().add(pDireccion);
+            
+            if(pTel1 != null){ 
+            em.persist(pTel1);
+            em.flush();
+            pPersona.getContactoList().add(pTel1);
+            }
+            if(pTel2 != null){ 
+            em.persist(pTel2);
+            em.flush();
+            pPersona.getContactoList().add(pTel2);
+            }
+            if(pEmail != null){
+            em.persist(pEmail);
+            em.flush();
+             pPersona.getContactoList().add(pEmail);
+            }
+           
+            em.merge(pPersona);
+
+            et.commit();
+
+            return pPersona;
+        } catch (Exception ex) {
+            et.rollback();
+            System.err.println(ex);
+            return null;
+        }
+    }
+    
     private EntityManager em = EntityManagerHelper.getInstance().getManager();
     private EntityTransaction et;
 }
