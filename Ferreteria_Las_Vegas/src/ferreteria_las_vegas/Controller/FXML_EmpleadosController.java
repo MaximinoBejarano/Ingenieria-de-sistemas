@@ -29,6 +29,8 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.stage.Modality;
+import javafx.stage.StageStyle;
 
 /**
  * FXML Controller class
@@ -83,13 +85,13 @@ public class FXML_EmpleadosController {
                 || txtContraseñaEmp.getText().isEmpty() || txtDireccionEmp.getText().isEmpty()) {
             new Alert(Alert.AlertType.WARNING, "Advertencia: Debe completar todos los campos requeridos.", ButtonType.OK).showAndWait();
         } else {
-            AddingProcess();
+            ProcesoAgregar();
         }
     }
 
     @FXML
     void BuscarEmpleadosClick(ActionEvent event) {
-
+        ProcesoBuscar();
     }
 
     @FXML
@@ -104,19 +106,19 @@ public class FXML_EmpleadosController {
 
     @FXML
     void SalirClick(ActionEvent event) {
-        
-        try {            
-                /*Parent root = FXMLLoader.load(getClass().getResource("/ferreteria_las_vegas/view/FXML_Menu.fxml"));
+
+        try {
+            /*Parent root = FXMLLoader.load(getClass().getResource("/ferreteria_las_vegas/view/FXML_Menu.fxml"));
                 Stage stage = new Stage();
                 Scene scene = new Scene(root);
                 stage.setScene(scene);
                 stage.resizableProperty().set(true);
                 stage.setMaximized(true);                
                 stage.show();*/
-                
-        Stage stage = (Stage) btnSalir.getScene().getWindow();
-        stage.close();
-            
+
+            Stage stage = (Stage) btnSalir.getScene().getWindow();
+            stage.close();
+
         } catch (Exception ex) {
             // mandar al servidor al log de errores
         }
@@ -124,19 +126,17 @@ public class FXML_EmpleadosController {
     }
 
     /*-----------------------------------------------------------------------------*/
-    void AddingProcess() {
+    void ProcesoAgregar() {
         Persona persona = new Persona(txtCedulaEmp.getText(), txtNombreEmp.getText(), txtPrimerAEmp.getText());
         persona.setPerSApellido(txtSegundoAEmp.getText());
         Usuario usuario = new Usuario(persona.getPerCedula(), persona.getPerCedula(), String.valueOf(txtContraseñaEmp.getText()));
         Contacto contactoTel = new Contacto(Integer.SIZE, txtTelefonoEmp.getText(), "TEL");
         Contacto contactoEma = new Contacto(Integer.SIZE, txtCorreoEmp.getText(), "EMAIL");
         Direccion direcion = new Direccion(Integer.SIZE, txtDireccionEmp.getText());
-        //persona.setUsuario(usuario);
-                                        
-        
-        persona = PersonaJpaController.getInstance().AgregarPersona(persona,direcion,contactoTel,contactoEma);
-        if (persona != null) {            
-            //PersonaJpaController.getInstance().getInstance().AgregarDireccionPersona(persona, direcion);                                
+        persona.setUsuario(usuario);
+
+        persona = PersonaJpaController.getInstance().AgregarPersona(persona, direcion, contactoTel, contactoEma);
+        if (persona != null) {
             new Alert(Alert.AlertType.INFORMATION, "Empleado Agregado Corectamente.", ButtonType.OK).showAndWait();
             LimpiarControles();
         } else {
@@ -144,15 +144,15 @@ public class FXML_EmpleadosController {
         }
     }
 
-    void EditingProcess() {
+    void ProcesoEditar() {
 
     }
 
-    void SearchingPorcess() {
-
+    void ProcesoBuscar() {
+        LanzarBusqueda();
     }
 
-    void DeleteingProcess() {
+    void ProcesoEliminar() {
 
     }
 
@@ -171,11 +171,15 @@ public class FXML_EmpleadosController {
     /*-----------------------------------------------------------------------------*/
     void LanzarBusqueda() {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("/ferreteria_las_vegas/view/FXML_Buscar_Empleados.fxml"));
-            Stage stage = new Stage();
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
+
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/ferreteria_las_vegas/view/FXML_Buscar_Empleados.fxml"));
+            Parent root = (Parent) fxmlLoader.load();
+            Stage stage = new Stage(StageStyle.UTILITY);
+
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.showAndWait();
+
         } catch (Exception ex) {
             // mandar al servidor al log de errores
             JOptionPane.showMessageDialog(null, ex.toString());

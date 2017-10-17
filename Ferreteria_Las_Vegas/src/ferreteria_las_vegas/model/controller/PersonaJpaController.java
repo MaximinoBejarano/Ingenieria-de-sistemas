@@ -142,10 +142,21 @@ public class PersonaJpaController {
             em.persist(pPersona);
             em.flush();
                         
+            em.persist(pDireccion);
+            em.flush();
+            
+            em.persist(pTel);
+            em.flush();
+            
+            em.persist(pEmail);
+            em.flush();
+                        
             pPersona.getDireccionList().add(pDireccion);
-            pPersona.getContactoList().add(pTel);
+            pPersona.getContactoList().add(pTel);            
             pPersona.getContactoList().add(pEmail);
-            em.merge(pPersona);
+                        
+            em.merge(pPersona);            
+            
             et.commit();
             
             return pPersona;
