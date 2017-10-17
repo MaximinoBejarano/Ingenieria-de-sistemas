@@ -84,7 +84,7 @@ public class FXML_EmpleadosController {
         if (txtCedulaEmp.getText().isEmpty() || txtNombreEmp.getText().isEmpty() || txtPrimerAEmp.getText().isEmpty()
                 || txtCorreoEmp.getText().isEmpty() || txtTelefonoEmp.getText().isEmpty()
                 || txtContraseñaEmp.getText().isEmpty() || txtDireccionEmp.getText().isEmpty()) {
-            new Alert(Alert.AlertType.WARNING, "Advertencia: Debe completar todos los campos requeridos.", ButtonType.OK).showAndWait();
+            new Alert(Alert.AlertType.WARNING, "Debe completar todos los campos requeridos.", ButtonType.OK).showAndWait();
         } else {
             ProcesoAgregar();
         }
@@ -97,29 +97,26 @@ public class FXML_EmpleadosController {
 
     @FXML
     void EditarEmpleadoClick(ActionEvent event) {
-        
+        if (txtCedulaEmp.getText().isEmpty() || txtNombreEmp.getText().isEmpty() || txtPrimerAEmp.getText().isEmpty()
+                || txtCorreoEmp.getText().isEmpty() || txtTelefonoEmp.getText().isEmpty()
+                || txtContraseñaEmp.getText().isEmpty() || txtDireccionEmp.getText().isEmpty()) {
+            new Alert(Alert.AlertType.WARNING, "Debe completar todos los campos requeridos.", ButtonType.OK).showAndWait();
+        } else {
+            ProcesoEditar();
+        }        
     }
 
     @FXML
-    void EliminarEmpleadoClicl(ActionEvent event) {
-
+    void EliminarEmpleadoClick(ActionEvent event) {        
+        ProcesoEliminar();
     }
 
     @FXML
     void SalirClick(ActionEvent event) {
 
-        try {
-            /*Parent root = FXMLLoader.load(getClass().getResource("/ferreteria_las_vegas/view/FXML_Menu.fxml"));
-                Stage stage = new Stage();
-                Scene scene = new Scene(root);
-                stage.setScene(scene);
-                stage.resizableProperty().set(true);
-                stage.setMaximized(true);                
-                stage.show();*/
-
+        try {            
             Stage stage = (Stage) btnSalir.getScene().getWindow();
             stage.close();
-
         } catch (Exception ex) {
             // mandar al servidor al log de errores
         }
@@ -144,9 +141,36 @@ public class FXML_EmpleadosController {
             new Alert(Alert.AlertType.ERROR, "No se pudo Agregar al Empleado.", ButtonType.OK).showAndWait();
         }
     }
+    
+    Contacto BuscarContactoTipo(Persona pPersona, String Tipo)
+    {
+        for (Contacto con : pPersona.getContactoList()) {
+            if(con.getConTipoContacto().equalsIgnoreCase(Tipo)){
+                return con;
+            }
+        }
+        return null;
+    }
 
     void ProcesoEditar() {
-
+        Persona persona = PersonaJpaController.getInstance().ConsultarPersonaCedula(txtCedulaEmp.getText());
+        if(persona!=null){
+            persona.setPerNombre(txtNombreEmp.getText());
+            persona.setPerPApellido(txtPrimerAEmp.getText());
+            persona.setPerSApellido(txtSegundoAEmp.getText());
+            
+            
+            
+            Contacto contactoTel = BuscarContactoTipo(persona, "TEL");            
+            Contacto contactoEma = BuscarContactoTipo(persona, "EMAIL");                        
+            Direccion direcion = persona.getDireccionList().get(0);
+            
+            persona.getUsuario().setUsuContraseña(String.valueOf(txtContraseñaEmp.getText()));
+        }
+        else
+        {
+            new Alert(Alert.AlertType.ERROR, "No existe un empleado con la cedula ingresada.", ButtonType.OK).showAndWait();
+        }
     }
 
     void ProcesoBuscar() {
@@ -159,7 +183,8 @@ public class FXML_EmpleadosController {
     }
 
     void ProcesoEliminar() {
-
+        Persona persona = PersonaJpaController.getInstance().ConsultarPersonaCedula(txtCedulaEmp.getText());
+        PersonaJpaController.getInstance().ModificarPersona(persona);
     }
 
     /*-----------------------------------------------------------------------------*/
@@ -187,7 +212,7 @@ public class FXML_EmpleadosController {
 
         } catch (Exception ex) {
             // mandar al servidor al log de errores
-            JOptionPane.showMessageDialog(null, ex.toString());
+            System.err.println(ex);
         }
     }
 }

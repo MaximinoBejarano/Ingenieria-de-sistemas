@@ -106,34 +106,18 @@ public class PersonaJpaController {
      */
     public Persona ModificarPersona(Persona pPersona) {
         et = em.getTransaction();
-        try {
+        try {            
             et.begin();
             em.lock(pPersona, LockModeType.PESSIMISTIC_WRITE);
             em.merge(pPersona);
-            et.commit();
+            et.commit();            
             return pPersona;
         } catch (Exception ex) {
             et.rollback();
+            System.out.println(ex);
             return null;
         }
-    }
-
-    public Direccion AgregarDireccionPersona(Persona pPersona, Direccion pDireccion) {
-        et = em.getTransaction();
-        try {
-            pPersona.getDireccionList().clear();
-            pPersona.getDireccionList().add(pDireccion);
-
-            et.begin();
-            em.merge(pPersona);
-            et.commit();
-
-            return pDireccion;
-        } catch (Exception ex) {
-            et.rollback();
-            return null;
-        }
-    }
+    }   
 
     /**
      * Metodo que agrega una persona en la base de datos en la tabla tb_Personas
