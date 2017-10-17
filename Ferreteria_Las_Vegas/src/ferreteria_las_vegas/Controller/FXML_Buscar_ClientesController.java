@@ -12,16 +12,16 @@ import javafx.fxml.Initializable;
 /**
  * FXML Controller class
  *
- * @author wili
+ * @author MaxBejarano
  */
 public class FXML_Buscar_ClientesController implements Initializable {
 
- 
+    /**
+     * Initializes the controller class.
+     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-    }
-
-
-
+    }    
+    
 }

@@ -4,14 +4,15 @@
  * and open the template in the editor.
  */
 package ferreteria_las_vegas.model.controller;
-
-import ferreteria_las_vegas.model.entities.Usuario;
+import ferreteria_las_vegas.model.entities.Articulo;
 import ferreteria_las_vegas.utils.EntityManagerHelper;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import ferreteria_las_vegas.model.entities.Articulo;
+import java.util.List;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javax.persistence.LockModeType;
 import javax.persistence.Query;
 
 /**
@@ -43,20 +44,61 @@ public class ArticuloJpaController {
 
     private EntityManager em = EntityManagerHelper.getInstance().getManager();
     private EntityTransaction et;
+  //**********************************Area de metodos **************************************************
+    /**
+     * Metodo para insertar articulo en la BD_FV
+     * @param Art
+     * @return 
+     */
 
-    public void InsertarArticulo(Articulo Art) {
+    public Articulo InsertarArticulo(Articulo Art) {
         et = em.getTransaction();
         try {
             et.begin();
             em.persist(Art);
             et.commit();
-            new Alert(Alert.AlertType.INFORMATION, "Información: Se han ingresado los datos de forma exitosa ", ButtonType.OK).showAndWait();
-            
+            return Art;
         } catch (Exception ex) {
             et.rollback();
-            new Alert(Alert.AlertType.ERROR, "Error: No se han guardado los datos", ButtonType.OK).showAndWait();
+            System.err.println(ex);
+            return null;
         }
-
+    }
+    /**
+     * Metodo para realizar la edicion de articulos
+     * @param pArticulo
+     * @return 
+     */
+    public Articulo ModificarArticulos(Articulo pArticulo) {
+        et = em.getTransaction();
+        try {
+            et.begin();
+            em.lock(pArticulo, LockModeType.PESSIMISTIC_WRITE);
+            em.merge(pArticulo);
+            et.commit();
+            return pArticulo;
+        } catch (Exception ex) {
+            et.rollback();
+            System.err.println(ex);
+            return null;
+        }
     }
 
+  //****************************************************************************************
+    
+  //***********************************Area de procedimientos*******************************
+    /**
+     * Procedimiento para consultar todos los articulos
+     * @return 
+     */
+     public List<Articulo> ConsultarTodosArticulos() {
+        try {
+            Query qry = em.createNamedQuery("Articulo.findAll", Articulo.class);// consulta todos los articulos 
+            List<Articulo> Articulos = qry.getResultList();// Recibe el resultado de la consulta  
+            return Articulos;
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+  //******************************************************************************************
 }

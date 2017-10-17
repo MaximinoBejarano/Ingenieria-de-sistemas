@@ -4,12 +4,10 @@
  * and open the template in the editor.
  */
 package ferreteria_las_vegas.Controller;
-import ferreteria_las_vegas.model.controller.ArticuloJpaController;
-import ferreteria_las_vegas.model.controller.PersonaJpaController;
-import ferreteria_las_vegas.model.entities.Articulo;
-import ferreteria_las_vegas.model.entities.Persona;
-import java.math.BigDecimal;
 
+import ferreteria_las_vegas.model.controller.ArticuloJpaController;
+import ferreteria_las_vegas.model.entities.Articulo;
+import java.math.BigDecimal;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -39,9 +37,6 @@ public class FXML_Buscar_ArticulosController implements Initializable {
     private TextField txtCodigoArt;
     @FXML
     private TextField txtNombreArt;
-    @FXML
-    private Button btnBuscar;
-    @FXML
     private TableView<Articulo> tblArticulos;
     @FXML
     private TableColumn<Articulo,String> colCodigo;
@@ -54,7 +49,7 @@ public class FXML_Buscar_ArticulosController implements Initializable {
     @FXML
     private TableColumn<Articulo, String> colDescripcion;
     @FXML
-    private TableColumn<Articulo, BigDecimal >colPrecio;
+    private TableColumn<Articulo, BigDecimal> colPrecio;
 
     /**
      * Initializes the controller class.
@@ -72,10 +67,8 @@ public class FXML_Buscar_ArticulosController implements Initializable {
     private void ConfirmarArgregación(ActionEvent event) {
     }
 
-    @FXML
-    private void ConsultarArticulos(ActionEvent event) {
-        ProcesoBusquedad();
-    }
+    
+    
     
     void ProcesoBusquedad(){
       CargarDatosTabla();
