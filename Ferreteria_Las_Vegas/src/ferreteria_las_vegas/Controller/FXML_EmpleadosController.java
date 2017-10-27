@@ -151,7 +151,7 @@ public class FXML_EmpleadosController {
             new Alert(Alert.AlertType.INFORMATION, "Empleado agregado corectamente.", ButtonType.OK).showAndWait();
             LimpiarControles();
         } else {
-            new Alert(Alert.AlertType.ERROR, "No se pudo agregar al empleado.", ButtonType.OK).showAndWait();
+            new Alert(Alert.AlertType.ERROR, "Ocurrio un error y no se pudo agregar el empleado.", ButtonType.OK).showAndWait();
         }
     }
 
@@ -186,10 +186,10 @@ public class FXML_EmpleadosController {
             if (persona != null) {
                 new Alert(Alert.AlertType.INFORMATION, "Empleado editado corectamente.", ButtonType.OK).showAndWait();
             } else {
-                new Alert(Alert.AlertType.ERROR, "No se pudo editar el empleado.", ButtonType.OK).showAndWait();
+                new Alert(Alert.AlertType.ERROR, "Ocurrio un error y no se pudo no se pudo editar el empleado.", ButtonType.OK).showAndWait();
             }
         } else {
-            new Alert(Alert.AlertType.ERROR, "No existe un empleado con la cedula ingresada.", ButtonType.OK).showAndWait();
+            new Alert(Alert.AlertType.WARNING, "No existe un empleado con la cedula ingresada.", ButtonType.OK).showAndWait();
         }
     }
 

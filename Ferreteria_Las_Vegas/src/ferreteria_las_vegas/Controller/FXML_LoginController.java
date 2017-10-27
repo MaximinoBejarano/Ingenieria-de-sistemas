@@ -15,6 +15,7 @@ import javafx.fxml.FXML;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -25,6 +26,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -49,6 +51,8 @@ public class FXML_LoginController implements Initializable {
 
     @FXML
     private Label lblError;
+    @FXML
+    private ProgressIndicator progresbar;
 
     @FXML
     private void verificarAcceso(ActionEvent e) {
@@ -58,17 +62,36 @@ public class FXML_LoginController implements Initializable {
             ProcesoLogeo();
         }
     }
+     @FXML
+    void txtContraseñaAction(ActionEvent event) {
+        if (txtUsuario.getText().isEmpty() || txtContraseña.getText().isEmpty()) {
+            new Alert(Alert.AlertType.WARNING, "Debe completar todos los campos requeridos.", ButtonType.OK).showAndWait();
+        } else {
+            ProcesoLogeo();
+        }
+    }
 
     void ProcesoLogeo() {
-        Usuario usuario = UsuarioJpaController.getInstance().SolicitarAcceso(txtUsuario.getText(), String.valueOf(txtContraseña.getText()));
-        if (usuario != null) {
-            //if(true){
-            AppContext.getInstance().set("user", usuario);
-            LanzarMenu();
-
-        } else {
-            new Alert(Alert.AlertType.WARNING, "Usuario o Contraseña invalido.", ButtonType.OK).showAndWait();
-        }
+        progresbar.setVisible(true);
+        btnLogin.setDisable(true);
+        btnLogin.setText("Accediendo...");
+        
+        new Thread(() -> {            
+            Usuario usuario = UsuarioJpaController.getInstance().SolicitarAcceso(txtUsuario.getText(), String.valueOf(txtContraseña.getText()));
+            if (usuario != null) {
+                Platform.runLater(() -> {
+                    AppContext.getInstance().set("user", usuario);
+                    LanzarMenu();
+                });
+            } else {
+                Platform.runLater(() -> {                    
+                    btnLogin.setDisable(false);
+                    btnLogin.setText("Acceder");
+                    progresbar.setVisible(false);
+                    new Alert(Alert.AlertType.WARNING, "Usuario o Contraseña invalida.", ButtonType.OK).showAndWait();
+                });                
+            }
+        }).start();                
     }
 
     void LanzarMenu() {

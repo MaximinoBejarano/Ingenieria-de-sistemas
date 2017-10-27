@@ -19,10 +19,7 @@ import javafx.stage.Stage;
 public class Ferreteria_Las_Vegas extends Application {
     
     @Override
-    public void start(Stage stage) throws Exception {
-        
-        EntityManagerHelper.getManager();
-        
+    public void start(Stage stage) throws Exception {                        
         Parent root = FXMLLoader.load(getClass().getResource("view/FXML_Login.fxml"));
         
         Scene scene = new Scene(root);
