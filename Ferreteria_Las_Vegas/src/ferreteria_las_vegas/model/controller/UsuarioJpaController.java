@@ -8,9 +8,12 @@ package ferreteria_las_vegas.model.controller;
 import ferreteria_las_vegas.model.entities.Usuario;
 import ferreteria_las_vegas.utils.EntityManagerHelper;
 import java.util.List;
+import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.LockModeType;
+import javax.persistence.NoResultException;
+import javax.persistence.NonUniqueResultException;
 import javax.persistence.Query;
 
 /**
@@ -55,7 +58,14 @@ public class UsuarioJpaController {
             qry.setParameter("usuContrase\u00f1a", pcontraseña);
             Usuario usuario = (Usuario) qry.getSingleResult();
             return usuario;
+        } catch (NoResultException ex) {
+            System.err.println(ex);
+            return null;
+        } catch (NonUniqueResultException ex) {
+            System.err.println(ex);
+            return null;
         } catch (Exception ex) {
+            System.err.println(ex);
             return null;
         }
     }
@@ -73,7 +83,11 @@ public class UsuarioJpaController {
             qry.setParameter("usuPersona", pCedula);
             Usuario usuario = (Usuario) qry.getSingleResult();// trae el resultado de la consulta  
             return usuario;
+        } catch (NoResultException ex) {
+            System.err.println(ex);
+            return null;
         } catch (Exception ex) {
+            System.err.println(ex);
             return null;
         }
     }
@@ -91,7 +105,11 @@ public class UsuarioJpaController {
             qry.setParameter("usuNombre", pNombre);
             Usuario usuario = (Usuario) qry.getSingleResult();// trae el resultado de la consulta  
             return usuario;
+        } catch (NoResultException ex) {
+            System.err.println(ex);
+            return null;
         } catch (Exception ex) {
+            System.err.println(ex);
             return null;
         }
     }
@@ -107,7 +125,11 @@ public class UsuarioJpaController {
             Query qry = em.createNamedQuery("Usuario.findAll", Usuario.class);// consulta definida por folio
             List<Usuario> empleados = qry.getResultList();// Recibe el resultado de la consulta  
             return empleados;
+        } catch (NoResultException ex) {
+            System.err.println(ex);
+            return null;
         } catch (Exception ex) {
+            System.err.println(ex);
             return null;
         }
     }
@@ -125,8 +147,13 @@ public class UsuarioJpaController {
             em.persist(pUsuario);
             et.commit();
             return pUsuario;
+        } catch (EntityExistsException ex) {
+            et.rollback();
+            System.err.println(ex);
+            return null;
         } catch (Exception ex) {
             et.rollback();
+            System.err.println(ex);
             return null;
         }
     }
@@ -145,8 +172,13 @@ public class UsuarioJpaController {
             em.merge(pUsuario);
             et.commit();
             return pUsuario;
+        } catch (EntityExistsException ex) {
+            et.rollback();
+            System.err.println(ex);
+            return null;
         } catch (Exception ex) {
             et.rollback();
+            System.err.println(ex);
             return null;
         }
     }

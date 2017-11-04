@@ -11,9 +11,14 @@ import ferreteria_las_vegas.model.entities.Persona;
 import ferreteria_las_vegas.utils.EntityManagerHelper;
 import java.util.List;
 import java.util.stream.Collectors;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.LockModeType;
+import javax.persistence.NoResultException;
+import javax.persistence.NonUniqueResultException;
 import javax.persistence.Query;
 
 /**
@@ -59,7 +64,14 @@ public class PersonaJpaController {
             qry.setParameter("perCedula", pCedula);
             Persona persona = (Persona) qry.getSingleResult();// trae el resultado de la consulta  
             return persona;
+        } catch (NoResultException ex) {
+            System.err.println(ex);
+            return null;
+        } catch (NonUniqueResultException ex) {
+            System.err.println(ex);
+            return null;
         } catch (Exception ex) {
+            System.err.println(ex);
             return null;
         }
     }
@@ -75,27 +87,39 @@ public class PersonaJpaController {
             Query qry = em.createNamedQuery("Persona.findAll", Persona.class);// consulta definida por folio
             List<Persona> personas = qry.getResultList();// Recibe el resultado de la consulta  
             return personas;
+        } catch (NoResultException ex) {
+            System.err.println(ex);
+            return null;
         } catch (Exception ex) {
+            System.err.println(ex);
             return null;
         }
     }
-    
+
     public List<Persona> ConsultarPersonasEmpleados() {
         try {
             Query qry = em.createNamedQuery("Persona.findAll", Persona.class);// consulta definida por folio
             List<Persona> personas = qry.getResultList();// Recibe el resultado de la consulta         
-            return personas.stream().filter(e->e.getUsuario()!=null).collect(Collectors.toList());
+            return personas.stream().filter(e -> e.getUsuario() != null).collect(Collectors.toList());
+        } catch (NoResultException ex) {
+            System.err.println(ex);
+            return null;
         } catch (Exception ex) {
+            System.err.println(ex);
             return null;
         }
     }
-    
+
     public List<Persona> ConsultarPersonasNoEmpleados() {
         try {
             Query qry = em.createNamedQuery("Persona.findAll", Persona.class);// consulta definida por folio
             List<Persona> personas = qry.getResultList();// Recibe el resultado de la consulta         
-            return personas.stream().filter(e->e.getUsuario()==null).collect(Collectors.toList());
+            return personas.stream().filter(e -> e.getCliente() != null).collect(Collectors.toList());
+        } catch (NoResultException ex) {
+            System.err.println(ex);
+            return null;
         } catch (Exception ex) {
+            System.err.println(ex);
             return null;
         }
     }
@@ -113,8 +137,13 @@ public class PersonaJpaController {
             em.persist(pPersona);
             et.commit();
             return pPersona;
+        } catch (EntityExistsException ex) {
+            et.rollback();
+            System.err.println(ex);
+            return null;
         } catch (Exception ex) {
             et.rollback();
+            System.err.println(ex);
             return null;
         }
     }
@@ -127,31 +156,24 @@ public class PersonaJpaController {
      */
     public Persona ModificarPersona(Persona pPersona) {
         et = em.getTransaction();
-        try {          
+        try {
             //em.lock(pPersona, LockModeType.PESSIMISTIC_WRITE);
-            et.begin();            
+            et.begin();
             em.merge(pPersona);
-            et.commit();            
+            et.commit();
             return pPersona;
+        } catch (EntityExistsException ex) {
+            et.rollback();
+            System.err.println(ex);
+            return null;
         } catch (Exception ex) {
             et.rollback();
-            System.out.println(ex);
+            System.err.println(ex);
             return null;
         }
-    }   
+    }
 
-    /**
-     * Metodo que agrega una persona en la base de datos en la tabla tb_Personas
-     * Ademas de agregar contacto y direccion (tb_Contactos, tb_Direcciones)
-     * Tambien realiza la union entre las tablas intermedias
-     *
-     * @param pPersona
-     * @param pDireccion
-     * @param pTel
-     * @param pEmail
-     * @return
-     */
-    public Persona AgregarPersona(Persona pPersona, Direccion pDireccion, Contacto pTel, Contacto pEmail) {
+    /*public Persona AgregarPersona(Persona pPersona, Direccion pDireccion, Contacto pTel, Contacto pEmail) {
         et = em.getTransaction();
         try {
             et.begin();
@@ -181,9 +203,20 @@ public class PersonaJpaController {
             System.err.println(ex);
             return null;
         }
-    }
-
-        public Persona AgregarPersona(Persona pPersona, Direccion pDireccion, Contacto pTel1,Contacto pTel2, Contacto pEmail) {
+    }*/
+    /**
+     * Metodo que agrega una persona en la base de datos en la tabla tb_Personas
+     * Ademas de agregar contacto y direccion (tb_Contactos, tb_Direcciones)
+     * Tambien realiza la union entre las tablas intermedias
+     *
+     * @param pPersona
+     * @param pDireccion
+     * @param pTel1
+     * @param pTel2
+     * @param pEmail
+     * @return
+     */
+    public Persona AgregarPersona(Persona pPersona, Direccion pDireccion, Contacto pTel1, Contacto pTel2, Contacto pEmail) {
         et = em.getTransaction();
         try {
             et.begin();
@@ -192,36 +225,41 @@ public class PersonaJpaController {
 
             em.persist(pDireccion);
             em.flush();
-             pPersona.getDireccionList().add(pDireccion);
-            
-            if(pTel1 != null){ 
-            em.persist(pTel1);
-            em.flush();
-            pPersona.getContactoList().add(pTel1);
+            pPersona.getDireccionList().add(pDireccion);
+
+            if (pTel1 != null) {
+                em.persist(pTel1);
+                em.flush();
+                pPersona.getContactoList().add(pTel1);
             }
-            if(pTel2 != null){ 
-            em.persist(pTel2);
-            em.flush();
-            pPersona.getContactoList().add(pTel2);
+            if (pTel2 != null) {
+                em.persist(pTel2);
+                em.flush();
+                pPersona.getContactoList().add(pTel2);
             }
-            if(pEmail != null){
-            em.persist(pEmail);
-            em.flush();
-             pPersona.getContactoList().add(pEmail);
+            if (pEmail != null) {
+                em.persist(pEmail);
+                em.flush();
+                pPersona.getContactoList().add(pEmail);
             }
-           
+
             em.merge(pPersona);
 
             et.commit();
 
             return pPersona;
+        } catch (EntityExistsException ex) {
+            et.rollback();
+            System.err.println(ex);
+            return null;
         } catch (Exception ex) {
             et.rollback();
             System.err.println(ex);
             return null;
         }
+
     }
-    
+
     private EntityManager em = EntityManagerHelper.getInstance().getManager();
     private EntityTransaction et;
 }
@@ -247,5 +285,4 @@ Direccion
 Contacto
 @ManyToMany(mappedBy = "contactoList")
     private List<Persona> personaList;
-*/
-
+ */

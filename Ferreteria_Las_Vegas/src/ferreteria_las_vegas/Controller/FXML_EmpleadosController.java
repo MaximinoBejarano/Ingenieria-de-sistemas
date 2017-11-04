@@ -7,6 +7,7 @@ package ferreteria_las_vegas.Controller;
 
 import ferreteria_las_vegas.model.controller.DireccionJpaController;
 import ferreteria_las_vegas.model.controller.PersonaJpaController;
+import ferreteria_las_vegas.model.entities.Cliente;
 import ferreteria_las_vegas.model.entities.Contacto;
 import ferreteria_las_vegas.model.entities.Direccion;
 import ferreteria_las_vegas.model.entities.Persona;
@@ -14,6 +15,7 @@ import ferreteria_las_vegas.model.entities.Usuario;
 import ferreteria_las_vegas.utils.AppContext;
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -82,6 +84,9 @@ public class FXML_EmpleadosController {
     private TextField txtTelefonoEmp;
 
     @FXML
+    private TextField txtTelefonoEmp2;
+
+    @FXML
     private PasswordField txtContraseñaEmp;
 
     @FXML
@@ -90,7 +95,7 @@ public class FXML_EmpleadosController {
     @FXML
     void AgregarEmpleadoClick(ActionEvent event) {
         if (txtCedulaEmp.getText().isEmpty() || txtNombreEmp.getText().isEmpty() || txtPrimerAEmp.getText().isEmpty()
-                || txtCorreoEmp.getText().isEmpty() || txtTelefonoEmp.getText().isEmpty()
+                || txtTelefonoEmp.getText().isEmpty()
                 || txtContraseñaEmp.getText().isEmpty() || txtDireccionEmp.getText().isEmpty()) {
             new Alert(Alert.AlertType.WARNING, "Debe completar todos los campos requeridos.", ButtonType.OK).showAndWait();
         } else {
@@ -106,7 +111,7 @@ public class FXML_EmpleadosController {
     @FXML
     void EditarEmpleadoClick(ActionEvent event) {
         if (txtCedulaEmp.getText().isEmpty() || txtNombreEmp.getText().isEmpty() || txtPrimerAEmp.getText().isEmpty()
-                || txtCorreoEmp.getText().isEmpty() || txtTelefonoEmp.getText().isEmpty()
+                || txtTelefonoEmp.getText().isEmpty()
                 || txtContraseñaEmp.getText().isEmpty() || txtDireccionEmp.getText().isEmpty()) {
             new Alert(Alert.AlertType.WARNING, "Debe completar todos los campos requeridos.", ButtonType.OK).showAndWait();
         } else {
@@ -141,12 +146,17 @@ public class FXML_EmpleadosController {
         Persona persona = new Persona(txtCedulaEmp.getText(), txtNombreEmp.getText(), txtPrimerAEmp.getText());
         persona.setPerSApellido(txtSegundoAEmp.getText());
         Usuario usuario = new Usuario(persona.getPerCedula(), persona.getPerCedula(), String.valueOf(txtContraseñaEmp.getText()));
+        Cliente cliente = new Cliente(persona.getPerCedula(), java.sql.Date.valueOf(LocalDate.now()),"A");
+        
         Contacto contactoTel = new Contacto(Integer.SIZE, txtTelefonoEmp.getText(), "TEL");
+        Contacto contactoTel2 = new Contacto(Integer.SIZE, txtTelefonoEmp2.getText(), "TEL2");
         Contacto contactoEma = new Contacto(Integer.SIZE, txtCorreoEmp.getText(), "EMAIL");
         Direccion direcion = new Direccion(Integer.SIZE, txtDireccionEmp.getText());
-        persona.setUsuario(usuario);
-
-        persona = PersonaJpaController.getInstance().AgregarPersona(persona, direcion, contactoTel, contactoEma);
+        
+        persona.setCliente(cliente);
+        persona.setUsuario(usuario);               
+        
+        persona = PersonaJpaController.getInstance().AgregarPersona(persona, direcion, contactoTel, contactoTel2, contactoEma);
         if (persona != null) {
             new Alert(Alert.AlertType.INFORMATION, "Empleado agregado corectamente.", ButtonType.OK).showAndWait();
             LimpiarControles();
@@ -164,6 +174,15 @@ public class FXML_EmpleadosController {
         return null;
     }
 
+    String BuscarContactoContacto(Persona pPersona, String Tipo) {
+        for (Contacto con : pPersona.getContactoList()) {
+            if (con.getConTipoContacto().equalsIgnoreCase(Tipo)) {
+                return con.getConContacto();
+            }
+        }
+        return "";
+    }
+
     void ProcesoEditar() {
         Persona persona = PersonaJpaController.getInstance().ConsultarPersonaCedula(txtCedulaEmp.getText());
         if (persona != null) {
@@ -173,11 +192,19 @@ public class FXML_EmpleadosController {
             persona.setPerSApellido(txtSegundoAEmp.getText());
 
             Contacto contactoTel = BuscarContactoTipo(persona, "TEL");
+            Contacto contactoTel2 = BuscarContactoTipo(persona, "TEL2");
             Contacto contactoEma = BuscarContactoTipo(persona, "EMAIL");
+
             Direccion direcion = persona.getDireccionList().get(0);
 
             contactoTel.setConContacto(txtTelefonoEmp.getText());
-            contactoEma.setConContacto(txtDireccionEmp.getText());
+            if (contactoTel2 != null) {
+                contactoTel2.setConContacto(txtTelefonoEmp2.getText());
+            }
+
+            if (contactoEma != null) {
+                contactoEma.setConContacto(txtDireccionEmp.getText());
+            }
             direcion.setDirDirExacta(txtCorreoEmp.getText());
 
             persona.getUsuario().setUsuContraseña(String.valueOf(txtContraseñaEmp.getText()));
@@ -212,8 +239,9 @@ public class FXML_EmpleadosController {
         txtNombreEmp.setText(persona.getPerNombre());
         txtPrimerAEmp.setText(persona.getPerPApellido());
         txtSegundoAEmp.setText(persona.getPerSApellido());
-        txtTelefonoEmp.setText(BuscarContactoTipo(persona, "TEL").getConContacto());
-        txtCorreoEmp.setText(BuscarContactoTipo(persona, "EMAIL").getConContacto());
+        txtTelefonoEmp.setText(BuscarContactoContacto(persona, "TEL"));
+        txtTelefonoEmp2.setText(BuscarContactoContacto(persona, "TEL2"));
+        txtCorreoEmp.setText(BuscarContactoContacto(persona, "EMAIL"));
         txtContraseñaEmp.setText(persona.getUsuario().getUsuContraseña());
         txtDireccionEmp.setText(persona.getDireccionList().get(0).getDirDirExacta());
     }
@@ -224,13 +252,13 @@ public class FXML_EmpleadosController {
         txtPrimerAEmp.setText("");
         txtSegundoAEmp.setText("");
         txtTelefonoEmp.setText("");
+        txtTelefonoEmp2.setText("");
         txtCorreoEmp.setText("");
         txtContraseñaEmp.setText("");
         txtDireccionEmp.setText("");
     }
 
     /*-----------------------------------------------------------------------------*/
-
     public void setDataPane(Node node) {
         dataPane.getChildren().setAll(node);
     }
