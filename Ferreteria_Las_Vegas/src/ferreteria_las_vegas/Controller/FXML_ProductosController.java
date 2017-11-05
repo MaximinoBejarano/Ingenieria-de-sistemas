@@ -5,6 +5,8 @@
  */
 package ferreteria_las_vegas.Controller;
 
+import ferreteria_las_vegas.utils.AppContext;
+
 import ferreteria_las_vegas.model.controller.ArticuloJpaController;
 import ferreteria_las_vegas.model.entities.Articulo;
 import java.math.BigDecimal;
@@ -41,6 +43,8 @@ public class FXML_ProductosController implements Initializable {
     @FXML
     private Button btnAgregarProducto;
     @FXML
+    private Button btnSalir;
+    @FXML
     private TextField txtCodigoProducto;
     @FXML
     private TextField txtCodBarras;
@@ -54,6 +58,8 @@ public class FXML_ProductosController implements Initializable {
     private TextField txtUndMedida;
     @FXML
     private TextField txtDescripcion;
+    @FXML
+    private TextField txtDescuento;
 
     /**
      * Initializes the controller class.
@@ -64,16 +70,31 @@ public class FXML_ProductosController implements Initializable {
     }
 
     @FXML
+    private void FinalizarProceso(ActionEvent event) {
+        Stage stageAct = (Stage) btnSalir.getScene().getWindow();
+        stageAct.close();
+    }
+
+    @FXML
     private void EliminarProductos(ActionEvent event) {
+        EliminarProductos();
     }
 
     @FXML
     private void EditarProductos(ActionEvent event) {
+        if (txtCodigoProducto.getText().isEmpty() || txtNombre.getText().isEmpty()
+                || txtDescripcion.getText().isEmpty() || txtPrecio.getText().isEmpty()) {
+            new Alert(Alert.AlertType.WARNING, "Advertencia: Es necesario completar los campos requeridos", ButtonType.OK).showAndWait();
+        } else {
+            EditarProductos();
+        }
     }
 
     @FXML
     private void BusquedadProductos(ActionEvent event) {
-      ProcesoBusquedad();
+        ProcesoBusquedad();
+        btnEditarProducto.setDisable(false);
+        btnEliminarProducto.setDisable(false);
     }
 
     @FXML
@@ -85,20 +106,108 @@ public class FXML_ProductosController implements Initializable {
             GuardarProducto();
         }
     }
+    
+    
 
+    //*****************************************************++ Area de funciones ++****************************************************************+
+    /**
+     * Se realiza la insercion de articulos a la Base de datos
+     */
     private void GuardarProducto() {
-        BigDecimal Precio = new BigDecimal(txtPrecio.getText());
-        Articulo articulo = new Articulo(txtCodigoProducto.getText(), txtNombre.getText(), txtDescripcion.getText(), Precio);
-        articulo.setArtMarca(txtMarca.getText());
-        articulo.setArtUnidadMedida(txtUndMedida.getText());
-        articulo = ArticuloJpaController.getInstance().InsertarArticulo(articulo);
-
+        Articulo articulo = new Articulo();
+        articulo = ArticuloJpaController.getInstance().InsertarArticulo(ExtraerDatos(articulo));
         if (articulo != null) {
             new Alert(Alert.AlertType.INFORMATION, "Información: Se han ingresado los datos de forma exitosa ", ButtonType.OK).showAndWait();
             LimpiarCampos();
         } else {
             new Alert(Alert.AlertType.ERROR, "Error: No se han guardado los datos", ButtonType.OK).showAndWait();
         }
+    }
+
+    private void EditarProductos() {
+        Articulo pArticulo = (Articulo) AppContext.getInstance().get("selected-Articulo");
+        if(pArticulo != null){
+            pArticulo = ArticuloJpaController.getInstance().ConsultarArticuloCodigo(pArticulo.getArtCodigo().toString());
+            if (pArticulo != null) {
+                pArticulo = ExtraerDatos(pArticulo);
+                pArticulo = ArticuloJpaController.getInstance().ModificarArticulos(pArticulo);
+                if (pArticulo != null) {
+                    new Alert(Alert.AlertType.CONFIRMATION, "Se edito el articulo con exito", ButtonType.OK).showAndWait();
+                    btnEditarProducto.setDisable(true);
+                    btnEliminarProducto.setDisable(false);
+                    LimpiarCampos();
+                } else {
+                    new Alert(Alert.AlertType.ERROR, "Ocurrio un error y no se pudo editar el Producto.", ButtonType.OK).showAndWait();
+                }
+            } else {
+                new Alert(Alert.AlertType.WARNING, "No existe un Producto con el codigo ingresado.", ButtonType.OK).showAndWait();
+            }
+        }else{
+          new Alert(Alert.AlertType.WARNING, "Debe consultar un producto existente", ButtonType.OK).showAndWait();
+        }
+    }
+
+    private void EliminarProductos() {
+        Articulo pArticulo = (Articulo) AppContext.getInstance().get("selected-Articulo");
+        if(pArticulo != null){
+            pArticulo = ArticuloJpaController.getInstance().ConsultarArticuloCodigo(pArticulo.getArtCodigo().toString());
+           // pArticulo.setEstado("I");
+            if (pArticulo != null) {
+                pArticulo = ExtraerDatos(pArticulo);
+                pArticulo = ArticuloJpaController.getInstance().ModificarArticulos(pArticulo);
+                if (pArticulo != null) {
+                    new Alert(Alert.AlertType.CONFIRMATION, "Se elimino el Producto con exito", ButtonType.OK).showAndWait();
+                    btnEditarProducto.setDisable(true);
+                    btnEliminarProducto.setDisable(false);
+                    LimpiarCampos();
+                } else {
+                    new Alert(Alert.AlertType.ERROR, "Ocurrio un error y no se pudo eliminar el Producto.", ButtonType.OK).showAndWait();
+                }
+            } else {
+                new Alert(Alert.AlertType.WARNING, "No existe un Producto con el codigo ingresado.", ButtonType.OK).showAndWait();
+            }
+        }
+    }
+
+    /**
+     * Lanza la ventana de busqueda
+     */
+    void ProcesoBusquedad() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/ferreteria_las_vegas/view/FXML_Buscar_Productos.fxml"));
+            Parent root = (Parent) fxmlLoader.load();
+            Stage stage = new Stage(StageStyle.UTILITY);
+            stage.initOwner(btnBuscarProducto.getScene().getWindow());
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.showAndWait();
+            CargasDatos();
+
+        } catch (Exception ex) {
+            // mandar al servidor al log de errores
+            JOptionPane.showMessageDialog(null, ex.toString());
+        }
+    }
+
+    //++++++++++++++++++++++++++++++++++++++  Area de procesos  ++++++++++++++++++++++++++++++++++++++++++++
+    /**
+     * Procesos de Extracion,carga y eliminación de datos en la vista
+     */
+    private Articulo ExtraerDatos(Articulo pArticulo) {
+        BigDecimal Precio = new BigDecimal(txtPrecio.getText());
+        BigDecimal Descuento ;
+        pArticulo = new Articulo(txtCodigoProducto.getText(), txtNombre.getText(), txtDescripcion.getText(), Precio);
+        pArticulo.setArtMarca(txtMarca.getText());
+        pArticulo.setArtUnidadMedida(txtUndMedida.getText());
+        if(!txtDescuento.getText().isEmpty()){
+            Descuento = new BigDecimal(txtDescuento.getText()); 
+            pArticulo.setArtDescuento(Descuento);
+        }else{
+            Descuento = BigDecimal.ZERO; 
+            pArticulo.setArtDescuento(Descuento);}
+        //pArticulo.setArtCodBarra(txtCodBarras.getText());
+
+        return pArticulo;
     }
 
     public void LimpiarCampos() {
@@ -109,26 +218,29 @@ public class FXML_ProductosController implements Initializable {
         txtMarca.setText("");
         txtUndMedida.setText("");
         txtPrecio.setText("");
+        txtDescuento.setText("");
     }
-    void ProcesoBusquedad(){
-    
-    LanzarBusqueda();
-    
-    }
-    void LanzarBusqueda() {
-        try {
 
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/ferreteria_las_vegas/view/FXML_Buscar_Productos.fxml"));
-            Parent root = (Parent) fxmlLoader.load();
-            Stage stage = new Stage(StageStyle.UTILITY);
-            stage.initOwner(btnBuscarProducto.getScene().getWindow());
-            stage.setScene(new Scene(root));
-            stage.initModality(Modality.WINDOW_MODAL);
-            stage.showAndWait();
-
-        } catch (Exception ex) {
-            // mandar al servidor al log de errores
-            JOptionPane.showMessageDialog(null, ex.toString());
+    public void CargasDatos() {
+        Articulo pArticulo = (Articulo) AppContext.getInstance().get("selected-Articulo");
+        if (pArticulo != null) {
+            txtCodigoProducto.setText(pArticulo.getArtCodigo());
+            txtNombre.setText(pArticulo.getArtNombre());
+            txtDescripcion.setText(pArticulo.getArtDescripcion());
+            txtCodBarras.setText("");
+            txtMarca.setText(pArticulo.getArtMarca());
+            txtUndMedida.setText(pArticulo.getArtUnidadMedida());
+            txtPrecio.setText(pArticulo.getArtPrecio().toString());
+            if (pArticulo.getArtDescuento() != null) {
+                txtDescuento.setText(pArticulo.getArtDescuento().toString());
+            } else {
+                txtDescuento.setText("");
+            }
         }
     }
+    /*public void validarNumero(KeyEvent ke) {
+        if (!(ke.getKeyChar() >= KeyEvent.VK_0 && ke.getKeyChar() <= KeyEvent.VK_9)) {
+            ke.consume();
+        }
+    }*/
 }

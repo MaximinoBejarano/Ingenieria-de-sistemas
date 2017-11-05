@@ -48,7 +48,7 @@ public class ArticuloJpaController {
     /**
      * Metodo para insertar articulo en la BD_FV
      * @param Art
-     * @return 
+     * @return articulo
      */
 
     public Articulo InsertarArticulo(Articulo Art) {
@@ -73,7 +73,6 @@ public class ArticuloJpaController {
         et = em.getTransaction();
         try {
             et.begin();
-            em.lock(pArticulo, LockModeType.PESSIMISTIC_WRITE);
             em.merge(pArticulo);
             et.commit();
             return pArticulo;
@@ -83,15 +82,13 @@ public class ArticuloJpaController {
             return null;
         }
     }
-
-  //****************************************************************************************
-    
+   
   //***********************************Area de procedimientos*******************************
     /**
      * Procedimiento para consultar todos los articulos que se encuentren en la BD_FV
      * @return 
      */
-     public List<Articulo> ConsultarTodosArticulos() {
+     public List<Articulo> ConsultarArticulos() {
         try {
             Query qry = em.createNamedQuery("Articulo.findAll", Articulo.class);// consulta todos los articulos 
             List<Articulo> Articulos = qry.getResultList();// Recibe el resultado de la consulta  
@@ -100,5 +97,22 @@ public class ArticuloJpaController {
             return null;
         }
     }
+     
+     /**
+      * Consulta por codigo del articulo
+      * @param pCodigo
+      * @return 
+      */
+    public Articulo ConsultarArticuloCodigo(String pCodigo) {
+        try {
+            Query qry = em.createNamedQuery("Articulo.findByArtCodigo", Articulo.class);// consulta definida 
+            qry.setParameter("artCodigo", pCodigo);
+            Articulo articulo = (Articulo) qry.getSingleResult();// trae el resultado de la consulta  
+            return articulo;
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
   //******************************************************************************************
 }
