@@ -25,11 +25,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
- *Entidad DB
+ *
  * @author Usuario
  */
 @Entity
-@Table(name = "tb_inventarios")
+@Table(name = "tb_inventario")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Inventario.findAll", query = "SELECT i FROM Inventario i")
@@ -54,14 +54,14 @@ public class Inventario implements Serializable {
     @Basic(optional = false)
     @Column(name = "Inv_Estado")
     private String invEstado;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "detInventario")
-    private List<DetalleInventario> detalleInventarioList;
     @JoinColumn(name = "Inv_Articulo", referencedColumnName = "Art_Codigo")
     @ManyToOne(optional = false)
     private Articulo invArticulo;
     @JoinColumn(name = "Inv_Bodega", referencedColumnName = "Bod_Codigo")
     @ManyToOne
     private Bodega invBodega;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "detInventario")
+    private List<DetalleInventario> detalleInventarioList;
 
     public Inventario() {
     }
@@ -109,15 +109,6 @@ public class Inventario implements Serializable {
         this.invEstado = invEstado;
     }
 
-    @XmlTransient
-    public List<DetalleInventario> getDetalleInventarioList() {
-        return detalleInventarioList;
-    }
-
-    public void setDetalleInventarioList(List<DetalleInventario> detalleInventarioList) {
-        this.detalleInventarioList = detalleInventarioList;
-    }
-
     public Articulo getInvArticulo() {
         return invArticulo;
     }
@@ -132,6 +123,15 @@ public class Inventario implements Serializable {
 
     public void setInvBodega(Bodega invBodega) {
         this.invBodega = invBodega;
+    }
+
+    @XmlTransient
+    public List<DetalleInventario> getDetalleInventarioList() {
+        return detalleInventarioList;
+    }
+
+    public void setDetalleInventarioList(List<DetalleInventario> detalleInventarioList) {
+        this.detalleInventarioList = detalleInventarioList;
     }
 
     @Override

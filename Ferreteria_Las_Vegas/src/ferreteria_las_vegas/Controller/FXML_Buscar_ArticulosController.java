@@ -30,7 +30,6 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import javax.swing.JOptionPane;
 
@@ -79,7 +78,7 @@ public class FXML_Buscar_ArticulosController implements Initializable {
 
     @FXML
     private void ConfirmarArgregación(ActionEvent event) {
-        
+
         if (tblArticulos.getSelectionModel().getSelectedItem() != null) {
             AppContext.getInstance().set("selected-Articulo", tblArticulos.getSelectionModel().getSelectedItem());
 
@@ -89,24 +88,21 @@ public class FXML_Buscar_ArticulosController implements Initializable {
             new Alert(Alert.AlertType.WARNING, "Debe selecionar una fila de la tabla.", ButtonType.OK).showAndWait();
         }
     }
-
-
     void CargarDatosTabla() {
-       
-        colCodigo.setCellValueFactory((cellData-> new SimpleStringProperty(cellData.getValue().getArtCodigo())));
-        colNombre.setCellValueFactory((cellData-> new SimpleStringProperty(cellData.getValue().getArtNombre())));
-        colMarca.setCellValueFactory((cellData-> new SimpleStringProperty(cellData.getValue().getArtMarca())));
-        colUndMedida.setCellValueFactory((cellData-> new SimpleStringProperty(cellData.getValue().getArtUnidadMedida())));
-        colDescripcion.setCellValueFactory((cellData-> new SimpleStringProperty(cellData.getValue().getArtDescripcion())));
-        colPrecio.setCellValueFactory((cellData-> new SimpleObjectProperty<>(cellData.getValue().getArtPrecio())));
-        
+
+        colCodigo.setCellValueFactory((cellData -> new SimpleStringProperty(cellData.getValue().getArtCodBarra())));
+        colNombre.setCellValueFactory((cellData -> new SimpleStringProperty(cellData.getValue().getArtNombre())));
+        colMarca.setCellValueFactory((cellData -> new SimpleStringProperty(cellData.getValue().getArtMarca())));
+        colUndMedida.setCellValueFactory((cellData -> new SimpleStringProperty(cellData.getValue().getArtUnidadMedida())));
+        colDescripcion.setCellValueFactory((cellData -> new SimpleStringProperty(cellData.getValue().getArtDescripcion())));
+        colPrecio.setCellValueFactory((cellData -> new SimpleObjectProperty<>(cellData.getValue().getArtPrecio())));
+
         List<Articulo> ArticulosList = ArticuloJpaController.getInstance().ConsultarArticulos();
-       // ArticulosList=ArticulosList.stream().filter(x->x.getArtEstado().equals("A")).collect(Collectors.toList());
+        ArticulosList = ArticulosList.stream().filter(x -> x.getArtEstado().equals("A")).collect(Collectors.toList());
         ObservableList<Articulo> LecturaList = FXCollections.observableArrayList(ArticulosList);
         tblArticulos.setItems(LecturaList);
-        
-        
-        FiltroDatosTabla(LecturaList); 
+
+        FiltroDatosTabla(LecturaList);
     }
 
     void FiltroDatosTabla(ObservableList<Articulo> OLecturaList) {
@@ -118,22 +114,23 @@ public class FXML_Buscar_ArticulosController implements Initializable {
                     return true;
                 }
                 String lowerCaseFilter = newValue.toLowerCase();
-                 
-                if (pArticulo.getArtCodigo().toLowerCase().contains(lowerCaseFilter)) {
+
+                if (pArticulo.getArtNombre().toLowerCase().contains(lowerCaseFilter)) {
                     return true;
-                } else if (pArticulo.getArtNombre().toLowerCase().contains(lowerCaseFilter)) {  
-                    return true;
-                }else if (pArticulo.getArtMarca()!=null && !pArticulo.getArtMarca().equals("")){
-                        if(pArticulo.getArtMarca().toLowerCase().contains(lowerCaseFilter)) {
-                            return true;
-                        }
+                } else if (pArticulo.getArtMarca() != null && !pArticulo.getArtMarca().equals("")) {
+                    if (pArticulo.getArtMarca().toLowerCase().contains(lowerCaseFilter)) {
+                        return true;
+                    }
+                } else if (pArticulo.getArtCodBarra()!= null && !pArticulo.getArtCodBarra().equals("")) {
+                    if (pArticulo.getArtCodBarra().toLowerCase().contains(lowerCaseFilter)) {
+                        return true;
+                    }
                 }
-               return false;
+                return false;
             });
         });
         SortedList<Articulo> sortedData = new SortedList<>(filteredData);
         sortedData.comparatorProperty().bind(tblArticulos.comparatorProperty());
         tblArticulos.setItems(sortedData);
-        
     }
 }

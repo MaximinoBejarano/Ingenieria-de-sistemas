@@ -58,7 +58,7 @@
                   </GridPane>
                   <TableView fx:id="tblArticulos" editable="true" layoutX="17.0" layoutY="113.0" prefHeight="305.0" prefWidth="707.0" AnchorPane.bottomAnchor="17.0" AnchorPane.leftAnchor="17.0" AnchorPane.rightAnchor="6.0" AnchorPane.topAnchor="113.0">
                      <columns>
-                        <TableColumn fx:id="colCodigo" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="130.0" resizable="false" text="Codigo" />
+                        <TableColumn fx:id="colCodigo" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="130.0" resizable="false" text="Codigo Barra" />
                         <TableColumn fx:id="colNombre" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="140.0" resizable="false" text="Nombre" />
                         <TableColumn fx:id="colMarca" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="120.0" resizable="false" text="Marca" />
                         <TableColumn fx:id="colUndMedida" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="120.0" resizable="false" text="Unidad/Medida" />

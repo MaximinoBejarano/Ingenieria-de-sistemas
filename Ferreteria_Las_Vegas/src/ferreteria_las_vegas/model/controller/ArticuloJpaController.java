@@ -4,14 +4,11 @@
  * and open the template in the editor.
  */
 package ferreteria_las_vegas.model.controller;
-import ferreteria_las_vegas.model.entities.Articulo;
 import ferreteria_las_vegas.utils.EntityManagerHelper;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import ferreteria_las_vegas.model.entities.Articulo;
 import java.util.List;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
 import javax.persistence.LockModeType;
 import javax.persistence.Query;
 
@@ -103,7 +100,7 @@ public class ArticuloJpaController {
       * @param pCodigo
       * @return 
       */
-    public Articulo ConsultarArticuloCodigo(String pCodigo) {
+    public Articulo ConsultarArticuloCodigo(int pCodigo) {
         try {
             Query qry = em.createNamedQuery("Articulo.findByArtCodigo", Articulo.class);// consulta definida 
             qry.setParameter("artCodigo", pCodigo);

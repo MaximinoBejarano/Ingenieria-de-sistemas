@@ -5,6 +5,7 @@
  */
 package ferreteria_las_vegas.Controller;
 
+
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -88,7 +89,6 @@ public class FXML_InventarioController implements Initializable {
                 stage.initModality(Modality.WINDOW_MODAL);
                 stage.initOwner(btnNuevoProducto.getScene().getWindow());
                 stage.showAndWait();
-
             } else {
                 //rellenar los datos del formulario
             }
@@ -114,4 +114,5 @@ public class FXML_InventarioController implements Initializable {
 
         return v;
     }
+
 }
