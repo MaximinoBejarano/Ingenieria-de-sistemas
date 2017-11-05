@@ -26,7 +26,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
- *Entidad DB
+ *
  * @author Usuario
  */
 @Entity
@@ -72,6 +72,8 @@ public class Factura implements Serializable {
     @Basic(optional = false)
     @Column(name = "Fact_TipoFact")
     private String factTipoFact;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "notFactura")
+    private List<NotaCredito> notaCreditoList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "cueFactura")
     private List<CuentaXCobrar> cuentaXCobrarList;
     @JoinColumn(name = "Fac_Cliente", referencedColumnName = "Cli_Persona")
@@ -81,8 +83,6 @@ public class Factura implements Serializable {
     private List<ArticuloXFactura> articuloXFacturaList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "pagFactura")
     private List<Pago> pagoList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "notFactura")
-    private List<NotaCredito> notaCreditoList;
 
     public Factura() {
     }
@@ -167,6 +167,15 @@ public class Factura implements Serializable {
     }
 
     @XmlTransient
+    public List<NotaCredito> getNotaCreditoList() {
+        return notaCreditoList;
+    }
+
+    public void setNotaCreditoList(List<NotaCredito> notaCreditoList) {
+        this.notaCreditoList = notaCreditoList;
+    }
+
+    @XmlTransient
     public List<CuentaXCobrar> getCuentaXCobrarList() {
         return cuentaXCobrarList;
     }
@@ -199,15 +208,6 @@ public class Factura implements Serializable {
 
     public void setPagoList(List<Pago> pagoList) {
         this.pagoList = pagoList;
-    }
-
-    @XmlTransient
-    public List<NotaCredito> getNotaCreditoList() {
-        return notaCreditoList;
-    }
-
-    public void setNotaCreditoList(List<NotaCredito> notaCreditoList) {
-        this.notaCreditoList = notaCreditoList;
     }
 
     @Override

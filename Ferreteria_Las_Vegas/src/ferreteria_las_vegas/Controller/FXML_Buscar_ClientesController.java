@@ -7,7 +7,6 @@ package ferreteria_las_vegas.Controller;
 
 import ferreteria_las_vegas.model.controller.PersonaJpaController;
 import ferreteria_las_vegas.model.entities.Persona;
-import ferreteria_las_vegas.utils.AppContext;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -20,9 +19,7 @@ import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;

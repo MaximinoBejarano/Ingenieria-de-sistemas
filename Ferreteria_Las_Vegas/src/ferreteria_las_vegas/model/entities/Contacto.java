@@ -23,7 +23,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
- *Entidad DB
+ *
  * @author Usuario
  */
 @Entity
@@ -47,9 +47,11 @@ public class Contacto implements Serializable {
     private String conContacto;
     @Basic(optional = false)
     @Column(name = "Con_TipoContacto")
-    private String conTipoContacto;
+    private String conTipoContacto;    
+    
     @ManyToMany(mappedBy = "contactoList")
     private List<Persona> personaList;
+   
     @JoinTable(name = "tb_contactos_proveedores", joinColumns = {
         @JoinColumn(name = "RCP_Contacto", referencedColumnName = "Con_ID")}, inverseJoinColumns = {
         @JoinColumn(name = "RCP_Proveedor", referencedColumnName = "Pro_ID")})

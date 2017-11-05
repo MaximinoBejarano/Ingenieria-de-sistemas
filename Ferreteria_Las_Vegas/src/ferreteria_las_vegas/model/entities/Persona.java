@@ -23,7 +23,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
- *Entidad DB
+ *
  * @author Usuario
  */
 @Entity
@@ -35,7 +35,8 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Persona.findByPerNombre", query = "SELECT p FROM Persona p WHERE p.perNombre = :perNombre")
     , @NamedQuery(name = "Persona.findByPerSNombre", query = "SELECT p FROM Persona p WHERE p.perSNombre = :perSNombre")
     , @NamedQuery(name = "Persona.findByPerPApellido", query = "SELECT p FROM Persona p WHERE p.perPApellido = :perPApellido")
-    , @NamedQuery(name = "Persona.findByPerSApellido", query = "SELECT p FROM Persona p WHERE p.perSApellido = :perSApellido")})
+    , @NamedQuery(name = "Persona.findByPerSApellido", query = "SELECT p FROM Persona p WHERE p.perSApellido = :perSApellido")
+    , @NamedQuery(name = "Persona.findByPerEstado", query = "SELECT p FROM Persona p WHERE p.perEstado = :perEstado")})
 public class Persona implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -53,11 +54,15 @@ public class Persona implements Serializable {
     private String perPApellido;
     @Column(name = "Per_SApellido")
     private String perSApellido;
-    @JoinTable(name = "tb_ferreterias_personas", joinColumns = {
+    @Basic(optional = false)
+    @Column(name = "Per_Estado")
+    private String perEstado;
+    @JoinTable(name = "tb_ferreteria_personas", joinColumns = {
         @JoinColumn(name = "RFP_Persona", referencedColumnName = "Per_Cedula")}, inverseJoinColumns = {
         @JoinColumn(name = "RFP_Ferreteria", referencedColumnName = "Fer_ID")})
     @ManyToMany
-    private List<Ferreteria> ferreteriaList;    
+    private List<Ferreteria> ferreteriaList;
+    
     @JoinTable(name = "tb_personas_direcciones", joinColumns = {
         @JoinColumn(name = "RPD_Persona", referencedColumnName = "Per_Cedula")}, inverseJoinColumns = {
         @JoinColumn(name = "RPD_Direccion", referencedColumnName = "Dir_ID")})
@@ -80,10 +85,11 @@ public class Persona implements Serializable {
         this.perCedula = perCedula;
     }
 
-    public Persona(String perCedula, String perNombre, String perPApellido) {
+    public Persona(String perCedula, String perNombre, String perPApellido, String perEstado) {
         this.perCedula = perCedula;
         this.perNombre = perNombre;
         this.perPApellido = perPApellido;
+        this.perEstado = perEstado;
     }
 
     public String getPerCedula() {
@@ -124,6 +130,14 @@ public class Persona implements Serializable {
 
     public void setPerSApellido(String perSApellido) {
         this.perSApellido = perSApellido;
+    }
+
+    public String getPerEstado() {
+        return perEstado;
+    }
+
+    public void setPerEstado(String perEstado) {
+        this.perEstado = perEstado;
     }
 
     @XmlTransient

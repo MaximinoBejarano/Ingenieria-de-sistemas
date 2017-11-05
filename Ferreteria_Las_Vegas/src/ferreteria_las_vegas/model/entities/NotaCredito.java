@@ -27,11 +27,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
- *Entidad DB
+ *
  * @author Usuario
  */
 @Entity
-@Table(name = "tb_notascredito")
+@Table(name = "tb_notacredito")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "NotaCredito.findAll", query = "SELECT n FROM NotaCredito n")
@@ -57,11 +57,11 @@ public class NotaCredito implements Serializable {
     private BigDecimal notMonto;
     @Column(name = "Not_Justificacion")
     private String notJustificacion;
-    @OneToMany(mappedBy = "pagNotaCredito")
-    private List<Pago> pagoList;
     @JoinColumn(name = "Not_Factura", referencedColumnName = "Fac_Cliente")
     @ManyToOne(optional = false)
     private Factura notFactura;
+    @OneToMany(mappedBy = "pagNotaCredito")
+    private List<Pago> pagoList;
 
     public NotaCredito() {
     }
@@ -108,6 +108,14 @@ public class NotaCredito implements Serializable {
         this.notJustificacion = notJustificacion;
     }
 
+    public Factura getNotFactura() {
+        return notFactura;
+    }
+
+    public void setNotFactura(Factura notFactura) {
+        this.notFactura = notFactura;
+    }
+
     @XmlTransient
     public List<Pago> getPagoList() {
         return pagoList;
@@ -115,14 +123,6 @@ public class NotaCredito implements Serializable {
 
     public void setPagoList(List<Pago> pagoList) {
         this.pagoList = pagoList;
-    }
-
-    public Factura getNotFactura() {
-        return notFactura;
-    }
-
-    public void setNotFactura(Factura notFactura) {
-        this.notFactura = notFactura;
     }
 
     @Override

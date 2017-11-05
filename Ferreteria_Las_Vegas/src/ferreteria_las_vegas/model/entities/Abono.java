@@ -26,7 +26,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
- *Entidad DB
+ *
  * @author Usuario
  */
 @Entity
@@ -38,7 +38,8 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Abono.findByAboFecha", query = "SELECT a FROM Abono a WHERE a.aboFecha = :aboFecha")
     , @NamedQuery(name = "Abono.findByAboMonto", query = "SELECT a FROM Abono a WHERE a.aboMonto = :aboMonto")
     , @NamedQuery(name = "Abono.findByAboNumeroDeposito", query = "SELECT a FROM Abono a WHERE a.aboNumeroDeposito = :aboNumeroDeposito")
-    , @NamedQuery(name = "Abono.findByAboEstado", query = "SELECT a FROM Abono a WHERE a.aboEstado = :aboEstado")})
+    , @NamedQuery(name = "Abono.findByAboEstado", query = "SELECT a FROM Abono a WHERE a.aboEstado = :aboEstado")
+    , @NamedQuery(name = "Abono.findByAboTipoAbono", query = "SELECT a FROM Abono a WHERE a.aboTipoAbono = :aboTipoAbono")})
 public class Abono implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -59,6 +60,9 @@ public class Abono implements Serializable {
     @Basic(optional = false)
     @Column(name = "Abo_Estado")
     private String aboEstado;
+    @Basic(optional = false)
+    @Column(name = "Abo_TipoAbono")
+    private String aboTipoAbono;
     @JoinTable(name = "tb_cxp_abonos", joinColumns = {
         @JoinColumn(name = "RCA_Abono", referencedColumnName = "Abo_Codigo")}, inverseJoinColumns = {
         @JoinColumn(name = "RCA_CuentaPagar", referencedColumnName = "Cue_Codigo")})
@@ -80,11 +84,12 @@ public class Abono implements Serializable {
         this.aboCodigo = aboCodigo;
     }
 
-    public Abono(Integer aboCodigo, Date aboFecha, BigDecimal aboMonto, String aboEstado) {
+    public Abono(Integer aboCodigo, Date aboFecha, BigDecimal aboMonto, String aboEstado, String aboTipoAbono) {
         this.aboCodigo = aboCodigo;
         this.aboFecha = aboFecha;
         this.aboMonto = aboMonto;
         this.aboEstado = aboEstado;
+        this.aboTipoAbono = aboTipoAbono;
     }
 
     public Integer getAboCodigo() {
@@ -125,6 +130,14 @@ public class Abono implements Serializable {
 
     public void setAboEstado(String aboEstado) {
         this.aboEstado = aboEstado;
+    }
+
+    public String getAboTipoAbono() {
+        return aboTipoAbono;
+    }
+
+    public void setAboTipoAbono(String aboTipoAbono) {
+        this.aboTipoAbono = aboTipoAbono;
     }
 
     @XmlTransient

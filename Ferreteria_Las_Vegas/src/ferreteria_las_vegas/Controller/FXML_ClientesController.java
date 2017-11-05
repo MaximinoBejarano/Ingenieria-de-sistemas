@@ -117,7 +117,7 @@ public class FXML_ClientesController implements Initializable {
     }
     
      void ProcesoAgregar() {
-     Persona persona = new Persona(txtCedCliente.getText(), txtNombreCliente.getText(), txtPApellidoCliente.getText());
+     Persona persona = new Persona(txtCedCliente.getText(), txtNombreCliente.getText(), txtPApellidoCliente.getText(),"A");
         persona.setPerSApellido(txtSApellidoCliente.getText());
         
         Contacto contactoTel1 = new Contacto(Integer.SIZE, txtTelefono1Cliente.getText(), "TEL");

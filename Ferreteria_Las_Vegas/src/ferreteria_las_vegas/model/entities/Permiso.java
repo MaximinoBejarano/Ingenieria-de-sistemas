@@ -23,7 +23,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
- *Entidad DB
+ *
  * @author Usuario
  */
 @Entity
@@ -48,11 +48,11 @@ public class Permiso implements Serializable {
     @Basic(optional = false)
     @Column(name = "Per_Descripcion")
     private String perDescripcion;
-    @JoinTable(name = "tb_permisosxrol", joinColumns = {
-        @JoinColumn(name = "RPR_Permiso", referencedColumnName = "Per_ID")}, inverseJoinColumns = {
-        @JoinColumn(name = "RPR_Rol", referencedColumnName = "Rol_ID")})
+    @JoinTable(name = "tb_permisos_usuarios", joinColumns = {
+        @JoinColumn(name = "RPU_Permisos", referencedColumnName = "Per_ID")}, inverseJoinColumns = {
+        @JoinColumn(name = "RPU_Usuarios", referencedColumnName = "Usu_Persona")})
     @ManyToMany
-    private List<Rol> rolList;
+    private List<Usuario> usuarioList;
 
     public Permiso() {
     }
@@ -92,12 +92,12 @@ public class Permiso implements Serializable {
     }
 
     @XmlTransient
-    public List<Rol> getRolList() {
-        return rolList;
+    public List<Usuario> getUsuarioList() {
+        return usuarioList;
     }
 
-    public void setRolList(List<Rol> rolList) {
-        this.rolList = rolList;
+    public void setUsuarioList(List<Usuario> usuarioList) {
+        this.usuarioList = usuarioList;
     }
 
     @Override

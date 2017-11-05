@@ -23,11 +23,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
- *Entidad DB
+ *
  * @author Usuario
  */
 @Entity
-@Table(name = "tb_ferreterias")
+@Table(name = "tb_ferreteria")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Ferreteria.findAll", query = "SELECT f FROM Ferreteria f")

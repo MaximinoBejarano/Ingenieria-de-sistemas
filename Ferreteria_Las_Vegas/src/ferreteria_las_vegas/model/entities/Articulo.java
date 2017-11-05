@@ -12,6 +12,8 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -21,7 +23,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
- *Entidad DB
+ *
  * @author Usuario
  */
 @Entity
@@ -36,22 +38,27 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Articulo.findByArtUnidadMedida", query = "SELECT a FROM Articulo a WHERE a.artUnidadMedida = :artUnidadMedida")
     , @NamedQuery(name = "Articulo.findByArtPrecio", query = "SELECT a FROM Articulo a WHERE a.artPrecio = :artPrecio")
     , @NamedQuery(name = "Articulo.findByArtDescuento", query = "SELECT a FROM Articulo a WHERE a.artDescuento = :artDescuento")
-    , @NamedQuery(name = "Articulo.findByArtEstadoDescuento", query = "SELECT a FROM Articulo a WHERE a.artEstadoDescuento = :artEstadoDescuento")})
+    , @NamedQuery(name = "Articulo.findByArtEstadoDescuento", query = "SELECT a FROM Articulo a WHERE a.artEstadoDescuento = :artEstadoDescuento")
+    , @NamedQuery(name = "Articulo.findByArtCodBarra", query = "SELECT a FROM Articulo a WHERE a.artCodBarra = :artCodBarra")
+    , @NamedQuery(name = "Articulo.findByArtEstado", query = "SELECT a FROM Articulo a WHERE a.artEstado = :artEstado")})
 public class Articulo implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "Art_Codigo")
-    private String artCodigo;
+    private Integer artCodigo;
     @Basic(optional = false)
     @Column(name = "Art_Nombre")
     private String artNombre;
     @Basic(optional = false)
     @Column(name = "Art_Descripcion")
     private String artDescripcion;
+    @Basic(optional = false)
     @Column(name = "Art_Marca")
     private String artMarca;
+    @Basic(optional = false)
     @Column(name = "Art_UnidadMedida")
     private String artUnidadMedida;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
@@ -62,32 +69,40 @@ public class Articulo implements Serializable {
     private BigDecimal artDescuento;
     @Column(name = "Art_EstadoDescuento")
     private String artEstadoDescuento;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "artArticulo")
-    private List<ArticuloXFactura> articuloXFacturaList;
+    @Column(name = "Art_CodBarra")
+    private String artCodBarra;
+    @Basic(optional = false)
+    @Column(name = "Art_Estado")
+    private String artEstado;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "invArticulo")
     private List<Inventario> inventarioList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "artArticulo")
+    private List<ArticuloXFactura> articuloXFacturaList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "artArticulo")
     private List<ArticuloXCompra> articuloXCompraList;
 
     public Articulo() {
     }
 
-    public Articulo(String artCodigo) {
+    public Articulo(Integer artCodigo) {
         this.artCodigo = artCodigo;
     }
 
-    public Articulo(String artCodigo, String artNombre, String artDescripcion, BigDecimal artPrecio) {
+    public Articulo(Integer artCodigo, String artNombre, String artDescripcion, String artMarca, String artUnidadMedida, BigDecimal artPrecio, String artEstado) {
         this.artCodigo = artCodigo;
         this.artNombre = artNombre;
         this.artDescripcion = artDescripcion;
+        this.artMarca = artMarca;
+        this.artUnidadMedida = artUnidadMedida;
         this.artPrecio = artPrecio;
+        this.artEstado = artEstado;
     }
 
-    public String getArtCodigo() {
+    public Integer getArtCodigo() {
         return artCodigo;
     }
 
-    public void setArtCodigo(String artCodigo) {
+    public void setArtCodigo(Integer artCodigo) {
         this.artCodigo = artCodigo;
     }
 
@@ -147,13 +162,20 @@ public class Articulo implements Serializable {
         this.artEstadoDescuento = artEstadoDescuento;
     }
 
-    @XmlTransient
-    public List<ArticuloXFactura> getArticuloXFacturaList() {
-        return articuloXFacturaList;
+    public String getArtCodBarra() {
+        return artCodBarra;
     }
 
-    public void setArticuloXFacturaList(List<ArticuloXFactura> articuloXFacturaList) {
-        this.articuloXFacturaList = articuloXFacturaList;
+    public void setArtCodBarra(String artCodBarra) {
+        this.artCodBarra = artCodBarra;
+    }
+
+    public String getArtEstado() {
+        return artEstado;
+    }
+
+    public void setArtEstado(String artEstado) {
+        this.artEstado = artEstado;
     }
 
     @XmlTransient
@@ -163,6 +185,15 @@ public class Articulo implements Serializable {
 
     public void setInventarioList(List<Inventario> inventarioList) {
         this.inventarioList = inventarioList;
+    }
+
+    @XmlTransient
+    public List<ArticuloXFactura> getArticuloXFacturaList() {
+        return articuloXFacturaList;
+    }
+
+    public void setArticuloXFacturaList(List<ArticuloXFactura> articuloXFacturaList) {
+        this.articuloXFacturaList = articuloXFacturaList;
     }
 
     @XmlTransient

@@ -22,17 +22,16 @@ import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- *Entidad DB
+ *
  * @author Usuario
  */
 @Entity
-@Table(name = "tb_detalles_inventario")
+@Table(name = "tb_detalle_inventario")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "DetalleInventario.findAll", query = "SELECT d FROM DetalleInventario d")
     , @NamedQuery(name = "DetalleInventario.findByDetCodigo", query = "SELECT d FROM DetalleInventario d WHERE d.detCodigo = :detCodigo")
     , @NamedQuery(name = "DetalleInventario.findByDetFecha", query = "SELECT d FROM DetalleInventario d WHERE d.detFecha = :detFecha")
-    , @NamedQuery(name = "DetalleInventario.findByDetCantidad", query = "SELECT d FROM DetalleInventario d WHERE d.detCantidad = :detCantidad")
     , @NamedQuery(name = "DetalleInventario.findByDetPrecio", query = "SELECT d FROM DetalleInventario d WHERE d.detPrecio = :detPrecio")})
 public class DetalleInventario implements Serializable {
 
@@ -45,9 +44,6 @@ public class DetalleInventario implements Serializable {
     @Column(name = "Det_Fecha")
     @Temporal(TemporalType.DATE)
     private Date detFecha;
-    @Basic(optional = false)
-    @Column(name = "Det_Cantidad")
-    private int detCantidad;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Basic(optional = false)
     @Column(name = "Det_Precio")
@@ -63,10 +59,9 @@ public class DetalleInventario implements Serializable {
         this.detCodigo = detCodigo;
     }
 
-    public DetalleInventario(Integer detCodigo, Date detFecha, int detCantidad, BigDecimal detPrecio) {
+    public DetalleInventario(Integer detCodigo, Date detFecha, BigDecimal detPrecio) {
         this.detCodigo = detCodigo;
         this.detFecha = detFecha;
-        this.detCantidad = detCantidad;
         this.detPrecio = detPrecio;
     }
 
@@ -84,14 +79,6 @@ public class DetalleInventario implements Serializable {
 
     public void setDetFecha(Date detFecha) {
         this.detFecha = detFecha;
-    }
-
-    public int getDetCantidad() {
-        return detCantidad;
-    }
-
-    public void setDetCantidad(int detCantidad) {
-        this.detCantidad = detCantidad;
     }
 
     public BigDecimal getDetPrecio() {

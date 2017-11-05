@@ -9,28 +9,20 @@ import ferreteria_las_vegas.model.entities.Usuario;
 import ferreteria_las_vegas.utils.AppContext;
 import java.io.IOException;
 import java.net.URL;
-import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.animation.FadeTransition;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 import javafx.util.Duration;
-import javax.swing.JOptionPane;
 
 /**
  * FXML Controller class
@@ -83,17 +75,21 @@ public class FXML_MenuController implements Initializable {
             }
         } catch (Exception ex) {
             // mandar al servidor al log de errores
-            JOptionPane.showMessageDialog(null, ex.toString());
+            System.out.println(ex);
         }
 
     }
 
     @FXML
     private void accesoEmpleados(ActionEvent e) {
-        try {
+        
             if (true) {
-                setDataPane(cargarScena("/ferreteria_las_vegas/view/FXML_Empleados.fxml"));
-                
+                try {
+                    setDataPane(cargarScena("/ferreteria_las_vegas/view/FXML_Empleados.fxml"));
+                } catch (IOException ex) {
+                    Logger.getLogger(FXML_MenuController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+             
             } else {
 
                 Alert alert = new Alert(AlertType.WARNING);
@@ -103,10 +99,7 @@ public class FXML_MenuController implements Initializable {
                 alert.setContentText(s);
                 alert.show();
             }
-        } catch (Exception ex) {
-            // mandar al servidor al log de errores
-            JOptionPane.showMessageDialog(null, ex.toString());
-        }
+        
 
     }
 
@@ -128,7 +121,7 @@ public class FXML_MenuController implements Initializable {
             }
         } catch (Exception ex) {
             // mandar al servidor al log de errores
-            JOptionPane.showMessageDialog(null, ex.toString());
+            System.out.println(ex);
         }
 
     }
@@ -150,7 +143,7 @@ public class FXML_MenuController implements Initializable {
             }
         } catch (Exception ex) {
             // mandar al servidor al log de errores
-            JOptionPane.showMessageDialog(null, ex.toString());
+            System.out.println(ex);
         }
 
     }
@@ -172,7 +165,7 @@ public class FXML_MenuController implements Initializable {
             }
         } catch (Exception ex) {
             // mandar al servidor al log de errores
-            JOptionPane.showMessageDialog(null, ex.toString());
+            System.out.println(ex);
         }
 
     }
@@ -193,7 +186,7 @@ public class FXML_MenuController implements Initializable {
             }
         } catch (Exception ex) {
             // mandar al servidor al log de errores
-            JOptionPane.showMessageDialog(null, ex.toString());
+            System.out.println(ex);
         }
 
     }
@@ -215,7 +208,7 @@ public class FXML_MenuController implements Initializable {
             }
         } catch (Exception ex) {
             // mandar al servidor al log de errores
-            JOptionPane.showMessageDialog(null, ex.toString());
+            System.out.println(ex);
         }
 
     }
@@ -237,7 +230,7 @@ public class FXML_MenuController implements Initializable {
             }
         } catch (Exception ex) {
             // mandar al servidor al log de errores
-            JOptionPane.showMessageDialog(null, ex.toString());
+            System.out.println(ex);
         }
 
     }

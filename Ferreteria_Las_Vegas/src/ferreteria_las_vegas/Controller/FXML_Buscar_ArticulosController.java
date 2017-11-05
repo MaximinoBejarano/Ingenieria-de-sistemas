@@ -7,7 +7,6 @@ package ferreteria_las_vegas.Controller;
 
 import ferreteria_las_vegas.model.controller.ArticuloJpaController;
 import ferreteria_las_vegas.model.entities.Articulo;
-import ferreteria_las_vegas.model.entities.Persona;
 import ferreteria_las_vegas.utils.AppContext;
 import java.math.BigDecimal;
 import java.net.URL;
@@ -29,7 +28,6 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
 /**
@@ -91,7 +89,7 @@ public class FXML_Buscar_ArticulosController implements Initializable {
 
     void CargarDatosTabla() {
        
-        colCodigo.setCellValueFactory((cellData-> new SimpleStringProperty(cellData.getValue().getArtCodigo())));
+        colCodigo.setCellValueFactory((cellData-> new SimpleStringProperty(cellData.getValue().getArtCodBarra())));
         colNombre.setCellValueFactory((cellData-> new SimpleStringProperty(cellData.getValue().getArtNombre())));
         colMarca.setCellValueFactory((cellData-> new SimpleStringProperty(cellData.getValue().getArtMarca())));
         colUndMedida.setCellValueFactory((cellData-> new SimpleStringProperty(cellData.getValue().getArtUnidadMedida())));
@@ -115,7 +113,7 @@ public class FXML_Buscar_ArticulosController implements Initializable {
                     return true;
                 }
                 String lowerCaseFilter = newValue.toLowerCase();
-                if (pArticulo.getArtCodigo().toLowerCase().contains(lowerCaseFilter)) {
+                if (pArticulo.getArtCodBarra().toLowerCase().contains(lowerCaseFilter)) {
                     return true;
                 } else if (pArticulo.getArtNombre().toLowerCase().contains(lowerCaseFilter)) {
                     return true;

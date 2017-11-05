@@ -21,7 +21,7 @@ import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- *Entidad DB
+ *
  * @author Usuario
  */
 @Entity
@@ -31,7 +31,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "ArticuloXFactura.findAll", query = "SELECT a FROM ArticuloXFactura a")
     , @NamedQuery(name = "ArticuloXFactura.findByArtID", query = "SELECT a FROM ArticuloXFactura a WHERE a.artID = :artID")
     , @NamedQuery(name = "ArticuloXFactura.findByArtPrecio", query = "SELECT a FROM ArticuloXFactura a WHERE a.artPrecio = :artPrecio")
-    , @NamedQuery(name = "ArticuloXFactura.findByArtCantidad", query = "SELECT a FROM ArticuloXFactura a WHERE a.artCantidad = :artCantidad")})
+    , @NamedQuery(name = "ArticuloXFactura.findByArtCantidad", query = "SELECT a FROM ArticuloXFactura a WHERE a.artCantidad = :artCantidad")
+    , @NamedQuery(name = "ArticuloXFactura.findByArtDescuento", query = "SELECT a FROM ArticuloXFactura a WHERE a.artDescuento = :artDescuento")})
 public class ArticuloXFactura implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -47,6 +48,8 @@ public class ArticuloXFactura implements Serializable {
     @Basic(optional = false)
     @Column(name = "Art_Cantidad")
     private int artCantidad;
+    @Column(name = "Art_Descuento")
+    private BigDecimal artDescuento;
     @JoinColumn(name = "Art_Articulo", referencedColumnName = "Art_Codigo")
     @ManyToOne(optional = false)
     private Articulo artArticulo;
@@ -89,6 +92,14 @@ public class ArticuloXFactura implements Serializable {
 
     public void setArtCantidad(int artCantidad) {
         this.artCantidad = artCantidad;
+    }
+
+    public BigDecimal getArtDescuento() {
+        return artDescuento;
+    }
+
+    public void setArtDescuento(BigDecimal artDescuento) {
+        this.artDescuento = artDescuento;
     }
 
     public Articulo getArtArticulo() {

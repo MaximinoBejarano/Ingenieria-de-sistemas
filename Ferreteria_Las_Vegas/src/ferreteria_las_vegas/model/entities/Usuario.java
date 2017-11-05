@@ -6,20 +6,22 @@
 package ferreteria_las_vegas.model.entities;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
- *Entidad DB
+ *
  * @author Usuario
  */
 @Entity
@@ -30,7 +32,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Usuario.findByUsuPersona", query = "SELECT u FROM Usuario u WHERE u.usuPersona = :usuPersona")
     , @NamedQuery(name = "Usuario.findByUsuLogin", query = "SELECT u FROM Usuario u WHERE u.usuNombre = :usuUsuario AND u.usuContrase\u00f1a = :usuContrase\u00f1a")
     , @NamedQuery(name = "Usuario.findByUsuNombre", query = "SELECT u FROM Usuario u WHERE u.usuNombre = :usuNombre")
-    , @NamedQuery(name = "Usuario.findByUsuContrase\u00f1a", query = "SELECT u FROM Usuario u WHERE u.usuContrase\u00f1a = :usuContrase\u00f1a")})
+    , @NamedQuery(name = "Usuario.findByUsuContrase\u00f1a", query = "SELECT u FROM Usuario u WHERE u.usuContrase\u00f1a = :usuContrase\u00f1a")
+    , @NamedQuery(name = "Usuario.findByUsuEstado", query = "SELECT u FROM Usuario u WHERE u.usuEstado = :usuEstado")})
 public class Usuario implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -44,12 +47,14 @@ public class Usuario implements Serializable {
     @Basic(optional = false)
     @Column(name = "Usu_Contrase\u00f1a")
     private String usuContraseña;
+    @Basic(optional = false)
+    @Column(name = "Usu_Estado")
+    private String usuEstado;
+    @ManyToMany(mappedBy = "usuarioList")
+    private List<Permiso> permisoList;
     @JoinColumn(name = "Usu_Persona", referencedColumnName = "Per_Cedula", insertable = false, updatable = false)
     @OneToOne(optional = false)
     private Persona persona;
-    @JoinColumn(name = "Usu_Rol", referencedColumnName = "Rol_ID")
-    @ManyToOne(optional = false)
-    private Rol usuRol;
 
     public Usuario() {
     }
@@ -58,10 +63,11 @@ public class Usuario implements Serializable {
         this.usuPersona = usuPersona;
     }
 
-    public Usuario(String usuPersona, String usuNombre, String usuContraseña) {
+    public Usuario(String usuPersona, String usuNombre, String usuContraseña, String usuEstado) {
         this.usuPersona = usuPersona;
         this.usuNombre = usuNombre;
         this.usuContraseña = usuContraseña;
+        this.usuEstado = usuEstado;
     }
 
     public String getUsuPersona() {
@@ -88,20 +94,29 @@ public class Usuario implements Serializable {
         this.usuContraseña = usuContraseña;
     }
 
+    public String getUsuEstado() {
+        return usuEstado;
+    }
+
+    public void setUsuEstado(String usuEstado) {
+        this.usuEstado = usuEstado;
+    }
+
+    @XmlTransient
+    public List<Permiso> getPermisoList() {
+        return permisoList;
+    }
+
+    public void setPermisoList(List<Permiso> permisoList) {
+        this.permisoList = permisoList;
+    }
+
     public Persona getPersona() {
         return persona;
     }
 
     public void setPersona(Persona persona) {
         this.persona = persona;
-    }
-
-    public Rol getUsuRol() {
-        return usuRol;
-    }
-
-    public void setUsuRol(Rol usuRol) {
-        this.usuRol = usuRol;
     }
 
     @Override

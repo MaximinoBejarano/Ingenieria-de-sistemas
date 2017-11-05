@@ -23,7 +23,6 @@ import javafx.scene.control.TextField;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import javax.swing.JOptionPane;
 
 /**
  * FXML Controller class
@@ -88,9 +87,7 @@ public class FXML_ProductosController implements Initializable {
 
     private void GuardarProducto() {
         BigDecimal Precio = new BigDecimal(txtPrecio.getText());
-        Articulo articulo = new Articulo(txtCodigoProducto.getText(), txtNombre.getText(), txtDescripcion.getText(), Precio);
-        articulo.setArtMarca(txtMarca.getText());
-        articulo.setArtUnidadMedida(txtUndMedida.getText());
+        Articulo articulo = new Articulo(Integer.SIZE, txtNombre.getText(), txtDescripcion.getText(), txtMarca.getText(), txtUndMedida.getText(), Precio, "A");        
         articulo = ArticuloJpaController.getInstance().InsertarArticulo(articulo);
 
         if (articulo != null) {
@@ -128,7 +125,7 @@ public class FXML_ProductosController implements Initializable {
 
         } catch (Exception ex) {
             // mandar al servidor al log de errores
-            JOptionPane.showMessageDialog(null, ex.toString());
+            System.out.println(ex);
         }
     }
 }
