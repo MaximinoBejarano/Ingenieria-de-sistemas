@@ -45,8 +45,6 @@ public class FXML_ProductosController implements Initializable {
     @FXML
     private Button btnSalir;
     @FXML
-    private TextField txtCodigoProducto;
-    @FXML
     private TextField txtCodBarras;
     @FXML
     private TextField txtNombre;
@@ -82,7 +80,7 @@ public class FXML_ProductosController implements Initializable {
 
     @FXML
     private void EditarProductos(ActionEvent event) {
-        if (txtCodigoProducto.getText().isEmpty() || txtNombre.getText().isEmpty()
+        if (txtNombre.getText().isEmpty()
                 || txtDescripcion.getText().isEmpty() || txtPrecio.getText().isEmpty()) {
             new Alert(Alert.AlertType.WARNING, "Advertencia: Es necesario completar los campos requeridos", ButtonType.OK).showAndWait();
         } else {
@@ -99,15 +97,12 @@ public class FXML_ProductosController implements Initializable {
 
     @FXML
     private void AgregarProducto(ActionEvent e) {
-        if (txtCodigoProducto.getText().isEmpty() || txtNombre.getText().isEmpty()
-                || txtDescripcion.getText().isEmpty() || txtPrecio.getText().isEmpty()) {
+        if (txtNombre.getText().isEmpty() || txtDescripcion.getText().isEmpty() || txtPrecio.getText().isEmpty()) {
             new Alert(Alert.AlertType.WARNING, "Advertencia: Es necesario completar los campos requeridos", ButtonType.OK).showAndWait();
         } else {
             GuardarProducto();
         }
     }
-    
-    
 
     //*****************************************************++ Area de funciones ++****************************************************************+
     /**
@@ -126,8 +121,8 @@ public class FXML_ProductosController implements Initializable {
 
     private void EditarProductos() {
         Articulo pArticulo = (Articulo) AppContext.getInstance().get("selected-Articulo");
-        if(pArticulo != null){
-            pArticulo = ArticuloJpaController.getInstance().ConsultarArticuloCodigo(pArticulo.getArtCodigo().toString());
+        if (pArticulo != null) {
+            pArticulo = ArticuloJpaController.getInstance().ConsultarArticuloCodigo(pArticulo.getArtCodigo());
             if (pArticulo != null) {
                 pArticulo = ExtraerDatos(pArticulo);
                 pArticulo = ArticuloJpaController.getInstance().ModificarArticulos(pArticulo);
@@ -142,16 +137,16 @@ public class FXML_ProductosController implements Initializable {
             } else {
                 new Alert(Alert.AlertType.WARNING, "No existe un Producto con el codigo ingresado.", ButtonType.OK).showAndWait();
             }
-        }else{
-          new Alert(Alert.AlertType.WARNING, "Debe consultar un producto existente", ButtonType.OK).showAndWait();
+        } else {
+            new Alert(Alert.AlertType.WARNING, "Debe consultar un producto existente", ButtonType.OK).showAndWait();
         }
     }
 
     private void EliminarProductos() {
         Articulo pArticulo = (Articulo) AppContext.getInstance().get("selected-Articulo");
-        if(pArticulo != null){
-            pArticulo = ArticuloJpaController.getInstance().ConsultarArticuloCodigo(pArticulo.getArtCodigo().toString());
-           // pArticulo.setEstado("I");
+        if (pArticulo != null) {
+            pArticulo = ArticuloJpaController.getInstance().ConsultarArticuloCodigo(pArticulo.getArtCodigo());
+            pArticulo.setArtEstado("I");
             if (pArticulo != null) {
                 pArticulo = ExtraerDatos(pArticulo);
                 pArticulo = ArticuloJpaController.getInstance().ModificarArticulos(pArticulo);
@@ -195,23 +190,28 @@ public class FXML_ProductosController implements Initializable {
      */
     private Articulo ExtraerDatos(Articulo pArticulo) {
         BigDecimal Precio = new BigDecimal(txtPrecio.getText());
-        BigDecimal Descuento ;
-        pArticulo = new Articulo(txtCodigoProducto.getText(), txtNombre.getText(), txtDescripcion.getText(), Precio);
-        pArticulo.setArtMarca(txtMarca.getText());
-        pArticulo.setArtUnidadMedida(txtUndMedida.getText());
-        if(!txtDescuento.getText().isEmpty()){
-            Descuento = new BigDecimal(txtDescuento.getText()); 
+        BigDecimal Descuento;
+        pArticulo = new Articulo(Integer.SIZE, txtNombre.getText(), txtDescripcion.getText(), txtMarca.getText(), txtUndMedida.getText(), Precio, "A");
+        
+        if (txtCodBarras.getText().isEmpty()) {
+            pArticulo.setArtCodBarra(null);
+        } else {
+            pArticulo.setArtCodBarra(txtCodBarras.getText());
+        }
+        if (!txtDescuento.getText().isEmpty()) {
+            Descuento = new BigDecimal(txtDescuento.getText());
             pArticulo.setArtDescuento(Descuento);
-        }else{
-            Descuento = BigDecimal.ZERO; 
-            pArticulo.setArtDescuento(Descuento);}
-        //pArticulo.setArtCodBarra(txtCodBarras.getText());
+            //pArticulo.setArtEstadoDescuento("A");
+        } else {
+            Descuento = BigDecimal.ZERO;
+            pArticulo.setArtDescuento(Descuento);
+            //pArticulo.setArtEstadoDescuento("I");
+        }
 
         return pArticulo;
     }
 
     public void LimpiarCampos() {
-        txtCodigoProducto.setText("");
         txtNombre.setText("");
         txtDescripcion.setText("");
         txtCodBarras.setText("");
@@ -224,10 +224,9 @@ public class FXML_ProductosController implements Initializable {
     public void CargasDatos() {
         Articulo pArticulo = (Articulo) AppContext.getInstance().get("selected-Articulo");
         if (pArticulo != null) {
-            txtCodigoProducto.setText(pArticulo.getArtCodigo());
             txtNombre.setText(pArticulo.getArtNombre());
             txtDescripcion.setText(pArticulo.getArtDescripcion());
-            txtCodBarras.setText("");
+            txtCodBarras.setText(pArticulo.getArtCodBarra());
             txtMarca.setText(pArticulo.getArtMarca());
             txtUndMedida.setText(pArticulo.getArtUnidadMedida());
             txtPrecio.setText(pArticulo.getArtPrecio().toString());

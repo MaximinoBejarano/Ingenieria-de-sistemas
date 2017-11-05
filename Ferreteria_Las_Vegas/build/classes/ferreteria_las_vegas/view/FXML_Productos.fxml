@@ -104,7 +104,7 @@
                <children>
                   <GridPane layoutX="10.0" layoutY="10.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="271.0" prefWidth="433.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
                      <children>
-                        <Label text="Nombre:" GridPane.rowIndex="2">
+                        <Label text="Nombre:" GridPane.rowIndex="1">
                            <font>
                               <Font size="18.0" />
                            </font>
@@ -112,7 +112,7 @@
                               <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
                            </GridPane.margin>
                         </Label>
-                        <Label text="Marca:" GridPane.rowIndex="3">
+                        <Label text="Marca:" GridPane.rowIndex="2">
                            <font>
                               <Font size="18.0" />
                            </font>
@@ -120,7 +120,7 @@
                               <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
                            </GridPane.margin>
                         </Label>
-                        <Label text="Unidad/Medida:" GridPane.rowIndex="7">
+                        <Label text="Unidad/Medida:" GridPane.rowIndex="6">
                            <font>
                               <Font size="18.0" />
                            </font>
@@ -128,7 +128,7 @@
                               <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
                            </GridPane.margin>
                         </Label>
-                        <Label text="Descripción:" GridPane.rowIndex="4">
+                        <Label text="Descripción:" GridPane.rowIndex="3">
                            <font>
                               <Font size="18.0" />
                            </font>
@@ -136,7 +136,7 @@
                               <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
                            </GridPane.margin>
                         </Label>
-                        <Label text="Precio:" GridPane.rowIndex="5">
+                        <Label text="Precio:" GridPane.rowIndex="4">
                            <font>
                               <Font size="18.0" />
                            </font>
@@ -144,7 +144,7 @@
                               <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
                            </GridPane.margin>
                         </Label>
-                        <TextField fx:id="txtCodigoProducto" promptText="Campo requerido" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                        <TextField fx:id="txtCodBarras" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                            <font>
                               <Font size="16.0" />
                            </font>
@@ -152,15 +152,7 @@
                               <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
                            </GridPane.margin>
                         </TextField>
-                        <TextField fx:id="txtCodBarras" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
-                           <font>
-                              <Font size="16.0" />
-                           </font>
-                           <GridPane.margin>
-                              <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
-                           </GridPane.margin>
-                        </TextField>
-                        <TextField fx:id="txtNombre" promptText="Campo requerido" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+                        <TextField fx:id="txtNombre" promptText="Campo requerido" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                            <font>
                               <Font size="16.0" />
                            </font>
@@ -171,7 +163,7 @@
                               <Tooltip text="Se requiere ingresar el nombre" />
                            </tooltip>
                         </TextField>
-                        <TextField fx:id="txtMarca" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+                        <TextField fx:id="txtMarca" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
                            <font>
                               <Font size="16.0" />
                            </font>
@@ -179,7 +171,7 @@
                               <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
                            </GridPane.margin>
                         </TextField>
-                        <TextField fx:id="txtDescripcion" promptText="Campo requerido" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
+                        <TextField fx:id="txtDescripcion" promptText="Campo requerido" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
                            <font>
                               <Font size="16.0" />
                            </font>
@@ -190,7 +182,7 @@
                               <Tooltip text="Se requiere ingresar la descripción" />
                            </tooltip>
                         </TextField>
-                        <TextField fx:id="txtPrecio" promptText="Campo requerido" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER">
+                        <TextField fx:id="txtPrecio" promptText="Campo requerido" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
                            <font>
                               <Font size="16.0" />
                            </font>
@@ -201,12 +193,12 @@
                               <Tooltip text="Se requiere ingresar el precio" />
                            </tooltip>
                         </TextField>
-                        <TextField fx:id="txtDescuento" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                        <TextField fx:id="txtDescuento" GridPane.columnIndex="1" GridPane.rowIndex="5">
                            <font>
                               <Font size="16.0" />
                            </font>
                         </TextField>
-                        <TextField fx:id="txtUndMedida" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="7" GridPane.valignment="CENTER">
+                        <TextField fx:id="txtUndMedida" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="6" GridPane.valignment="CENTER">
                            <font>
                               <Font size="16.0" />
                            </font>
@@ -214,7 +206,7 @@
                               <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
                            </GridPane.margin>
                         </TextField>
-                        <Label text="Código de Producto:">
+                        <Label text="Código de Barras:">
                            <font>
                               <Font size="18.0" />
                            </font>
@@ -222,15 +214,7 @@
                               <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
                            </GridPane.margin>
                         </Label>
-                        <Label text="Código de Barras:" GridPane.rowIndex="1">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                           <GridPane.margin>
-                              <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
-                           </GridPane.margin>
-                        </Label>
-                        <Label text="Descuento:" GridPane.rowIndex="6">
+                        <Label text="Descuento:" GridPane.rowIndex="5">
                            <font>
                               <Font size="18.0" />
                            </font>
@@ -241,7 +225,6 @@
                         <ColumnConstraints hgrow="SOMETIMES" maxWidth="498.0" minWidth="10.0" prefWidth="100.0" />
                      </columnConstraints>
                      <rowConstraints>
-                        <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
