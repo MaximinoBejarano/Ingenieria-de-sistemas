@@ -250,13 +250,13 @@
                   </GridPane>
                   <TableView editable="true" layoutX="14.0" layoutY="182.0" prefHeight="335.0" prefWidth="785.0" AnchorPane.bottomAnchor="81.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="182.0">
                      <columns>
-                        <TableColumn maxWidth="1.7976931348623157E308" minWidth="100.0" prefWidth="150.0" text="Código de Producto" />
-                        <TableColumn maxWidth="1.7976931348623157E308" minWidth="100.0" prefWidth="150.0" text="Código de Barras" />
-                        <TableColumn maxWidth="1.7976931348623157E308" minWidth="100.0" prefWidth="150.0" text="Nombre" />
-                        <TableColumn maxWidth="1.7976931348623157E308" minWidth="100.0" prefWidth="150.0" text="Marca" />
-                        <TableColumn maxWidth="1.7976931348623157E308" minWidth="100.0" prefWidth="150.0" text="Unidad/Medida" />
-                        <TableColumn maxWidth="1.7976931348623157E308" minWidth="100.0" prefWidth="150.0" text="Descripción" />
-                        <TableColumn maxWidth="1.7976931348623157E308" minWidth="100.0" prefWidth="150.0" text="Precio" />
+                        <TableColumn fx:id="tcCodigoProducto" maxWidth="1.7976931348623157E308" minWidth="100.0" prefWidth="150.0" text="Código de Producto" />
+                        <TableColumn fx:id="tcCodigoBarrasProducto" maxWidth="1.7976931348623157E308" minWidth="100.0" prefWidth="150.0" text="Código de Barras" />
+                        <TableColumn fx:id="tcNombreProducto" maxWidth="1.7976931348623157E308" minWidth="100.0" prefWidth="150.0" text="Nombre" />
+                        <TableColumn fx:id="tcMarcaProducto" maxWidth="1.7976931348623157E308" minWidth="100.0" prefWidth="150.0" text="Marca" />
+                        <TableColumn fx:id="tcUnidadProducto" maxWidth="1.7976931348623157E308" minWidth="100.0" prefWidth="150.0" text="Unidad/Medida" />
+                        <TableColumn fx:id="tcDescripcionProducto" maxWidth="1.7976931348623157E308" minWidth="100.0" prefWidth="150.0" text="Descripción" />
+                        <TableColumn fx:id="tcPrcioProducto" maxWidth="1.7976931348623157E308" minWidth="100.0" prefWidth="150.0" text="Precio" />
                         <TableColumn maxWidth="1.7976931348623157E308" minWidth="100.0" prefWidth="150.0" text="Cantidad" />
                      </columns>
                      <columnResizePolicy>

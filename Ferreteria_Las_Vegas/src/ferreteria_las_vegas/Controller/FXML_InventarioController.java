@@ -9,6 +9,8 @@ package ferreteria_las_vegas.Controller;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.animation.FadeTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -82,19 +84,26 @@ public class FXML_InventarioController implements Initializable {
     private void AgregarProducto(ActionEvent event) {
         try {
             if (true) {
-                Parent root = FXMLLoader.load(getClass().getResource("/ferreteria_las_vegas/view/FXML_Productos.fxml"));
-                Stage stage = new Stage(StageStyle.UTILITY);
-
-                stage.setScene(new Scene(root));
-                stage.initModality(Modality.WINDOW_MODAL);
-                stage.initOwner(btnNuevoProducto.getScene().getWindow());
-                stage.showAndWait();
+                CargarProductos();
+                
             } else {
                 //rellenar los datos del formulario
             }
         } catch (Exception ex) {
             // mandar al servidor al log de errores
             JOptionPane.showMessageDialog(null, ex.toString());
+        }
+    }
+    public void CargarProductos(){
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/ferreteria_las_vegas/view/FXML_Productos.fxml"));
+            Stage stage = new Stage(StageStyle.UTILITY);
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.initOwner(btnNuevoProducto.getScene().getWindow());
+            stage.showAndWait();
+        } catch (IOException ex) {
+            Logger.getLogger(FXML_InventarioController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
