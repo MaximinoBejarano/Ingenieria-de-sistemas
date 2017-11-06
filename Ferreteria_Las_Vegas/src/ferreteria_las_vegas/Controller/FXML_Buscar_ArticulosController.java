@@ -72,7 +72,7 @@ public class FXML_Buscar_ArticulosController implements Initializable {
 
     @FXML
     private void FinalizarProceso(ActionEvent event) {
-        AppContext.getInstance().set("selected-Articulo",null);
+        AppContext.getInstance().set("seleccion-Articulo",null);
         Stage stageAct = (Stage) btnSalir.getScene().getWindow();
         stageAct.close();
     }
@@ -81,7 +81,7 @@ public class FXML_Buscar_ArticulosController implements Initializable {
     private void ConfirmarArgregación(ActionEvent event) {
 
         if (tblArticulos.getSelectionModel().getSelectedItem() != null) {
-            AppContext.getInstance().set("selected-Articulo", tblArticulos.getSelectionModel().getSelectedItem());
+            AppContext.getInstance().set("seleccion-Articulo", tblArticulos.getSelectionModel().getSelectedItem());
 
             Stage stageAct = (Stage) btnSeleccionar.getScene().getWindow();
             stageAct.close();

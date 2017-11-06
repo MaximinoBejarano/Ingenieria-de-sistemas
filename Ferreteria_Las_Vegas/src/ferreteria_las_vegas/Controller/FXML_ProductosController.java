@@ -91,8 +91,6 @@ public class FXML_ProductosController implements Initializable {
     @FXML
     private void BusquedadProductos(ActionEvent event) {
         ProcesoBusquedad();
-        btnEditarProducto.setDisable(false);
-        btnEliminarProducto.setDisable(false);
     }
 
     @FXML
@@ -120,7 +118,7 @@ public class FXML_ProductosController implements Initializable {
     }
 
     private void EditarProductos() {
-        Articulo pArticulo = (Articulo) AppContext.getInstance().get("selected-Articulo");
+        Articulo pArticulo = (Articulo) AppContext.getInstance().get("seleccion-Articulo");
         if (pArticulo != null) {
             pArticulo = ArticuloJpaController.getInstance().ConsultarArticuloCodigo(pArticulo.getArtCodigo());
             if (pArticulo != null) {
@@ -143,7 +141,7 @@ public class FXML_ProductosController implements Initializable {
     }
 
     private void EliminarProductos() {
-        Articulo pArticulo = (Articulo) AppContext.getInstance().get("selected-Articulo");
+        Articulo pArticulo = (Articulo) AppContext.getInstance().get("seleccion-Articulo");
         if (pArticulo != null) {
             pArticulo = ArticuloJpaController.getInstance().ConsultarArticuloCodigo(pArticulo.getArtCodigo());
             pArticulo.setArtEstado("I");
@@ -235,7 +233,7 @@ public class FXML_ProductosController implements Initializable {
     }
 
     public void CargasDatos() {
-        Articulo pArticulo = (Articulo) AppContext.getInstance().get("selected-Articulo");
+        Articulo pArticulo = (Articulo) AppContext.getInstance().get("seleccion-Articulo");
         if (pArticulo != null) {
             txtNombre.setText(pArticulo.getArtNombre());
             txtDescripcion.setText(pArticulo.getArtDescripcion());
@@ -252,6 +250,8 @@ public class FXML_ProductosController implements Initializable {
             } else {
                 txtDescuento.setText("");
             }
+            btnEditarProducto.setDisable(false);
+            btnEliminarProducto.setDisable(false);
         } else {
             btnEditarProducto.setDisable(true);
             btnEliminarProducto.setDisable(true);
