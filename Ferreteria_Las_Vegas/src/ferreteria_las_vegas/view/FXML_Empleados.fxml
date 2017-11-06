@@ -10,6 +10,7 @@
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -38,6 +39,9 @@
                            </image>
                         </ImageView>
                      </graphic>
+                     <tooltip>
+                        <Tooltip text="Volver al Menú" />
+                     </tooltip>
                   </Button>
                   <Button fx:id="btnEliminar" layoutX="540.0" layoutY="6.0" minHeight="80.0" mnemonicParsing="false" onAction="#EliminarEmpleadoClick" prefWidth="80.0" styleClass="botones_Mantenimiento" stylesheets="@../../styles/style.css" AnchorPane.bottomAnchor="4.0" AnchorPane.rightAnchor="118.0" AnchorPane.topAnchor="6.0">
                      <graphic>
@@ -50,6 +54,9 @@
                            </image>
                         </ImageView>
                      </graphic>
+                     <tooltip>
+                        <Tooltip text="Eliminar" />
+                     </tooltip>
                   </Button>
                   <Button fx:id="btnEditar" layoutX="450.0" layoutY="5.0" minHeight="80.0" mnemonicParsing="false" onAction="#EditarEmpleadoClick" prefWidth="80.0" styleClass="botones_Mantenimiento" stylesheets="@../../styles/style.css" AnchorPane.bottomAnchor="4.0" AnchorPane.rightAnchor="204.0" AnchorPane.topAnchor="6.0">
                      <graphic>
@@ -62,6 +69,9 @@
                            </image>
                         </ImageView>
                      </graphic>
+                     <tooltip>
+                        <Tooltip text="Editar" />
+                     </tooltip>
                   </Button>
                   <Button fx:id="btnBuscar" layoutX="362.0" layoutY="6.0" minHeight="80.0" mnemonicParsing="false" onAction="#BuscarEmpleadosClick" prefWidth="80.0" styleClass="botones_Mantenimiento" stylesheets="@../../styles/style.css" AnchorPane.bottomAnchor="4.0" AnchorPane.rightAnchor="290.0" AnchorPane.topAnchor="6.0">
                      <graphic>
@@ -74,6 +84,9 @@
                            </image>
                         </ImageView>
                      </graphic>
+                     <tooltip>
+                        <Tooltip text="Buscar" />
+                     </tooltip>
                   </Button>
                   <Button fx:id="btnAgregar" layoutX="273.0" layoutY="6.0" minHeight="80.0" mnemonicParsing="false" onAction="#AgregarEmpleadoClick" prefWidth="80.0" styleClass="botones_Mantenimiento" stylesheets="@../../styles/style.css" AnchorPane.bottomAnchor="4.0" AnchorPane.rightAnchor="376.0" AnchorPane.topAnchor="6.0">
                      <graphic>
@@ -86,6 +99,24 @@
                            </image>
                         </ImageView>
                      </graphic>
+                     <tooltip>
+                        <Tooltip text="Agregar" />
+                     </tooltip>
+                  </Button>
+                  <Button fx:id="btnLimpiar" layoutY="5.0" minHeight="80.0" mnemonicParsing="false" onAction="#LimpiarCamposClick" prefWidth="80.0" styleClass="botones_Mantenimiento" stylesheets="@../../styles/style.css">
+                     <graphic>
+                        <ImageView fitHeight="60.0" fitWidth="65.0" pickOnBounds="true" preserveRatio="true">
+                           <effect>
+                              <DropShadow />
+                           </effect>
+                           <image>
+                              <Image url="@../../pictures/refresh.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <tooltip>
+                        <Tooltip text="Limpiar Campos" />
+                     </tooltip>
                   </Button>
                </children>
             </AnchorPane>
@@ -327,6 +358,9 @@
                                                    <effect>
                                                       <DropShadow />
                                                    </effect>
+                                                   <tooltip>
+                                                      <Tooltip text="Asignar Selecionado" />
+                                                   </tooltip>
                                                 </Button>
                                                 <Button mnemonicParsing="false" onAction="#btnPasarTodosClick" prefHeight="40.0" prefWidth="50.0" GridPane.halignment="CENTER" GridPane.rowIndex="1">
                                                    <graphic>
@@ -339,6 +373,9 @@
                                                    <effect>
                                                       <DropShadow />
                                                    </effect>
+                                                   <tooltip>
+                                                      <Tooltip text="Asignar Todos" />
+                                                   </tooltip>
                                                 </Button>
                                                 <Button mnemonicParsing="false" onAction="#btnQuitarTodosClick" prefHeight="40.0" prefWidth="50.0" GridPane.halignment="CENTER" GridPane.rowIndex="2">
                                                    <graphic>
@@ -351,6 +388,9 @@
                                                    <effect>
                                                       <DropShadow />
                                                    </effect>
+                                                   <tooltip>
+                                                      <Tooltip text="Quitar Todos" />
+                                                   </tooltip>
                                                 </Button>
                                                 <Button mnemonicParsing="false" onAction="#btnQuitarClick" prefHeight="40.0" prefWidth="50.0" GridPane.halignment="CENTER" GridPane.rowIndex="3">
                                                    <graphic>
@@ -363,6 +403,9 @@
                                                    <effect>
                                                       <DropShadow />
                                                    </effect>
+                                                   <tooltip>
+                                                      <Tooltip text="Quitar Selecionado" />
+                                                   </tooltip>
                                                 </Button>
                                              </children>
                                           </GridPane>

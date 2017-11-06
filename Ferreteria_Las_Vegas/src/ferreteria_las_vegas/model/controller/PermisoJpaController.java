@@ -6,8 +6,11 @@
 package ferreteria_las_vegas.model.controller;
 
 import ferreteria_las_vegas.model.entities.Permiso;
+import ferreteria_las_vegas.model.entities.Usuario;
 import ferreteria_las_vegas.utils.EntityManagerHelper;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.NoResultException;
@@ -54,11 +57,24 @@ public class PermisoJpaController {
         }
     }    
     
-    public List<Permiso> ConsultarPermisosTodoslol() {
+    public List<Permiso> ConsultarPermisosDisponibles(List<Permiso> permisosAsig) {
         try {
             Query qry = em.createNamedQuery("Permiso.findAll", Permiso.class);
             List<Permiso> permisos = qry.getResultList();
-            return permisos;
+            
+            return permisos.stream().filter(e->(!permisosAsig.contains(e))).collect(Collectors.toList());                        
+        } catch (NoResultException ex) {
+            System.err.println(ex);
+            return null;
+        } catch (Exception ex) {
+            System.err.println(ex);
+            return null;
+        }
+    }
+    
+    public List<Permiso> ConsultarPermisosAsignados(Usuario usuario) {
+        try {            
+            return usuario.getPermisoList();
         } catch (NoResultException ex) {
             System.err.println(ex);
             return null;
