@@ -129,7 +129,7 @@ public class FXML_ProductosController implements Initializable {
                 if (pArticulo != null) {
                     new Alert(Alert.AlertType.CONFIRMATION, "Se edito el articulo con exito", ButtonType.OK).showAndWait();
                     btnEditarProducto.setDisable(true);
-                    btnEliminarProducto.setDisable(false);
+                    btnEliminarProducto.setDisable(true);
                     LimpiarCampos();
                 } else {
                     new Alert(Alert.AlertType.ERROR, "Ocurrio un error y no se pudo editar el Producto.", ButtonType.OK).showAndWait();
@@ -152,7 +152,7 @@ public class FXML_ProductosController implements Initializable {
                 if (pArticulo != null) {
                     new Alert(Alert.AlertType.CONFIRMATION, "Se elimino el Producto con exito", ButtonType.OK).showAndWait();
                     btnEditarProducto.setDisable(true);
-                    btnEliminarProducto.setDisable(false);
+                    btnEliminarProducto.setDisable(true);
                     LimpiarCampos();
                 } else {
                     new Alert(Alert.AlertType.ERROR, "Ocurrio un error y no se pudo eliminar el Producto.", ButtonType.OK).showAndWait();
@@ -201,7 +201,7 @@ public class FXML_ProductosController implements Initializable {
                 pArticulo.setArtPrecio(Precio);
                 pArticulo.setArtEstado("A");
             }
-          /*  if (!txtCodBarras.getText().isEmpty() || txtCodBarras.getText() != null || txtCodBarras.getText() != "") {
+           /*if (!txtCodBarras.getText().isEmpty() || txtCodBarras.getText() != null || txtCodBarras.getText() != "") {
                 pArticulo.setArtCodBarra(txtCodBarras.getText());
             }else{
                if(pArticulo.getArtCodBarra()!=null){
@@ -251,7 +251,10 @@ public class FXML_ProductosController implements Initializable {
                 txtDescuento.setText("");
             }
         } else {
+            btnEditarProducto.setDisable(true);
+            btnEliminarProducto.setDisable(true);
             LimpiarCampos();
+            
         }
 
     }
