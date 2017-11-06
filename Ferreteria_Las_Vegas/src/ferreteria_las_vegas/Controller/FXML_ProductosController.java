@@ -103,7 +103,6 @@ public class FXML_ProductosController implements Initializable {
             GuardarProducto();
         }
     }
-    
  @FXML
     private void LimpiarCamposClick(ActionEvent event) {
        LimpiarCampos();
@@ -143,7 +142,6 @@ public class FXML_ProductosController implements Initializable {
         Articulo articulo = new Articulo();
         articulo = ArticuloJpaController.getInstance().InsertarArticulo(ExtraerDatos(articulo));
         AppContext.getInstance().set("articulo-Ingresado", articulo);
-
         if (articulo != null) {
             new Alert(Alert.AlertType.INFORMATION, "Información: Se han ingresado los datos de forma exitosa ", ButtonType.OK).showAndWait();
             LimpiarCampos();
@@ -294,8 +292,6 @@ public class FXML_ProductosController implements Initializable {
 
         }
     }
-    
-    
 
     public void validarNumero(KeyEvent event) {
         /* if(Integer.parseInt(event.getCharacter())>47&&Integer.parseInt(event.getCharacter())>=57){
@@ -319,5 +315,4 @@ public class FXML_ProductosController implements Initializable {
         }
         return true;
     }
-
 }
