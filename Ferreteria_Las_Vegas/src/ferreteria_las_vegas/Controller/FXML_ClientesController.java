@@ -56,7 +56,7 @@ public class FXML_ClientesController implements Initializable {
     @FXML
     private Button btnEditarClientes;
     @FXML
-    private Button EliminarCliente;
+    private Button btnEliminarCliente;
     @FXML
     private TextField txtCedCliente;
     @FXML
@@ -139,18 +139,18 @@ public class FXML_ClientesController implements Initializable {
     
     @FXML
     private void buscarCliente(ActionEvent event) {
-        Cliente cliente =null;
+        LimpiarControles();
         LanzarBusqueda();
-        cliente = (Cliente) AppContext.getInstance().get("selected-Cliente");
+        Cliente cliente = (Cliente) AppContext.getInstance().get("selected-Cliente");
         if (cliente != null) {
             CargarDatosUsuario(cliente);
             btnEditarClientes.setDisable(false);
+            btnEliminarCliente.setDisable(false);
         }
 
     }
 
-    
-    
+  
     void ProcesoAgregar() {
         Persona persona = new Persona(txtCedCliente.getText(), txtNombreCliente.getText(), txtPApellidoCliente.getText(),"A");
         persona.setPerSApellido(txtSApellidoCliente.getText());
@@ -158,9 +158,9 @@ public class FXML_ClientesController implements Initializable {
         Contacto contactoTel1 = new Contacto(Integer.SIZE, txtTelefono1Cliente.getText(), "TEL");
         Contacto contactoTel2 = null;
         if (!txtTelefono2Cliente.getText().isEmpty()) {
-            contactoTel2 = new Contacto(Integer.SIZE, txtTelefono2Cliente.getText(), "TEL");
+            contactoTel2 = new Contacto(Integer.SIZE, txtTelefono2Cliente.getText(), "TEL2");
         } else {
-            contactoTel2 = new Contacto(Integer.SIZE, "N/A", "TEL");
+            contactoTel2 = new Contacto(Integer.SIZE, "N/A", "TEL2");
         }
         Contacto contactoEma = null;
         if (!txtCorreoCliente.getText().isEmpty()) {
@@ -198,41 +198,73 @@ public class FXML_ClientesController implements Initializable {
     @FXML
     private void EditarCliente(ActionEvent event) {
         Cliente cliente = (Cliente) AppContext.getInstance().get("selected-Cliente");
-        Persona persona = new Persona(txtCedCliente.getText(), txtNombreCliente.getText(), txtPApellidoCliente.getText(),"A");
-        persona.setPerSApellido(txtSApellidoCliente.getText());
+         Persona persona = PersonaJpaController.getInstance().ConsultarPersonaCedula(txtCedCliente.getText());
+        if (persona != null) {
 
-        
-        Contacto contactoTel1 = new Contacto(cliente.getPersona().getContactoList().get(0).getConID(), txtTelefono1Cliente.getText(), "TEL");
-        Contacto contactoTel2 = null;
-        if (!txtTelefono2Cliente.getText().isEmpty()) {
-            contactoTel2 = new Contacto(cliente.getPersona().getContactoList().get(1).getConID(), txtTelefono2Cliente.getText(), "TEL");
-        } 
-        Contacto contactoEma = null;
-        if (!txtCorreoCliente.getText().isEmpty()) {
-            contactoEma = new Contacto(cliente.getPersona().getContactoList().get(2).getConID(), txtCorreoCliente.getText(), "EMAIL");
-        } 
-        
-        Direccion direcion = new Direccion(cliente.getPersona().getDireccionList().get(0).getDirID(), TxtDireccionCliente.getText());
-        contactoTel1= new ContactoJpaController().ModificarContactoPersona(cliente.getPersona(), contactoTel1);
-        contactoTel2= new ContactoJpaController().ModificarContactoPersona(cliente.getPersona(), contactoTel2);
-//        persona.getContactoList().add(contactoTel1);
-//        persona.getContactoList().add(contactoTel1);
-////        persona.getContactoList().add(contactoEma);
-//        persona = PersonaJpaController.getInstance().ModificarPersona(persona);
-//        cliente= new Cliente(persona.getPerCedula(),new java.sql.Date(new java.util.Date().getTime()), "A");
-//        cliente = new ClienteJpaController().ModificarCliente(cliente);
+            persona.setPerNombre(txtNombreCliente.getText());
+            persona.setPerPApellido(txtPApellidoCliente.getText());
+            persona.setPerSApellido(txtSApellidoCliente.getText());
 
-        if (persona != null && cliente != null) {
-            new Alert(Alert.AlertType.INFORMATION, "Cliente se Modifico Correctamente.", ButtonType.OK).showAndWait();
+            Contacto contactoTel = BuscarContactoTipo(persona, "TEL");
+            Contacto contactoTel2 = BuscarContactoTipo(persona, "TEL2");
+            Contacto contactoEma = BuscarContactoTipo(persona, "EMAIL");
+
+            Direccion direcion = persona.getDireccionList().get(0);
+
+            contactoTel.setConContacto(txtTelefono1Cliente.getText());
+            
+            if (contactoTel2 != null) {
+                contactoTel2.setConContacto(txtTelefono2Cliente.getText());
+            }
+
+            if (contactoEma != null) {
+                contactoEma.setConContacto(txtCorreoCliente.getText());
+            }
+            direcion.setDirDirExacta(TxtDireccionCliente.getText());
+            persona = PersonaJpaController.getInstance().ModificarPersona(persona);
+            AppContext.getInstance().delete("selected-Cliente");
             LimpiarControles();
+            if (persona != null) {
+                new Alert(Alert.AlertType.INFORMATION, "Cliente editado corectamente.", ButtonType.OK).showAndWait();
+            } else {
+                new Alert(Alert.AlertType.ERROR, "Ocurrio un error y no se pudo no editar el Cliente.", ButtonType.OK).showAndWait();
+            }
         } else {
-            new Alert(Alert.AlertType.ERROR, "No se pudo Agregar el Cliente.", ButtonType.OK).showAndWait();
+            new Alert(Alert.AlertType.WARNING, "No existe un Cliente con la cedula ingresada.", ButtonType.OK).showAndWait();
         }
 
     }
 
+    Contacto BuscarContactoTipo(Persona pPersona, String Tipo) {
+        for (Contacto con : pPersona.getContactoList()) {
+            if (con.getConTipoContacto().equalsIgnoreCase(Tipo)) {
+                return con;
+            }
+        }
+        return null;
+    }
     @FXML
     private void EliminarCliente(ActionEvent event) {
+          Cliente cliente = (Cliente) AppContext.getInstance().get("selected-Cliente");
+         Persona persona = PersonaJpaController.getInstance().ConsultarPersonaCedula(txtCedCliente.getText());
+        if (persona != null) {
+
+            persona.setPerEstado("I");
+            persona = PersonaJpaController.getInstance().ModificarPersona(persona);
+            cliente=new ClienteJpaController().ModificarCliente(new Cliente(txtCedCliente.getText(), new java.sql.Date(new java.util.Date().getTime()), "I"));
+            AppContext.getInstance().delete("selected-Cliente");
+            LimpiarControles();
+            if (persona != null) {
+                new Alert(Alert.AlertType.INFORMATION, "Cliente fue eliminado corectamente.", ButtonType.OK).showAndWait();
+            } else {
+                new Alert(Alert.AlertType.ERROR, "Ocurrio un error y no se pudo eliminar el Cliente.", ButtonType.OK).showAndWait();
+            }
+        } else {
+            new Alert(Alert.AlertType.WARNING, "No existe un Cliente con la cedula ingresada.", ButtonType.OK).showAndWait();
+        }
+
+        
+        
     }
 
     private void LimpiarControles() {
@@ -244,6 +276,8 @@ public class FXML_ClientesController implements Initializable {
         txtTelefono2Cliente.setText("");
         TxtDireccionCliente.setText("");
         txtCorreoCliente.setText("");
+        btnEditarClientes.setDisable(true);
+        btnEliminarCliente.setDisable(true);
     }
 
 }
