@@ -98,6 +98,21 @@
                         <Tooltip text="Eliminar un Cliente en el sistema" />
                      </tooltip>
                   </Button>
+                  <Button fx:id="btnLimpiar" minHeight="80.0" mnemonicParsing="false" onAction="#LimpiarCamposClick" prefWidth="80.0" styleClass="botones_Mantenimiento" stylesheets="@../../styles/style.css" AnchorPane.bottomAnchor="6.0" AnchorPane.leftAnchor="6.0" AnchorPane.topAnchor="6.0">
+                     <graphic>
+                        <ImageView fitHeight="60.0" fitWidth="65.0" pickOnBounds="true" preserveRatio="true">
+                           <effect>
+                              <DropShadow />
+                           </effect>
+                           <image>
+                              <Image url="@../../pictures/refresh.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <tooltip>
+                        <Tooltip text="Limpiar Campos" />
+                     </tooltip>
+                  </Button>
                </children>
             </AnchorPane>
          </bottom>

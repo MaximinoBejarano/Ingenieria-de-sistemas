@@ -133,7 +133,8 @@ public class FXML_ProductosController implements Initializable {
     private void GuardarProducto() {
         Articulo articulo = new Articulo();
         articulo = ArticuloJpaController.getInstance().InsertarArticulo(ExtraerDatos(articulo));
-         AppContext.getInstance().set("articulo-Ingresado", articulo);
+        AppContext.getInstance().set("articulo-Ingresado", articulo);
+        
         if (articulo != null) {
             new Alert(Alert.AlertType.INFORMATION, "Información: Se han ingresado los datos de forma exitosa ", ButtonType.OK).showAndWait();
             LimpiarCampos();
@@ -285,9 +286,7 @@ public class FXML_ProductosController implements Initializable {
         }
 
     }
-    /*public void validarNumero(KeyEvent ke) {
-        if (!(ke.getKeyChar() >= KeyEvent.VK_0 && ke.getKeyChar() <= KeyEvent.VK_9)) {
-            ke.consume();
-        }
-    }*/
+    
+    
+    
 }

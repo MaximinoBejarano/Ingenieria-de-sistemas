@@ -104,6 +104,7 @@ public class FXML_Buscar_ClientesController implements Initializable {
 
     @FXML
     private void SeleccionCliente(ActionEvent event) {
+        
         if (tblClientes.getSelectionModel().getSelectedItem() != null) {
             AppContext.getInstance().set("selected-Cliente", tblClientes.getSelectionModel().getSelectedItem());
 
