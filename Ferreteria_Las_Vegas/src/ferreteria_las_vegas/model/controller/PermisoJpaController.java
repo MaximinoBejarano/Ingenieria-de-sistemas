@@ -87,3 +87,12 @@ public class PermisoJpaController {
     private EntityManager em = EntityManagerHelper.getInstance().getManager();
     private EntityTransaction et;
 }
+
+/*
+    @PreRemove
+    private void removePermiso() {
+        for (Usuario u : usuarioList) {
+            u.getPermisoList().remove(this);
+        }
+    }   
+*/

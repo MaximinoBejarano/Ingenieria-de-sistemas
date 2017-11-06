@@ -21,7 +21,6 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.animation.FadeTransition;
-import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -45,6 +44,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.StageStyle;
@@ -146,7 +146,11 @@ public class FXML_EmpleadosController implements Initializable {
 
     @FXML
     void EliminarEmpleadoClick(ActionEvent event) {
-        ProcesoEliminar();
+        if (txtCedulaEmp.getText().isEmpty()) {
+            new Alert(Alert.AlertType.WARNING, "Debe Ingresar como minimo el campo cedula.", ButtonType.OK).showAndWait();
+        } else {
+            ProcesoEliminar();
+        }        
     }
 
     @FXML
@@ -170,6 +174,11 @@ public class FXML_EmpleadosController implements Initializable {
             CargarDatosUsuario(persona);
         }
     }
+    
+      @FXML
+    void CedulaKeyTyped(KeyEvent event) {
+        //LimpiarControles();
+    }
 
     void tabPaneEvent() {
         tabPane.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends Tab> ov, Tab t, Tab t1) -> {
@@ -191,26 +200,13 @@ public class FXML_EmpleadosController implements Initializable {
         }
         else
         {
-            
+            new Alert(Alert.AlertType.WARNING, "Debe selecionar un permiso de la lista de permisos disponibles.", ButtonType.OK).showAndWait();
         }
-    }
-
-    @FXML
-    void btnPasarTodosClick(ActionEvent event) {
-        List<Permiso> permiso = null;
-        if(permiso!=null)
-        {
-            
-        }
-        else
-        {
-            
-        }
-    }
+    }    
 
     @FXML
     void btnQuitarClick(ActionEvent event) {
-        Permiso permiso = lvDisponibles.getSelectionModel().getSelectedItem();        
+        Permiso permiso = lvAsignados.getSelectionModel().getSelectedItem();        
         if(permiso!=null)
         {
             Persona persona = PersonaJpaController.getInstance().ConsultarPersonaCedula(txtCedulaEmp.getText());
@@ -220,13 +216,40 @@ public class FXML_EmpleadosController implements Initializable {
         }
         else
         {
-            
+            new Alert(Alert.AlertType.WARNING, "Debe selecionar un permiso de la lista de permisos asignados.", ButtonType.OK).showAndWait();
+        }
+    }
+    
+    @FXML
+    void btnPasarTodosClick(ActionEvent event) {
+        List<Permiso> permisos = lvDisponibles.getItems();
+        if(permisos!=null)
+        {
+            Persona persona = PersonaJpaController.getInstance().ConsultarPersonaCedula(txtCedulaEmp.getText());
+            if(persona !=null){
+                ProcesoAgregarTodosPermisos(persona);   
+            }            
+        }
+        else
+        {
+            new Alert(Alert.AlertType.WARNING, "No hay mas permisos disponibles.", ButtonType.OK).showAndWait();
         }
     }
 
     @FXML
     void btnQuitarTodosClick(ActionEvent event) {
-
+        List<Permiso> permisos = lvAsignados.getItems();
+        if(permisos!=null)
+        {
+            Persona persona = PersonaJpaController.getInstance().ConsultarPersonaCedula(txtCedulaEmp.getText());
+            if(persona !=null){
+                ProcesoQuitarTodosPermisos(persona);   
+            }            
+        }
+        else
+        {
+            new Alert(Alert.AlertType.WARNING, "No hay mas permisos asignados.", ButtonType.OK).showAndWait();
+        }
     }
 
     /*-----------------------------------------------------------------------------*/
@@ -319,27 +342,35 @@ public class FXML_EmpleadosController implements Initializable {
 
     void ProcesoEliminar() {
         Persona persona = PersonaJpaController.getInstance().ConsultarPersonaCedula(txtCedulaEmp.getText());
-        PersonaJpaController.getInstance().ModificarPersona(persona);
+        PersonaJpaController.getInstance().ModificarPersona(persona);        
     }
     
     void ProcesoAgregarPermiso(Persona persona){
         persona.getUsuario().getPermisoList().add(lvDisponibles.getSelectionModel().getSelectedItem());
         UsuarioJpaController.getInstance().ModificarUsuario(persona.getUsuario());
         CargarDatosUsuario(persona);        
-    }
-    
-    void ProcesoAgregarTodosPermisos(Usuario usuario){
-        
-    }
+    }        
     
     void ProcesoQuitarPermiso(Persona persona){
-        persona.getUsuario().getPermisoList().remove(lvAsignados.getSelectionModel().getSelectedItem());
+        persona.getUsuario().getPermisoList().remove(lvAsignados.getSelectionModel().getSelectedItem());                
+        UsuarioJpaController.getInstance().ModificarUsuario(persona.getUsuario());
+        CargarDatosUsuario(persona);
+    }
+        
+    void ProcesoAgregarTodosPermisos(Persona persona){
+        List<Permiso> permisoAsignadosList = PermisoJpaController.getInstance().ConsultarPermisosAsignados(persona.getUsuario());                        
+        List<Permiso> permisoDisponibleList = PermisoJpaController.getInstance().ConsultarPermisosDisponibles(permisoAsignadosList);        
+        persona.getUsuario().getPermisoList().addAll(permisoDisponibleList);
         UsuarioJpaController.getInstance().ModificarUsuario(persona.getUsuario());
         CargarDatosUsuario(persona);        
     }
     
-    void ProcesoQuitarTodosPermisos(){
-        
+    void ProcesoQuitarTodosPermisos(Persona persona){
+        //List<Permiso> permisoAsignadosList = PermisoJpaController.getInstance().ConsultarPermisosAsignados(persona.getUsuario());                        
+        //List<Permiso> permisoDisponibleList = PermisoJpaController.getInstance().ConsultarPermisosDisponibles(permisoAsignadosList);        
+        persona.getUsuario().getPermisoList().clear();
+        UsuarioJpaController.getInstance().ModificarUsuario(persona.getUsuario());
+        CargarDatosUsuario(persona);        
     }
 
     /*-----------------------------------------------------------------------------*/
