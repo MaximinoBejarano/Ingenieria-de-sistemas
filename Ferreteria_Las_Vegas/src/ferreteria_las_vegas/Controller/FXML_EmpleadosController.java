@@ -7,6 +7,7 @@ package ferreteria_las_vegas.Controller;
 
 import ferreteria_las_vegas.model.controller.PermisoJpaController;
 import ferreteria_las_vegas.model.controller.PersonaJpaController;
+import ferreteria_las_vegas.model.controller.UsuarioJpaController;
 import ferreteria_las_vegas.model.entities.Cliente;
 import ferreteria_las_vegas.model.entities.Contacto;
 import ferreteria_las_vegas.model.entities.Direccion;
@@ -73,6 +74,9 @@ public class FXML_EmpleadosController implements Initializable {
 
     @FXML
     private Button btnAgregar;
+    
+    @FXML
+    private Button btnLimpiar;
 
     @FXML
     private TextField txtCedulaEmp;
@@ -153,6 +157,11 @@ public class FXML_EmpleadosController implements Initializable {
             System.err.println(ex);
         }
     }
+    
+    @FXML
+    void LimpiarCamposClick(ActionEvent event) {
+        LimpiarControles();
+    }
 
     @FXML
     void CedulaAction(ActionEvent event) {
@@ -172,17 +181,47 @@ public class FXML_EmpleadosController implements Initializable {
 
     @FXML
     void btnPasarClick(ActionEvent event) {
-
+        Permiso permiso = lvDisponibles.getSelectionModel().getSelectedItem();        
+        if(permiso!=null)
+        {
+            Persona persona = PersonaJpaController.getInstance().ConsultarPersonaCedula(txtCedulaEmp.getText());
+            if(persona !=null){
+                ProcesoAgregarPermiso(persona);   
+            }            
+        }
+        else
+        {
+            
+        }
     }
 
     @FXML
     void btnPasarTodosClick(ActionEvent event) {
-
+        List<Permiso> permiso = null;
+        if(permiso!=null)
+        {
+            
+        }
+        else
+        {
+            
+        }
     }
 
     @FXML
     void btnQuitarClick(ActionEvent event) {
-
+        Permiso permiso = lvDisponibles.getSelectionModel().getSelectedItem();        
+        if(permiso!=null)
+        {
+            Persona persona = PersonaJpaController.getInstance().ConsultarPersonaCedula(txtCedulaEmp.getText());
+            if(persona !=null){
+                ProcesoQuitarPermiso(persona);   
+            }            
+        }
+        else
+        {
+            
+        }
     }
 
     @FXML
@@ -282,6 +321,26 @@ public class FXML_EmpleadosController implements Initializable {
         Persona persona = PersonaJpaController.getInstance().ConsultarPersonaCedula(txtCedulaEmp.getText());
         PersonaJpaController.getInstance().ModificarPersona(persona);
     }
+    
+    void ProcesoAgregarPermiso(Persona persona){
+        persona.getUsuario().getPermisoList().add(lvDisponibles.getSelectionModel().getSelectedItem());
+        UsuarioJpaController.getInstance().ModificarUsuario(persona.getUsuario());
+        CargarDatosUsuario(persona);        
+    }
+    
+    void ProcesoAgregarTodosPermisos(Usuario usuario){
+        
+    }
+    
+    void ProcesoQuitarPermiso(Persona persona){
+        persona.getUsuario().getPermisoList().remove(lvAsignados.getSelectionModel().getSelectedItem());
+        UsuarioJpaController.getInstance().ModificarUsuario(persona.getUsuario());
+        CargarDatosUsuario(persona);        
+    }
+    
+    void ProcesoQuitarTodosPermisos(){
+        
+    }
 
     /*-----------------------------------------------------------------------------*/
     void CargarDatosUsuario(Persona persona) {
@@ -294,18 +353,20 @@ public class FXML_EmpleadosController implements Initializable {
         txtCorreoEmp.setText(BuscarContactoContacto(persona, "EMAIL"));
         
         txtContraseñaEmp.setText(persona.getUsuario().getUsuContraseña());
+                
         txtDireccionEmp.setText(persona.getDireccionList().get(0).getDirDirExacta());
         
-        lblUsuario.setText(persona.getPerCedula() + " " + persona.getPerNombre() + " " + persona.getPerPApellido());
+        lblUsuario.setText(persona.getPerCedula() + " " + persona.getPerNombre() + " " + persona.getPerPApellido());                
         
-        List<Permiso> permisoDisponibleList = PermisoJpaController.getInstance().ConsultarPermisosTodos();
-        ObservableList<Permiso> oPermisoDisponibleList = FXCollections.observableArrayList(permisoDisponibleList);
-        
-        List<Permiso> permisoAsignadosList = PermisoJpaController.getInstance().ConsultarPermisosTodos();
+        List<Permiso> permisoAsignadosList = PermisoJpaController.getInstance().ConsultarPermisosAsignados(persona.getUsuario());
         ObservableList<Permiso> oPermisoAsignadosList = FXCollections.observableArrayList(permisoAsignadosList);
         
-        lvDisponibles.setItems(oPermisoDisponibleList);
-        lvAsignados.setItems(oPermisoAsignadosList);                
+        
+        List<Permiso> permisoDisponibleList = PermisoJpaController.getInstance().ConsultarPermisosDisponibles(permisoAsignadosList);
+        ObservableList<Permiso> oPermisoDisponibleList = FXCollections.observableArrayList(permisoDisponibleList);
+        
+        lvAsignados.setItems(oPermisoAsignadosList);      
+        lvDisponibles.setItems(oPermisoDisponibleList);                  
     }
 
     void LimpiarControles() {
@@ -319,6 +380,8 @@ public class FXML_EmpleadosController implements Initializable {
         txtContraseñaEmp.setText("");
         txtDireccionEmp.setText("");
         lblUsuario.setText("No se ha selecionado aún");
+        lvAsignados.setItems(null);
+        lvDisponibles.setItems(null);
     }
 
     /*-----------------------------------------------------------------------------*/
