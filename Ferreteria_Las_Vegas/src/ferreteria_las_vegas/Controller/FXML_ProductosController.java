@@ -201,14 +201,12 @@ public class FXML_ProductosController implements Initializable {
                 pArticulo.setArtPrecio(Precio);
                 pArticulo.setArtEstado("A");
             }
-           /*if (!txtCodBarras.getText().isEmpty() || txtCodBarras.getText() != null || txtCodBarras.getText() != "") {
-                pArticulo.setArtCodBarra(txtCodBarras.getText());
+            if(txtCodBarras.getText().isEmpty()){
+                pArticulo.setArtCodBarra(null);
             }else{
-               if(pArticulo.getArtCodBarra()!=null){
-                new Alert(Alert.AlertType.WARNING, "No es posible cambiar el codigo existente", ButtonType.OK).showAndWait();
-               }
-            }*/
-            
+            pArticulo.setArtCodBarra(txtCodBarras.getText());
+            }
+           
             if (!txtDescuento.getText().isEmpty()) {
                 Descuento = new BigDecimal(txtDescuento.getText());
                 pArticulo.setArtDescuento(Descuento);
@@ -241,10 +239,14 @@ public class FXML_ProductosController implements Initializable {
         if (pArticulo != null) {
             txtNombre.setText(pArticulo.getArtNombre());
             txtDescripcion.setText(pArticulo.getArtDescripcion());
-            txtCodBarras.setText(pArticulo.getArtCodBarra());
             txtMarca.setText(pArticulo.getArtMarca());
             txtUndMedida.setText(pArticulo.getArtUnidadMedida());
             txtPrecio.setText(pArticulo.getArtPrecio().toString());
+            if(pArticulo.getArtCodBarra()!= null){
+               txtCodBarras.setText(pArticulo.getArtCodBarra());
+            }else{
+               txtCodBarras.setText("");
+            }
             if (pArticulo.getArtDescuento() != null) {
                 txtDescuento.setText(pArticulo.getArtDescuento().toString());
             } else {
