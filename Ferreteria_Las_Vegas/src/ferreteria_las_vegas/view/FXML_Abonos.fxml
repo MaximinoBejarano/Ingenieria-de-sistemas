@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+
+<VBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="800.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="800.0">
+         <bottom>
+            <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: #2E4053;">
+               <children>
+                  <Button layoutX="621.0" layoutY="12.0" mnemonicParsing="false" prefWidth="104.0" styleClass="boton-Exit" stylesheets="@../../styles/style.css" AnchorPane.bottomAnchor="6.0" AnchorPane.rightAnchor="6.0" AnchorPane.topAnchor="6.0">
+                     <graphic>
+                        <ImageView fitHeight="60.0" fitWidth="65.0" pickOnBounds="true" preserveRatio="true" styleClass="boton-Sal">
+                           <image>
+                              <Image url="@../../pictures/salir.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <effect>
+                        <DropShadow />
+                     </effect>
+                  </Button>
+                  <Button layoutX="265.0" layoutY="6.0" minHeight="80.0" mnemonicParsing="false" prefWidth="80.0" styleClass="botones_Mantenimiento" stylesheets="@../../styles/style.css" AnchorPane.bottomAnchor="6.0" AnchorPane.rightAnchor="290.0" AnchorPane.topAnchor="6.0">
+                     <graphic>
+                        <ImageView fitHeight="60.0" fitWidth="65.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../pictures/mas.png" />
+                           </image>
+                           <effect>
+                              <DropShadow />
+                           </effect>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button layoutX="442.0" layoutY="5.0" minHeight="80.0" mnemonicParsing="false" prefWidth="80.0" styleClass="botones_Mantenimiento" stylesheets="@../../styles/style.css" AnchorPane.bottomAnchor="6.0" AnchorPane.rightAnchor="204.0" AnchorPane.topAnchor="6.0">
+                     <graphic>
+                        <ImageView fitHeight="60.0" fitWidth="65.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../pictures/modificar.png" />
+                           </image>
+                           <effect>
+                              <DropShadow />
+                           </effect>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button layoutX="532.0" layoutY="6.0" minHeight="80.0" mnemonicParsing="false" prefWidth="80.0" styleClass="botones_Mantenimiento" stylesheets="@../../styles/style.css" AnchorPane.bottomAnchor="6.0" AnchorPane.rightAnchor="118.0" AnchorPane.topAnchor="6.0">
+                     <graphic>
+                        <ImageView fitHeight="60.0" fitWidth="65.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../pictures/cubo-de-basura-lleno%20(1).png" />
+                           </image>
+                           <effect>
+                              <DropShadow />
+                           </effect>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+               </children>
+            </AnchorPane>
+         </bottom>
+         <center>
+            <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER">
+               <children>
+                  <GridPane layoutX="109.0" layoutY="7.0" prefHeight="42.0" prefWidth="692.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+                     <children>
+                        <Label text="Cliente:">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <AnchorPane GridPane.columnIndex="1">
+                           <children>
+                              <ComboBox layoutX="26.0" layoutY="18.0" prefWidth="150.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                           </children>
+                        </AnchorPane>
+                     </children>
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
+                  </GridPane>
+                  <Separator layoutX="10.0" layoutY="65.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="65.0" />
+                  <TableView layoutX="14.0" layoutY="120.0" prefHeight="365.0" prefWidth="692.0" AnchorPane.bottomAnchor="113.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="120.0">
+                    <columns>
+                      <TableColumn prefWidth="132.0" text="Número de Abono" />
+                      <TableColumn prefWidth="166.0" text="Fecha" />
+                        <TableColumn prefWidth="159.0" text="Saldo" />
+                        <TableColumn minWidth="2.0" prefWidth="223.0" text="Abono" />
+                    </columns>
+                  </TableView>
+                  <GridPane layoutX="14.0" layoutY="83.0" prefHeight="30.0" prefWidth="689.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="83.0">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="165.0" minWidth="165.0" prefWidth="165.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <Label text="Total de la Factura:">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <Label text="1000000000" GridPane.columnIndex="1">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </GridPane>
+                  <GridPane layoutX="10.0" layoutY="496.0" prefHeight="88.0" prefWidth="692.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <Label text="Abono:">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <Label text="Fecha:" GridPane.rowIndex="1">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <DatePicker GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <TextField GridPane.columnIndex="1">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </TextField>
+                     </children>
+                  </GridPane>
+               </children>
+            </AnchorPane>
+         </center>
+         <top>
+            <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: #2E4053;">
+               <children>
+                  <Label alignment="CENTER" layoutX="157.0" layoutY="21.0" text="Control de Abonos" textFill="WHITE" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="157.0" AnchorPane.rightAnchor="157.0" AnchorPane.topAnchor="21.0">
+                     <font>
+                        <Font name="Arial Unicode MS" size="48.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+         </top>
+      </BorderPane>
+   </children>
+</VBox>
