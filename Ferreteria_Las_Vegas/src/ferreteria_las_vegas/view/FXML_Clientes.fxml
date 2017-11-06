@@ -83,7 +83,7 @@
                         <Tooltip text="Editar un Cliente en el Sistema" />
                      </tooltip>
                   </Button>
-                  <Button fx:id="EliminarCliente" disable="true" layoutX="532.0" layoutY="6.0" minHeight="80.0" mnemonicParsing="false" onAction="#EliminarCliente" prefWidth="80.0" styleClass="botones_Mantenimiento" stylesheets="@../../styles/style.css" AnchorPane.bottomAnchor="6.0" AnchorPane.rightAnchor="118.0" AnchorPane.topAnchor="6.0">
+                  <Button fx:id="btnEliminarCliente" disable="true" layoutX="532.0" layoutY="6.0" minHeight="80.0" mnemonicParsing="false" onAction="#EliminarCliente" prefWidth="80.0" styleClass="botones_Mantenimiento" stylesheets="@../../styles/style.css" AnchorPane.bottomAnchor="6.0" AnchorPane.rightAnchor="118.0" AnchorPane.topAnchor="6.0">
                      <graphic>
                         <ImageView fitHeight="60.0" fitWidth="65.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -153,6 +153,9 @@
                            <GridPane.margin>
                               <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
                            </GridPane.margin>
+                           <tooltip>
+                              <Tooltip text="Ingrese la Cédula del Cliente" />
+                           </tooltip>
                         </TextField>
                         <TextField fx:id="txtNombreCliente" promptText="Campo Requerido" GridPane.columnIndex="1" GridPane.rowIndex="1">
                            <font>
@@ -161,6 +164,9 @@
                            <GridPane.margin>
                               <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
                            </GridPane.margin>
+                           <tooltip>
+                              <Tooltip text="Ingrese el Nombre del Cliente" />
+                           </tooltip>
                         </TextField>
                         <TextField fx:id="txtPApellidoCliente" promptText="Campo Requerido" GridPane.columnIndex="1" GridPane.rowIndex="2">
                            <font>
@@ -169,6 +175,9 @@
                            <GridPane.margin>
                               <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
                            </GridPane.margin>
+                           <tooltip>
+                              <Tooltip text="Ingrese el Primer Apellido del Cliente" />
+                           </tooltip>
                         </TextField>
                         <TextField fx:id="txtSApellidoCliente" promptText="Campo Requerido" GridPane.columnIndex="1" GridPane.rowIndex="3">
                            <font>
@@ -177,6 +186,9 @@
                            <GridPane.margin>
                               <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
                            </GridPane.margin>
+                           <tooltip>
+                              <Tooltip text="Ingrese el Segundo Apellido del Cliente" />
+                           </tooltip>
                         </TextField>
                         <TextField fx:id="txtTelefono1Cliente" promptText="Campo Requerido" GridPane.columnIndex="1" GridPane.rowIndex="4">
                            <font>
@@ -185,6 +197,9 @@
                            <GridPane.margin>
                               <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
                            </GridPane.margin>
+                           <tooltip>
+                              <Tooltip text="Ingrese el Número de Telefono del cliente" />
+                           </tooltip>
                         </TextField>
                         <TextField fx:id="txtTelefono2Cliente" GridPane.columnIndex="1" GridPane.rowIndex="5">
                            <font>
@@ -193,6 +208,9 @@
                            <GridPane.margin>
                               <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
                            </GridPane.margin>
+                           <tooltip>
+                              <Tooltip text="Ingrese el Número de Telefono del cliente" />
+                           </tooltip>
                         </TextField>
                         <TextField fx:id="txtCorreoCliente" GridPane.columnIndex="1" GridPane.rowIndex="6">
                            <font>
@@ -201,6 +219,9 @@
                            <GridPane.margin>
                               <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
                            </GridPane.margin>
+                           <tooltip>
+                              <Tooltip text="Ingrese el Correo Electronico  del cliente" />
+                           </tooltip>
                         </TextField>
                         <TextArea fx:id="TxtDireccionCliente" prefHeight="68.0" prefWidth="295.0" promptText="Campo Requerido" GridPane.columnIndex="1" GridPane.rowIndex="7">
                            <font>
@@ -209,6 +230,9 @@
                            <GridPane.margin>
                               <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
                            </GridPane.margin>
+                           <tooltip>
+                              <Tooltip text="Ingrese la Dirección del Lugar Donde Vive el Cliente" />
+                           </tooltip>
                         </TextArea>
                      </children>
                      <columnConstraints>
