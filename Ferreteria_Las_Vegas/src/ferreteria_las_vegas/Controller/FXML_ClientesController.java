@@ -6,13 +6,18 @@
  */
 package ferreteria_las_vegas.Controller;
 
+import ferreteria_las_vegas.model.controller.ClienteJpaController;
+import ferreteria_las_vegas.model.controller.ContactoJpaController;
 import ferreteria_las_vegas.model.controller.PersonaJpaController;
+import ferreteria_las_vegas.model.entities.Cliente;
 import ferreteria_las_vegas.model.entities.Contacto;
 import ferreteria_las_vegas.model.entities.Direccion;
 import ferreteria_las_vegas.model.entities.Persona;
 import ferreteria_las_vegas.utils.AppContext;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -70,7 +75,7 @@ public class FXML_ClientesController implements Initializable {
     private TextArea TxtDireccionCliente;
     @FXML
     private VBox dataPane;
-    
+
     public void setDataPane(Node node) {
         dataPane.getChildren().setAll(node);
     }
@@ -84,10 +89,25 @@ public class FXML_ClientesController implements Initializable {
         ft.setCycleCount(1);
         ft.setAutoReverse(false);
         ft.play();
-        
+
         return v;
     }
-    
+    void LanzarBusqueda() {
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/ferreteria_las_vegas/view/FXML_Buscar_Clientes.fxml"));
+                Parent root = (Parent) fxmlLoader.load();
+                Stage stage = new Stage(StageStyle.UTILITY);
+                stage.initOwner(btnBuscarCliente.getScene().getWindow());
+                stage.setScene(new Scene(root));
+                stage.initModality(Modality.WINDOW_MODAL);
+                stage.showAndWait();
+
+
+            } catch (Exception ex) {
+                // mandar al servidor al log de errores
+                System.err.println(ex);
+            }
+        }
     
     /**
      * Initializes the controller class.
@@ -95,7 +115,7 @@ public class FXML_ClientesController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-    }    
+    }
 
     @FXML
     private void RegresarMenu(ActionEvent event) {
@@ -108,87 +128,107 @@ public class FXML_ClientesController implements Initializable {
 
     @FXML
     private void AgregarCliente(ActionEvent event) {
-        if(txtCedCliente.getText().isEmpty() || txtNombreCliente.getText().isEmpty() || txtPApellidoCliente.getText().isEmpty() ||
-           txtSApellidoCliente.getText().isEmpty() || txtTelefono1Cliente.getText().isEmpty() || TxtDireccionCliente.getText().isEmpty()){
+        if (txtCedCliente.getText().isEmpty() || txtNombreCliente.getText().isEmpty() || txtPApellidoCliente.getText().isEmpty()
+                || txtSApellidoCliente.getText().isEmpty() || txtTelefono1Cliente.getText().isEmpty() || TxtDireccionCliente.getText().isEmpty()) {
             new Alert(Alert.AlertType.WARNING, "Advertencia: Debe completar todos los campos requeridos.", ButtonType.OK).showAndWait();
-        }else{
-        ProcesoAgregar();
+        } else {
+            ProcesoAgregar();
         }
     }
+
     
-     void ProcesoAgregar() {
-     Persona persona = new Persona(txtCedCliente.getText(), txtNombreCliente.getText(), txtPApellidoCliente.getText(),"A");
-        persona.setPerSApellido(txtSApellidoCliente.getText());
-        
-        Contacto contactoTel1 = new Contacto(Integer.SIZE, txtTelefono1Cliente.getText(), "TEL");
-        Contacto contactoTel2=null;
-        if(!txtTelefono2Cliente.getText().isEmpty()){
-        contactoTel2 = new Contacto(Integer.SIZE, txtTelefono2Cliente.getText(), "TEL");
+    @FXML
+    private void buscarCliente(ActionEvent event) {
+        Cliente cliente =null;
+        LanzarBusqueda();
+        cliente = (Cliente) AppContext.getInstance().get("selected-Cliente");
+        if (cliente != null) {
+            CargarDatosUsuario(cliente);
+            btnEditarClientes.setDisable(false);
         }
-        Contacto contactoEma=null;
-        if(!txtCorreoCliente.getText().isEmpty()){
-        contactoEma = new Contacto(Integer.SIZE, txtCorreoCliente.getText(), "EMAIL");
+
+    }
+
+    
+    
+    void ProcesoAgregar() {
+        Persona persona = new Persona(txtCedCliente.getText(), txtNombreCliente.getText(), txtPApellidoCliente.getText(),"A");
+        persona.setPerSApellido(txtSApellidoCliente.getText());
+
+        Contacto contactoTel1 = new Contacto(Integer.SIZE, txtTelefono1Cliente.getText(), "TEL");
+        Contacto contactoTel2 = null;
+        if (!txtTelefono2Cliente.getText().isEmpty()) {
+            contactoTel2 = new Contacto(Integer.SIZE, txtTelefono2Cliente.getText(), "TEL");
+        } else {
+            contactoTel2 = new Contacto(Integer.SIZE, "N/A", "TEL");
+        }
+        Contacto contactoEma = null;
+        if (!txtCorreoCliente.getText().isEmpty()) {
+            contactoEma = new Contacto(Integer.SIZE, txtCorreoCliente.getText(), "EMAIL");
+        } else {
+            contactoEma = new Contacto(Integer.SIZE, "N/A", "EMAIL");
         }
         Direccion direcion = new Direccion(Integer.SIZE, TxtDireccionCliente.getText());
+
+        persona = PersonaJpaController.getInstance().AgregarPersona(persona, direcion, contactoTel1, contactoTel2, contactoEma);
+        Cliente cliente;
+        cliente = new ClienteJpaController().AgregarCliente(new Cliente(persona.getPerCedula(), new java.sql.Date(new java.util.Date().getTime()), "A"));
+
+        if (persona != null && cliente != null) {
+            new Alert(Alert.AlertType.INFORMATION, "Cliente Agregado Correctamente.", ButtonType.OK).showAndWait();
+            LimpiarControles();
+        } else {
+            new Alert(Alert.AlertType.ERROR, "No se pudo Modificar el Cliente.", ButtonType.OK).showAndWait();
+        }
+    }
+
+    void CargarDatosUsuario(Cliente persona) {
+        txtCedCliente.setText(persona.getPersona().getPerCedula());
+        txtNombreCliente.setText(persona.getPersona().getPerNombre());
+        txtPApellidoCliente.setText(persona.getPersona().getPerPApellido());
+        txtSApellidoCliente.setText(persona.getPersona().getPerSApellido());
+        txtTelefono1Cliente.setText(persona.getPersona().getContactoList().get(0).getConContacto());
+        txtTelefono2Cliente.setText(persona.getPersona().getContactoList().get(1).getConContacto());
+        txtCorreoCliente.setText(persona.getPersona().getContactoList().get(2).getConContacto());
+        TxtDireccionCliente.setText(persona.getPersona().getDireccionList().get(0).getDirDirExacta());
+    }
+
+    
+
+    @FXML
+    private void EditarCliente(ActionEvent event) {
+        Cliente cliente = (Cliente) AppContext.getInstance().get("selected-Cliente");
+        Persona persona = new Persona(txtCedCliente.getText(), txtNombreCliente.getText(), txtPApellidoCliente.getText(),"A");
+        persona.setPerSApellido(txtSApellidoCliente.getText());
+
         
-        persona = PersonaJpaController.getInstance().AgregarPersona(persona, direcion, contactoTel1,contactoTel2, contactoEma);
+        Contacto contactoTel1 = new Contacto(cliente.getPersona().getContactoList().get(0).getConID(), txtTelefono1Cliente.getText(), "TEL");
+        Contacto contactoTel2 = null;
+        if (!txtTelefono2Cliente.getText().isEmpty()) {
+            contactoTel2 = new Contacto(cliente.getPersona().getContactoList().get(1).getConID(), txtTelefono2Cliente.getText(), "TEL");
+        } 
+        Contacto contactoEma = null;
+        if (!txtCorreoCliente.getText().isEmpty()) {
+            contactoEma = new Contacto(cliente.getPersona().getContactoList().get(2).getConID(), txtCorreoCliente.getText(), "EMAIL");
+        } 
         
-        
-        if (persona != null) {
-            new Alert(Alert.AlertType.INFORMATION, "Cliente Agregado Corectamente.", ButtonType.OK).showAndWait();
+        Direccion direcion = new Direccion(cliente.getPersona().getDireccionList().get(0).getDirID(), TxtDireccionCliente.getText());
+        contactoTel1= new ContactoJpaController().ModificarContactoPersona(cliente.getPersona(), contactoTel1);
+        contactoTel2= new ContactoJpaController().ModificarContactoPersona(cliente.getPersona(), contactoTel2);
+//        persona.getContactoList().add(contactoTel1);
+//        persona.getContactoList().add(contactoTel1);
+////        persona.getContactoList().add(contactoEma);
+//        persona = PersonaJpaController.getInstance().ModificarPersona(persona);
+//        cliente= new Cliente(persona.getPerCedula(),new java.sql.Date(new java.util.Date().getTime()), "A");
+//        cliente = new ClienteJpaController().ModificarCliente(cliente);
+
+        if (persona != null && cliente != null) {
+            new Alert(Alert.AlertType.INFORMATION, "Cliente se Modifico Correctamente.", ButtonType.OK).showAndWait();
             LimpiarControles();
         } else {
             new Alert(Alert.AlertType.ERROR, "No se pudo Agregar el Cliente.", ButtonType.OK).showAndWait();
         }
-     }
-    
-    @FXML
-    private void buscarCliente(ActionEvent event) {
-        
-         LanzarBusqueda();
-        Persona persona = (Persona) AppContext.getInstance().get("selected-persona");
-        if (persona != null) {
-            CargarDatosUsuario(persona);
-        }
-          
-    }
-    
-      Contacto BuscarContactoTipo(Persona pPersona, String Tipo) {
-        for (Contacto con : pPersona.getContactoList()) {
-            if (con.getConTipoContacto().equalsIgnoreCase(Tipo)) {
-                return con;
-            }
-        }
-        return null;
-    }
-      
-    void CargarDatosUsuario(Persona persona) {
-        txtCedCliente.setText(persona.getPerCedula());
-        txtNombreCliente.setText(persona.getPerNombre());
-        txtPApellidoCliente.setText(persona.getPerPApellido());
-        txtSApellidoCliente.setText(persona.getPerSApellido());
-        txtTelefono1Cliente.setText(BuscarContactoTipo(persona, "TEL").getConContacto());
-        txtCorreoCliente.setText(BuscarContactoTipo(persona, "EMAIL").getConContacto());
-        TxtDireccionCliente.setText(persona.getDireccionList().get(0).getDirDirExacta());
-    }
-    void LanzarBusqueda() {
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/ferreteria_las_vegas/view/FXML_Buscar_Clientes.fxml"));
-            Parent root = (Parent) fxmlLoader.load();
-            Stage stage = new Stage(StageStyle.UTILITY);
-            stage.initOwner(btnBuscarCliente.getScene().getWindow());
-            stage.setScene(new Scene(root));
-            stage.initModality(Modality.WINDOW_MODAL);
-            stage.showAndWait();
 
-        } catch (Exception ex) {
-            // mandar al servidor al log de errores
-            System.err.println(ex);
-        }
-    }
-
-    @FXML
-    private void EditarCliente(ActionEvent event) {
     }
 
     @FXML
@@ -205,5 +245,6 @@ public class FXML_ClientesController implements Initializable {
         TxtDireccionCliente.setText("");
         txtCorreoCliente.setText("");
     }
-    
+
 }
+

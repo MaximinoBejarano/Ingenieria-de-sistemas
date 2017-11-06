@@ -6,9 +6,12 @@
  */
 package ferreteria_las_vegas.model.controller;
 import ferreteria_las_vegas.model.entities.Cliente;
+import ferreteria_las_vegas.model.entities.Persona;
 import ferreteria_las_vegas.utils.EntityManagerHelper;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
+import javax.persistence.Query;
 /**
  *
  * @author wili
@@ -35,9 +38,60 @@ public class ClienteJpaController {
         return INSTANCE;
     }
     
+       /**
+     * Metodo que consulta y devuelve una lista con todas las personas que hay
+     * en la base de datos en la tabla tb_Personas.
+     *
+     * @return
+     */
+    public List<Cliente> ConsultarPersonasTodos() {
+        try {
+            Query qry = em.createNamedQuery("Cliente.findAll", Cliente.class);// consulta definida por folio
+            List<Cliente> personas = qry.getResultList();// Recibe el resultado de la consulta  
+            return personas;
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+    
+        public Cliente AgregarCliente(Cliente pCliente) {
+        et = em.getTransaction();
+        try {
+            et.begin();
+            em.persist(pCliente);
+            et.commit();
+            return pCliente;
+        } catch (Exception ex) {
+            et.rollback();
+            return null;
+        }
+    }
+     
+        /**
+     * Metodo que edita una persona(cliente) en la base de datos en tabla tb_Personas
+     *
+     * @param pPersona
+     * @return
+     */
+        
+    public Cliente ModificarCliente(Cliente pPersona) {
+        et = em.getTransaction();
+        try {          
+          
+            et.begin();            
+            em.merge(pPersona);
+            et.commit();            
+            return pPersona;
+        } catch (Exception ex) {
+            et.rollback();
+            System.out.println(ex);
+            return null;
+        }
+    } 
     
     
-    
+    private EntityManager em = EntityManagerHelper.getInstance().getManager();
+    private EntityTransaction et;
     
 }
 

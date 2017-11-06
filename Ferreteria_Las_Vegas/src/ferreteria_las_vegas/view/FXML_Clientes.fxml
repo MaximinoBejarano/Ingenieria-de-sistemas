@@ -5,6 +5,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -33,10 +34,13 @@
                      <effect>
                         <DropShadow />
                      </effect>
+                     <tooltip>
+                        <Tooltip text="Regresar al Menú Principal" />
+                     </tooltip>
                   </Button>
                   <Button fx:id="btnAgregarCliente" layoutX="265.0" layoutY="6.0" minHeight="80.0" mnemonicParsing="false" onAction="#AgregarCliente" prefWidth="80.0" styleClass="botones_Mantenimiento" stylesheets="@../../styles/style.css" AnchorPane.bottomAnchor="6.0" AnchorPane.rightAnchor="376.0" AnchorPane.topAnchor="6.0">
                      <graphic>
-                        <ImageView fitHeight="60.0" fitWidth="65.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView accessibleHelp="Agregar nuevo cliente al sistema" fitHeight="60.0" fitWidth="65.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../pictures/mas.png" />
                            </image>
@@ -45,6 +49,9 @@
                            </effect>
                         </ImageView>
                      </graphic>
+                     <tooltip>
+                        <Tooltip text="Agregar un Nuevo Cliente al Sistema" />
+                     </tooltip>
                   </Button>
                   <Button fx:id="btnBuscarCliente" layoutX="354.0" layoutY="6.0" minHeight="80.0" mnemonicParsing="false" onAction="#buscarCliente" prefWidth="80.0" styleClass="botones_Mantenimiento" stylesheets="@../../styles/style.css" AnchorPane.bottomAnchor="6.0" AnchorPane.rightAnchor="290.0" AnchorPane.topAnchor="6.0">
                      <graphic>
@@ -57,8 +64,11 @@
                            </effect>
                         </ImageView>
                      </graphic>
+                     <tooltip>
+                        <Tooltip text="Buscar un Cliente" />
+                     </tooltip>
                   </Button>
-                  <Button fx:id="btnEditarClientes" layoutX="442.0" layoutY="5.0" minHeight="80.0" mnemonicParsing="false" onAction="#EditarCliente" prefWidth="80.0" styleClass="botones_Mantenimiento" stylesheets="@../../styles/style.css" AnchorPane.bottomAnchor="6.0" AnchorPane.rightAnchor="204.0" AnchorPane.topAnchor="6.0">
+                  <Button fx:id="btnEditarClientes" disable="true" layoutX="442.0" layoutY="5.0" minHeight="80.0" mnemonicParsing="false" onAction="#EditarCliente" prefWidth="80.0" styleClass="botones_Mantenimiento" stylesheets="@../../styles/style.css" AnchorPane.bottomAnchor="6.0" AnchorPane.rightAnchor="204.0" AnchorPane.topAnchor="6.0">
                      <graphic>
                         <ImageView fitHeight="60.0" fitWidth="65.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -69,8 +79,11 @@
                            </effect>
                         </ImageView>
                      </graphic>
+                     <tooltip>
+                        <Tooltip text="Editar un Cliente en el Sistema" />
+                     </tooltip>
                   </Button>
-                  <Button fx:id="EliminarCliente" layoutX="532.0" layoutY="6.0" minHeight="80.0" mnemonicParsing="false" onAction="#EliminarCliente" prefWidth="80.0" styleClass="botones_Mantenimiento" stylesheets="@../../styles/style.css" AnchorPane.bottomAnchor="6.0" AnchorPane.rightAnchor="118.0" AnchorPane.topAnchor="6.0">
+                  <Button fx:id="EliminarCliente" disable="true" layoutX="532.0" layoutY="6.0" minHeight="80.0" mnemonicParsing="false" onAction="#EliminarCliente" prefWidth="80.0" styleClass="botones_Mantenimiento" stylesheets="@../../styles/style.css" AnchorPane.bottomAnchor="6.0" AnchorPane.rightAnchor="118.0" AnchorPane.topAnchor="6.0">
                      <graphic>
                         <ImageView fitHeight="60.0" fitWidth="65.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -81,6 +94,9 @@
                            </effect>
                         </ImageView>
                      </graphic>
+                     <tooltip>
+                        <Tooltip text="Eliminar un Cliente en el sistema" />
+                     </tooltip>
                   </Button>
                </children>
             </AnchorPane>
@@ -216,7 +232,7 @@
          <top>
             <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: #2E4053;">
                <children>
-                  <Label alignment="CENTER" layoutX="157.0" layoutY="21.0" text="Control de Clientes" textFill="WHITE" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="157.0" AnchorPane.rightAnchor="157.0" AnchorPane.topAnchor="21.0">
+                  <Label alignment="CENTER" layoutX="157.0" layoutY="21.0" text="Clientes" textFill="WHITE" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="157.0" AnchorPane.rightAnchor="157.0" AnchorPane.topAnchor="21.0">
                      <font>
                         <Font name="Arial Unicode MS" size="48.0" />
                      </font>

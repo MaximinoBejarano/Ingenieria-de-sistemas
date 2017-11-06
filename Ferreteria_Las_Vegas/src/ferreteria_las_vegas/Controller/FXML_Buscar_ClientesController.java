@@ -5,21 +5,27 @@
  */
 package ferreteria_las_vegas.Controller;
 
+import ferreteria_las_vegas.model.controller.ClienteJpaController;
 import ferreteria_las_vegas.model.controller.PersonaJpaController;
+import ferreteria_las_vegas.model.entities.Cliente;
+import ferreteria_las_vegas.model.entities.Contacto;
 import ferreteria_las_vegas.model.entities.Persona;
+import ferreteria_las_vegas.utils.AppContext;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -33,90 +39,94 @@ import javafx.stage.Stage;
 public class FXML_Buscar_ClientesController implements Initializable {
 
     @FXML
-    private Button btnSalir;
+    private Button btnSalirCliente;
     @FXML
     private Button btnSeleccionarCliente;
     @FXML
     private TextField txtCedualCliente;
     @FXML
-    private TextField txtNombreCliente;
+    private TableView<Cliente> tblClientes;
     @FXML
-    private TableColumn<?, ?> colCedula;
+    private TableColumn<Cliente, String> tcCedulaCliente;
     @FXML
-    private TableColumn<?, ?> colNombre;
+    private TableColumn<Cliente, String> tcNombreCliente;
     @FXML
-    private TableColumn<?, ?> colPApellido;
+    private TableColumn<Cliente, String> tcPApellidoCliente;
     @FXML
-    private TableColumn<?, ?> colSApellido;
+    private TableColumn<Cliente, String> tcSApellidoCliente;
     @FXML
-    private TableColumn<?, ?> colTelefono1;
+    private TableColumn<Cliente, String> tcTelefono1Cliente;
     @FXML
-    private TableColumn<?, ?> colTelefono2;
+    private TableColumn<Cliente, String> tcTelefono2Cliente;
     @FXML
-    private TableColumn<?, ?> colCorreo;
+    private TableColumn<Cliente, String> tcCorreoElectronicoCliente;
     @FXML
-    private TableColumn<?, ?> colDierccion;
+    private TableColumn<Cliente, String> tcDireccionCliente;
 
-      @FXML
-    private TableView<Persona> tblCliente;
-
-    @FXML
-    void SalirClick(ActionEvent event) {
-        Stage stageAct = (Stage) btnSalir.getScene().getWindow();
-        stageAct.close();
-    }
-
-    
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-    }  
-    
-    void CargarDatosTabla() {
-        TableColumn<Persona, String> colInfoPersona = new TableColumn<>("Información de Empleados");
-        TableColumn<Persona, String> colCedulaPersona = new TableColumn<>("Cedula");
-        TableColumn<Persona, String> colNombrePersona = new TableColumn<>("Nombre");
-        TableColumn<Persona, String> colAppellidoPersona = new TableColumn<>("Apellido");
-        colInfoPersona.getColumns().addAll(colCedulaPersona, colNombrePersona, colAppellidoPersona);
-        tblCliente.getColumns().add(colInfoPersona);
+        RecargarTblClientes();
+        new ClienteJpaController().ConsultarPersonasTodos();
+        FilteredList<Cliente> filteredData = new FilteredList<>(FXCollections.observableArrayList(new ClienteJpaController().ConsultarPersonasTodos().stream().filter(e -> e.getCliEstado().equalsIgnoreCase("A")).collect(Collectors.toList())), p -> true);
 
-        /*colCedulaPersona.setCellValueFactory(new PropertyValueFactory<>("perCedula"));
-        colNombrePersona.setCellValueFactory(new PropertyValueFactory<>("perNombre"));
-        colAppellidoPersona.setCellValueFactory(new PropertyValueFactory<>("perPApellido"));*/
-
-        List<Persona> PersonaList = PersonaJpaController.getInstance().ConsultarPersonasTodos();
-        ObservableList<Persona> OLecturaList = FXCollections.observableArrayList(PersonaList);
-        tblCliente.setItems(OLecturaList);
-        
-        colCedulaPersona.setCellValueFactory((cellData) -> new SimpleStringProperty(cellData.getValue().getPerCedula()));
-        colNombrePersona.setCellValueFactory((cellData) -> new SimpleStringProperty(cellData.getValue().getPerNombre()));
-        colAppellidoPersona.setCellValueFactory((cellData) -> new SimpleStringProperty(cellData.getValue().getPerPApellido()));        
-    }
-
-    void FiltroDatosTabla() {                      
-        
-        FilteredList<Persona> filteredData = new FilteredList<>(FXCollections.observableArrayList(), p -> true);
         txtCedualCliente.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
-            filteredData.setPredicate((Persona persona) -> {
+            filteredData.setPredicate((Cliente client) -> {
                 if (newValue == null || newValue.isEmpty()) {
                     return true;
                 }
                 String lowerCaseFilter = newValue.toLowerCase();
-                if (persona.getPerCedula().toLowerCase().contains(lowerCaseFilter)) {
+
+                if (client.getPersona().getPerCedula().toLowerCase().contains(lowerCaseFilter)) {
                     return true;
-                } else if (persona.getPerNombre().toLowerCase().contains(lowerCaseFilter)) {
+                } else if (client.getPersona().getPerNombre().toLowerCase().contains(lowerCaseFilter)) {
+                    return true; 
+                } else if (client.getPersona().getPerPApellido().toLowerCase().contains(lowerCaseFilter)) {
                     return true;
-                } else if (persona.getPerSApellido().toLowerCase().contains(lowerCaseFilter)) {
+                } else if (client.getPersona().getPerSApellido().toLowerCase().contains(lowerCaseFilter)) {
                     return true;
                 }
                 return false;
             });
         });
-        SortedList<Persona> sortedData = new SortedList<>(filteredData);
-        sortedData.comparatorProperty().bind(tblCliente.comparatorProperty());
-        tblCliente.setItems(sortedData);
+
+        SortedList<Cliente> sortedData = new SortedList<>(filteredData);
+        sortedData.comparatorProperty().bind(tblClientes.comparatorProperty());
+        tblClientes.setItems(sortedData);
+
+    }
+
+    @FXML
+    private void CerrarPantallaBusqueda(ActionEvent event) {
+
+        Stage stageAct = (Stage) btnSalirCliente.getScene().getWindow();
+        stageAct.close();
+
+    }
+
+    @FXML
+    private void SeleccionCliente(ActionEvent event) {
+        if (tblClientes.getSelectionModel().getSelectedItem() != null) {
+            AppContext.getInstance().set("selected-Cliente", tblClientes.getSelectionModel().getSelectedItem());
+
+            Stage stageAct = (Stage) btnSalirCliente.getScene().getWindow();
+            stageAct.close();
+        } else {
+            new Alert(Alert.AlertType.WARNING, "Debe selecionar una fila de la tabla.", ButtonType.OK).showAndWait();
+        }
+
+    }
+
+    /*----------------------------------------------------------------------------------------------------*/
+
+    private void RecargarTblClientes() {
+        tblClientes.getItems().clear();
+        tcCedulaCliente.setCellValueFactory((cellData) -> new SimpleStringProperty(cellData.getValue().getPersona().getPerCedula()));
+        tcNombreCliente.setCellValueFactory((cellData) -> new SimpleStringProperty(cellData.getValue().getPersona().getPerNombre()));
+        tcPApellidoCliente.setCellValueFactory((cellData) -> new SimpleStringProperty(cellData.getValue().getPersona().getPerPApellido()));
+        tcSApellidoCliente.setCellValueFactory((cellData) -> new SimpleStringProperty(cellData.getValue().getPersona().getPerSApellido()));
+        tblClientes.setItems(FXCollections.observableArrayList(new ClienteJpaController().ConsultarPersonasTodos().stream().filter(e -> e.getCliEstado().equals("I")).collect(Collectors.toList())));
     }
 }
