@@ -201,6 +201,11 @@ public class FXML_ProductosController implements Initializable {
                 pArticulo.setArtPrecio(Precio);
                 pArticulo.setArtEstado("A");
             }
+            if(txtCodBarras.getText().isEmpty()){
+                pArticulo.setArtCodBarra(null);
+            }else{
+            pArticulo.setArtCodBarra(txtCodBarras.getText());
+            }
           /*  if (!txtCodBarras.getText().isEmpty() || txtCodBarras.getText() != null || txtCodBarras.getText() != "") {
                 pArticulo.setArtCodBarra(txtCodBarras.getText());
             }else{
