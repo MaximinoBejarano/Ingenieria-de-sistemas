@@ -6,13 +6,9 @@
 package ferreteria_las_vegas.Controller;
 
 import ferreteria_las_vegas.model.controller.ClienteJpaController;
-import ferreteria_las_vegas.model.controller.PersonaJpaController;
 import ferreteria_las_vegas.model.entities.Cliente;
-import ferreteria_las_vegas.model.entities.Contacto;
-import ferreteria_las_vegas.model.entities.Persona;
 import ferreteria_las_vegas.utils.AppContext;
 import java.net.URL;
-import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 import javafx.beans.property.SimpleStringProperty;
@@ -69,7 +65,7 @@ public class FXML_Buscar_ClientesController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         RecargarTblClientes();
-        new ClienteJpaController().ConsultarPersonasTodos();
+
         FilteredList<Cliente> filteredData = new FilteredList<>(FXCollections.observableArrayList(new ClienteJpaController().ConsultarPersonasTodos().stream().filter(e -> e.getCliEstado().equalsIgnoreCase("A")).collect(Collectors.toList())), p -> true);
 
         txtCedualCliente.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
@@ -127,6 +123,6 @@ public class FXML_Buscar_ClientesController implements Initializable {
         tcNombreCliente.setCellValueFactory((cellData) -> new SimpleStringProperty(cellData.getValue().getPersona().getPerNombre()));
         tcPApellidoCliente.setCellValueFactory((cellData) -> new SimpleStringProperty(cellData.getValue().getPersona().getPerPApellido()));
         tcSApellidoCliente.setCellValueFactory((cellData) -> new SimpleStringProperty(cellData.getValue().getPersona().getPerSApellido()));
-        tblClientes.setItems(FXCollections.observableArrayList(new ClienteJpaController().ConsultarPersonasTodos().stream().filter(e -> e.getCliEstado().equals("I")).collect(Collectors.toList())));
+        tblClientes.setItems(FXCollections.observableArrayList(new ClienteJpaController().ConsultarPersonasTodos().stream().filter(e -> e.getCliEstado().equals("A")).collect(Collectors.toList())));
     }
 }

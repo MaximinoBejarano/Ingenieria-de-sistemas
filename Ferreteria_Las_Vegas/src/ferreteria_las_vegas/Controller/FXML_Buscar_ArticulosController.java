@@ -72,6 +72,7 @@ public class FXML_Buscar_ArticulosController implements Initializable {
 
     @FXML
     private void FinalizarProceso(ActionEvent event) {
+        AppContext.getInstance().set("selected-Articulo",null);
         Stage stageAct = (Stage) btnSalir.getScene().getWindow();
         stageAct.close();
     }

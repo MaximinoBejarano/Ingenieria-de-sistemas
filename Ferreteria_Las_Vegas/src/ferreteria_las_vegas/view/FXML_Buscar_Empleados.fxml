@@ -53,7 +53,7 @@
                <children>
                   <GridPane layoutX="25.0" layoutY="32.0" prefHeight="61.0" prefWidth="720.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="32.0">
                      <children>
-                        <Label text="Busqueda" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                        <Label text="Buscar:" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                            <font>
                               <Font name="System Bold" size="20.0" />
                            </font>
@@ -86,7 +86,7 @@
          <top>
             <AnchorPane prefHeight="110.0" prefWidth="720.0" style="-fx-background-color: #2E4053;">
                <children>
-                  <Label alignment="CENTER" layoutX="125.0" layoutY="21.0" prefHeight="69.0" prefWidth="555.0" text="Busqueda de Empleados" textFill="WHITE" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="21.0">
+                  <Label alignment="CENTER" layoutX="125.0" layoutY="21.0" prefHeight="69.0" prefWidth="555.0" text="Búsqueda de Empleados" textFill="WHITE" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="21.0">
                      <font>
                         <Font name="Arial Unicode MS" size="48.0" />
                      </font>
