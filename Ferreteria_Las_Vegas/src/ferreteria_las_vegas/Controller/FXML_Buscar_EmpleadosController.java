@@ -50,6 +50,7 @@ public class FXML_Buscar_EmpleadosController implements Initializable {
 
     @FXML
     void SalirClick(ActionEvent event) {
+        AppContext.getInstance().set("selected-persona", null);
         Stage stageAct = (Stage) btnSalir.getScene().getWindow();
         stageAct.close();
     }

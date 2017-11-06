@@ -18,6 +18,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.PreRemove;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -48,7 +49,7 @@ public class Permiso implements Serializable {
     @Basic(optional = false)
     @Column(name = "Per_Descripcion")
     private String perDescripcion;
-    
+
     @ManyToMany(mappedBy = "permisoList")
     private List<Usuario> usuarioList;
 
@@ -122,5 +123,11 @@ public class Permiso implements Serializable {
     public String toString() {
         return "ferreteria_las_vegas.model.entities.Permiso[ perID=" + perID + " ]";
     }
-    
+
+    /*@PreRemove
+    private void removePermisoFromUsuario() {
+        for (Usuario u : usuarioList) {
+            u.getPermisoList().remove(this);
+        }
+    } */   
 }

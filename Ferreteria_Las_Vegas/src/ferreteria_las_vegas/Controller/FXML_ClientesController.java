@@ -7,7 +7,6 @@
 package ferreteria_las_vegas.Controller;
 
 import ferreteria_las_vegas.model.controller.ClienteJpaController;
-import ferreteria_las_vegas.model.controller.ContactoJpaController;
 import ferreteria_las_vegas.model.controller.PersonaJpaController;
 import ferreteria_las_vegas.model.entities.Cliente;
 import ferreteria_las_vegas.model.entities.Contacto;
@@ -16,8 +15,6 @@ import ferreteria_las_vegas.model.entities.Persona;
 import ferreteria_las_vegas.utils.AppContext;
 import java.io.IOException;
 import java.net.URL;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -92,23 +89,23 @@ public class FXML_ClientesController implements Initializable {
 
         return v;
     }
+
     void LanzarBusqueda() {
-            try {
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/ferreteria_las_vegas/view/FXML_Buscar_Clientes.fxml"));
-                Parent root = (Parent) fxmlLoader.load();
-                Stage stage = new Stage(StageStyle.UTILITY);
-                stage.initOwner(btnBuscarCliente.getScene().getWindow());
-                stage.setScene(new Scene(root));
-                stage.initModality(Modality.WINDOW_MODAL);
-                stage.showAndWait();
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/ferreteria_las_vegas/view/FXML_Buscar_Clientes.fxml"));
+            Parent root = (Parent) fxmlLoader.load();
+            Stage stage = new Stage(StageStyle.UTILITY);
+            stage.initOwner(btnBuscarCliente.getScene().getWindow());
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.showAndWait();
 
-
-            } catch (Exception ex) {
-                // mandar al servidor al log de errores
-                System.err.println(ex);
-            }
+        } catch (Exception ex) {
+            // mandar al servidor al log de errores
+            System.err.println(ex);
         }
-    
+    }
+
     /**
      * Initializes the controller class.
      */
@@ -136,7 +133,6 @@ public class FXML_ClientesController implements Initializable {
         }
     }
 
-    
     @FXML
     private void buscarCliente(ActionEvent event) {
         LimpiarControles();
@@ -150,9 +146,8 @@ public class FXML_ClientesController implements Initializable {
 
     }
 
-  
     void ProcesoAgregar() {
-        Persona persona = new Persona(txtCedCliente.getText(), txtNombreCliente.getText(), txtPApellidoCliente.getText(),"A");
+        Persona persona = new Persona(txtCedCliente.getText(), txtNombreCliente.getText(), txtPApellidoCliente.getText(), "A");
         persona.setPerSApellido(txtSApellidoCliente.getText());
 
         Contacto contactoTel1 = new Contacto(Integer.SIZE, txtTelefono1Cliente.getText(), "TEL");
@@ -193,12 +188,10 @@ public class FXML_ClientesController implements Initializable {
         TxtDireccionCliente.setText(persona.getPersona().getDireccionList().get(0).getDirDirExacta());
     }
 
-    
-
     @FXML
     private void EditarCliente(ActionEvent event) {
         Cliente cliente = (Cliente) AppContext.getInstance().get("selected-Cliente");
-         Persona persona = PersonaJpaController.getInstance().ConsultarPersonaCedula(txtCedCliente.getText());
+        Persona persona = PersonaJpaController.getInstance().ConsultarPersonaCedula(txtCedCliente.getText());
         if (persona != null) {
 
             persona.setPerNombre(txtNombreCliente.getText());
@@ -212,7 +205,7 @@ public class FXML_ClientesController implements Initializable {
             Direccion direcion = persona.getDireccionList().get(0);
 
             contactoTel.setConContacto(txtTelefono1Cliente.getText());
-            
+
             if (contactoTel2 != null) {
                 contactoTel2.setConContacto(txtTelefono2Cliente.getText());
             }
@@ -243,15 +236,16 @@ public class FXML_ClientesController implements Initializable {
         }
         return null;
     }
+
     @FXML
     private void EliminarCliente(ActionEvent event) {
-          Cliente cliente = (Cliente) AppContext.getInstance().get("selected-Cliente");
-         Persona persona = PersonaJpaController.getInstance().ConsultarPersonaCedula(txtCedCliente.getText());
+        Cliente cliente = (Cliente) AppContext.getInstance().get("selected-Cliente");
+        Persona persona = PersonaJpaController.getInstance().ConsultarPersonaCedula(txtCedCliente.getText());
         if (persona != null) {
 
             persona.setPerEstado("I");
             persona = PersonaJpaController.getInstance().ModificarPersona(persona);
-            cliente=new ClienteJpaController().ModificarCliente(new Cliente(txtCedCliente.getText(), new java.sql.Date(new java.util.Date().getTime()), "I"));
+            cliente = new ClienteJpaController().ModificarCliente(new Cliente(txtCedCliente.getText(), new java.sql.Date(new java.util.Date().getTime()), "I"));
             AppContext.getInstance().delete("selected-Cliente");
             LimpiarControles();
             if (persona != null) {
@@ -263,8 +257,11 @@ public class FXML_ClientesController implements Initializable {
             new Alert(Alert.AlertType.WARNING, "No existe un Cliente con la cedula ingresada.", ButtonType.OK).showAndWait();
         }
 
-        
-        
+    }
+
+    @FXML
+    private void LimpiarCamposClick(ActionEvent event) {
+        LimpiarControles();
     }
 
     private void LimpiarControles() {
@@ -281,4 +278,3 @@ public class FXML_ClientesController implements Initializable {
     }
 
 }
-

@@ -42,14 +42,18 @@ public class FXML_FacturaciónController implements Initializable {
 
     @FXML
     private void CobrarFactura(ActionEvent e) {
-        try {
+       LanzarBusqueda();
+    }
+    
+    public void LanzarBusqueda(){
+     try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/ferreteria_las_vegas/view/FXML_Pagos.fxml"));
            
                 Parent root1 = (Parent) fxmlLoader.load();
                 Stage stage = new Stage(StageStyle.UTILITY);
                 stage.setScene(new Scene(root1));
                 stage.initModality(Modality.WINDOW_MODAL);
-                stage.initOwner(((Node) e.getSource()).getScene().getWindow());
+                stage.initOwner(btnNuevoProducto.getScene().getWindow());
 //                stage.initOwner(btnNuevoProducto.getScene().getWindow());
                 stage.showAndWait();
 

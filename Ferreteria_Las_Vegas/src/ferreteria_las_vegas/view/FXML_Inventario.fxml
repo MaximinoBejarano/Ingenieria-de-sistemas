@@ -8,6 +8,7 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -151,12 +152,15 @@
                         </TextField>
                         <GridPane GridPane.columnIndex="3" GridPane.halignment="LEFT" GridPane.valignment="CENTER">
                            <children>
-                              <RadioButton mnemonicParsing="false" text="Contado" GridPane.halignment="LEFT" GridPane.valignment="CENTER">
+                              <RadioButton fx:id="rdbContado" mnemonicParsing="false" text="Contado" GridPane.halignment="LEFT" GridPane.valignment="CENTER">
                                  <GridPane.margin>
                                     <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
                                  </GridPane.margin>
+                                 <toggleGroup>
+                                    <ToggleGroup fx:id="tipoPago" />
+                                 </toggleGroup>
                               </RadioButton>
-                              <RadioButton mnemonicParsing="false" text="Credito" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.valignment="CENTER">
+                              <RadioButton fx:id="rdbCredito" mnemonicParsing="false" text="Credito" toggleGroup="$tipoPago" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.valignment="CENTER">
                                  <GridPane.margin>
                                     <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
                                  </GridPane.margin>
@@ -201,7 +205,7 @@
                   </GridPane>
                   <GridPane layoutY="517.0" prefHeight="76.0" prefWidth="400.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="0.0">
                      <children>
-                        <Button fx:id="btnBuscar" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                        <Button fx:id="btnBuscar" mnemonicParsing="false" onAction="#BuscarArticulo" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                            <graphic>
                               <ImageView fitHeight="40.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -248,7 +252,7 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                   </GridPane>
-                  <TableView editable="true" layoutX="14.0" layoutY="182.0" prefHeight="335.0" prefWidth="785.0" AnchorPane.bottomAnchor="81.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="182.0">
+                  <TableView fx:id="tblProductos" layoutX="14.0" layoutY="182.0" prefHeight="335.0" prefWidth="785.0" AnchorPane.bottomAnchor="81.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="182.0">
                      <columns>
                         <TableColumn fx:id="tcCodigoProducto" maxWidth="1.7976931348623157E308" minWidth="100.0" prefWidth="150.0" text="Código de Producto" />
                         <TableColumn fx:id="tcCodigoBarrasProducto" maxWidth="1.7976931348623157E308" minWidth="100.0" prefWidth="150.0" text="Código de Barras" />
@@ -257,7 +261,7 @@
                         <TableColumn fx:id="tcUnidadProducto" maxWidth="1.7976931348623157E308" minWidth="100.0" prefWidth="150.0" text="Unidad/Medida" />
                         <TableColumn fx:id="tcDescripcionProducto" maxWidth="1.7976931348623157E308" minWidth="100.0" prefWidth="150.0" text="Descripción" />
                         <TableColumn fx:id="tcPrcioProducto" maxWidth="1.7976931348623157E308" minWidth="100.0" prefWidth="150.0" text="Precio" />
-                        <TableColumn maxWidth="1.7976931348623157E308" minWidth="100.0" prefWidth="150.0" text="Cantidad" />
+                        <TableColumn fx:id="tcCantidad" maxWidth="1.7976931348623157E308" minWidth="100.0" prefWidth="150.0" text="Cantidad" />
                      </columns>
                      <columnResizePolicy>
                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

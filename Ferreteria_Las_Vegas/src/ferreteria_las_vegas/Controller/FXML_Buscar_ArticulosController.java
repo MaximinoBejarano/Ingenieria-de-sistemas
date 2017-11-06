@@ -82,7 +82,7 @@ public class FXML_Buscar_ArticulosController implements Initializable {
 
         if (tblArticulos.getSelectionModel().getSelectedItem() != null) {
             AppContext.getInstance().set("seleccion-Articulo", tblArticulos.getSelectionModel().getSelectedItem());
-
+            AppContext.getInstance().set("articulo-Ingresado", tblArticulos.getSelectionModel().getSelectedItem());
             Stage stageAct = (Stage) btnSeleccionar.getScene().getWindow();
             stageAct.close();
         } else {
