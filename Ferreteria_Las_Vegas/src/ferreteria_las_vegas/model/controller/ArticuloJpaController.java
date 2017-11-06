@@ -59,6 +59,10 @@ public class ArticuloJpaController {
             em.persist(Art);
             et.commit();
             return Art;
+        }catch (EntityExistsException ex) {
+            et.rollback();
+            System.err.println(ex);
+            return null;
         } catch (Exception ex) {
             et.rollback();
             System.err.println(ex);
@@ -124,5 +128,36 @@ public class ArticuloJpaController {
         }
     }
 
+    /**
+     * Consulta por codigoBarra del articulo
+     *
+     * @param pCodigo
+     * @return
+     */
+    public Articulo ConsultarArticuloCodBarras(String pCodigo) {
+        try {
+            Query qry = em.createNamedQuery("Articulo.findByArtCodBarra", Articulo.class);// consulta definida 
+            qry.setParameter("artCodBarra", pCodigo);
+            Articulo articulo = (Articulo) qry.getSingleResult();// trae el resultado de la consulta  
+            return articulo;
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+    
+     public List<Articulo>  ComprobarExistenciaArticulo(Articulo Objeto) {
+        try {
+            Query qry = em.createNamedQuery("Articulo.findByArtExistente", Articulo.class);// consulta definida 
+            qry.setParameter("artNombre",Objeto.getArtNombre());
+            qry.setParameter("artDescripcion",Objeto.getArtDescripcion());
+            qry.setParameter("artMarca",Objeto.getArtMarca());
+            qry.setParameter("artEstado",Objeto.getArtEstado());
+            List<Articulo> Articulos =  qry.getResultList();// trae el resultado de la consulta  
+            return Articulos;
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+    
     //******************************************************************************************
 }

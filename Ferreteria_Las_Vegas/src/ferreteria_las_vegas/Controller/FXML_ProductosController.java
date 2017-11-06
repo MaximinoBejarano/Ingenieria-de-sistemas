@@ -103,10 +103,12 @@ public class FXML_ProductosController implements Initializable {
             GuardarProducto();
         }
     }
- @FXML
+
+    @FXML
     private void LimpiarCamposClick(ActionEvent event) {
-       LimpiarCampos();
+        LimpiarCampos();
     }
+
     @FXML
     private void KeyTypeCodBarras(KeyEvent event) {
         validarNumero(event);
@@ -140,13 +142,22 @@ public class FXML_ProductosController implements Initializable {
      */
     private void GuardarProducto() {
         Articulo articulo = new Articulo();
-        articulo = ArticuloJpaController.getInstance().InsertarArticulo(ExtraerDatos(articulo));
-        AppContext.getInstance().set("articulo-Ingresado", articulo);
-        if (articulo != null) {
-            new Alert(Alert.AlertType.INFORMATION, "Información: Se han ingresado los datos de forma exitosa ", ButtonType.OK).showAndWait();
-            LimpiarCampos();
+        articulo = ExtraerDatos(articulo);
+        if (ArticuloJpaController.getInstance().ConsultarArticuloCodBarras(articulo.getArtCodBarra()) == null) {
+            if (ArticuloJpaController.getInstance().ComprobarExistenciaArticulo(articulo).isEmpty()) {
+                articulo = ArticuloJpaController.getInstance().InsertarArticulo(articulo);
+                AppContext.getInstance().set("articulo-Ingresado", articulo);
+                if (articulo != null) {
+                    new Alert(Alert.AlertType.INFORMATION, "Información: Se han ingresado los datos de forma exitosa ", ButtonType.OK).showAndWait();
+                    LimpiarCampos();
+                } else {
+                    new Alert(Alert.AlertType.ERROR, "Error: No se han guardado los datos", ButtonType.OK).showAndWait();
+                }
+            }else{
+               new Alert(Alert.AlertType.WARNING, "Este articulo ya existe registrado", ButtonType.OK).showAndWait();
+            }
         } else {
-            new Alert(Alert.AlertType.ERROR, "Error: No se han guardado los datos", ButtonType.OK).showAndWait();
+            new Alert(Alert.AlertType.WARNING, "Existe un articulo con este Codigo", ButtonType.OK).showAndWait();
         }
     }
 
@@ -294,22 +305,18 @@ public class FXML_ProductosController implements Initializable {
     }
 
     public void validarNumero(KeyEvent event) {
-        /* if(Integer.parseInt(event.getCharacter())>47&&Integer.parseInt(event.getCharacter())>=57){
-          event.consume();
-       }*/
         String character = event.getCharacter();
-        if (!checkNumerico(character)) 
-        { 
+        if (!checkNumerico(character)) {
             event.consume();
             new Alert(Alert.AlertType.WARNING, "Este campo solo acepta numeros", ButtonType.OK).showAndWait();
         }
-           
+
     }
-    
+
     public boolean checkNumerico(String value) {
         String number = value.replaceAll("\\s+", "");
         for (int j = 0; j < number.length(); j++) {
-            if (!(((int) number.charAt(j) >= 47 && (int) number.charAt(j) <= 57) )&&!((int) number.charAt(j) ==8)) {
+            if (!(((int) number.charAt(j) >= 47 && (int) number.charAt(j) <= 57)) && !((int) number.charAt(j) == 8)) {
                 return false;
             }
         }
