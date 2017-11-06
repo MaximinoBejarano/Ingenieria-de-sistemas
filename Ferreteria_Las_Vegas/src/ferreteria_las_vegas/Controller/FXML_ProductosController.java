@@ -148,7 +148,6 @@ public class FXML_ProductosController implements Initializable {
             pArticulo = ArticuloJpaController.getInstance().ConsultarArticuloCodigo(pArticulo.getArtCodigo());
             pArticulo.setArtEstado("I");
             if (pArticulo != null) {
-                pArticulo = ExtraerDatos(pArticulo);
                 pArticulo = ArticuloJpaController.getInstance().ModificarArticulos(pArticulo);
                 if (pArticulo != null) {
                     new Alert(Alert.AlertType.CONFIRMATION, "Se elimino el Producto con exito", ButtonType.OK).showAndWait();
@@ -189,24 +188,42 @@ public class FXML_ProductosController implements Initializable {
      * Procesos de Extracion,carga y eliminación de datos en la vista
      */
     private Articulo ExtraerDatos(Articulo pArticulo) {
-        BigDecimal Precio = new BigDecimal(txtPrecio.getText());
-        BigDecimal Descuento;
-        pArticulo = new Articulo(Integer.SIZE, txtNombre.getText(), txtDescripcion.getText(), txtMarca.getText(), txtUndMedida.getText(), Precio, "A");
-        
-        if (!txtCodBarras.getText().isEmpty()) {
-            pArticulo.setArtCodBarra(txtCodBarras.getText());
-        } 
-        if (!txtDescuento.getText().isEmpty()) {
-            Descuento = new BigDecimal(txtDescuento.getText());
-            pArticulo.setArtDescuento(Descuento);
-            pArticulo.setArtEstadoDescuento("A");
-        } else {
-            Descuento = BigDecimal.ZERO;
-            pArticulo.setArtDescuento(Descuento);
-            pArticulo.setArtEstadoDescuento("I");
-        }
+        try {
+            BigDecimal Precio = new BigDecimal(txtPrecio.getText());
+            BigDecimal Descuento;
+            if (pArticulo.getArtCodigo() == null) {
+                pArticulo = new Articulo(Integer.SIZE, txtNombre.getText(), txtDescripcion.getText(), txtMarca.getText(), txtUndMedida.getText(), Precio, "A");
+            } else {
+                pArticulo.setArtNombre(txtNombre.getText());
+                pArticulo.setArtDescripcion(txtDescripcion.getText());
+                pArticulo.setArtMarca(txtMarca.getText());
+                pArticulo.setArtUnidadMedida(txtUndMedida.getText());
+                pArticulo.setArtPrecio(Precio);
+                pArticulo.setArtEstado("A");
+            }
+          /*  if (!txtCodBarras.getText().isEmpty() || txtCodBarras.getText() != null || txtCodBarras.getText() != "") {
+                pArticulo.setArtCodBarra(txtCodBarras.getText());
+            }else{
+               if(pArticulo.getArtCodBarra()!=null){
+                new Alert(Alert.AlertType.WARNING, "No es posible cambiar el codigo existente", ButtonType.OK).showAndWait();
+               }
+            }*/
+            
+            if (!txtDescuento.getText().isEmpty()) {
+                Descuento = new BigDecimal(txtDescuento.getText());
+                pArticulo.setArtDescuento(Descuento);
+                pArticulo.setArtEstadoDescuento("A");
+            } else {
+                Descuento = BigDecimal.ZERO;
+                pArticulo.setArtDescuento(Descuento);
+                pArticulo.setArtEstadoDescuento("I");
+            }
 
-        return pArticulo;
+            return pArticulo;
+        } catch (Exception e) {
+            System.err.println(e);
+            return null;
+        }
     }
 
     public void LimpiarCampos() {
@@ -233,7 +250,10 @@ public class FXML_ProductosController implements Initializable {
             } else {
                 txtDescuento.setText("");
             }
+        } else {
+            LimpiarCampos();
         }
+
     }
     /*public void validarNumero(KeyEvent ke) {
         if (!(ke.getKeyChar() >= KeyEvent.VK_0 && ke.getKeyChar() <= KeyEvent.VK_9)) {

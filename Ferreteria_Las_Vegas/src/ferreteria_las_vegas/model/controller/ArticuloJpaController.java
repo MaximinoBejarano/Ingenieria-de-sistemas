@@ -4,11 +4,13 @@
  * and open the template in the editor.
  */
 package ferreteria_las_vegas.model.controller;
+
 import ferreteria_las_vegas.utils.EntityManagerHelper;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import ferreteria_las_vegas.model.entities.Articulo;
 import java.util.List;
+import javax.persistence.EntityExistsException;
 import javax.persistence.LockModeType;
 import javax.persistence.Query;
 
@@ -41,9 +43,11 @@ public class ArticuloJpaController {
 
     private EntityManager em = EntityManagerHelper.getInstance().getManager();
     private EntityTransaction et;
-  //**********************************Area de metodos **************************************************
+    //**********************************Area de metodos **************************************************
+
     /**
      * Metodo para insertar articulo en la BD_FV
+     *
      * @param Art
      * @return articulo
      */
@@ -61,10 +65,12 @@ public class ArticuloJpaController {
             return null;
         }
     }
+
     /**
      * Metodo para realizar la edicion de articulos
+     *
      * @param pArticulo
-     * @return 
+     * @return
      */
     public Articulo ModificarArticulos(Articulo pArticulo) {
         et = em.getTransaction();
@@ -73,19 +79,25 @@ public class ArticuloJpaController {
             em.merge(pArticulo);
             et.commit();
             return pArticulo;
+        } catch (EntityExistsException ex) {
+            et.rollback();
+            System.err.println(ex);
+            return null;
         } catch (Exception ex) {
             et.rollback();
             System.err.println(ex);
             return null;
         }
     }
-   
-  //***********************************Area de procedimientos*******************************
+
+    //***********************************Area de procedimientos*******************************
     /**
-     * Procedimiento para consultar todos los articulos que se encuentren en la BD_FV
-     * @return 
+     * Procedimiento para consultar todos los articulos que se encuentren en la
+     * BD_FV
+     *
+     * @return
      */
-     public List<Articulo> ConsultarArticulos() {
+    public List<Articulo> ConsultarArticulos() {
         try {
             Query qry = em.createNamedQuery("Articulo.findAll", Articulo.class);// consulta todos los articulos 
             List<Articulo> Articulos = qry.getResultList();// Recibe el resultado de la consulta  
@@ -94,12 +106,13 @@ public class ArticuloJpaController {
             return null;
         }
     }
-     
-     /**
-      * Consulta por codigo del articulo
-      * @param pCodigo
-      * @return 
-      */
+
+    /**
+     * Consulta por codigo del articulo
+     *
+     * @param pCodigo
+     * @return
+     */
     public Articulo ConsultarArticuloCodigo(int pCodigo) {
         try {
             Query qry = em.createNamedQuery("Articulo.findByArtCodigo", Articulo.class);// consulta definida 
@@ -111,5 +124,5 @@ public class ArticuloJpaController {
         }
     }
 
-  //******************************************************************************************
+    //******************************************************************************************
 }
