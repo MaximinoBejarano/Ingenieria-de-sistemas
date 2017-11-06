@@ -105,7 +105,7 @@ public class FXML_LoginController implements Initializable {
             Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.resizableProperty().set(true);
-            stage.setMaximized(true);
+            stage.setMaximized(false);
             stage.show();                                    
 
         } catch (Exception ex) {
