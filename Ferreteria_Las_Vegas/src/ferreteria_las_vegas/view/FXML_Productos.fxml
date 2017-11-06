@@ -96,6 +96,21 @@
                         <Tooltip text="Se agregan los productos" />
                      </tooltip>
                   </Button>
+                  <Button fx:id="btnLimpiar" layoutY="5.0" minHeight="80.0" mnemonicParsing="false" onAction="#LimpiarCamposClick" prefWidth="80.0" styleClass="botones_Mantenimiento" stylesheets="@../../styles/style.css">
+                     <graphic>
+                        <ImageView fitHeight="60.0" fitWidth="65.0" pickOnBounds="true" preserveRatio="true">
+                           <effect>
+                              <DropShadow />
+                           </effect>
+                           <image>
+                              <Image url="@../../pictures/refresh.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <tooltip>
+                        <Tooltip text="Limpiar Campos" />
+                     </tooltip>
+                  </Button>
                </children>
             </AnchorPane>
          </bottom>
