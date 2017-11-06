@@ -144,12 +144,12 @@
                               <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
                            </GridPane.margin>
                         </Label>
-                        <TextField fx:id="txtCodBarras" GridPane.columnIndex="1">
+                        <TextField fx:id="txtCodBarras" onKeyTyped="#KeyTypeCodBarras" GridPane.columnIndex="1">
                            <font>
                               <Font size="16.0" />
                            </font>
                         </TextField>
-                        <TextField fx:id="txtNombre" promptText="Campo requerido" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                        <TextField fx:id="txtNombre" onKeyTyped="#KeyType_txtNombre" promptText="Campo requerido" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                            <font>
                               <Font size="16.0" />
                            </font>
@@ -160,7 +160,7 @@
                               <Tooltip text="Se requiere ingresar el nombre" />
                            </tooltip>
                         </TextField>
-                        <TextField fx:id="txtMarca" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+                        <TextField fx:id="txtMarca" onKeyTyped="#KeyType_txtMarca" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
                            <font>
                               <Font size="16.0" />
                            </font>
@@ -179,7 +179,7 @@
                               <Tooltip text="Se requiere ingresar la descripción" />
                            </tooltip>
                         </TextField>
-                        <TextField fx:id="txtPrecio" promptText="Campo requerido" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
+                        <TextField fx:id="txtPrecio" onKeyTyped="#KeyTyped_txtPrecio" promptText="Campo requerido" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
                            <font>
                               <Font size="16.0" />
                            </font>
@@ -190,12 +190,12 @@
                               <Tooltip text="Se requiere ingresar el precio" />
                            </tooltip>
                         </TextField>
-                        <TextField fx:id="txtDescuento" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                        <TextField fx:id="txtDescuento" onKeyTyped="#KeyType_txtDescuento" GridPane.columnIndex="1" GridPane.rowIndex="5">
                            <font>
                               <Font size="16.0" />
                            </font>
                         </TextField>
-                        <TextField fx:id="txtUndMedida" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="6" GridPane.valignment="CENTER">
+                        <TextField fx:id="txtUndMedida" onKeyTyped="#KeyTyped_txtUndMedida" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="6" GridPane.valignment="CENTER">
                            <font>
                               <Font size="16.0" />
                            </font>

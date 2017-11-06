@@ -5,10 +5,9 @@
  */
 package ferreteria_las_vegas.Controller;
 
-import ferreteria_las_vegas.utils.AppContext;
-
 import ferreteria_las_vegas.model.controller.ArticuloJpaController;
 import ferreteria_las_vegas.model.entities.Articulo;
+import ferreteria_las_vegas.utils.AppContext;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -22,6 +21,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -35,6 +35,8 @@ import javax.swing.JOptionPane;
 public class FXML_ProductosController implements Initializable {
 
     @FXML
+    private Button btnSalir;
+    @FXML
     private Button btnEliminarProducto;
     @FXML
     private Button btnEditarProducto;
@@ -43,21 +45,19 @@ public class FXML_ProductosController implements Initializable {
     @FXML
     private Button btnAgregarProducto;
     @FXML
-    private Button btnSalir;
-    @FXML
     private TextField txtCodBarras;
     @FXML
     private TextField txtNombre;
     @FXML
     private TextField txtMarca;
     @FXML
-    private TextField txtPrecio;
-    @FXML
-    private TextField txtUndMedida;
-    @FXML
     private TextField txtDescripcion;
     @FXML
+    private TextField txtPrecio;
+    @FXML
     private TextField txtDescuento;
+    @FXML
+    private TextField txtUndMedida;
 
     /**
      * Initializes the controller class.
@@ -100,6 +100,30 @@ public class FXML_ProductosController implements Initializable {
         } else {
             GuardarProducto();
         }
+    }
+
+    @FXML
+    private void KeyTypeCodBarras(KeyEvent event) {
+    }
+
+    @FXML
+    private void KeyType_txtNombre(KeyEvent event) {
+    }
+
+    @FXML
+    private void KeyType_txtMarca(KeyEvent event) {
+    }
+
+    @FXML
+    private void KeyTyped_txtPrecio(KeyEvent event) {
+    }
+
+    @FXML
+    private void KeyType_txtDescuento(KeyEvent event) {
+    }
+
+    @FXML
+    private void KeyTyped_txtUndMedida(KeyEvent event) {
     }
 
     //*****************************************************++ Area de funciones ++****************************************************************+
@@ -199,12 +223,12 @@ public class FXML_ProductosController implements Initializable {
                 pArticulo.setArtPrecio(Precio);
                 pArticulo.setArtEstado("A");
             }
-            if(txtCodBarras.getText().isEmpty()){
+            if (txtCodBarras.getText().isEmpty()) {
                 pArticulo.setArtCodBarra(null);
-            }else{
-            pArticulo.setArtCodBarra(txtCodBarras.getText());
+            } else {
+                pArticulo.setArtCodBarra(txtCodBarras.getText());
             }
-           
+
             if (!txtDescuento.getText().isEmpty()) {
                 Descuento = new BigDecimal(txtDescuento.getText());
                 pArticulo.setArtDescuento(Descuento);
@@ -240,10 +264,10 @@ public class FXML_ProductosController implements Initializable {
             txtMarca.setText(pArticulo.getArtMarca());
             txtUndMedida.setText(pArticulo.getArtUnidadMedida());
             txtPrecio.setText(pArticulo.getArtPrecio().toString());
-            if(pArticulo.getArtCodBarra()!= null){
-               txtCodBarras.setText(pArticulo.getArtCodBarra());
-            }else{
-               txtCodBarras.setText("");
+            if (pArticulo.getArtCodBarra() != null) {
+                txtCodBarras.setText(pArticulo.getArtCodBarra());
+            } else {
+                txtCodBarras.setText("");
             }
             if (pArticulo.getArtDescuento() != null) {
                 txtDescuento.setText(pArticulo.getArtDescuento().toString());
@@ -256,7 +280,7 @@ public class FXML_ProductosController implements Initializable {
             btnEditarProducto.setDisable(true);
             btnEliminarProducto.setDisable(true);
             LimpiarCampos();
-            
+
         }
 
     }
