@@ -114,7 +114,7 @@ public class InventarioJpaController {
      */
     public  Inventario ConsultarInventarioCodigoProducto(int pCodigo) {
         try {
-            Query qry = em.createNamedQuery("Articulo.findByArtCodigo", Articulo.class);// consulta definida 
+            Query qry = em.createNamedQuery("Articulo.findByInvCodArticulo", Articulo.class);// consulta definida 
             qry.setParameter("artCodigo", pCodigo);
             Inventario articulo = (Inventario) qry.getSingleResult();// trae el resultado de la consulta  
             return articulo;
