@@ -20,6 +20,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
@@ -31,214 +32,131 @@ import javafx.util.Duration;
  */
 public class FXML_MenuController implements Initializable {
 
-    
     @FXML
     private Label lblDate;
 
     @FXML
     private Label lblUserName;
-    
+
     @FXML
-    private VBox dataPane;
-
-    public void setDataPane(Node node) {
-        dataPane.getChildren().setAll(node);
-    }
-
-    public VBox cargarScena(String url) throws IOException {
-        VBox v = (VBox) FXMLLoader.load(getClass().getResource(url));
-        FadeTransition ft = new FadeTransition(Duration.millis(1000));
-        ft.setNode(v);
-        ft.setFromValue(0.1);
-        ft.setToValue(1);
-        ft.setCycleCount(1);
-        ft.setAutoReverse(false);
-        ft.play();
-        
-        return v;
-    }
+    private VBox dataPane;    
 
     @FXML
     private void accesoCliente(ActionEvent e) {
         try {
             if (true) {
-                 setDataPane(cargarScena("/ferreteria_las_vegas/view/FXML_Clientes.fxml"));
-                 
+                //setDataPane(cargarScena("/ferreteria_las_vegas/view/FXML_Clientes.fxml"));
+                ScenesManager.getInstance().LoadSceneClientes();
             } else {
-
-                Alert alert = new Alert(AlertType.WARNING);
-                alert.setTitle("Error de Acceso");
-                alert.setHeaderText("¡Cuidado!");
-                String s = "Este usuario no cuenta con los permisos necesarios para acceder a esta página";
-                alert.setContentText(s);
-                alert.show();
+                new Alert(Alert.AlertType.WARNING, "No cuenta con los permisos para entrar aquí.", ButtonType.OK).showAndWait();
             }
-        } catch (Exception ex) {
-            // mandar al servidor al log de errores
+        } catch (Exception ex) {            
             System.out.println(ex);
         }
-
     }
 
     @FXML
     private void accesoEmpleados(ActionEvent e) {
-        
-            if (true) {
-                try {
-                    setDataPane(cargarScena("/ferreteria_las_vegas/view/FXML_Empleados.fxml"));
-                } catch (IOException ex) {
-                    Logger.getLogger(FXML_MenuController.class.getName()).log(Level.SEVERE, null, ex);
-                }
-             
-            } else {
-
-                Alert alert = new Alert(AlertType.WARNING);
-                alert.setTitle("Error de Acceso");
-                alert.setHeaderText("¡Cuidado!");
-                String s = "Este usuario no cuenta con los permisos necesarios para acceder a esta página";
-                alert.setContentText(s);
-                alert.show();
+        if (true) {
+            try {
+                //setDataPane(cargarScena("/ferreteria_las_vegas/view/FXML_Empleados.fxml"));
+                ScenesManager.getInstance().LoadSceneEmpleados();
+            } catch (Exception ex) {
+                Logger.getLogger(FXML_MenuController.class.getName()).log(Level.SEVERE, null, ex);
             }
-        
 
+        } else {
+            new Alert(Alert.AlertType.WARNING, "No cuenta con los permisos para entrar aquí.", ButtonType.OK).showAndWait();
+        }
     }
 
     @FXML
     private void accesoInventario(ActionEvent e) {
         try {
             if (true) {
-                
-                     setDataPane(cargarScena("/ferreteria_las_vegas/view/FXML_Inventario.fxml"));
-                
+                ScenesManager.getInstance().LoadSceneInventario();                
             } else {
-
-                Alert alert = new Alert(AlertType.WARNING);
-                alert.setTitle("Error de Acceso");
-                alert.setHeaderText("¡Cuidado!");
-                String s = "Este usuario no cuenta con los permisos necesarios para acceder a esta página";
-                alert.setContentText(s);
-                alert.show();
+                new Alert(Alert.AlertType.WARNING, "No cuenta con los permisos para entrar aquí.", ButtonType.OK).showAndWait();
             }
-        } catch (Exception ex) {
-            // mandar al servidor al log de errores
+        } catch (Exception ex) {            
             System.out.println(ex);
         }
-
     }
-    
-     @FXML
+
+    @FXML
     private void accesoProveedores(ActionEvent e) {
         try {
             if (true) {
-                 setDataPane(cargarScena("/ferreteria_las_vegas/view/FXML_Proveedores.fxml"));
-                 
+                ScenesManager.getInstance().LoadSceneProveedores();
+                //setDataPane(cargarScena("/ferreteria_las_vegas/view/FXML_Proveedores.fxml"));
             } else {
-
-                Alert alert = new Alert(AlertType.WARNING);
-                alert.setTitle("Error de Acceso");
-                alert.setHeaderText("¡Cuidado!");
-                String s = "Este usuario no cuenta con los permisos necesarios para acceder a esta página";
-                alert.setContentText(s);
-                alert.show();
+                new Alert(Alert.AlertType.WARNING, "No cuenta con los permisos para entrar aquí.", ButtonType.OK).showAndWait();
             }
-        } catch (Exception ex) {
-            // mandar al servidor al log de errores
+        } catch (Exception ex) {            
             System.out.println(ex);
         }
-
     }
-    
+
     @FXML
     private void accesoAnulacion(ActionEvent e) {
         try {
             if (true) {
-                 setDataPane(cargarScena("/ferreteria_las_vegas/view/FXML_Anulación.fxml"));
-                 
+                ScenesManager.getInstance().LoadSceneAnulacion();
+                //setDataPane(cargarScena("/ferreteria_las_vegas/view/FXML_Anulación.fxml"));
             } else {
-
-                Alert alert = new Alert(AlertType.WARNING);
-                alert.setTitle("Error de Acceso");
-                alert.setHeaderText("¡Cuidado!");
-                String s = "Este usuario no cuenta con los permisos necesarios para acceder a esta página";
-                alert.setContentText(s);
-                alert.show();
+                new Alert(Alert.AlertType.WARNING, "No cuenta con los permisos para entrar aquí.", ButtonType.OK).showAndWait();
             }
-        } catch (Exception ex) {
-            // mandar al servidor al log de errores
+        } catch (Exception ex) {            
             System.out.println(ex);
         }
-
     }
-      @FXML
+
+    @FXML
     private void accesoAbonos(ActionEvent e) {
         try {
             if (true) {
-                 setDataPane(cargarScena("/ferreteria_las_vegas/view/FXML_Abonos.fxml"));
-                 
+                ScenesManager.getInstance().LoadSceneAbonos();
+                //setDataPane(cargarScena("/ferreteria_las_vegas/view/FXML_Abonos.fxml"));
             } else {
-
-                Alert alert = new Alert(AlertType.WARNING);
-                alert.setTitle("Error de Acceso");
-                alert.setHeaderText("¡Cuidado!");
-                String s = "Este usuario no cuenta con los permisos necesarios para acceder a esta página";
-                alert.setContentText(s);
-                alert.show();
+                new Alert(Alert.AlertType.WARNING, "No cuenta con los permisos para entrar aquí.", ButtonType.OK).showAndWait();
             }
-        } catch (Exception ex) {
-            // mandar al servidor al log de errores
+        } catch (Exception ex) {            
             System.out.println(ex);
         }
-
     }
-    
+
     @FXML
     private void accesoVales(ActionEvent e) {
         try {
             if (true) {
-                 setDataPane(cargarScena("/ferreteria_las_vegas/view/FXML_Vales.fxml"));
-                 
+                ScenesManager.getInstance().LoadSceneVales();
+                //setDataPane(cargarScena("/ferreteria_las_vegas/view/FXML_Vales.fxml"));
             } else {
-
-                Alert alert = new Alert(AlertType.WARNING);
-                alert.setTitle("Error de Acceso");
-                alert.setHeaderText("¡Cuidado!");
-                String s = "Este usuario no cuenta con los permisos necesarios para acceder a esta página";
-                alert.setContentText(s);
-                alert.show();
+                new Alert(Alert.AlertType.WARNING, "No cuenta con los permisos para entrar aquí.", ButtonType.OK).showAndWait();
             }
-        } catch (Exception ex) {
-            // mandar al servidor al log de errores
+        } catch (Exception ex) {            
             System.out.println(ex);
         }
-
     }
-    
-     @FXML
+
+    @FXML
     private void accesoFacturacion(ActionEvent e) {
         try {
             if (true) {
-                 setDataPane(cargarScena("/ferreteria_las_vegas/view/FXML_Facturación.fxml"));
-                 
+                ScenesManager.getInstance().LoadSceneFacturacion();
+                //setDataPane(cargarScena("/ferreteria_las_vegas/view/FXML_Facturación.fxml"));
             } else {
-
-                Alert alert = new Alert(AlertType.WARNING);
-                alert.setTitle("Error de Acceso");
-                alert.setHeaderText("¡Cuidado!");
-                String s = "Este usuario no cuenta con los permisos necesarios para acceder a esta página";
-                alert.setContentText(s);
-                alert.show();
+                new Alert(Alert.AlertType.WARNING, "No cuenta con los permisos para entrar aquí.", ButtonType.OK).showAndWait();
             }
-        } catch (Exception ex) {
-            // mandar al servidor al log de errores
+        } catch (Exception ex) {            
             System.out.println(ex);
         }
-
     }
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        Usuario usuario = (Usuario)AppContext.getInstance().get("user");
-        lblUserName.setText(lblUserName.getText() + usuario.getPersona().getPerNombre()+" "+usuario.getPersona().getPerPApellido());
+        Usuario usuario = (Usuario) AppContext.getInstance().get("user");
+        lblUserName.setText(lblUserName.getText() + usuario.getPersona().getPerNombre() + " " + usuario.getPersona().getPerPApellido());
         lblDate.setText("Bienvenido");
     }
 

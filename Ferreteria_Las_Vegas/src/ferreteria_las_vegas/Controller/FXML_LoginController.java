@@ -94,23 +94,8 @@ public class FXML_LoginController implements Initializable {
         }).start();                
     }
 
-    void LanzarMenu() {
-        try {            
-            
-            Stage stageAct = (Stage) btnLogin.getScene().getWindow();
-            stageAct.close();
-            
-            Parent root = FXMLLoader.load(getClass().getResource("/ferreteria_las_vegas/view/FXML_Menu.fxml"));
-            Stage stage = new Stage();
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.resizableProperty().set(true);
-            stage.setMaximized(false);
-            stage.show();                                    
-
-        } catch (Exception ex) {
-            // mandar al servidor al log de errores
-        }
+    void LanzarMenu() {                                    
+        ScenesManager.getInstance().LoadSceneMenu();
     }
 
     @Override

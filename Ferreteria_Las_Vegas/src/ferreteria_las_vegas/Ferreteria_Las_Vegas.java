@@ -5,6 +5,7 @@
  */
 package ferreteria_las_vegas;
 
+import ferreteria_las_vegas.Controller.ScenesManager;
 import ferreteria_las_vegas.utils.EntityManagerHelper;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -17,16 +18,10 @@ import javafx.stage.Stage;
  * @author wili
  */
 public class Ferreteria_Las_Vegas extends Application {
-    
+
     @Override
-    public void start(Stage stage) throws Exception {                        
-        Parent root = FXMLLoader.load(getClass().getResource("view/FXML_Login.fxml"));
-        
-        Scene scene = new Scene(root);
-        
-        stage.setScene(scene);
-        stage.resizableProperty().set(false); 
-        stage.show();
+    public void start(Stage stage) throws Exception {
+        ScenesManager.getInstance().LoadStage(stage);
     }
 
     /**
@@ -36,5 +31,5 @@ public class Ferreteria_Las_Vegas extends Application {
         //Se ha realizado un cambio
         launch(args);
     }
-    
+
 }
