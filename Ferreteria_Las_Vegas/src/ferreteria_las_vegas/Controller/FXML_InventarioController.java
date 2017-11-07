@@ -78,9 +78,7 @@ public class FXML_InventarioController implements Initializable {
     @FXML
     private Button btnBuscarProducto;
     @FXML
-    private Button btnNuevoProducto;
-    @FXML
-    private Button btnEditarProducto;
+    private Button btnNuevoProducto;    
     @FXML
     private TableView<InventarioCompleto> tblProductos;
     @FXML

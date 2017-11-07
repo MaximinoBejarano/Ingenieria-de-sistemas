@@ -334,7 +334,10 @@ public class FXML_EmpleadosController implements Initializable {
 
     void ProcesoEliminar() {
         Persona persona = PersonaJpaController.getInstance().ConsultarPersonaCedula(txtCedulaEmp.getText());
-        PersonaJpaController.getInstance().ModificarPersona(persona);        
+        persona.setPerEstado("I");
+        persona.getUsuario().setUsuEstado("I");
+        persona.getCliente().setCliEstado("I");
+        PersonaJpaController.getInstance().ModificarPersona(persona);                
     }
     
     void ProcesoAgregarPermiso(Persona persona){
