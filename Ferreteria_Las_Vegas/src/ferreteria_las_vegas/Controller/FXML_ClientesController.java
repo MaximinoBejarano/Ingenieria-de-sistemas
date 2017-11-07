@@ -229,7 +229,6 @@ public class FXML_ClientesController implements Initializable {
         } else {
             new Alert(Alert.AlertType.WARNING, "No existe un Cliente con la cedula ingresada.", ButtonType.OK).showAndWait();
         }
-
     }
 
     @FXML

@@ -212,7 +212,7 @@
                                                 <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
                                              </GridPane.margin>
                                           </TextField>
-                                          <TextField fx:id="txtCorreoEmp" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                                          <TextField fx:id="txtCorreoEmp" prefHeight="30.0" prefWidth="507.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
                                              <font>
                                                 <Font size="16.0" />
                                              </font>
@@ -270,10 +270,13 @@
                                                 <Font size="16.0" />
                                              </font>
                                           </PasswordField>
-                                          <TextArea fx:id="txtDireccionEmp" prefHeight="62.0" prefWidth="361.0" promptText="Campo Requerido" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                                          <TextArea fx:id="txtDireccionEmp" prefHeight="37.0" prefWidth="509.0" promptText="Campo Requerido" GridPane.columnIndex="1" GridPane.rowIndex="7">
                                              <font>
                                                 <Font size="16.0" />
                                              </font>
+                                             <GridPane.margin>
+                                                <Insets top="5.0" />
+                                             </GridPane.margin>
                                           </TextArea>
                                        </children>
                                        <columnConstraints>
@@ -281,19 +284,26 @@
                                           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="509.0" />
                                        </columnConstraints>
                                        <rowConstraints>
-                                          <RowConstraints maxHeight="1.7976931348623157E308" vgrow="SOMETIMES" />
-                                          <RowConstraints maxHeight="1.7976931348623157E308" vgrow="SOMETIMES" />
-                                          <RowConstraints maxHeight="1.7976931348623157E308" vgrow="SOMETIMES" />
-                                          <RowConstraints maxHeight="1.7976931348623157E308" vgrow="SOMETIMES" />
-                                          <RowConstraints maxHeight="1.7976931348623157E308" vgrow="SOMETIMES" />
-                                          <RowConstraints maxHeight="1.7976931348623157E308" vgrow="SOMETIMES" />
-                                          <RowConstraints maxHeight="1.7976931348623157E308" vgrow="SOMETIMES" />
-                                          <RowConstraints maxHeight="1.7976931348623157E308" vgrow="SOMETIMES" />
+                                          <RowConstraints maxHeight="1.7976931348623157E308" prefHeight="40.0" vgrow="SOMETIMES" />
+                                          <RowConstraints maxHeight="1.7976931348623157E308" prefHeight="40.0" vgrow="SOMETIMES" />
+                                          <RowConstraints maxHeight="1.7976931348623157E308" prefHeight="40.0" vgrow="SOMETIMES" />
+                                          <RowConstraints maxHeight="1.7976931348623157E308" prefHeight="40.0" vgrow="SOMETIMES" />
+                                          <RowConstraints maxHeight="1.7976931348623157E308" prefHeight="40.0" vgrow="SOMETIMES" />
+                                          <RowConstraints maxHeight="1.7976931348623157E308" prefHeight="40.0" vgrow="SOMETIMES" />
+                                          <RowConstraints maxHeight="1.7976931348623157E308" prefHeight="40.0" vgrow="SOMETIMES" />
+                                          <RowConstraints maxHeight="1.7976931348623157E308" prefHeight="50.0" vgrow="SOMETIMES" />
                                        </rowConstraints>
                                     </GridPane>
                                  </children>
                               </AnchorPane>
                            </content>
+                           <graphic>
+                              <ImageView fitHeight="17.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../pictures/employee.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
                         </Tab>
                         <Tab style="-fx-font: 150% sans-serif;" text="Gestión de permisos">
                            <content>
@@ -436,6 +446,13 @@
                                  </children>
                               </AnchorPane>
                            </content>
+                           <graphic>
+                              <ImageView fitHeight="23.0" fitWidth="19.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../pictures/locked.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
                         </Tab>
                      </tabs>
                   </TabPane>
