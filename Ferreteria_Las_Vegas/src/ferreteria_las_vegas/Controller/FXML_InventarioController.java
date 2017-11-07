@@ -125,7 +125,18 @@ public class FXML_InventarioController implements Initializable {
             System.err.print(ex);
         }
     }
+    @FXML
+    private void BuscarArticulo(ActionEvent event) {
+        ProcesoBusquedad();
+        Articulo articulo = (Articulo) AppContext.getInstance().get("articulo-Ingresado");
+        if (articulo != null) {
+            listaArticulos.add(articulo);
+            RecargarTblClientes();
+        }
 
+    }
+
+    
     public void CargarProductos() {
         try {
             Parent root = FXMLLoader.load(getClass().getResource("/ferreteria_las_vegas/view/FXML_Productos.fxml"));
@@ -148,22 +159,12 @@ public class FXML_InventarioController implements Initializable {
         tcUnidadProducto.setCellValueFactory((cellData) -> new SimpleStringProperty(cellData.getValue().getArtUnidadMedida()));
         tcDescripcionProducto.setCellValueFactory((cellData) -> new SimpleStringProperty(cellData.getValue().getArtDescripcion()));
         tcPrcioProducto.setCellValueFactory((cellData) -> new SimpleStringProperty(cellData.getValue().getArtPrecio().toBigInteger().toString()));
-        tcCantidad.setCellValueFactory((cellData) -> new SimpleStringProperty(cellData.getValue().getText()));
+        
+        //tcCantidad.setCellValueFactory((cellData) -> new SimpleStringProperty(cellData.getValue().getText()));
 
         tblProductos.setItems(FXCollections.observableArrayList(listaArticulos));
     }
-
-    @FXML
-    private void BuscarArticulo(ActionEvent event) {
-        ProcesoBusquedad();
-        Articulo articulo = (Articulo) AppContext.getInstance().get("articulo-Ingresado");
-        if (articulo != null) {
-            listaArticulos.add(articulo);
-            RecargarTblClientes();
-        }
-
-    }
-
+    
     /**
      * Lanza la ventana de busqueda
      */
