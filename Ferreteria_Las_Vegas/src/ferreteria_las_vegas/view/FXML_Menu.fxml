@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
@@ -63,6 +64,9 @@
                            <font>
                               <Font name="Arial Unicode MS" size="25.0" />
                            </font>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
                         </Button>
                         <Button fx:id="btnAbonos" alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" onAction="#accesoAbonos" prefHeight="195.0" prefWidth="220.0" styleClass="boton-Abo" stylesheets="@../../styles/style.css" text="Abonos" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                            <graphic>
@@ -75,6 +79,9 @@
                            <font>
                               <Font name="Arial Unicode MS" size="25.0" />
                            </font>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
                         </Button>
                         <Button fx:id="btnNotaCredito" alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" onAction="#accesoVales" prefHeight="208.0" prefWidth="220.0" styleClass="boton-deCli" stylesheets="@../../styles/style.css" text="Vales" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                            <graphic>
@@ -87,6 +94,9 @@
                            <font>
                               <Font name="Arial Unicode MS" size="25.0" />
                            </font>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
                         </Button>
                         <Button fx:id="btnInventario" alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" onAction="#accesoInventario" prefHeight="195.0" prefWidth="220.0" styleClass="boton-Inv" stylesheets="@../../styles/style.css" text="Inventario" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                            <graphic>
@@ -99,6 +109,9 @@
                            <font>
                               <Font name="Arial Unicode MS" size="25.0" />
                            </font>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
                         </Button>
                         <Button fx:id="btnClientes" alignment="BOTTOM_CENTER" contentDisplay="TOP" mnemonicParsing="false" onAction="#accesoCliente" prefHeight="207.0" prefWidth="220.0" styleClass="boton-Cli" stylesheets="@../../styles/style.css" text="Clientes" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                            <graphic>
@@ -111,6 +124,9 @@
                            <font>
                               <Font name="Arial Unicode MS" size="25.0" />
                            </font>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
                         </Button>
                         <Button fx:id="btnEmpleados" alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" onAction="#accesoEmpleados" prefHeight="197.0" prefWidth="220.0" styleClass="boton-Emp" stylesheets="@../../styles/style.css" text="Empleados" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                            <graphic>
@@ -123,6 +139,9 @@
                            <font>
                               <Font name="Arial Unicode MS" size="24.0" />
                            </font>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
                         </Button>
                         <Button fx:id="btnProveedores" alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" onAction="#accesoProveedores" prefHeight="195.0" prefWidth="220.0" styleClass="boton-dePro" stylesheets="@../../styles/style.css" text="Proveedores" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                            <graphic>
@@ -135,6 +154,9 @@
                            <font>
                               <Font name="Arial Unicode MS" size="25.0" />
                            </font>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
                         </Button>
                         <Button fx:id="btnAnulacion" alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" onAction="#accesoAnulacion" prefHeight="206.0" prefWidth="220.0" styleClass="boton-Anu" stylesheets="@../../styles/style.css" text="Anulaciones" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                            <graphic>
@@ -147,6 +169,9 @@
                            <font>
                               <Font name="Arial Unicode MS" size="25.0" />
                            </font>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
                         </Button>
                      </children>
                      <effect>
@@ -196,6 +221,9 @@
                            <tooltip>
                               <Tooltip text="Estadisticas y Reportes" />
                            </tooltip>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
                         </Button>
                         <Button fx:id="btnConfiguraciones" layoutX="1038.0" layoutY="21.0" mnemonicParsing="false" prefHeight="51.0" prefWidth="58.0" styleClass="boton-Conf" stylesheets="@../../styles/style.css">
                            <graphic>
@@ -211,6 +239,9 @@
                            <tooltip>
                               <Tooltip text="Configuraciones" />
                            </tooltip>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
                         </Button>
                         <Button layoutX="1106.0" layoutY="22.0" mnemonicParsing="false" onAction="#SalirClick" prefHeight="51.0" prefWidth="91.0" styleClass="boton-Sal" stylesheets="@../../styles/style.css">
                            <graphic>
@@ -223,6 +254,9 @@
                            <effect>
                               <DropShadow />
                            </effect>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
                         </Button>
                      </children>
                   </HBox>
