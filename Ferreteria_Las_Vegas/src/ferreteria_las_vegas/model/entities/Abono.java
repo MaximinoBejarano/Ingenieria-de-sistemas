@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 package ferreteria_las_vegas.model.entities;
- 
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -12,6 +12,8 @@ import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -27,7 +29,8 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Usuarios
+ * @author Usuario
+ * Entidad Mapeada
  */
 @Entity
 @Table(name = "tb_abonos")
@@ -44,6 +47,7 @@ public class Abono implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "Abo_Codigo")
     private Integer aboCodigo;

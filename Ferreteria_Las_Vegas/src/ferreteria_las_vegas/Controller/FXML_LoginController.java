@@ -8,7 +8,6 @@ package ferreteria_las_vegas.Controller;
 import ferreteria_las_vegas.model.controller.UsuarioJpaController;
 
 
-
 import ferreteria_las_vegas.model.entities.Usuario;
 import ferreteria_las_vegas.utils.AppContext;
 import javafx.fxml.FXML;

@@ -27,7 +27,8 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Usuarios
+ * @author Usuario
+ * Entidad Mapeada
  */
 @Entity
 @Table(name = "tb_direcciones")
@@ -49,7 +50,7 @@ public class Direccion implements Serializable {
     private String dirDirExacta;
     
     @ManyToMany(mappedBy = "direccionList")    
-    private List<Persona> personaList;    
+    private List<Persona> personaList;
     
     @JoinTable(name = "tb_direcciones_proveedores", joinColumns = {
         @JoinColumn(name = "RDP_Direccion", referencedColumnName = "Dir_ID")}, inverseJoinColumns = {

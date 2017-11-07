@@ -24,7 +24,8 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Usuarios
+ * @author Usuario
+ * Entidad Mapeada
  */
 @Entity
 @Table(name = "tb_contactos")
@@ -46,12 +47,12 @@ public class Contacto implements Serializable {
     @Column(name = "Con_Contacto")
     private String conContacto;
     @Basic(optional = false)
-    @Column(name = "Con_TipoContacto")
-    private String conTipoContacto;    
+    @Column(name = "Con_TipoContacto")    
+    private String conTipoContacto;
     
     @ManyToMany(mappedBy = "contactoList")
     private List<Persona> personaList;
-   
+    
     @JoinTable(name = "tb_contactos_proveedores", joinColumns = {
         @JoinColumn(name = "RCP_Contacto", referencedColumnName = "Con_ID")}, inverseJoinColumns = {
         @JoinColumn(name = "RCP_Proveedor", referencedColumnName = "Pro_ID")})

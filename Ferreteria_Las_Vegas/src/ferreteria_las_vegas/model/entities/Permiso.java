@@ -18,7 +18,6 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.PreRemove;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -26,6 +25,7 @@ import javax.xml.bind.annotation.XmlTransient;
 /**
  *
  * @author Usuario
+ * Entidad Mapeada
  */
 @Entity
 @Table(name = "tb_permisos")
@@ -34,6 +34,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Permiso.findAll", query = "SELECT p FROM Permiso p")
     , @NamedQuery(name = "Permiso.findByPerID", query = "SELECT p FROM Permiso p WHERE p.perID = :perID")
     , @NamedQuery(name = "Permiso.findByPerNombre", query = "SELECT p FROM Permiso p WHERE p.perNombre = :perNombre")
+    , @NamedQuery(name = "Permiso.findByPerModulo", query = "SELECT p FROM Permiso p WHERE p.perModulo = :perModulo")
     , @NamedQuery(name = "Permiso.findByPerDescripcion", query = "SELECT p FROM Permiso p WHERE p.perDescripcion = :perDescripcion")})
 public class Permiso implements Serializable {
 
@@ -47,11 +48,14 @@ public class Permiso implements Serializable {
     @Column(name = "Per_Nombre")
     private String perNombre;
     @Basic(optional = false)
+    @Column(name = "Per_Modulo")
+    private String perModulo;
+    @Basic(optional = false)
     @Column(name = "Per_Descripcion")
     private String perDescripcion;
-
+    
     @ManyToMany(mappedBy = "permisoList")
-    private List<Usuario> usuarioList;
+    private List<Usuario> usuarioList;   
 
     public Permiso() {
     }
@@ -60,9 +64,10 @@ public class Permiso implements Serializable {
         this.perID = perID;
     }
 
-    public Permiso(Integer perID, String perNombre, String perDescripcion) {
+    public Permiso(Integer perID, String perNombre, String perModulo, String perDescripcion) {
         this.perID = perID;
         this.perNombre = perNombre;
+        this.perModulo = perModulo;
         this.perDescripcion = perDescripcion;
     }
 
@@ -80,6 +85,14 @@ public class Permiso implements Serializable {
 
     public void setPerNombre(String perNombre) {
         this.perNombre = perNombre;
+    }
+
+    public String getPerModulo() {
+        return perModulo;
+    }
+
+    public void setPerModulo(String perModulo) {
+        this.perModulo = perModulo;
     }
 
     public String getPerDescripcion() {
@@ -123,11 +136,5 @@ public class Permiso implements Serializable {
     public String toString() {
         return "ferreteria_las_vegas.model.entities.Permiso[ perID=" + perID + " ]";
     }
-
-    /*@PreRemove
-    private void removePermisoFromUsuario() {
-        for (Usuario u : usuarioList) {
-            u.getPermisoList().remove(this);
-        }
-    } */   
+    
 }

@@ -23,7 +23,8 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Usuarios
+ * @author Usuario
+ * Entidad Mapeada
  */
 @Entity
 @Table(name = "tb_usuarios")
@@ -51,7 +52,7 @@ public class Usuario implements Serializable {
     @Basic(optional = false)
     @Column(name = "Usu_Estado")
     private String usuEstado;
-        
+    
     @JoinTable(name = "tb_permisos_usuarios", joinColumns = {
         @JoinColumn(name = "RPU_Usuarios", referencedColumnName = "Usu_Persona")}, inverseJoinColumns = {
         @JoinColumn(name = "RPU_Permisos", referencedColumnName = "Per_ID")})

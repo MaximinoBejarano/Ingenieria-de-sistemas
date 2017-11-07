@@ -28,7 +28,8 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Usuarios
+ * @author Usuario
+ * Entidad Mapeada
  */
 @Entity
 @Table(name = "tb_notacredito")
@@ -147,7 +148,7 @@ public class NotaCredito implements Serializable {
 
     @Override
     public String toString() {
-        return "ferreteria_las_vegas.model.entities.NotaCredito[ notCodigo=" + notCodigo + " ]";
+        return "ferreteria_las_vegas.model.entities.Notacredito[ notCodigo=" + notCodigo + " ]";
     }
     
 }

@@ -12,6 +12,8 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -26,7 +28,8 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Usuarios
+ * @author Usuario
+ * Entidad Mapeada
  */
 @Entity
 @Table(name = "tb_inventario")
@@ -41,9 +44,10 @@ public class Inventario implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "Inv_Codigo")
-    private String invCodigo;
+    private Integer invCodigo;
     @Basic(optional = false)
     @Column(name = "Inv_Fecha")
     @Temporal(TemporalType.DATE)
@@ -66,22 +70,22 @@ public class Inventario implements Serializable {
     public Inventario() {
     }
 
-    public Inventario(String invCodigo) {
+    public Inventario(Integer invCodigo) {
         this.invCodigo = invCodigo;
     }
 
-    public Inventario(String invCodigo, Date invFecha, int invCantidad, String invEstado) {
+    public Inventario(Integer invCodigo, Date invFecha, int invCantidad, String invEstado) {
         this.invCodigo = invCodigo;
         this.invFecha = invFecha;
         this.invCantidad = invCantidad;
         this.invEstado = invEstado;
     }
 
-    public String getInvCodigo() {
+    public Integer getInvCodigo() {
         return invCodigo;
     }
 
-    public void setInvCodigo(String invCodigo) {
+    public void setInvCodigo(Integer invCodigo) {
         this.invCodigo = invCodigo;
     }
 

@@ -10,6 +10,8 @@ import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -22,7 +24,8 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Usuarios
+ * @author Usuario
+ * Entidad Mapeada
  */
 @Entity
 @Table(name = "tb_bodegas")
@@ -36,9 +39,10 @@ public class Bodega implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "Bod_Codigo")
-    private String bodCodigo;
+    private Integer bodCodigo;
     @Basic(optional = false)
     @Column(name = "Bod_Nombre")
     private String bodNombre;
@@ -56,20 +60,20 @@ public class Bodega implements Serializable {
     public Bodega() {
     }
 
-    public Bodega(String bodCodigo) {
+    public Bodega(Integer bodCodigo) {
         this.bodCodigo = bodCodigo;
     }
 
-    public Bodega(String bodCodigo, String bodNombre) {
+    public Bodega(Integer bodCodigo, String bodNombre) {
         this.bodCodigo = bodCodigo;
         this.bodNombre = bodNombre;
     }
 
-    public String getBodCodigo() {
+    public Integer getBodCodigo() {
         return bodCodigo;
     }
 
-    public void setBodCodigo(String bodCodigo) {
+    public void setBodCodigo(Integer bodCodigo) {
         this.bodCodigo = bodCodigo;
     }
 

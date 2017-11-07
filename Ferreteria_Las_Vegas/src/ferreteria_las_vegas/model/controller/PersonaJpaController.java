@@ -276,10 +276,10 @@ Persona
     private List<Contacto> contactoList;
 
 Direccion
-@ManyToMany(mappedBy = "direccionList")    
+    @ManyToMany(mappedBy = "direccionList")    
     private List<Persona> personaList;
 
 Contacto
-@ManyToMany(mappedBy = "contactoList")
+    @ManyToMany(mappedBy = "contactoList")
     private List<Persona> personaList;
  */

@@ -22,7 +22,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Usuarios
+ * @author Usuario
+ * Entidad Mapeada
  */
 @Entity
 @Table(name = "tb_articulosxcompra")

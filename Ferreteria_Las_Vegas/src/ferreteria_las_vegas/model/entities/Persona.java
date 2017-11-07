@@ -24,7 +24,8 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Usuarios
+ * @author Usuario
+ * Entidad Mapeada
  */
 @Entity
 @Table(name = "tb_personas")
@@ -56,7 +57,7 @@ public class Persona implements Serializable {
     private String perSApellido;
     @Basic(optional = false)
     @Column(name = "Per_Estado")
-    private String perEstado;
+    private String perEstado;    
     @JoinTable(name = "tb_ferreteria_personas", joinColumns = {
         @JoinColumn(name = "RFP_Persona", referencedColumnName = "Per_Cedula")}, inverseJoinColumns = {
         @JoinColumn(name = "RFP_Ferreteria", referencedColumnName = "Fer_ID")})
@@ -73,6 +74,7 @@ public class Persona implements Serializable {
         @JoinColumn(name = "RPC_Contacto", referencedColumnName = "Con_ID")})
     @ManyToMany
     private List<Contacto> contactoList;
+    
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "persona")
     private Usuario usuario;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "persona")

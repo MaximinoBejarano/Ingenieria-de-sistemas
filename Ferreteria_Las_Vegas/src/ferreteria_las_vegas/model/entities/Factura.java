@@ -13,6 +13,8 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -27,7 +29,8 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Usuarios
+ * @author Usuario
+ * Entidad Mapeada
  */
 @Entity
 @Table(name = "tb_facturas")
@@ -46,6 +49,7 @@ public class Factura implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "Fac_Codigo")
     private Integer facCodigo;
@@ -73,7 +77,7 @@ public class Factura implements Serializable {
     @Column(name = "Fact_TipoFact")
     private String factTipoFact;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "notFactura")
-    private List<NotaCredito> notaCreditoList;
+    private List<NotaCredito> notacreditoList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "cueFactura")
     private List<CuentaXCobrar> cuentaXCobrarList;
     @JoinColumn(name = "Fac_Cliente", referencedColumnName = "Cli_Persona")
@@ -167,12 +171,12 @@ public class Factura implements Serializable {
     }
 
     @XmlTransient
-    public List<NotaCredito> getNotaCreditoList() {
-        return notaCreditoList;
+    public List<NotaCredito> getNotacreditoList() {
+        return notacreditoList;
     }
 
-    public void setNotaCreditoList(List<NotaCredito> notaCreditoList) {
-        this.notaCreditoList = notaCreditoList;
+    public void setNotacreditoList(List<NotaCredito> notacreditoList) {
+        this.notacreditoList = notacreditoList;
     }
 
     @XmlTransient

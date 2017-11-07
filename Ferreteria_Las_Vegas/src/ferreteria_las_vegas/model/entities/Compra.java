@@ -13,6 +13,8 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -27,7 +29,8 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Usuarios
+ * @author Usuario
+ * Entidad Mapeada
  */
 @Entity
 @Table(name = "tb_compras")
@@ -48,9 +51,10 @@ public class Compra implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "Com_Numero")
-    private String comNumero;
+    private Integer comNumero;
     @Basic(optional = false)
     @Column(name = "Com_Fecha")
     @Temporal(TemporalType.DATE)
@@ -87,11 +91,11 @@ public class Compra implements Serializable {
     public Compra() {
     }
 
-    public Compra(String comNumero) {
+    public Compra(Integer comNumero) {
         this.comNumero = comNumero;
     }
 
-    public Compra(String comNumero, Date comFecha, BigDecimal comTotal, BigDecimal comImpVenta, BigDecimal comServCarga, String comSubTotal) {
+    public Compra(Integer comNumero, Date comFecha, BigDecimal comTotal, BigDecimal comImpVenta, BigDecimal comServCarga, String comSubTotal) {
         this.comNumero = comNumero;
         this.comFecha = comFecha;
         this.comTotal = comTotal;
@@ -100,11 +104,11 @@ public class Compra implements Serializable {
         this.comSubTotal = comSubTotal;
     }
 
-    public String getComNumero() {
+    public Integer getComNumero() {
         return comNumero;
     }
 
-    public void setComNumero(String comNumero) {
+    public void setComNumero(Integer comNumero) {
         this.comNumero = comNumero;
     }
 
