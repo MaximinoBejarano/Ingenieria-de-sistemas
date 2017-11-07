@@ -41,7 +41,7 @@
                         <Font size="18.0" />
                      </font>
                   </TextField>
-                  <Button layoutX="1399.0" layoutY="-11.0" mnemonicParsing="false" prefWidth="104.0" styleClass="boton-Exit" stylesheets="@../../styles/style.css" AnchorPane.bottomAnchor="6.0" AnchorPane.rightAnchor="6.0" AnchorPane.topAnchor="6.0">
+                  <Button layoutX="1399.0" layoutY="-11.0" mnemonicParsing="false" onAction="#SalirClick" prefWidth="104.0" styleClass="boton-Exit" stylesheets="@../../styles/style.css" AnchorPane.bottomAnchor="6.0" AnchorPane.rightAnchor="6.0" AnchorPane.topAnchor="6.0">
                      <effect>
                         <DropShadow />
                      </effect>

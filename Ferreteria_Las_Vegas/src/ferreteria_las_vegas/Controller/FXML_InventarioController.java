@@ -15,14 +15,12 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.animation.FadeTransition;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -36,8 +34,6 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import javafx.util.Duration;
-import javax.swing.JOptionPane;
 
 /**
  * FXML Controller class
@@ -97,7 +93,8 @@ public class FXML_InventarioController implements Initializable {
     @FXML
     private TableColumn<TextField, String> tcCantidad;
 
-    List<Articulo> listaArticulos= new ArrayList();
+    List<Articulo> listaArticulos = new ArrayList();
+
     /**
      * Initializes the controller class.
      */
@@ -107,33 +104,29 @@ public class FXML_InventarioController implements Initializable {
     }
 
     @FXML
-    private void FinalizarProceso(ActionEvent event) {
-        try {
-            setDataPane(cargarScena("/ferreteria_las_vegas/view/FXML_Menu.fxml"));
-        } catch (IOException ex) {
-            System.err.println(ex);
-        }
+    void SalirClick(ActionEvent event) {
+        ScenesManager.getInstance().LoadSceneMenu();
     }
-    
+
     @FXML
     private void AgregarProducto(ActionEvent event) {
         try {
             if (true) {
                 CargarProductos();
-                Articulo articulo =(Articulo)AppContext.getInstance().get("articulo-Ingresado");
-                if(articulo != null){
+                Articulo articulo = (Articulo) AppContext.getInstance().get("articulo-Ingresado");
+                if (articulo != null) {
                     listaArticulos.add(articulo);
                     RecargarTblClientes();
                 }
             } else {
                 //rellenar los datos del formulario
             }
-        } catch (Exception ex) {
-            // mandar al servidor al log de errores
-            JOptionPane.showMessageDialog(null, ex.toString());
+        } catch (Exception ex) {            
+            System.err.print(ex);
         }
     }
-    public void CargarProductos(){
+
+    public void CargarProductos() {
         try {
             Parent root = FXMLLoader.load(getClass().getResource("/ferreteria_las_vegas/view/FXML_Productos.fxml"));
             Stage stage = new Stage(StageStyle.UTILITY);
@@ -146,24 +139,7 @@ public class FXML_InventarioController implements Initializable {
         }
     }
 
-    public void setDataPane(Node node) {
-        DataPanel.getChildren().setAll(node);
-    }
-
-    public VBox cargarScena(String url) throws IOException {
-        VBox v = (VBox) FXMLLoader.load(getClass().getResource(url));
-        FadeTransition ft = new FadeTransition(Duration.millis(1000));
-        ft.setNode(v);
-        ft.setFromValue(0.1);
-        ft.setToValue(1);
-        ft.setCycleCount(1);
-        ft.setAutoReverse(false);
-        ft.play();
-
-        return v;
-    }
-
-       private void RecargarTblClientes() {
+    private void RecargarTblClientes() {
         tblProductos.getItems().clear();
         tcCodigoProducto.setCellValueFactory((cellData) -> new SimpleStringProperty(cellData.getValue().getArtCodigo().toString()));
         tcCodigoBarrasProducto.setCellValueFactory((cellData) -> new SimpleStringProperty(cellData.getValue().getArtCodBarra()));
@@ -172,25 +148,23 @@ public class FXML_InventarioController implements Initializable {
         tcUnidadProducto.setCellValueFactory((cellData) -> new SimpleStringProperty(cellData.getValue().getArtUnidadMedida()));
         tcDescripcionProducto.setCellValueFactory((cellData) -> new SimpleStringProperty(cellData.getValue().getArtDescripcion()));
         tcPrcioProducto.setCellValueFactory((cellData) -> new SimpleStringProperty(cellData.getValue().getArtPrecio().toBigInteger().toString()));
-       tcCantidad.setCellValueFactory((cellData) -> new SimpleStringProperty(cellData.getValue().getText()));
-       
-        
+        tcCantidad.setCellValueFactory((cellData) -> new SimpleStringProperty(cellData.getValue().getText()));
+
         tblProductos.setItems(FXCollections.observableArrayList(listaArticulos));
     }
-    
+
     @FXML
     private void BuscarArticulo(ActionEvent event) {
         ProcesoBusquedad();
-         Articulo articulo =(Articulo)AppContext.getInstance().get("articulo-Ingresado");
-                if(articulo != null){
-                    listaArticulos.add(articulo);
-                    RecargarTblClientes();
-                }
-        
+        Articulo articulo = (Articulo) AppContext.getInstance().get("articulo-Ingresado");
+        if (articulo != null) {
+            listaArticulos.add(articulo);
+            RecargarTblClientes();
+        }
+
     }
-       
-       
-     /**
+
+    /**
      * Lanza la ventana de busqueda
      */
     void ProcesoBusquedad() {
@@ -203,11 +177,9 @@ public class FXML_InventarioController implements Initializable {
             stage.initModality(Modality.WINDOW_MODAL);
             stage.showAndWait();
 
-        } catch (Exception ex) {
-            // mandar al servidor al log de errores
-            JOptionPane.showMessageDialog(null, ex.toString());
+        } catch (Exception ex) {            
+            System.err.print(ex);
         }
     }
-       
-    
+
 }

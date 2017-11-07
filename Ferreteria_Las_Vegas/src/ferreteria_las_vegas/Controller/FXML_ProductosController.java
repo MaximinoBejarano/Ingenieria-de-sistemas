@@ -25,7 +25,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import javax.swing.JOptionPane;
 
 /**
  * FXML Controller class
@@ -220,8 +219,7 @@ public class FXML_ProductosController implements Initializable {
             CargasDatos();
 
         } catch (Exception ex) {
-            // mandar al servidor al log de errores
-            JOptionPane.showMessageDialog(null, ex.toString());
+            System.err.print(ex);
         }
     }
 

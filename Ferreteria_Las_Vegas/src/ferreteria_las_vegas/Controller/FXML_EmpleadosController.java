@@ -15,12 +15,10 @@ import ferreteria_las_vegas.model.entities.Permiso;
 import ferreteria_las_vegas.model.entities.Persona;
 import ferreteria_las_vegas.model.entities.Usuario;
 import ferreteria_las_vegas.utils.AppContext;
-import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.ResourceBundle;
-import javafx.animation.FadeTransition;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -28,7 +26,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -48,7 +45,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.StageStyle;
-import javafx.util.Duration;
 
 /**
  * FXML Controller class
@@ -154,12 +150,8 @@ public class FXML_EmpleadosController implements Initializable {
     }
 
     @FXML
-    void SalirClick(ActionEvent event) {
-        try {
-            setDataPane(cargarScena("/ferreteria_las_vegas/view/FXML_Menu.fxml"));
-        } catch (IOException ex) {
-            System.err.println(ex);
-        }
+    void SalirClick(ActionEvent event) {                    
+        ScenesManager.getInstance().LoadSceneMenu();        
     }
     
     @FXML
@@ -365,9 +357,7 @@ public class FXML_EmpleadosController implements Initializable {
         CargarDatosUsuario(persona);        
     }
     
-    void ProcesoQuitarTodosPermisos(Persona persona){
-        //List<Permiso> permisoAsignadosList = PermisoJpaController.getInstance().ConsultarPermisosAsignados(persona.getUsuario());                        
-        //List<Permiso> permisoDisponibleList = PermisoJpaController.getInstance().ConsultarPermisosDisponibles(permisoAsignadosList);        
+    void ProcesoQuitarTodosPermisos(Persona persona){        
         persona.getUsuario().getPermisoList().clear();
         UsuarioJpaController.getInstance().ModificarUsuario(persona.getUsuario());
         CargarDatosUsuario(persona);        
@@ -391,8 +381,7 @@ public class FXML_EmpleadosController implements Initializable {
         
         List<Permiso> permisoAsignadosList = PermisoJpaController.getInstance().ConsultarPermisosAsignados(persona.getUsuario());
         ObservableList<Permiso> oPermisoAsignadosList = FXCollections.observableArrayList(permisoAsignadosList);
-        
-        
+                
         List<Permiso> permisoDisponibleList = PermisoJpaController.getInstance().ConsultarPermisosDisponibles(permisoAsignadosList);
         ObservableList<Permiso> oPermisoDisponibleList = FXCollections.observableArrayList(permisoDisponibleList);
         
@@ -415,22 +404,7 @@ public class FXML_EmpleadosController implements Initializable {
         lvDisponibles.setItems(null);
     }
 
-    /*-----------------------------------------------------------------------------*/
-    public void setDataPane(Node node) {
-        dataPane.getChildren().setAll(node);
-    }
-
-    public VBox cargarScena(String url) throws IOException {
-        VBox v = (VBox) FXMLLoader.load(getClass().getResource(url));
-        FadeTransition ft = new FadeTransition(Duration.millis(1000));
-        ft.setNode(v);
-        ft.setFromValue(0.1);
-        ft.setToValue(1);
-        ft.setCycleCount(1);
-        ft.setAutoReverse(false);
-        ft.play();
-        return v;
-    }
+    /*-----------------------------------------------------------------------------*/    
 
     void LanzarBusqueda() {
         try {
@@ -442,8 +416,7 @@ public class FXML_EmpleadosController implements Initializable {
             stage.initModality(Modality.WINDOW_MODAL);
             stage.showAndWait();
 
-        } catch (Exception ex) {
-            // mandar al servidor al log de errores
+        } catch (Exception ex) {            
             System.err.println(ex);
         }
     }

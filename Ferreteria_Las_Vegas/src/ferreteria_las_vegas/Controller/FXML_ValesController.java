@@ -37,4 +37,8 @@ public class FXML_ValesController implements Initializable {
     private void buscarCliente(ActionEvent event) {
     }
     
+    @FXML
+    void SalirClick(ActionEvent event) {
+        ScenesManager.getInstance().LoadSceneMenu();
+    }
 }

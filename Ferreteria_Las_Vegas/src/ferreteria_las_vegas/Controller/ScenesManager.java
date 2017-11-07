@@ -63,6 +63,17 @@ public class ScenesManager {
         }
     }    
     
+   public void LoadSceneLogin()
+   {
+        try {
+            root = FXMLLoader.load(getClass().getResource("/ferreteria_las_vegas/view/FXML_Login.fxml"));
+            scene.setRoot(root);
+                 
+        } catch (IOException ex) {
+            Logger.getLogger(ScenesManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+   }
+   
    public void LoadSceneMenu()
    {
         try {

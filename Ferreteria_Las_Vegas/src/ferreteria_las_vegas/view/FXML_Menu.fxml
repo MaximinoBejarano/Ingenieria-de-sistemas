@@ -205,7 +205,7 @@
                               <DropShadow />
                            </effect>
                         </Button>
-                        <Button layoutX="1106.0" layoutY="22.0" mnemonicParsing="false" prefHeight="51.0" prefWidth="91.0" styleClass="boton-Sal" stylesheets="@../../styles/style.css">
+                        <Button layoutX="1106.0" layoutY="22.0" mnemonicParsing="false" onAction="#SalirClick" prefHeight="51.0" prefWidth="91.0" styleClass="boton-Sal" stylesheets="@../../styles/style.css">
                            <graphic>
                               <ImageView fitHeight="32.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                                  <image>

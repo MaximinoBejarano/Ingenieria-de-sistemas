@@ -14,9 +14,9 @@ import javafx.fxml.Initializable;
 /**
  * FXML Controller class
  *
- * @author wili
+ * @author Usuario
  */
-public class FXML_ProveedoresController implements Initializable {
+public class FXML_AbonosController implements Initializable {
 
     /**
      * Initializes the controller class.
@@ -25,9 +25,9 @@ public class FXML_ProveedoresController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
     }    
-    
+
     @FXML
     void SalirClick(ActionEvent event) {
         ScenesManager.getInstance().LoadSceneMenu();
-    }
+    }    
 }
