@@ -57,6 +57,8 @@ public class ScenesManager {
             stage.setMinWidth(1100);
             stage.setMinHeight(650);            
             stage.show();
+            
+            PermisosManager.getInstance().setScene(scene);
 
         } catch (IOException ex) {
             Logger.getLogger(ScenesManager.class.getName()).log(Level.SEVERE, null, ex);
@@ -78,8 +80,8 @@ public class ScenesManager {
    {
         try {
             root = FXMLLoader.load(getClass().getResource("/ferreteria_las_vegas/view/FXML_Menu.fxml"));
-            scene.setRoot(root);
-                 
+            scene.setRoot(root);           
+            PermisosManager.getInstance().Menu();
         } catch (IOException ex) {
             Logger.getLogger(ScenesManager.class.getName()).log(Level.SEVERE, null, ex);
         }

@@ -13,6 +13,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
@@ -25,13 +26,40 @@ import javafx.scene.layout.VBox;
 public class FXML_MenuController implements Initializable {
 
     @FXML
+    private Button btnFacturacion;
+
+    @FXML
+    private Button btnAbonos;
+
+    @FXML
+    private Button btnNotaCredito;
+
+    @FXML
+    private Button btnInventario;
+
+    @FXML
+    private Button btnClientes;
+
+    @FXML
+    private Button btnEmpleados;
+
+    @FXML
+    private Button btnProveedores;
+
+    @FXML
+    private Button btnAnulacion;   
+
+    @FXML
+    private Button btnEstadisticas;
+
+    @FXML
+    private Button btnConfiguraciones;
+    
+    @FXML
     private Label lblDate;
 
     @FXML
     private Label lblUserName;
-
-    @FXML
-    private VBox dataPane;
 
     @FXML
     private void accesoCliente(ActionEvent e) {
