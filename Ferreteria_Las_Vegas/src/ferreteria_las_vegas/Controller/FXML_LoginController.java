@@ -76,6 +76,7 @@ public class FXML_LoginController implements Initializable {
             if (usuario != null) {
                 Platform.runLater(() -> {
                     AppContext.getInstance().set("user", usuario);
+                    PermisosManager.getInstance().setUsario(usuario);
                     LanzarMenu();
                 });
             } else {
