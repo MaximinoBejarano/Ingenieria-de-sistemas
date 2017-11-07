@@ -10,7 +10,6 @@
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.DropShadow?>
-<?import javafx.scene.effect.InnerShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -22,25 +21,22 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<StackPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="400.0" minWidth="630.0" prefHeight="400.0" prefWidth="630.0" style="-fx-background-color: #AEB6BF;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ferreteria_las_vegas.Controller.FXML_LoginController">
+<StackPane fx:id="mainPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="400.0" minWidth="630.0" prefHeight="400.0" prefWidth="814.0" style="-fx-background-color: #2E4053;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ferreteria_las_vegas.Controller.FXML_LoginController">
     <stylesheets>
         <URL value="@LoginCSS.css" />
     </stylesheets>
    <children>
-      <VBox fx:id="dataPane" fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="630.0" style="-fx-background-color: #AEB6BF;">
+      <VBox fx:id="dataPane" alignment="CENTER" fillWidth="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: #2E4053;">
          <children>
-            <AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="400.0" prefWidth="700.0" style="-fx-background-color: #AEB6BF;">
+            <AnchorPane id="AnchorPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="400.0" prefWidth="819.0" style="-fx-background-color: #2E4053;">
                <children>
-                  <Separator layoutX="279.0" layoutY="28.0" orientation="VERTICAL" prefHeight="350.0" prefWidth="8.0" AnchorPane.bottomAnchor="22.0" AnchorPane.topAnchor="22.0" />
-                  <ImageView fitHeight="183.0" fitWidth="160.0" layoutX="69.0" layoutY="122.0" pickOnBounds="true" preserveRatio="true">
+                  <Separator layoutX="300.0" layoutY="25.0" orientation="VERTICAL" prefHeight="350.0" prefWidth="8.0" AnchorPane.bottomAnchor="22.0" AnchorPane.rightAnchor="322.0" AnchorPane.topAnchor="22.0" />
+                  <ImageView fitHeight="356.0" fitWidth="469.0" layoutX="14.0" layoutY="22.0" pickOnBounds="true" AnchorPane.bottomAnchor="22.0" AnchorPane.leftAnchor="6.0" AnchorPane.rightAnchor="339.0" AnchorPane.topAnchor="22.0">
                      <image>
-                        <Image url="@../../pictures/icon-login.png" />
+                        <Image url="@../../pictures/logo%20-%20copia.png" />
                      </image>
-                     <effect>
-                        <InnerShadow />
-                     </effect>
                   </ImageView>
-                  <GridPane layoutX="327.0" layoutY="44.0" prefHeight="300.0" prefWidth="269.0" AnchorPane.bottomAnchor="40.0" AnchorPane.topAnchor="45.0">
+                  <GridPane layoutX="327.0" layoutY="44.0" prefHeight="300.0" prefWidth="269.0" AnchorPane.bottomAnchor="40.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="45.0">
                      <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                      </columnConstraints>
@@ -54,15 +50,21 @@
                         <RowConstraints minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                      <children>
-                        <Label text="Acceso al Sistema">
+                        <Label text="Acceso al Sistema" textFill="WHITE">
                            <font>
-                              <Font name="Century Gothic" size="24.0" />
+                              <Font name="Century Gothic" size="27.0" />
                            </font>
+                           <effect>
+                              <DropShadow />
+                           </effect>
                         </Label>
-                        <Label text="Nombre de Usuario" GridPane.rowIndex="1">
+                        <Label text="Nombre de Usuario" textFill="WHITE" GridPane.rowIndex="1">
                            <font>
-                              <Font size="16.0" />
+                              <Font size="18.0" />
                            </font>
+                           <effect>
+                              <DropShadow />
+                           </effect>
                         </Label>
                         <TextField fx:id="txtUsuario" promptText="Campo Requerido" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
                            <font>
@@ -75,10 +77,13 @@
                               <DropShadow />
                            </effect>
                         </TextField>
-                        <Label text="Contraseña" GridPane.rowIndex="3">
+                        <Label text="Contraseña" textFill="WHITE" GridPane.rowIndex="3">
                            <font>
-                              <Font size="16.0" />
+                              <Font size="18.0" />
                            </font>
+                           <effect>
+                              <DropShadow />
+                           </effect>
                         </Label>
                         <PasswordField fx:id="txtContraseña" onAction="#txtContraseñaAction" promptText="Campo Requerido" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
                            <font>
@@ -120,6 +125,9 @@
                </children>
             </AnchorPane>
          </children>
+         <effect>
+            <DropShadow />
+         </effect>
       </VBox>
    </children>
 </StackPane>
