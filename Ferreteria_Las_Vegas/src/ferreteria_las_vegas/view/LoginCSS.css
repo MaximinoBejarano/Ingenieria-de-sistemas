@@ -9,17 +9,16 @@ and open the template in the editor.
 */
 
 .btnEstandar {
-  
 -fx-text-fill: black;
--fx-background-color:#4CAF50;
+-fx-background-color:red;
 }
 
-.btnEstandar:hover { 
+.btnEstandar:hover {  
 -fx-background-color:white  ;
 }
 
 .bbarra{       
-    -fx-accent: #4CAF50;    
+    -fx-accent: red;    
 }
 .ttexto{
     -fx-font: 20px System;

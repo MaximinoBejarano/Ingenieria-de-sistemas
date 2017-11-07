@@ -106,7 +106,7 @@ public class FXML_InventarioController implements Initializable {
 
     @FXML
     void SalirClick(ActionEvent event) {
-        ScenesManager.getInstance().LoadSceneMenu();
+        ScenesManager.getInstance().LoadSceneMenu();        
     }
 
     @FXML
