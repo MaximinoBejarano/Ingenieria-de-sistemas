@@ -52,6 +52,8 @@ public class FXML_InventarioController implements Initializable {
     @FXML
     private Button btnBuscarFactura;
     @FXML
+    private Button btnEliminarFactura;
+    @FXML
     private Button btnEditarFactura;
     @FXML
     private Button btnEliminarProducto;
