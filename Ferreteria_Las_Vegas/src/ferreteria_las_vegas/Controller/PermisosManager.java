@@ -119,8 +119,7 @@ public class PermisosManager {
         }
     }
 
-    void Empleados() {                
-        
+    void Empleados() {
         Button btnAgregar = (Button) scene.lookup("#btnAgregar");
         Button btnBuscar = (Button) scene.lookup("#btnBuscar");                            
         Button btnEditar = (Button) scene.lookup("#btnEditar");            
@@ -148,4 +147,46 @@ public class PermisosManager {
             }
         }
     }
+    
+    void Invetario() {
+        Button btnNuevoProducto = (Button) scene.lookup("#btnNuevoProducto");        
+        Button btnBuscarProducto = (Button) scene.lookup("#btnBuscarProducto");
+        Button btnEditarProducto = (Button) scene.lookup("#btnEditarProducto");    
+        Button btnEliminarProducto = (Button) scene.lookup("#btnEliminarProducto");                  
+        
+        Button btnAgregarFactura = (Button) scene.lookup("#btnAgregarFactura");
+        Button btnBuscarFactura = (Button) scene.lookup("#btnBuscarFactura");
+        Button btnEditarFactura = (Button) scene.lookup("#btnEditarFactura");    
+        Button btnEliminarFactura = (Button) scene.lookup("#btnEliminar");                        
+        
+        btnNuevoProducto.setDisable(true);
+        btnBuscarProducto.setDisable(true);
+        btnEditarProducto.setDisable(true);
+        btnEliminarProducto.setDisable(true);
+        
+        btnAgregarFactura.setDisable(true);
+        btnBuscarFactura.setDisable(true);
+        btnEditarFactura.setDisable(true);
+        btnEliminarFactura.setDisable(true);                
+        
+        for (Permiso permiso : usuario.getPermisoList()) {
+            if (permiso.getPerNombre().equalsIgnoreCase("AGR_PRODUCTO")) {
+                btnNuevoProducto.setDisable(false);
+            } else if (permiso.getPerNombre().equalsIgnoreCase("BUS_PRODUCTO")) {
+                btnBuscarProducto.setDisable(false);
+            } else if (permiso.getPerNombre().equalsIgnoreCase("EDI_PRODUCTO")) {
+                btnEditarProducto.setDisable(false);
+            } else if (permiso.getPerNombre().equalsIgnoreCase("ELI_PRODUCTO")) {
+                btnEliminarProducto.setDisable(false);                                
+            } else if (permiso.getPerNombre().equalsIgnoreCase("AGR_INVENTARIO")) {
+                btnAgregarFactura.setDisable(false);
+            } else if (permiso.getPerNombre().equalsIgnoreCase("BUS_INVENTARIO")) {
+                btnBuscarFactura.setDisable(false);
+            } else if (permiso.getPerNombre().equalsIgnoreCase("EDI_INVENTARIO")) {
+                btnEditarFactura.setDisable(false);
+            } else if (permiso.getPerNombre().equalsIgnoreCase("ELI_INVENTARIO")) {
+                btnEliminarFactura.setDisable(false);
+            }            
+        }
+    }    
 }

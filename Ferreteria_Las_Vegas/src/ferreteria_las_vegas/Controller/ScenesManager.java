@@ -11,6 +11,7 @@ import java.util.logging.Logger;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 /**
@@ -55,7 +56,9 @@ public class ScenesManager {
             stage.setScene(scene);
             stage.setResizable(true);            
             stage.setMinWidth(1100);
-            stage.setMinHeight(650);            
+            stage.setMinHeight(650);
+            //stage.getIcons().add(new Image("src/pictures/logo.png"));
+            stage.setTitle("Sistema de Facturación Ferretería las Vegas");
             stage.show();
             
             PermisosManager.getInstance().setScene(scene);
@@ -113,7 +116,7 @@ public class ScenesManager {
        try {
             root = FXMLLoader.load(getClass().getResource("/ferreteria_las_vegas/view/FXML_Inventario.fxml"));            
             scene.setRoot(root);
-            
+            PermisosManager.getInstance().Invetario();
         } catch (IOException ex) {
             Logger.getLogger(ScenesManager.class.getName()).log(Level.SEVERE, null, ex);
         }
