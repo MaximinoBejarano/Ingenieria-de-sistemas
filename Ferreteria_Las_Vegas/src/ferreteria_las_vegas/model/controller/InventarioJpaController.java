@@ -96,11 +96,11 @@ public class InventarioJpaController {
      *
      * @return
      */
-    public List<Articulo> ConsultarArticulos() {
+    public List<Inventario> ConsultarInventario() {
         try {
-            Query qry = em.createNamedQuery("Articulo.findAll", Articulo.class);// consulta todos los articulos 
-            List<Articulo> Articulos = qry.getResultList();// Recibe el resultado de la consulta  
-            return Articulos;
+            Query qry = em.createNamedQuery("Inventario.findAll", Inventario.class);// consulta todos los articulos 
+            List<Inventario> inventario = qry.getResultList();// Recibe el resultado de la consulta  
+            return inventario;
         } catch (Exception ex) {
             return null;
         }
@@ -114,8 +114,8 @@ public class InventarioJpaController {
      */
     public  Inventario ConsultarInventarioCodigoProducto(int pCodigo) {
         try {
-            Query qry = em.createNamedQuery("Articulo.findByInvCodArticulo", Articulo.class);// consulta definida 
-            qry.setParameter("artCodigo", pCodigo);
+            Query qry = em.createNamedQuery("Inventario.findByInvCodArticulo", Inventario.class);// consulta definida 
+            qry.setParameter("invA", pCodigo);
             Inventario articulo = (Inventario) qry.getSingleResult();// trae el resultado de la consulta  
             return articulo;
         } catch (Exception ex) {
