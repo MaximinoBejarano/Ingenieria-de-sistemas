@@ -51,7 +51,7 @@ public class InventarioJpaController {
      * @return articulo
      */
 
-    public Articulo InsertarArticulo(Articulo Art) {
+    public Inventario InsertarInvetario(Inventario Art) {
         et = em.getTransaction();
         try {
             et.begin();
@@ -112,10 +112,10 @@ public class InventarioJpaController {
      * @param pCodigo
      * @return
      */
-    public  Inventario ConsultarInventarioCodigoProducto(int pCodigo) {
+    public  Inventario ConsultarInventarioCodigoProducto(Articulo pCodigo) {
         try {
             Query qry = em.createNamedQuery("Inventario.findByInvCodArticulo", Inventario.class);// consulta definida 
-            qry.setParameter("invA", pCodigo);
+            qry.setParameter("invArticulo", pCodigo);
             Inventario articulo = (Inventario) qry.getSingleResult();// trae el resultado de la consulta  
             return articulo;
         } catch (Exception ex) {

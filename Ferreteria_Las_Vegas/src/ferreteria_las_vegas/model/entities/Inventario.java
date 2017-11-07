@@ -40,7 +40,7 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Inventario.findByInvFecha", query = "SELECT i FROM Inventario i WHERE i.invFecha = :invFecha")
     , @NamedQuery(name = "Inventario.findByInvCantidad", query = "SELECT i FROM Inventario i WHERE i.invCantidad = :invCantidad")
     , @NamedQuery(name = "Inventario.findByInvEstado", query = "SELECT i FROM Inventario i WHERE i.invEstado = :invEstado")
-    , @NamedQuery(name = "Inventario.findByInvCodArticulo", query = "SELECT i FROM Inventario i WHERE i.invArticulo = :invA")})
+    , @NamedQuery(name = "Inventario.findByInvCodArticulo", query = "SELECT i FROM Inventario i WHERE i.invArticulo = :invArticulo")})
 public class Inventario implements Serializable {
 
     private static final long serialVersionUID = 1L;
