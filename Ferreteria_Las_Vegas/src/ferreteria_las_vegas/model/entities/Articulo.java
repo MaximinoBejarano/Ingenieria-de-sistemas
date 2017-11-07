@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 package ferreteria_las_vegas.model.entities;
- 
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
@@ -40,7 +40,8 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Articulo.findByArtDescuento", query = "SELECT a FROM Articulo a WHERE a.artDescuento = :artDescuento")
     , @NamedQuery(name = "Articulo.findByArtEstadoDescuento", query = "SELECT a FROM Articulo a WHERE a.artEstadoDescuento = :artEstadoDescuento")
     , @NamedQuery(name = "Articulo.findByArtCodBarra", query = "SELECT a FROM Articulo a WHERE a.artCodBarra = :artCodBarra")
-    , @NamedQuery(name = "Articulo.findByArtEstado", query = "SELECT a FROM Articulo a WHERE a.artEstado = :artEstado")})
+    , @NamedQuery(name = "Articulo.findByArtEstado", query = "SELECT a FROM Articulo a WHERE a.artEstado = :artEstado")
+    , @NamedQuery(name = "Articulo.findByArtExistente", query = "SELECT a FROM Articulo a WHERE a.artNombre = :artNombre and a.artDescripcion = :artDescripcion and a.artMarca = :artMarca and a.artEstado = :artEstado")})
 public class Articulo implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -229,5 +230,5 @@ public class Articulo implements Serializable {
     public String toString() {
         return "ferreteria_las_vegas.model.entities.Articulo[ artCodigo=" + artCodigo + " ]";
     }
-    
+
 }

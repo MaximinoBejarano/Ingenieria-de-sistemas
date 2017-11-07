@@ -5,36 +5,35 @@
  */
 package ferreteria_las_vegas.model.controller;
 
-import ferreteria_las_vegas.utils.EntityManagerHelper;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
 import ferreteria_las_vegas.model.entities.Articulo;
+import ferreteria_las_vegas.model.entities.Inventario;
+import ferreteria_las_vegas.utils.EntityManagerHelper;
 import java.util.List;
 import javax.persistence.EntityExistsException;
-import javax.persistence.LockModeType;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 
 /**
  *
- * @author MaxBejarano
+ * @author wili
  */
-public class ArticuloJpaController {
-
-    private static ArticuloJpaController INSTANCE = null;
+public class InventarioJpaController {
+  private static InventarioJpaController INSTANCE = null;
 
     private static void createInstance() {
         if (INSTANCE == null) {
 
-            synchronized (ArticuloJpaController.class) {
+            synchronized ( InventarioJpaController.class) {
 
                 if (INSTANCE == null) {
-                    INSTANCE = new ArticuloJpaController();
+                    INSTANCE = new  InventarioJpaController();
                 }
             }
         }
     }
 
-    public static ArticuloJpaController getInstance() {
+    public static  InventarioJpaController getInstance() {
         if (INSTANCE == null) {
             createInstance();
         }
@@ -59,10 +58,6 @@ public class ArticuloJpaController {
             em.persist(Art);
             et.commit();
             return Art;
-        }catch (EntityExistsException ex) {
-            et.rollback();
-            System.err.println(ex);
-            return null;
         } catch (Exception ex) {
             et.rollback();
             System.err.println(ex);
@@ -117,47 +112,16 @@ public class ArticuloJpaController {
      * @param pCodigo
      * @return
      */
-    public Articulo ConsultarArticuloCodigo(int pCodigo) {
+    public  Inventario ConsultarInventarioCodigoProducto(int pCodigo) {
         try {
             Query qry = em.createNamedQuery("Articulo.findByArtCodigo", Articulo.class);// consulta definida 
             qry.setParameter("artCodigo", pCodigo);
-            Articulo articulo = (Articulo) qry.getSingleResult();// trae el resultado de la consulta  
+            Inventario articulo = (Inventario) qry.getSingleResult();// trae el resultado de la consulta  
             return articulo;
         } catch (Exception ex) {
             return null;
         }
     }
 
-    /**
-     * Consulta por codigoBarra del articulo
-     *
-     * @param pCodigo
-     * @return
-     */
-    public Articulo ConsultarArticuloCodBarras(String pCodigo) {
-        try {
-            Query qry = em.createNamedQuery("Articulo.findByArtCodBarra", Articulo.class);// consulta definida 
-            qry.setParameter("artCodBarra", pCodigo);
-            Articulo articulo = (Articulo) qry.getSingleResult();// trae el resultado de la consulta  
-            return articulo;
-        } catch (Exception ex) {
-            return null;
-        }
-    }
-    
-     public List<Articulo>  ComprobarExistenciaArticulo(Articulo Objeto) {
-        try {
-            Query qry = em.createNamedQuery("Articulo.findByArtExistente", Articulo.class);// consulta definida 
-            qry.setParameter("artNombre",Objeto.getArtNombre());
-            qry.setParameter("artDescripcion",Objeto.getArtDescripcion());
-            qry.setParameter("artMarca",Objeto.getArtMarca());
-            qry.setParameter("artEstado",Objeto.getArtEstado());
-            List<Articulo> Articulos =  qry.getResultList();// trae el resultado de la consulta  
-            return Articulos;
-        } catch (Exception ex) {
-            return null;
-        }
-    }
-    
     //******************************************************************************************
 }
