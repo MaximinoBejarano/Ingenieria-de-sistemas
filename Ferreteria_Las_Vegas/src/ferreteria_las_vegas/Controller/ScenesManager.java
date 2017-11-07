@@ -92,6 +92,7 @@ public class ScenesManager {
         try {
             root = FXMLLoader.load(getClass().getResource("/ferreteria_las_vegas/view/FXML_Empleados.fxml"));            
             scene.setRoot(root);
+            PermisosManager.getInstance().Empleados();
             
         } catch (IOException ex) {
             Logger.getLogger(ScenesManager.class.getName()).log(Level.SEVERE, null, ex);
@@ -102,7 +103,7 @@ public class ScenesManager {
        try {
             root = FXMLLoader.load(getClass().getResource("/ferreteria_las_vegas/view/FXML_Clientes.fxml"));            
             scene.setRoot(root);
-            
+            PermisosManager.getInstance().Clientes();
         } catch (IOException ex) {
             Logger.getLogger(ScenesManager.class.getName()).log(Level.SEVERE, null, ex);
         }

@@ -99,7 +99,7 @@ public class FXML_EmpleadosController implements Initializable {
     private PasswordField txtContraseñaEmp;
 
     @FXML
-    private TextArea txtDireccionEmp;
+    private TextArea txtDireccionEmp;        
 
     @FXML
     private ListView<Permiso> lvDisponibles;
