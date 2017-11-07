@@ -150,18 +150,16 @@ public class PermisosManager {
     
     void Invetario() {
         Button btnNuevoProducto = (Button) scene.lookup("#btnNuevoProducto");        
-        Button btnBuscarProducto = (Button) scene.lookup("#btnBuscarProducto");
-        Button btnEditarProducto = (Button) scene.lookup("#btnEditarProducto");    
+        Button btnBuscarProducto = (Button) scene.lookup("#btnBuscarProducto");        
         Button btnEliminarProducto = (Button) scene.lookup("#btnEliminarProducto");                  
         
         Button btnAgregarFactura = (Button) scene.lookup("#btnAgregarFactura");
         Button btnBuscarFactura = (Button) scene.lookup("#btnBuscarFactura");
         Button btnEditarFactura = (Button) scene.lookup("#btnEditarFactura");    
-        Button btnEliminarFactura = (Button) scene.lookup("#btnEliminar");                        
+        Button btnEliminarFactura = (Button) scene.lookup("#btnEliminarFactura");                        
         
         btnNuevoProducto.setDisable(true);
-        btnBuscarProducto.setDisable(true);
-        btnEditarProducto.setDisable(true);
+        btnBuscarProducto.setDisable(true);        
         btnEliminarProducto.setDisable(true);
         
         btnAgregarFactura.setDisable(true);
@@ -173,9 +171,7 @@ public class PermisosManager {
             if (permiso.getPerNombre().equalsIgnoreCase("AGR_PRODUCTO")) {
                 btnNuevoProducto.setDisable(false);
             } else if (permiso.getPerNombre().equalsIgnoreCase("BUS_PRODUCTO")) {
-                btnBuscarProducto.setDisable(false);
-            } else if (permiso.getPerNombre().equalsIgnoreCase("EDI_PRODUCTO")) {
-                btnEditarProducto.setDisable(false);
+                btnBuscarProducto.setDisable(false);            
             } else if (permiso.getPerNombre().equalsIgnoreCase("ELI_PRODUCTO")) {
                 btnEliminarProducto.setDisable(false);                                
             } else if (permiso.getPerNombre().equalsIgnoreCase("AGR_INVENTARIO")) {
