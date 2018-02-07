@@ -20,6 +20,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -28,19 +29,17 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Usuario
- * Entidad Mapeada
+ * @author Johan
  */
 @Entity
-@Table(name = "tb_inventario")
+@Table(name = "tb_inventarios")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Inventario.findAll", query = "SELECT i FROM Inventario i")
     , @NamedQuery(name = "Inventario.findByInvCodigo", query = "SELECT i FROM Inventario i WHERE i.invCodigo = :invCodigo")
     , @NamedQuery(name = "Inventario.findByInvFecha", query = "SELECT i FROM Inventario i WHERE i.invFecha = :invFecha")
     , @NamedQuery(name = "Inventario.findByInvCantidad", query = "SELECT i FROM Inventario i WHERE i.invCantidad = :invCantidad")
-    , @NamedQuery(name = "Inventario.findByInvEstado", query = "SELECT i FROM Inventario i WHERE i.invEstado = :invEstado")
-    , @NamedQuery(name = "Inventario.findByInvCodArticulo", query = "SELECT i FROM Inventario i WHERE i.invArticulo = :invArticulo")})
+    , @NamedQuery(name = "Inventario.findByInvEstado", query = "SELECT i FROM Inventario i WHERE i.invEstado = :invEstado")})
 public class Inventario implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -60,7 +59,7 @@ public class Inventario implements Serializable {
     @Column(name = "Inv_Estado")
     private String invEstado;
     @JoinColumn(name = "Inv_Articulo", referencedColumnName = "Art_Codigo")
-    @ManyToOne(optional = false)
+    @OneToOne(optional = false)
     private Articulo invArticulo;
     @JoinColumn(name = "Inv_Bodega", referencedColumnName = "Bod_Codigo")
     @ManyToOne

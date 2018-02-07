@@ -22,15 +22,14 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Usuario
- * Entidad Mapeada
+ * @author Johan
  */
 @Entity
 @Table(name = "tb_provincias")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Provincia.findAll", query = "SELECT p FROM Provincia p")
-    , @NamedQuery(name = "Provincia.findByProID", query = "SELECT p FROM Provincia p WHERE p.proID = :proID")
+    , @NamedQuery(name = "Provincia.findByProCodigo", query = "SELECT p FROM Provincia p WHERE p.proCodigo = :proCodigo")
     , @NamedQuery(name = "Provincia.findByProNombre", query = "SELECT p FROM Provincia p WHERE p.proNombre = :proNombre")
     , @NamedQuery(name = "Provincia.findByProDescripcion", query = "SELECT p FROM Provincia p WHERE p.proDescripcion = :proDescripcion")})
 public class Provincia implements Serializable {
@@ -39,8 +38,8 @@ public class Provincia implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "Pro_ID")
-    private Integer proID;
+    @Column(name = "Pro_Codigo")
+    private Integer proCodigo;
     @Basic(optional = false)
     @Column(name = "Pro_Nombre")
     private String proNombre;
@@ -52,21 +51,21 @@ public class Provincia implements Serializable {
     public Provincia() {
     }
 
-    public Provincia(Integer proID) {
-        this.proID = proID;
+    public Provincia(Integer proCodigo) {
+        this.proCodigo = proCodigo;
     }
 
-    public Provincia(Integer proID, String proNombre) {
-        this.proID = proID;
+    public Provincia(Integer proCodigo, String proNombre) {
+        this.proCodigo = proCodigo;
         this.proNombre = proNombre;
     }
 
-    public Integer getProID() {
-        return proID;
+    public Integer getProCodigo() {
+        return proCodigo;
     }
 
-    public void setProID(Integer proID) {
-        this.proID = proID;
+    public void setProCodigo(Integer proCodigo) {
+        this.proCodigo = proCodigo;
     }
 
     public String getProNombre() {
@@ -97,7 +96,7 @@ public class Provincia implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (proID != null ? proID.hashCode() : 0);
+        hash += (proCodigo != null ? proCodigo.hashCode() : 0);
         return hash;
     }
 
@@ -108,7 +107,7 @@ public class Provincia implements Serializable {
             return false;
         }
         Provincia other = (Provincia) object;
-        if ((this.proID == null && other.proID != null) || (this.proID != null && !this.proID.equals(other.proID))) {
+        if ((this.proCodigo == null && other.proCodigo != null) || (this.proCodigo != null && !this.proCodigo.equals(other.proCodigo))) {
             return false;
         }
         return true;
@@ -116,7 +115,7 @@ public class Provincia implements Serializable {
 
     @Override
     public String toString() {
-        return "ferreteria_las_vegas.model.entities.Provincia[ proID=" + proID + " ]";
+        return "ferreteria_las_vegas.model.entities.Provincia[ proCodigo=" + proCodigo + " ]";
     }
     
 }

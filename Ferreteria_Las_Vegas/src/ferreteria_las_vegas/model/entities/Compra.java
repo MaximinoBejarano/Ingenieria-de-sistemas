@@ -6,7 +6,6 @@
 package ferreteria_las_vegas.model.entities;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
@@ -29,15 +28,14 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Usuario
- * Entidad Mapeada
+ * @author Johan
  */
 @Entity
 @Table(name = "tb_compras")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Compra.findAll", query = "SELECT c FROM Compra c")
-    , @NamedQuery(name = "Compra.findByComNumero", query = "SELECT c FROM Compra c WHERE c.comNumero = :comNumero")
+    , @NamedQuery(name = "Compra.findByComCodigo", query = "SELECT c FROM Compra c WHERE c.comCodigo = :comCodigo")
     , @NamedQuery(name = "Compra.findByComFecha", query = "SELECT c FROM Compra c WHERE c.comFecha = :comFecha")
     , @NamedQuery(name = "Compra.findByComNombre", query = "SELECT c FROM Compra c WHERE c.comNombre = :comNombre")
     , @NamedQuery(name = "Compra.findByComTotal", query = "SELECT c FROM Compra c WHERE c.comTotal = :comTotal")
@@ -46,43 +44,55 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Compra.findByComFlete", query = "SELECT c FROM Compra c WHERE c.comFlete = :comFlete")
     , @NamedQuery(name = "Compra.findByComFleteC", query = "SELECT c FROM Compra c WHERE c.comFleteC = :comFleteC")
     , @NamedQuery(name = "Compra.findByComServCarga", query = "SELECT c FROM Compra c WHERE c.comServCarga = :comServCarga")
-    , @NamedQuery(name = "Compra.findByComSubTotal", query = "SELECT c FROM Compra c WHERE c.comSubTotal = :comSubTotal")})
+    , @NamedQuery(name = "Compra.findByComSubTotal", query = "SELECT c FROM Compra c WHERE c.comSubTotal = :comSubTotal")
+    , @NamedQuery(name = "Compra.findByComTipoFact", query = "SELECT c FROM Compra c WHERE c.comTipoFact = :comTipoFact")
+    , @NamedQuery(name = "Compra.findByComNumeroFact", query = "SELECT c FROM Compra c WHERE c.comNumeroFact = :comNumeroFact")
+    , @NamedQuery(name = "Compra.findByComEstado", query = "SELECT c FROM Compra c WHERE c.comEstado = :comEstado")})
 public class Compra implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "Com_Numero")
-    private Integer comNumero;
+    @Column(name = "Com_Codigo")
+    private Integer comCodigo;
     @Basic(optional = false)
     @Column(name = "Com_Fecha")
     @Temporal(TemporalType.DATE)
     private Date comFecha;
     @Column(name = "Com_Nombre")
     private String comNombre;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Basic(optional = false)
     @Column(name = "Com_Total")
-    private BigDecimal comTotal;
+    private double comTotal;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "Com_Descuento")
-    private BigDecimal comDescuento;
+    private Double comDescuento;
     @Basic(optional = false)
     @Column(name = "Com_ImpVenta")
-    private BigDecimal comImpVenta;
+    private double comImpVenta;
     @Column(name = "Com_Flete")
-    private BigDecimal comFlete;
+    private Double comFlete;
     @Column(name = "Com_FleteC")
-    private BigDecimal comFleteC;
+    private Double comFleteC;
     @Basic(optional = false)
     @Column(name = "Com_ServCarga")
-    private BigDecimal comServCarga;
+    private double comServCarga;
     @Basic(optional = false)
     @Column(name = "Com_SubTotal")
-    private String comSubTotal;
+    private double comSubTotal;
+    @Basic(optional = false)
+    @Column(name = "Com_TipoFact")
+    private String comTipoFact;
+    @Basic(optional = false)
+    @Column(name = "Com_NumeroFact")
+    private String comNumeroFact;
+    @Basic(optional = false)
+    @Column(name = "Com_Estado")
+    private String comEstado;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "cueCompra")
     private List<CuentaXPagar> cuentaXPagarList;
-    @JoinColumn(name = "Com_Proveedor", referencedColumnName = "Pro_ID")
+    @JoinColumn(name = "Com_Proveedor", referencedColumnName = "Pro_Codigo")
     @ManyToOne(optional = false)
     private Proveedor comProveedor;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "artCompra")
@@ -91,25 +101,28 @@ public class Compra implements Serializable {
     public Compra() {
     }
 
-    public Compra(Integer comNumero) {
-        this.comNumero = comNumero;
+    public Compra(Integer comCodigo) {
+        this.comCodigo = comCodigo;
     }
 
-    public Compra(Integer comNumero, Date comFecha, BigDecimal comTotal, BigDecimal comImpVenta, BigDecimal comServCarga, String comSubTotal) {
-        this.comNumero = comNumero;
+    public Compra(Integer comCodigo, Date comFecha, double comTotal, double comImpVenta, double comServCarga, double comSubTotal, String comTipoFact, String comNumeroFact, String comEstado) {
+        this.comCodigo = comCodigo;
         this.comFecha = comFecha;
         this.comTotal = comTotal;
         this.comImpVenta = comImpVenta;
         this.comServCarga = comServCarga;
         this.comSubTotal = comSubTotal;
+        this.comTipoFact = comTipoFact;
+        this.comNumeroFact = comNumeroFact;
+        this.comEstado = comEstado;
     }
 
-    public Integer getComNumero() {
-        return comNumero;
+    public Integer getComCodigo() {
+        return comCodigo;
     }
 
-    public void setComNumero(Integer comNumero) {
-        this.comNumero = comNumero;
+    public void setComCodigo(Integer comCodigo) {
+        this.comCodigo = comCodigo;
     }
 
     public Date getComFecha() {
@@ -128,60 +141,84 @@ public class Compra implements Serializable {
         this.comNombre = comNombre;
     }
 
-    public BigDecimal getComTotal() {
+    public double getComTotal() {
         return comTotal;
     }
 
-    public void setComTotal(BigDecimal comTotal) {
+    public void setComTotal(double comTotal) {
         this.comTotal = comTotal;
     }
 
-    public BigDecimal getComDescuento() {
+    public Double getComDescuento() {
         return comDescuento;
     }
 
-    public void setComDescuento(BigDecimal comDescuento) {
+    public void setComDescuento(Double comDescuento) {
         this.comDescuento = comDescuento;
     }
 
-    public BigDecimal getComImpVenta() {
+    public double getComImpVenta() {
         return comImpVenta;
     }
 
-    public void setComImpVenta(BigDecimal comImpVenta) {
+    public void setComImpVenta(double comImpVenta) {
         this.comImpVenta = comImpVenta;
     }
 
-    public BigDecimal getComFlete() {
+    public Double getComFlete() {
         return comFlete;
     }
 
-    public void setComFlete(BigDecimal comFlete) {
+    public void setComFlete(Double comFlete) {
         this.comFlete = comFlete;
     }
 
-    public BigDecimal getComFleteC() {
+    public Double getComFleteC() {
         return comFleteC;
     }
 
-    public void setComFleteC(BigDecimal comFleteC) {
+    public void setComFleteC(Double comFleteC) {
         this.comFleteC = comFleteC;
     }
 
-    public BigDecimal getComServCarga() {
+    public double getComServCarga() {
         return comServCarga;
     }
 
-    public void setComServCarga(BigDecimal comServCarga) {
+    public void setComServCarga(double comServCarga) {
         this.comServCarga = comServCarga;
     }
 
-    public String getComSubTotal() {
+    public double getComSubTotal() {
         return comSubTotal;
     }
 
-    public void setComSubTotal(String comSubTotal) {
+    public void setComSubTotal(double comSubTotal) {
         this.comSubTotal = comSubTotal;
+    }
+
+    public String getComTipoFact() {
+        return comTipoFact;
+    }
+
+    public void setComTipoFact(String comTipoFact) {
+        this.comTipoFact = comTipoFact;
+    }
+
+    public String getComNumeroFact() {
+        return comNumeroFact;
+    }
+
+    public void setComNumeroFact(String comNumeroFact) {
+        this.comNumeroFact = comNumeroFact;
+    }
+
+    public String getComEstado() {
+        return comEstado;
+    }
+
+    public void setComEstado(String comEstado) {
+        this.comEstado = comEstado;
     }
 
     @XmlTransient
@@ -213,7 +250,7 @@ public class Compra implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (comNumero != null ? comNumero.hashCode() : 0);
+        hash += (comCodigo != null ? comCodigo.hashCode() : 0);
         return hash;
     }
 
@@ -224,7 +261,7 @@ public class Compra implements Serializable {
             return false;
         }
         Compra other = (Compra) object;
-        if ((this.comNumero == null && other.comNumero != null) || (this.comNumero != null && !this.comNumero.equals(other.comNumero))) {
+        if ((this.comCodigo == null && other.comCodigo != null) || (this.comCodigo != null && !this.comCodigo.equals(other.comCodigo))) {
             return false;
         }
         return true;
@@ -232,7 +269,7 @@ public class Compra implements Serializable {
 
     @Override
     public String toString() {
-        return "ferreteria_las_vegas.model.entities.Compra[ comNumero=" + comNumero + " ]";
+        return "ferreteria_las_vegas.model.entities.Compra[ comCodigo=" + comCodigo + " ]";
     }
     
 }

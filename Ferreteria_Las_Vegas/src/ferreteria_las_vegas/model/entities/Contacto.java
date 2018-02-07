@@ -24,15 +24,14 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Usuario
- * Entidad Mapeada
+ * @author Johan
  */
 @Entity
 @Table(name = "tb_contactos")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Contacto.findAll", query = "SELECT c FROM Contacto c")
-    , @NamedQuery(name = "Contacto.findByConID", query = "SELECT c FROM Contacto c WHERE c.conID = :conID")
+    , @NamedQuery(name = "Contacto.findByConCodigo", query = "SELECT c FROM Contacto c WHERE c.conCodigo = :conCodigo")
     , @NamedQuery(name = "Contacto.findByConContacto", query = "SELECT c FROM Contacto c WHERE c.conContacto = :conContacto")
     , @NamedQuery(name = "Contacto.findByConTipoContacto", query = "SELECT c FROM Contacto c WHERE c.conTipoContacto = :conTipoContacto")})
 public class Contacto implements Serializable {
@@ -41,43 +40,41 @@ public class Contacto implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "Con_ID")
-    private Integer conID;
+    @Column(name = "Con_Codigo")
+    private Integer conCodigo;
     @Basic(optional = false)
     @Column(name = "Con_Contacto")
     private String conContacto;
     @Basic(optional = false)
-    @Column(name = "Con_TipoContacto")    
+    @Column(name = "Con_TipoContacto")
     private String conTipoContacto;
-    
     @ManyToMany(mappedBy = "contactoList")
-    private List<Persona> personaList;
-    
+    private List<Persona> personaList;    
     @JoinTable(name = "tb_contactos_proveedores", joinColumns = {
-        @JoinColumn(name = "RCP_Contacto", referencedColumnName = "Con_ID")}, inverseJoinColumns = {
-        @JoinColumn(name = "RCP_Proveedor", referencedColumnName = "Pro_ID")})
+        @JoinColumn(name = "RCP_Contacto", referencedColumnName = "Con_Codigo")}, inverseJoinColumns = {
+        @JoinColumn(name = "RCP_Proveedor", referencedColumnName = "Pro_Codigo")})
     @ManyToMany
     private List<Proveedor> proveedorList;
 
     public Contacto() {
     }
 
-    public Contacto(Integer conID) {
-        this.conID = conID;
+    public Contacto(Integer conCodigo) {
+        this.conCodigo = conCodigo;
     }
 
-    public Contacto(Integer conID, String conContacto, String conTipoContacto) {
-        this.conID = conID;
+    public Contacto(Integer conCodigo, String conContacto, String conTipoContacto) {
+        this.conCodigo = conCodigo;
         this.conContacto = conContacto;
         this.conTipoContacto = conTipoContacto;
     }
 
-    public Integer getConID() {
-        return conID;
+    public Integer getConCodigo() {
+        return conCodigo;
     }
 
-    public void setConID(Integer conID) {
-        this.conID = conID;
+    public void setConCodigo(Integer conCodigo) {
+        this.conCodigo = conCodigo;
     }
 
     public String getConContacto() {
@@ -117,7 +114,7 @@ public class Contacto implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (conID != null ? conID.hashCode() : 0);
+        hash += (conCodigo != null ? conCodigo.hashCode() : 0);
         return hash;
     }
 
@@ -128,7 +125,7 @@ public class Contacto implements Serializable {
             return false;
         }
         Contacto other = (Contacto) object;
-        if ((this.conID == null && other.conID != null) || (this.conID != null && !this.conID.equals(other.conID))) {
+        if ((this.conCodigo == null && other.conCodigo != null) || (this.conCodigo != null && !this.conCodigo.equals(other.conCodigo))) {
             return false;
         }
         return true;
@@ -136,7 +133,7 @@ public class Contacto implements Serializable {
 
     @Override
     public String toString() {
-        return "ferreteria_las_vegas.model.entities.Contacto[ conID=" + conID + " ]";
+        return "ferreteria_las_vegas.model.entities.Contacto[ conCodigo=" + conCodigo + " ]";
     }
     
 }

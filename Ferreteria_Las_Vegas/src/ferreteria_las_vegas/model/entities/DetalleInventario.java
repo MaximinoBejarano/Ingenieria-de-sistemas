@@ -6,7 +6,6 @@
 package ferreteria_las_vegas.model.entities;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -25,11 +24,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Usuario
- * Entidad Mapeada
+ * @author Johan
  */
 @Entity
-@Table(name = "tb_detalle_inventario")
+@Table(name = "tb_detallesinventario")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "DetalleInventario.findAll", query = "SELECT d FROM DetalleInventario d")
@@ -48,10 +46,9 @@ public class DetalleInventario implements Serializable {
     @Column(name = "Det_Fecha")
     @Temporal(TemporalType.DATE)
     private Date detFecha;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Basic(optional = false)
     @Column(name = "Det_Precio")
-    private BigDecimal detPrecio;
+    private double detPrecio;
     @JoinColumn(name = "Det_Inventario", referencedColumnName = "Inv_Codigo")
     @ManyToOne(optional = false)
     private Inventario detInventario;
@@ -63,7 +60,7 @@ public class DetalleInventario implements Serializable {
         this.detCodigo = detCodigo;
     }
 
-    public DetalleInventario(Integer detCodigo, Date detFecha, BigDecimal detPrecio) {
+    public DetalleInventario(Integer detCodigo, Date detFecha, double detPrecio) {
         this.detCodigo = detCodigo;
         this.detFecha = detFecha;
         this.detPrecio = detPrecio;
@@ -85,11 +82,11 @@ public class DetalleInventario implements Serializable {
         this.detFecha = detFecha;
     }
 
-    public BigDecimal getDetPrecio() {
+    public double getDetPrecio() {
         return detPrecio;
     }
 
-    public void setDetPrecio(BigDecimal detPrecio) {
+    public void setDetPrecio(double detPrecio) {
         this.detPrecio = detPrecio;
     }
 

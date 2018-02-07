@@ -21,7 +21,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox fx:id="DataPanel" prefHeight="800.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ferreteria_las_vegas.Controller.FXML_InventarioController">
+<VBox fx:id="DataPanel" prefHeight="800.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ferreteria_las_vegas.controller.FXML_InventarioController">
    <children>
       <BorderPane prefHeight="800.0" VBox.vgrow="ALWAYS">
          <bottom>

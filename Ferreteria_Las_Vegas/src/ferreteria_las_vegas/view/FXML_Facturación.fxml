@@ -19,7 +19,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ferreteria_las_vegas.Controller.FXML_FacturaciónController">
+<VBox xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ferreteria_las_vegas.controller.FXML_FacturaciónController">
    <children>
       <BorderPane VBox.vgrow="ALWAYS">
          <bottom>

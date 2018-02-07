@@ -22,15 +22,14 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Usuario
- * Entidad Mapeada
+ * @author Johan
  */
 @Entity
 @Table(name = "tb_distritos")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Distrito.findAll", query = "SELECT d FROM Distrito d")
-    , @NamedQuery(name = "Distrito.findByDisID", query = "SELECT d FROM Distrito d WHERE d.disID = :disID")
+    , @NamedQuery(name = "Distrito.findByDisCodigo", query = "SELECT d FROM Distrito d WHERE d.disCodigo = :disCodigo")
     , @NamedQuery(name = "Distrito.findByDisNombre", query = "SELECT d FROM Distrito d WHERE d.disNombre = :disNombre")
     , @NamedQuery(name = "Distrito.findByDisDescripcion", query = "SELECT d FROM Distrito d WHERE d.disDescripcion = :disDescripcion")})
 public class Distrito implements Serializable {
@@ -39,8 +38,8 @@ public class Distrito implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "Dis_ID")
-    private Integer disID;
+    @Column(name = "Dis_Codigo")
+    private Integer disCodigo;
     @Basic(optional = false)
     @Column(name = "Dis_Nombre")
     private String disNombre;
@@ -52,21 +51,21 @@ public class Distrito implements Serializable {
     public Distrito() {
     }
 
-    public Distrito(Integer disID) {
-        this.disID = disID;
+    public Distrito(Integer disCodigo) {
+        this.disCodigo = disCodigo;
     }
 
-    public Distrito(Integer disID, String disNombre) {
-        this.disID = disID;
+    public Distrito(Integer disCodigo, String disNombre) {
+        this.disCodigo = disCodigo;
         this.disNombre = disNombre;
     }
 
-    public Integer getDisID() {
-        return disID;
+    public Integer getDisCodigo() {
+        return disCodigo;
     }
 
-    public void setDisID(Integer disID) {
-        this.disID = disID;
+    public void setDisCodigo(Integer disCodigo) {
+        this.disCodigo = disCodigo;
     }
 
     public String getDisNombre() {
@@ -97,7 +96,7 @@ public class Distrito implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (disID != null ? disID.hashCode() : 0);
+        hash += (disCodigo != null ? disCodigo.hashCode() : 0);
         return hash;
     }
 
@@ -108,7 +107,7 @@ public class Distrito implements Serializable {
             return false;
         }
         Distrito other = (Distrito) object;
-        if ((this.disID == null && other.disID != null) || (this.disID != null && !this.disID.equals(other.disID))) {
+        if ((this.disCodigo == null && other.disCodigo != null) || (this.disCodigo != null && !this.disCodigo.equals(other.disCodigo))) {
             return false;
         }
         return true;
@@ -116,7 +115,7 @@ public class Distrito implements Serializable {
 
     @Override
     public String toString() {
-        return "ferreteria_las_vegas.model.entities.Distrito[ disID=" + disID + " ]";
+        return "ferreteria_las_vegas.model.entities.Distrito[ disCodigo=" + disCodigo + " ]";
     }
     
 }

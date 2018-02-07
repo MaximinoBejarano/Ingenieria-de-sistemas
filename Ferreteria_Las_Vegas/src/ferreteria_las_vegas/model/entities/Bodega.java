@@ -24,8 +24,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Usuario
- * Entidad Mapeada
+ * @author Johan
  */
 @Entity
 @Table(name = "tb_bodegas")
@@ -34,7 +33,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Bodega.findAll", query = "SELECT b FROM Bodega b")
     , @NamedQuery(name = "Bodega.findByBodCodigo", query = "SELECT b FROM Bodega b WHERE b.bodCodigo = :bodCodigo")
     , @NamedQuery(name = "Bodega.findByBodNombre", query = "SELECT b FROM Bodega b WHERE b.bodNombre = :bodNombre")
-    , @NamedQuery(name = "Bodega.findByBodDescripcion", query = "SELECT b FROM Bodega b WHERE b.bodDescripcion = :bodDescripcion")})
+    , @NamedQuery(name = "Bodega.findByBodDescripcion", query = "SELECT b FROM Bodega b WHERE b.bodDescripcion = :bodDescripcion")
+    , @NamedQuery(name = "Bodega.findByBodEstado", query = "SELECT b FROM Bodega b WHERE b.bodEstado = :bodEstado")})
 public class Bodega implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -48,14 +48,17 @@ public class Bodega implements Serializable {
     private String bodNombre;
     @Column(name = "Bod_Descripcion")
     private String bodDescripcion;
+    @Basic(optional = false)
+    @Column(name = "Bod_Estado")
+    private String bodEstado;
     @OneToMany(mappedBy = "invBodega")
     private List<Inventario> inventarioList;
-    @JoinColumn(name = "Bob_Direccion", referencedColumnName = "Dir_ID")
+    @JoinColumn(name = "Bob_Direccion", referencedColumnName = "Dir_Codigo")
     @ManyToOne(optional = false)
     private Direccion bobDireccion;
-    @JoinColumn(name = "Bob_Ferreteria", referencedColumnName = "Fer_ID")
+    @JoinColumn(name = "Bod_Ferreteria", referencedColumnName = "Fer_Cedula")
     @ManyToOne(optional = false)
-    private Ferreteria bobFerreteria;
+    private Ferreteria bodFerreteria;
 
     public Bodega() {
     }
@@ -64,9 +67,10 @@ public class Bodega implements Serializable {
         this.bodCodigo = bodCodigo;
     }
 
-    public Bodega(Integer bodCodigo, String bodNombre) {
+    public Bodega(Integer bodCodigo, String bodNombre, String bodEstado) {
         this.bodCodigo = bodCodigo;
         this.bodNombre = bodNombre;
+        this.bodEstado = bodEstado;
     }
 
     public Integer getBodCodigo() {
@@ -93,6 +97,14 @@ public class Bodega implements Serializable {
         this.bodDescripcion = bodDescripcion;
     }
 
+    public String getBodEstado() {
+        return bodEstado;
+    }
+
+    public void setBodEstado(String bodEstado) {
+        this.bodEstado = bodEstado;
+    }
+
     @XmlTransient
     public List<Inventario> getInventarioList() {
         return inventarioList;
@@ -110,12 +122,12 @@ public class Bodega implements Serializable {
         this.bobDireccion = bobDireccion;
     }
 
-    public Ferreteria getBobFerreteria() {
-        return bobFerreteria;
+    public Ferreteria getBodFerreteria() {
+        return bodFerreteria;
     }
 
-    public void setBobFerreteria(Ferreteria bobFerreteria) {
-        this.bobFerreteria = bobFerreteria;
+    public void setBodFerreteria(Ferreteria bodFerreteria) {
+        this.bodFerreteria = bodFerreteria;
     }
 
     @Override

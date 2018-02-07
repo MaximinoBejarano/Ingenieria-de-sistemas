@@ -24,31 +24,34 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Usuario
- * Entidad Mapeada
+ * @author Johan
  */
 @Entity
 @Table(name = "tb_proveedores")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Proveedor.findAll", query = "SELECT p FROM Proveedor p")
-    , @NamedQuery(name = "Proveedor.findByProID", query = "SELECT p FROM Proveedor p WHERE p.proID = :proID")
+    , @NamedQuery(name = "Proveedor.findByProCodigo", query = "SELECT p FROM Proveedor p WHERE p.proCodigo = :proCodigo")
     , @NamedQuery(name = "Proveedor.findByProNombre", query = "SELECT p FROM Proveedor p WHERE p.proNombre = :proNombre")
-    , @NamedQuery(name = "Proveedor.findByProCedulaJuridica", query = "SELECT p FROM Proveedor p WHERE p.proCedulaJuridica = :proCedulaJuridica")})
+    , @NamedQuery(name = "Proveedor.findByProCedulaJuridica", query = "SELECT p FROM Proveedor p WHERE p.proCedulaJuridica = :proCedulaJuridica")
+    , @NamedQuery(name = "Proveedor.findByProEstado", query = "SELECT p FROM Proveedor p WHERE p.proEstado = :proEstado")})
 public class Proveedor implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "Pro_ID")
-    private Integer proID;
+    @Column(name = "Pro_Codigo")
+    private Integer proCodigo;
     @Basic(optional = false)
     @Column(name = "Pro_Nombre")
     private String proNombre;
     @Basic(optional = false)
     @Column(name = "Pro_CedulaJuridica")
     private String proCedulaJuridica;
+    @Basic(optional = false)
+    @Column(name = "Pro_Estado")
+    private String proEstado;
     @ManyToMany(mappedBy = "proveedorList")
     private List<Contacto> contactoList;
     @ManyToMany(mappedBy = "proveedorList")
@@ -61,22 +64,23 @@ public class Proveedor implements Serializable {
     public Proveedor() {
     }
 
-    public Proveedor(Integer proID) {
-        this.proID = proID;
+    public Proveedor(Integer proCodigo) {
+        this.proCodigo = proCodigo;
     }
 
-    public Proveedor(Integer proID, String proNombre, String proCedulaJuridica) {
-        this.proID = proID;
+    public Proveedor(Integer proCodigo, String proNombre, String proCedulaJuridica, String proEstado) {
+        this.proCodigo = proCodigo;
         this.proNombre = proNombre;
         this.proCedulaJuridica = proCedulaJuridica;
+        this.proEstado = proEstado;
     }
 
-    public Integer getProID() {
-        return proID;
+    public Integer getProCodigo() {
+        return proCodigo;
     }
 
-    public void setProID(Integer proID) {
-        this.proID = proID;
+    public void setProCodigo(Integer proCodigo) {
+        this.proCodigo = proCodigo;
     }
 
     public String getProNombre() {
@@ -93,6 +97,14 @@ public class Proveedor implements Serializable {
 
     public void setProCedulaJuridica(String proCedulaJuridica) {
         this.proCedulaJuridica = proCedulaJuridica;
+    }
+
+    public String getProEstado() {
+        return proEstado;
+    }
+
+    public void setProEstado(String proEstado) {
+        this.proEstado = proEstado;
     }
 
     @XmlTransient
@@ -134,7 +146,7 @@ public class Proveedor implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (proID != null ? proID.hashCode() : 0);
+        hash += (proCodigo != null ? proCodigo.hashCode() : 0);
         return hash;
     }
 
@@ -145,7 +157,7 @@ public class Proveedor implements Serializable {
             return false;
         }
         Proveedor other = (Proveedor) object;
-        if ((this.proID == null && other.proID != null) || (this.proID != null && !this.proID.equals(other.proID))) {
+        if ((this.proCodigo == null && other.proCodigo != null) || (this.proCodigo != null && !this.proCodigo.equals(other.proCodigo))) {
             return false;
         }
         return true;
@@ -153,7 +165,7 @@ public class Proveedor implements Serializable {
 
     @Override
     public String toString() {
-        return "ferreteria_las_vegas.model.entities.Proveedor[ proID=" + proID + " ]";
+        return "ferreteria_las_vegas.model.entities.Proveedor[ proCodigo=" + proCodigo + " ]";
     }
     
 }

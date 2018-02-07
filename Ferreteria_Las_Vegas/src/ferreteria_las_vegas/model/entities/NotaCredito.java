@@ -6,7 +6,6 @@
 package ferreteria_las_vegas.model.entities;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
@@ -28,18 +27,18 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Usuario
- * Entidad Mapeada
+ * @author Johan
  */
 @Entity
-@Table(name = "tb_notacredito")
+@Table(name = "tb_notascredito")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "NotaCredito.findAll", query = "SELECT n FROM NotaCredito n")
     , @NamedQuery(name = "NotaCredito.findByNotCodigo", query = "SELECT n FROM NotaCredito n WHERE n.notCodigo = :notCodigo")
     , @NamedQuery(name = "NotaCredito.findByNotFecha", query = "SELECT n FROM NotaCredito n WHERE n.notFecha = :notFecha")
     , @NamedQuery(name = "NotaCredito.findByNotMonto", query = "SELECT n FROM NotaCredito n WHERE n.notMonto = :notMonto")
-    , @NamedQuery(name = "NotaCredito.findByNotJustificacion", query = "SELECT n FROM NotaCredito n WHERE n.notJustificacion = :notJustificacion")})
+    , @NamedQuery(name = "NotaCredito.findByNotJustificacion", query = "SELECT n FROM NotaCredito n WHERE n.notJustificacion = :notJustificacion")
+    , @NamedQuery(name = "NotaCredito.findByNotEstado", query = "SELECT n FROM NotaCredito n WHERE n.notEstado = :notEstado")})
 public class NotaCredito implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -52,17 +51,19 @@ public class NotaCredito implements Serializable {
     @Column(name = "Not_Fecha")
     @Temporal(TemporalType.DATE)
     private Date notFecha;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Basic(optional = false)
     @Column(name = "Not_Monto")
-    private BigDecimal notMonto;
+    private double notMonto;
     @Column(name = "Not_Justificacion")
     private String notJustificacion;
+    @Basic(optional = false)
+    @Column(name = "Not_Estado")
+    private String notEstado;
+    @OneToMany(mappedBy = "pagNotaCredito")
+    private List<Pago> pagoList;
     @JoinColumn(name = "Not_Factura", referencedColumnName = "Fac_Cliente")
     @ManyToOne(optional = false)
     private Factura notFactura;
-    @OneToMany(mappedBy = "pagNotaCredito")
-    private List<Pago> pagoList;
 
     public NotaCredito() {
     }
@@ -71,10 +72,11 @@ public class NotaCredito implements Serializable {
         this.notCodigo = notCodigo;
     }
 
-    public NotaCredito(Integer notCodigo, Date notFecha, BigDecimal notMonto) {
+    public NotaCredito(Integer notCodigo, Date notFecha, double notMonto, String notEstado) {
         this.notCodigo = notCodigo;
         this.notFecha = notFecha;
         this.notMonto = notMonto;
+        this.notEstado = notEstado;
     }
 
     public Integer getNotCodigo() {
@@ -93,11 +95,11 @@ public class NotaCredito implements Serializable {
         this.notFecha = notFecha;
     }
 
-    public BigDecimal getNotMonto() {
+    public double getNotMonto() {
         return notMonto;
     }
 
-    public void setNotMonto(BigDecimal notMonto) {
+    public void setNotMonto(double notMonto) {
         this.notMonto = notMonto;
     }
 
@@ -109,12 +111,12 @@ public class NotaCredito implements Serializable {
         this.notJustificacion = notJustificacion;
     }
 
-    public Factura getNotFactura() {
-        return notFactura;
+    public String getNotEstado() {
+        return notEstado;
     }
 
-    public void setNotFactura(Factura notFactura) {
-        this.notFactura = notFactura;
+    public void setNotEstado(String notEstado) {
+        this.notEstado = notEstado;
     }
 
     @XmlTransient
@@ -124,6 +126,14 @@ public class NotaCredito implements Serializable {
 
     public void setPagoList(List<Pago> pagoList) {
         this.pagoList = pagoList;
+    }
+
+    public Factura getNotFactura() {
+        return notFactura;
+    }
+
+    public void setNotFactura(Factura notFactura) {
+        this.notFactura = notFactura;
     }
 
     @Override
@@ -148,7 +158,7 @@ public class NotaCredito implements Serializable {
 
     @Override
     public String toString() {
-        return "ferreteria_las_vegas.model.entities.Notacredito[ notCodigo=" + notCodigo + " ]";
+        return "ferreteria_las_vegas.model.entities.NotaCredito[ notCodigo=" + notCodigo + " ]";
     }
     
 }

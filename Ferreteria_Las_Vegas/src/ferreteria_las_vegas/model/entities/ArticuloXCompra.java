@@ -6,7 +6,6 @@
 package ferreteria_las_vegas.model.entities;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -22,65 +21,68 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Usuario
- * Entidad Mapeada
+ * @author Johan
  */
 @Entity
 @Table(name = "tb_articulosxcompra")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "ArticuloXCompra.findAll", query = "SELECT a FROM ArticuloXCompra a")
-    , @NamedQuery(name = "ArticuloXCompra.findByArtID", query = "SELECT a FROM ArticuloXCompra a WHERE a.artID = :artID")
+    , @NamedQuery(name = "ArticuloXCompra.findByArtCodigo", query = "SELECT a FROM ArticuloXCompra a WHERE a.artCodigo = :artCodigo")
     , @NamedQuery(name = "ArticuloXCompra.findByArtPrecio", query = "SELECT a FROM ArticuloXCompra a WHERE a.artPrecio = :artPrecio")
-    , @NamedQuery(name = "ArticuloXCompra.findByArtCantidad", query = "SELECT a FROM ArticuloXCompra a WHERE a.artCantidad = :artCantidad")})
+    , @NamedQuery(name = "ArticuloXCompra.findByArtCantidad", query = "SELECT a FROM ArticuloXCompra a WHERE a.artCantidad = :artCantidad")
+    , @NamedQuery(name = "ArticuloXCompra.findByArtEstado", query = "SELECT a FROM ArticuloXCompra a WHERE a.artEstado = :artEstado")})
 public class ArticuloXCompra implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "Art_ID")
-    private Integer artID;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @Column(name = "Art_Codigo")
+    private Integer artCodigo;
     @Basic(optional = false)
     @Column(name = "Art_Precio")
-    private BigDecimal artPrecio;
+    private double artPrecio;
     @Basic(optional = false)
     @Column(name = "Art_Cantidad")
     private int artCantidad;
+    @Basic(optional = false)
+    @Column(name = "Art_Estado")
+    private String artEstado;
     @JoinColumn(name = "Art_Articulo", referencedColumnName = "Art_Codigo")
     @ManyToOne(optional = false)
     private Articulo artArticulo;
-    @JoinColumn(name = "Art_Compra", referencedColumnName = "Com_Numero")
+    @JoinColumn(name = "Art_Compra", referencedColumnName = "Com_Codigo")
     @ManyToOne(optional = false)
     private Compra artCompra;
 
     public ArticuloXCompra() {
     }
 
-    public ArticuloXCompra(Integer artID) {
-        this.artID = artID;
+    public ArticuloXCompra(Integer artCodigo) {
+        this.artCodigo = artCodigo;
     }
 
-    public ArticuloXCompra(Integer artID, BigDecimal artPrecio, int artCantidad) {
-        this.artID = artID;
+    public ArticuloXCompra(Integer artCodigo, double artPrecio, int artCantidad, String artEstado) {
+        this.artCodigo = artCodigo;
         this.artPrecio = artPrecio;
         this.artCantidad = artCantidad;
+        this.artEstado = artEstado;
     }
 
-    public Integer getArtID() {
-        return artID;
+    public Integer getArtCodigo() {
+        return artCodigo;
     }
 
-    public void setArtID(Integer artID) {
-        this.artID = artID;
+    public void setArtCodigo(Integer artCodigo) {
+        this.artCodigo = artCodigo;
     }
 
-    public BigDecimal getArtPrecio() {
+    public double getArtPrecio() {
         return artPrecio;
     }
 
-    public void setArtPrecio(BigDecimal artPrecio) {
+    public void setArtPrecio(double artPrecio) {
         this.artPrecio = artPrecio;
     }
 
@@ -90,6 +92,14 @@ public class ArticuloXCompra implements Serializable {
 
     public void setArtCantidad(int artCantidad) {
         this.artCantidad = artCantidad;
+    }
+
+    public String getArtEstado() {
+        return artEstado;
+    }
+
+    public void setArtEstado(String artEstado) {
+        this.artEstado = artEstado;
     }
 
     public Articulo getArtArticulo() {
@@ -111,7 +121,7 @@ public class ArticuloXCompra implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (artID != null ? artID.hashCode() : 0);
+        hash += (artCodigo != null ? artCodigo.hashCode() : 0);
         return hash;
     }
 
@@ -122,7 +132,7 @@ public class ArticuloXCompra implements Serializable {
             return false;
         }
         ArticuloXCompra other = (ArticuloXCompra) object;
-        if ((this.artID == null && other.artID != null) || (this.artID != null && !this.artID.equals(other.artID))) {
+        if ((this.artCodigo == null && other.artCodigo != null) || (this.artCodigo != null && !this.artCodigo.equals(other.artCodigo))) {
             return false;
         }
         return true;
@@ -130,7 +140,7 @@ public class ArticuloXCompra implements Serializable {
 
     @Override
     public String toString() {
-        return "ferreteria_las_vegas.model.entities.ArticuloXCompra[ artID=" + artID + " ]";
+        return "ferreteria_las_vegas.model.entities.ArticuloXCompra[ artCodigo=" + artCodigo + " ]";
     }
     
 }

@@ -13,26 +13,24 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.PreRemove;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Usuario
- * Entidad Mapeada
+ * @author Johan
  */
 @Entity
 @Table(name = "tb_permisos")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Permiso.findAll", query = "SELECT p FROM Permiso p")
-    , @NamedQuery(name = "Permiso.findByPerID", query = "SELECT p FROM Permiso p WHERE p.perID = :perID")
+    , @NamedQuery(name = "Permiso.findByPerCodigo", query = "SELECT p FROM Permiso p WHERE p.perCodigo = :perCodigo")
     , @NamedQuery(name = "Permiso.findByPerNombre", query = "SELECT p FROM Permiso p WHERE p.perNombre = :perNombre")
     , @NamedQuery(name = "Permiso.findByPerModulo", query = "SELECT p FROM Permiso p WHERE p.perModulo = :perModulo")
     , @NamedQuery(name = "Permiso.findByPerDescripcion", query = "SELECT p FROM Permiso p WHERE p.perDescripcion = :perDescripcion")})
@@ -42,8 +40,8 @@ public class Permiso implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "Per_ID")
-    private Integer perID;
+    @Column(name = "Per_Codigo")
+    private Integer perCodigo;
     @Basic(optional = false)
     @Column(name = "Per_Nombre")
     private String perNombre;
@@ -53,30 +51,29 @@ public class Permiso implements Serializable {
     @Basic(optional = false)
     @Column(name = "Per_Descripcion")
     private String perDescripcion;
-    
     @ManyToMany(mappedBy = "permisoList")
-    private List<Usuario> usuarioList;   
+    private List<Usuario> usuarioList;    
 
     public Permiso() {
     }
 
-    public Permiso(Integer perID) {
-        this.perID = perID;
+    public Permiso(Integer perCodigo) {
+        this.perCodigo = perCodigo;
     }
 
-    public Permiso(Integer perID, String perNombre, String perModulo, String perDescripcion) {
-        this.perID = perID;
+    public Permiso(Integer perCodigo, String perNombre, String perModulo, String perDescripcion) {
+        this.perCodigo = perCodigo;
         this.perNombre = perNombre;
         this.perModulo = perModulo;
         this.perDescripcion = perDescripcion;
     }
 
-    public Integer getPerID() {
-        return perID;
+    public Integer getPerCodigo() {
+        return perCodigo;
     }
 
-    public void setPerID(Integer perID) {
-        this.perID = perID;
+    public void setPerCodigo(Integer perCodigo) {
+        this.perCodigo = perCodigo;
     }
 
     public String getPerNombre() {
@@ -115,7 +112,7 @@ public class Permiso implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (perID != null ? perID.hashCode() : 0);
+        hash += (perCodigo != null ? perCodigo.hashCode() : 0);
         return hash;
     }
 
@@ -126,15 +123,22 @@ public class Permiso implements Serializable {
             return false;
         }
         Permiso other = (Permiso) object;
-        if ((this.perID == null && other.perID != null) || (this.perID != null && !this.perID.equals(other.perID))) {
+        if ((this.perCodigo == null && other.perCodigo != null) || (this.perCodigo != null && !this.perCodigo.equals(other.perCodigo))) {
             return false;
         }
         return true;
     }
+    
+    @PreRemove
+    private void removePermiso() {
+        for (Usuario u : usuarioList) {
+            u.getPermisoList().remove(this);
+        }
+    }   
 
     @Override
     public String toString() {
-        return "ferreteria_las_vegas.model.entities.Permiso[ perID=" + perID + " ]";
+        return "ferreteria_las_vegas.model.entities.Permiso[ perCodigo=" + perCodigo + " ]";
     }
     
 }

@@ -6,7 +6,6 @@
 package ferreteria_las_vegas.model.entities;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
@@ -29,8 +28,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Usuario
- * Entidad Mapeada
+ * @author Johan
  */
 @Entity
 @Table(name = "tb_facturas")
@@ -43,8 +41,9 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Factura.findByFacDescuento", query = "SELECT f FROM Factura f WHERE f.facDescuento = :facDescuento")
     , @NamedQuery(name = "Factura.findByFacTotal", query = "SELECT f FROM Factura f WHERE f.facTotal = :facTotal")
     , @NamedQuery(name = "Factura.findByFacImpVentas", query = "SELECT f FROM Factura f WHERE f.facImpVentas = :facImpVentas")
-    , @NamedQuery(name = "Factura.findByFacEstado", query = "SELECT f FROM Factura f WHERE f.facEstado = :facEstado")
-    , @NamedQuery(name = "Factura.findByFactTipoFact", query = "SELECT f FROM Factura f WHERE f.factTipoFact = :factTipoFact")})
+    , @NamedQuery(name = "Factura.findByFactTipoFact", query = "SELECT f FROM Factura f WHERE f.factTipoFact = :factTipoFact")
+    , @NamedQuery(name = "Factura.findByFactEstadoPago", query = "SELECT f FROM Factura f WHERE f.factEstadoPago = :factEstadoPago")
+    , @NamedQuery(name = "Factura.findByFacEstado", query = "SELECT f FROM Factura f WHERE f.facEstado = :facEstado")})
 public class Factura implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -57,27 +56,27 @@ public class Factura implements Serializable {
     @Column(name = "Fac_Fecha")
     @Temporal(TemporalType.DATE)
     private Date facFecha;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Basic(optional = false)
     @Column(name = "Fat_Subtotal")
-    private BigDecimal fatSubtotal;
+    private double fatSubtotal;
     @Basic(optional = false)
     @Column(name = "Fac_Descuento")
-    private BigDecimal facDescuento;
+    private double facDescuento;
     @Basic(optional = false)
     @Column(name = "Fac_Total")
-    private BigDecimal facTotal;
+    private double facTotal;
     @Basic(optional = false)
     @Column(name = "Fac_ImpVentas")
-    private BigDecimal facImpVentas;
-    @Basic(optional = false)
-    @Column(name = "Fac_Estado")
-    private String facEstado;
+    private double facImpVentas;
     @Basic(optional = false)
     @Column(name = "Fact_TipoFact")
     private String factTipoFact;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "notFactura")
-    private List<NotaCredito> notacreditoList;
+    @Basic(optional = false)
+    @Column(name = "Fact_EstadoPago")
+    private String factEstadoPago;
+    @Basic(optional = false)
+    @Column(name = "Fac_Estado")
+    private String facEstado;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "cueFactura")
     private List<CuentaXCobrar> cuentaXCobrarList;
     @JoinColumn(name = "Fac_Cliente", referencedColumnName = "Cli_Persona")
@@ -87,6 +86,8 @@ public class Factura implements Serializable {
     private List<ArticuloXFactura> articuloXFacturaList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "pagFactura")
     private List<Pago> pagoList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "notFactura")
+    private List<NotaCredito> notaCreditoList;
 
     public Factura() {
     }
@@ -95,15 +96,16 @@ public class Factura implements Serializable {
         this.facCodigo = facCodigo;
     }
 
-    public Factura(Integer facCodigo, Date facFecha, BigDecimal fatSubtotal, BigDecimal facDescuento, BigDecimal facTotal, BigDecimal facImpVentas, String facEstado, String factTipoFact) {
+    public Factura(Integer facCodigo, Date facFecha, double fatSubtotal, double facDescuento, double facTotal, double facImpVentas, String factTipoFact, String factEstadoPago, String facEstado) {
         this.facCodigo = facCodigo;
         this.facFecha = facFecha;
         this.fatSubtotal = fatSubtotal;
         this.facDescuento = facDescuento;
         this.facTotal = facTotal;
         this.facImpVentas = facImpVentas;
-        this.facEstado = facEstado;
         this.factTipoFact = factTipoFact;
+        this.factEstadoPago = factEstadoPago;
+        this.facEstado = facEstado;
     }
 
     public Integer getFacCodigo() {
@@ -122,44 +124,36 @@ public class Factura implements Serializable {
         this.facFecha = facFecha;
     }
 
-    public BigDecimal getFatSubtotal() {
+    public double getFatSubtotal() {
         return fatSubtotal;
     }
 
-    public void setFatSubtotal(BigDecimal fatSubtotal) {
+    public void setFatSubtotal(double fatSubtotal) {
         this.fatSubtotal = fatSubtotal;
     }
 
-    public BigDecimal getFacDescuento() {
+    public double getFacDescuento() {
         return facDescuento;
     }
 
-    public void setFacDescuento(BigDecimal facDescuento) {
+    public void setFacDescuento(double facDescuento) {
         this.facDescuento = facDescuento;
     }
 
-    public BigDecimal getFacTotal() {
+    public double getFacTotal() {
         return facTotal;
     }
 
-    public void setFacTotal(BigDecimal facTotal) {
+    public void setFacTotal(double facTotal) {
         this.facTotal = facTotal;
     }
 
-    public BigDecimal getFacImpVentas() {
+    public double getFacImpVentas() {
         return facImpVentas;
     }
 
-    public void setFacImpVentas(BigDecimal facImpVentas) {
+    public void setFacImpVentas(double facImpVentas) {
         this.facImpVentas = facImpVentas;
-    }
-
-    public String getFacEstado() {
-        return facEstado;
-    }
-
-    public void setFacEstado(String facEstado) {
-        this.facEstado = facEstado;
     }
 
     public String getFactTipoFact() {
@@ -170,13 +164,20 @@ public class Factura implements Serializable {
         this.factTipoFact = factTipoFact;
     }
 
-    @XmlTransient
-    public List<NotaCredito> getNotacreditoList() {
-        return notacreditoList;
+    public String getFactEstadoPago() {
+        return factEstadoPago;
     }
 
-    public void setNotacreditoList(List<NotaCredito> notacreditoList) {
-        this.notacreditoList = notacreditoList;
+    public void setFactEstadoPago(String factEstadoPago) {
+        this.factEstadoPago = factEstadoPago;
+    }
+
+    public String getFacEstado() {
+        return facEstado;
+    }
+
+    public void setFacEstado(String facEstado) {
+        this.facEstado = facEstado;
     }
 
     @XmlTransient
@@ -212,6 +213,15 @@ public class Factura implements Serializable {
 
     public void setPagoList(List<Pago> pagoList) {
         this.pagoList = pagoList;
+    }
+
+    @XmlTransient
+    public List<NotaCredito> getNotaCreditoList() {
+        return notaCreditoList;
+    }
+
+    public void setNotaCreditoList(List<NotaCredito> notaCreditoList) {
+        this.notaCreditoList = notaCreditoList;
     }
 
     @Override

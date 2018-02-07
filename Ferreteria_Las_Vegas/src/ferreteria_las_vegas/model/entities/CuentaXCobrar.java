@@ -6,7 +6,6 @@
 package ferreteria_las_vegas.model.entities;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -25,8 +24,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Usuario
- * Entidad Mapeada
+ * @author Johan
  */
 @Entity
 @Table(name = "tb_cuentasxcobrar")
@@ -35,7 +33,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "CuentaXCobrar.findAll", query = "SELECT c FROM CuentaXCobrar c")
     , @NamedQuery(name = "CuentaXCobrar.findByCueCodigo", query = "SELECT c FROM CuentaXCobrar c WHERE c.cueCodigo = :cueCodigo")
     , @NamedQuery(name = "CuentaXCobrar.findByCueSaldo", query = "SELECT c FROM CuentaXCobrar c WHERE c.cueSaldo = :cueSaldo")
-    , @NamedQuery(name = "CuentaXCobrar.findByCueSaldoFac", query = "SELECT c FROM CuentaXCobrar c WHERE c.cueSaldoFac = :cueSaldoFac")})
+    , @NamedQuery(name = "CuentaXCobrar.findByCueSaldoFac", query = "SELECT c FROM CuentaXCobrar c WHERE c.cueSaldoFac = :cueSaldoFac")
+    , @NamedQuery(name = "CuentaXCobrar.findByCueEstado", query = "SELECT c FROM CuentaXCobrar c WHERE c.cueEstado = :cueEstado")})
 public class CuentaXCobrar implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -44,13 +43,15 @@ public class CuentaXCobrar implements Serializable {
     @Basic(optional = false)
     @Column(name = "Cue_Codigo")
     private Integer cueCodigo;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Basic(optional = false)
     @Column(name = "Cue_Saldo")
-    private BigDecimal cueSaldo;
+    private double cueSaldo;
     @Basic(optional = false)
     @Column(name = "Cue_SaldoFac")
-    private BigDecimal cueSaldoFac;
+    private double cueSaldoFac;
+    @Basic(optional = false)
+    @Column(name = "Cue_Estado")
+    private String cueEstado;
     @ManyToMany(mappedBy = "cuentaXCobrarList")
     private List<Abono> abonoList;
     @JoinColumn(name = "Cue_Cliente", referencedColumnName = "Cli_Persona")
@@ -67,10 +68,11 @@ public class CuentaXCobrar implements Serializable {
         this.cueCodigo = cueCodigo;
     }
 
-    public CuentaXCobrar(Integer cueCodigo, BigDecimal cueSaldo, BigDecimal cueSaldoFac) {
+    public CuentaXCobrar(Integer cueCodigo, double cueSaldo, double cueSaldoFac, String cueEstado) {
         this.cueCodigo = cueCodigo;
         this.cueSaldo = cueSaldo;
         this.cueSaldoFac = cueSaldoFac;
+        this.cueEstado = cueEstado;
     }
 
     public Integer getCueCodigo() {
@@ -81,20 +83,28 @@ public class CuentaXCobrar implements Serializable {
         this.cueCodigo = cueCodigo;
     }
 
-    public BigDecimal getCueSaldo() {
+    public double getCueSaldo() {
         return cueSaldo;
     }
 
-    public void setCueSaldo(BigDecimal cueSaldo) {
+    public void setCueSaldo(double cueSaldo) {
         this.cueSaldo = cueSaldo;
     }
 
-    public BigDecimal getCueSaldoFac() {
+    public double getCueSaldoFac() {
         return cueSaldoFac;
     }
 
-    public void setCueSaldoFac(BigDecimal cueSaldoFac) {
+    public void setCueSaldoFac(double cueSaldoFac) {
         this.cueSaldoFac = cueSaldoFac;
+    }
+
+    public String getCueEstado() {
+        return cueEstado;
+    }
+
+    public void setCueEstado(String cueEstado) {
+        this.cueEstado = cueEstado;
     }
 
     @XmlTransient

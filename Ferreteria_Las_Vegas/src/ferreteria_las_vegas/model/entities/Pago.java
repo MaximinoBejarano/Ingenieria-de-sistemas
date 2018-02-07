@@ -6,7 +6,6 @@
 package ferreteria_las_vegas.model.entities;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -22,8 +21,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Usuario
- * Entidad Mapeada
+ * @author Johan
  */
 @Entity
 @Table(name = "tb_pagos")
@@ -32,6 +30,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Pago.findAll", query = "SELECT p FROM Pago p")
     , @NamedQuery(name = "Pago.findByPagCodigo", query = "SELECT p FROM Pago p WHERE p.pagCodigo = :pagCodigo")
     , @NamedQuery(name = "Pago.findByPagMonto", query = "SELECT p FROM Pago p WHERE p.pagMonto = :pagMonto")
+    , @NamedQuery(name = "Pago.findByPagTipoMoneda", query = "SELECT p FROM Pago p WHERE p.pagTipoMoneda = :pagTipoMoneda")
+    , @NamedQuery(name = "Pago.findByPagTipoCambio", query = "SELECT p FROM Pago p WHERE p.pagTipoCambio = :pagTipoCambio")
     , @NamedQuery(name = "Pago.findByPagEstado", query = "SELECT p FROM Pago p WHERE p.pagEstado = :pagEstado")})
 public class Pago implements Serializable {
 
@@ -43,7 +43,12 @@ public class Pago implements Serializable {
     private Integer pagCodigo;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "Pag_Monto")
-    private BigDecimal pagMonto;
+    private Double pagMonto;
+    @Basic(optional = false)
+    @Column(name = "Pag_TipoMoneda")
+    private String pagTipoMoneda;
+    @Column(name = "Pag_TipoCambio")
+    private Double pagTipoCambio;
     @Basic(optional = false)
     @Column(name = "Pag_Estado")
     private String pagEstado;
@@ -64,8 +69,9 @@ public class Pago implements Serializable {
         this.pagCodigo = pagCodigo;
     }
 
-    public Pago(Integer pagCodigo, String pagEstado) {
+    public Pago(Integer pagCodigo, String pagTipoMoneda, String pagEstado) {
         this.pagCodigo = pagCodigo;
+        this.pagTipoMoneda = pagTipoMoneda;
         this.pagEstado = pagEstado;
     }
 
@@ -77,12 +83,28 @@ public class Pago implements Serializable {
         this.pagCodigo = pagCodigo;
     }
 
-    public BigDecimal getPagMonto() {
+    public Double getPagMonto() {
         return pagMonto;
     }
 
-    public void setPagMonto(BigDecimal pagMonto) {
+    public void setPagMonto(Double pagMonto) {
         this.pagMonto = pagMonto;
+    }
+
+    public String getPagTipoMoneda() {
+        return pagTipoMoneda;
+    }
+
+    public void setPagTipoMoneda(String pagTipoMoneda) {
+        this.pagTipoMoneda = pagTipoMoneda;
+    }
+
+    public Double getPagTipoCambio() {
+        return pagTipoCambio;
+    }
+
+    public void setPagTipoCambio(Double pagTipoCambio) {
+        this.pagTipoCambio = pagTipoCambio;
     }
 
     public String getPagEstado() {

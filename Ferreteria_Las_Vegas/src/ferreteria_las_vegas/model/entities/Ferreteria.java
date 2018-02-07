@@ -11,68 +11,66 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Usuario
- * Entidad Mapeada
+ * @author Johan
  */
 @Entity
-@Table(name = "tb_ferreteria")
+@Table(name = "tb_ferreterias")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Ferreteria.findAll", query = "SELECT f FROM Ferreteria f")
-    , @NamedQuery(name = "Ferreteria.findByFerID", query = "SELECT f FROM Ferreteria f WHERE f.ferID = :ferID")
+    , @NamedQuery(name = "Ferreteria.findByFerCedula", query = "SELECT f FROM Ferreteria f WHERE f.ferCedula = :ferCedula")
     , @NamedQuery(name = "Ferreteria.findByFerNombre", query = "SELECT f FROM Ferreteria f WHERE f.ferNombre = :ferNombre")
-    , @NamedQuery(name = "Ferreteria.findByFerCedulaJurida", query = "SELECT f FROM Ferreteria f WHERE f.ferCedulaJurida = :ferCedulaJurida")})
+    , @NamedQuery(name = "Ferreteria.findByFerEstado", query = "SELECT f FROM Ferreteria f WHERE f.ferEstado = :ferEstado")})
 public class Ferreteria implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "Fer_ID")
-    private Integer ferID;
+    @Column(name = "Fer_Cedula")
+    private String ferCedula;
     @Basic(optional = false)
     @Column(name = "Fer_Nombre")
     private String ferNombre;
     @Basic(optional = false)
-    @Column(name = "Fer_CedulaJurida")
-    private String ferCedulaJurida;
-    @ManyToMany(mappedBy = "ferreteriaList")
+    @Column(name = "Fer_Estado")
+    private String ferEstado;
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "ferreteria")
+    private Parametro parametro;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tbFerreteria")
     private List<Persona> personaList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "bobFerreteria")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "bodFerreteria")
     private List<Bodega> bodegaList;
 
     public Ferreteria() {
     }
 
-    public Ferreteria(Integer ferID) {
-        this.ferID = ferID;
+    public Ferreteria(String ferCedula) {
+        this.ferCedula = ferCedula;
     }
 
-    public Ferreteria(Integer ferID, String ferNombre, String ferCedulaJurida) {
-        this.ferID = ferID;
+    public Ferreteria(String ferCedula, String ferNombre, String ferEstado) {
+        this.ferCedula = ferCedula;
         this.ferNombre = ferNombre;
-        this.ferCedulaJurida = ferCedulaJurida;
+        this.ferEstado = ferEstado;
     }
 
-    public Integer getFerID() {
-        return ferID;
+    public String getFerCedula() {
+        return ferCedula;
     }
 
-    public void setFerID(Integer ferID) {
-        this.ferID = ferID;
+    public void setFerCedula(String ferCedula) {
+        this.ferCedula = ferCedula;
     }
 
     public String getFerNombre() {
@@ -83,12 +81,20 @@ public class Ferreteria implements Serializable {
         this.ferNombre = ferNombre;
     }
 
-    public String getFerCedulaJurida() {
-        return ferCedulaJurida;
+    public String getFerEstado() {
+        return ferEstado;
     }
 
-    public void setFerCedulaJurida(String ferCedulaJurida) {
-        this.ferCedulaJurida = ferCedulaJurida;
+    public void setFerEstado(String ferEstado) {
+        this.ferEstado = ferEstado;
+    }
+
+    public Parametro getParametro() {
+        return parametro;
+    }
+
+    public void setParametro(Parametro parametro) {
+        this.parametro = parametro;
     }
 
     @XmlTransient
@@ -112,7 +118,7 @@ public class Ferreteria implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (ferID != null ? ferID.hashCode() : 0);
+        hash += (ferCedula != null ? ferCedula.hashCode() : 0);
         return hash;
     }
 
@@ -123,7 +129,7 @@ public class Ferreteria implements Serializable {
             return false;
         }
         Ferreteria other = (Ferreteria) object;
-        if ((this.ferID == null && other.ferID != null) || (this.ferID != null && !this.ferID.equals(other.ferID))) {
+        if ((this.ferCedula == null && other.ferCedula != null) || (this.ferCedula != null && !this.ferCedula.equals(other.ferCedula))) {
             return false;
         }
         return true;
@@ -131,7 +137,7 @@ public class Ferreteria implements Serializable {
 
     @Override
     public String toString() {
-        return "ferreteria_las_vegas.model.entities.Ferreteria[ ferID=" + ferID + " ]";
+        return "ferreteria_las_vegas.model.entities.Ferreteria[ ferCedula=" + ferCedula + " ]";
     }
     
 }

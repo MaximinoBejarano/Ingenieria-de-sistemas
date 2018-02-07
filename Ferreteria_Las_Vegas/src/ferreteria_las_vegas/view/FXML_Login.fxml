@@ -21,7 +21,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<StackPane fx:id="mainPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="400.0" minWidth="630.0" prefHeight="400.0" prefWidth="814.0" style="-fx-background-color: #2E4053;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ferreteria_las_vegas.Controller.FXML_LoginController">
+<StackPane fx:id="mainPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="400.0" minWidth="630.0" prefHeight="400.0" prefWidth="814.0" style="-fx-background-color: #2E4053;" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ferreteria_las_vegas.controller.FXML_LoginController">
     <stylesheets>
         <URL value="@LoginCSS.css" />
     </stylesheets>
@@ -99,7 +99,7 @@
                         <Label fx:id="lblError" prefHeight="17.0" prefWidth="217.0" style="-fx-text-fill: red;" text="Verificar Usuario y Contraseña" visible="false" GridPane.rowIndex="5" />
                         <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="40.0" GridPane.rowIndex="6">
                            <children>
-                              <Button fx:id="btnLogin" contentDisplay="RIGHT" onAction="#verificarAcceso" prefHeight="59.0" prefWidth="169.0" styleClass="btnEstandar" stylesheets="@LoginCSS.css" text="Acceder">
+                              <Button fx:id="btnLogin" contentDisplay="RIGHT" onAction="#verificarAcceso" prefHeight="59.0" prefWidth="169.0" styleClass="btnEstandar" stylesheets="@../../styles/style.css" text="Acceder">
                                  <font>
                                     <Font size="16.0" />
                                  </font>
@@ -117,7 +117,7 @@
                                     <Cursor fx:constant="HAND" />
                                  </cursor>
                               </Button>
-                              <ProgressIndicator fx:id="progresbar" styleClass="bbarra" stylesheets="@LoginCSS.css" visible="false" />
+                              <ProgressIndicator fx:id="progresbar" styleClass="bbarra" stylesheets="@../../styles/style.css" visible="false" />
                            </children>
                         </HBox>
                      </children>

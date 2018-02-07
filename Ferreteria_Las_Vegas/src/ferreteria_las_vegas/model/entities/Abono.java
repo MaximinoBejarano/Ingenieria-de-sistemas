@@ -6,7 +6,6 @@
 package ferreteria_las_vegas.model.entities;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
@@ -29,8 +28,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Usuario
- * Entidad Mapeada
+ * @author Johan
  */
 @Entity
 @Table(name = "tb_abonos")
@@ -41,8 +39,8 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Abono.findByAboFecha", query = "SELECT a FROM Abono a WHERE a.aboFecha = :aboFecha")
     , @NamedQuery(name = "Abono.findByAboMonto", query = "SELECT a FROM Abono a WHERE a.aboMonto = :aboMonto")
     , @NamedQuery(name = "Abono.findByAboNumeroDeposito", query = "SELECT a FROM Abono a WHERE a.aboNumeroDeposito = :aboNumeroDeposito")
-    , @NamedQuery(name = "Abono.findByAboEstado", query = "SELECT a FROM Abono a WHERE a.aboEstado = :aboEstado")
-    , @NamedQuery(name = "Abono.findByAboTipoAbono", query = "SELECT a FROM Abono a WHERE a.aboTipoAbono = :aboTipoAbono")})
+    , @NamedQuery(name = "Abono.findByAboTipoAbono", query = "SELECT a FROM Abono a WHERE a.aboTipoAbono = :aboTipoAbono")
+    , @NamedQuery(name = "Abono.findByAboEstado", query = "SELECT a FROM Abono a WHERE a.aboEstado = :aboEstado")})
 public class Abono implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -55,18 +53,17 @@ public class Abono implements Serializable {
     @Column(name = "Abo_Fecha")
     @Temporal(TemporalType.DATE)
     private Date aboFecha;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Basic(optional = false)
     @Column(name = "Abo_Monto")
-    private BigDecimal aboMonto;
+    private double aboMonto;
     @Column(name = "Abo_NumeroDeposito")
     private String aboNumeroDeposito;
     @Basic(optional = false)
-    @Column(name = "Abo_Estado")
-    private String aboEstado;
-    @Basic(optional = false)
     @Column(name = "Abo_TipoAbono")
     private String aboTipoAbono;
+    @Basic(optional = false)
+    @Column(name = "Abo_Estado")
+    private String aboEstado;
     @JoinTable(name = "tb_cxp_abonos", joinColumns = {
         @JoinColumn(name = "RCA_Abono", referencedColumnName = "Abo_Codigo")}, inverseJoinColumns = {
         @JoinColumn(name = "RCA_CuentaPagar", referencedColumnName = "Cue_Codigo")})
@@ -88,12 +85,12 @@ public class Abono implements Serializable {
         this.aboCodigo = aboCodigo;
     }
 
-    public Abono(Integer aboCodigo, Date aboFecha, BigDecimal aboMonto, String aboEstado, String aboTipoAbono) {
+    public Abono(Integer aboCodigo, Date aboFecha, double aboMonto, String aboTipoAbono, String aboEstado) {
         this.aboCodigo = aboCodigo;
         this.aboFecha = aboFecha;
         this.aboMonto = aboMonto;
-        this.aboEstado = aboEstado;
         this.aboTipoAbono = aboTipoAbono;
+        this.aboEstado = aboEstado;
     }
 
     public Integer getAboCodigo() {
@@ -112,11 +109,11 @@ public class Abono implements Serializable {
         this.aboFecha = aboFecha;
     }
 
-    public BigDecimal getAboMonto() {
+    public double getAboMonto() {
         return aboMonto;
     }
 
-    public void setAboMonto(BigDecimal aboMonto) {
+    public void setAboMonto(double aboMonto) {
         this.aboMonto = aboMonto;
     }
 
@@ -128,20 +125,20 @@ public class Abono implements Serializable {
         this.aboNumeroDeposito = aboNumeroDeposito;
     }
 
-    public String getAboEstado() {
-        return aboEstado;
-    }
-
-    public void setAboEstado(String aboEstado) {
-        this.aboEstado = aboEstado;
-    }
-
     public String getAboTipoAbono() {
         return aboTipoAbono;
     }
 
     public void setAboTipoAbono(String aboTipoAbono) {
         this.aboTipoAbono = aboTipoAbono;
+    }
+
+    public String getAboEstado() {
+        return aboEstado;
+    }
+
+    public void setAboEstado(String aboEstado) {
+        this.aboEstado = aboEstado;
     }
 
     @XmlTransient

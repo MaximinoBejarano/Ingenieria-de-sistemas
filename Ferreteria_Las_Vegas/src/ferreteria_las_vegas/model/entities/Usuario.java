@@ -23,8 +23,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Usuario
- * Entidad Mapeada
+ * @author Johan
  */
 @Entity
 @Table(name = "tb_usuarios")
@@ -32,8 +31,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Usuario.findAll", query = "SELECT u FROM Usuario u")
     , @NamedQuery(name = "Usuario.findByUsuPersona", query = "SELECT u FROM Usuario u WHERE u.usuPersona = :usuPersona")
-    , @NamedQuery(name = "Usuario.findByUsuLogin", query = "SELECT u FROM Usuario u WHERE u.usuNombre = :usuUsuario AND u.usuContrase\u00f1a = :usuContrase\u00f1a")
-    , @NamedQuery(name = "Usuario.findByUsuNombre", query = "SELECT u FROM Usuario u WHERE u.usuNombre = :usuNombre")
+    , @NamedQuery(name = "Usuario.findByUsuNombre", query = "SELECT u FROM Usuario u WHERE u.usuNombre = :usuNombre")    
     , @NamedQuery(name = "Usuario.findByUsuContrase\u00f1a", query = "SELECT u FROM Usuario u WHERE u.usuContrase\u00f1a = :usuContrase\u00f1a")
     , @NamedQuery(name = "Usuario.findByUsuEstado", query = "SELECT u FROM Usuario u WHERE u.usuEstado = :usuEstado")})
 public class Usuario implements Serializable {
@@ -52,13 +50,11 @@ public class Usuario implements Serializable {
     @Basic(optional = false)
     @Column(name = "Usu_Estado")
     private String usuEstado;
-    
     @JoinTable(name = "tb_permisos_usuarios", joinColumns = {
         @JoinColumn(name = "RPU_Usuarios", referencedColumnName = "Usu_Persona")}, inverseJoinColumns = {
-        @JoinColumn(name = "RPU_Permisos", referencedColumnName = "Per_ID")})
+        @JoinColumn(name = "RPU_Permisos", referencedColumnName = "Per_Codigo")})
     @ManyToMany
     private List<Permiso> permisoList;
-    
     @JoinColumn(name = "Usu_Persona", referencedColumnName = "Per_Cedula", insertable = false, updatable = false)
     @OneToOne(optional = false)
     private Persona persona;

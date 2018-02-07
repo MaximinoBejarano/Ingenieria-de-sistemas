@@ -22,15 +22,14 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Usuario
- * Entidad Mapeada
+ * @author Johan
  */
 @Entity
 @Table(name = "tb_cantones")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Canton.findAll", query = "SELECT c FROM Canton c")
-    , @NamedQuery(name = "Canton.findByCanID", query = "SELECT c FROM Canton c WHERE c.canID = :canID")
+    , @NamedQuery(name = "Canton.findByCanCodigo", query = "SELECT c FROM Canton c WHERE c.canCodigo = :canCodigo")
     , @NamedQuery(name = "Canton.findByCanNombre", query = "SELECT c FROM Canton c WHERE c.canNombre = :canNombre")
     , @NamedQuery(name = "Canton.findByCanDescripcion", query = "SELECT c FROM Canton c WHERE c.canDescripcion = :canDescripcion")})
 public class Canton implements Serializable {
@@ -39,8 +38,8 @@ public class Canton implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "Can_ID")
-    private Integer canID;
+    @Column(name = "Can_Codigo")
+    private Integer canCodigo;
     @Basic(optional = false)
     @Column(name = "Can_Nombre")
     private String canNombre;
@@ -52,21 +51,21 @@ public class Canton implements Serializable {
     public Canton() {
     }
 
-    public Canton(Integer canID) {
-        this.canID = canID;
+    public Canton(Integer canCodigo) {
+        this.canCodigo = canCodigo;
     }
 
-    public Canton(Integer canID, String canNombre) {
-        this.canID = canID;
+    public Canton(Integer canCodigo, String canNombre) {
+        this.canCodigo = canCodigo;
         this.canNombre = canNombre;
     }
 
-    public Integer getCanID() {
-        return canID;
+    public Integer getCanCodigo() {
+        return canCodigo;
     }
 
-    public void setCanID(Integer canID) {
-        this.canID = canID;
+    public void setCanCodigo(Integer canCodigo) {
+        this.canCodigo = canCodigo;
     }
 
     public String getCanNombre() {
@@ -97,7 +96,7 @@ public class Canton implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (canID != null ? canID.hashCode() : 0);
+        hash += (canCodigo != null ? canCodigo.hashCode() : 0);
         return hash;
     }
 
@@ -108,7 +107,7 @@ public class Canton implements Serializable {
             return false;
         }
         Canton other = (Canton) object;
-        if ((this.canID == null && other.canID != null) || (this.canID != null && !this.canID.equals(other.canID))) {
+        if ((this.canCodigo == null && other.canCodigo != null) || (this.canCodigo != null && !this.canCodigo.equals(other.canCodigo))) {
             return false;
         }
         return true;
@@ -116,7 +115,7 @@ public class Canton implements Serializable {
 
     @Override
     public String toString() {
-        return "ferreteria_las_vegas.model.entities.Canton[ canID=" + canID + " ]";
+        return "ferreteria_las_vegas.model.entities.Canton[ canCodigo=" + canCodigo + " ]";
     }
     
 }

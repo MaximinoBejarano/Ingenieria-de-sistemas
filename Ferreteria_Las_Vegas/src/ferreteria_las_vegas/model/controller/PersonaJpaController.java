@@ -266,12 +266,12 @@ public class PersonaJpaController {
 Persona
     @JoinTable(name = "tb_personas_direcciones", joinColumns = {
         @JoinColumn(name = "RPD_Persona", referencedColumnName = "Per_Cedula")}, inverseJoinColumns = {
-        @JoinColumn(name = "RPD_Direccion", referencedColumnName = "Dir_ID")})
+        @JoinColumn(name = "RPD_Direccion", referencedColumnName = "Dir_Codigo")})
     @ManyToMany
     private List<Direccion> direccionList;        
     @JoinTable(name = "tb_personas_contactos", joinColumns = {
         @JoinColumn(name = "RPC_Persona", referencedColumnName = "Per_Cedula")}, inverseJoinColumns = {
-        @JoinColumn(name = "RPC_Contacto", referencedColumnName = "Con_ID")})
+        @JoinColumn(name = "RPC_Contacto", referencedColumnName = "Con_Codigo")})
     @ManyToMany
     private List<Contacto> contactoList;
 

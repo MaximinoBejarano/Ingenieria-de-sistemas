@@ -5,7 +5,7 @@
  */
 package ferreteria_las_vegas;
 
-import ferreteria_las_vegas.Controller.ScenesManager;
+import ferreteria_las_vegas.controller.ScenesManager;
 import javafx.application.Application;
 import javafx.stage.Stage;
 

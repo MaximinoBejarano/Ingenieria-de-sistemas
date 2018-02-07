@@ -23,7 +23,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox fx:id="dataPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="654.0" prefWidth="749.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ferreteria_las_vegas.Controller.FXML_EmpleadosController">
+<VBox fx:id="dataPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="654.0" prefWidth="749.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ferreteria_las_vegas.controller.FXML_EmpleadosController">
    <children>
       <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS">
          <bottom>

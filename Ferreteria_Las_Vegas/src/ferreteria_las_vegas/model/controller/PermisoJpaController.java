@@ -88,6 +88,7 @@ public class PermisoJpaController {
     private EntityTransaction et;
 }
 
+/*No borrar*/
 /*
     @PreRemove
     private void removePermiso() {

@@ -6,7 +6,6 @@
 package ferreteria_las_vegas.model.entities;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -22,15 +21,14 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Usuario
- * Entidad Mapeada
+ * @author Johan
  */
 @Entity
 @Table(name = "tb_articulosxfactura")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "ArticuloXFactura.findAll", query = "SELECT a FROM ArticuloXFactura a")
-    , @NamedQuery(name = "ArticuloXFactura.findByArtID", query = "SELECT a FROM ArticuloXFactura a WHERE a.artID = :artID")
+    , @NamedQuery(name = "ArticuloXFactura.findByArtCodigo", query = "SELECT a FROM ArticuloXFactura a WHERE a.artCodigo = :artCodigo")
     , @NamedQuery(name = "ArticuloXFactura.findByArtPrecio", query = "SELECT a FROM ArticuloXFactura a WHERE a.artPrecio = :artPrecio")
     , @NamedQuery(name = "ArticuloXFactura.findByArtCantidad", query = "SELECT a FROM ArticuloXFactura a WHERE a.artCantidad = :artCantidad")
     , @NamedQuery(name = "ArticuloXFactura.findByArtDescuento", query = "SELECT a FROM ArticuloXFactura a WHERE a.artDescuento = :artDescuento")})
@@ -40,17 +38,17 @@ public class ArticuloXFactura implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "Art_ID")
-    private Integer artID;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @Column(name = "Art_Codigo")
+    private Integer artCodigo;
     @Basic(optional = false)
     @Column(name = "Art_Precio")
-    private BigDecimal artPrecio;
+    private double artPrecio;
     @Basic(optional = false)
     @Column(name = "Art_Cantidad")
     private int artCantidad;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "Art_Descuento")
-    private BigDecimal artDescuento;
+    private Double artDescuento;
     @JoinColumn(name = "Art_Articulo", referencedColumnName = "Art_Codigo")
     @ManyToOne(optional = false)
     private Articulo artArticulo;
@@ -61,29 +59,29 @@ public class ArticuloXFactura implements Serializable {
     public ArticuloXFactura() {
     }
 
-    public ArticuloXFactura(Integer artID) {
-        this.artID = artID;
+    public ArticuloXFactura(Integer artCodigo) {
+        this.artCodigo = artCodigo;
     }
 
-    public ArticuloXFactura(Integer artID, BigDecimal artPrecio, int artCantidad) {
-        this.artID = artID;
+    public ArticuloXFactura(Integer artCodigo, double artPrecio, int artCantidad) {
+        this.artCodigo = artCodigo;
         this.artPrecio = artPrecio;
         this.artCantidad = artCantidad;
     }
 
-    public Integer getArtID() {
-        return artID;
+    public Integer getArtCodigo() {
+        return artCodigo;
     }
 
-    public void setArtID(Integer artID) {
-        this.artID = artID;
+    public void setArtCodigo(Integer artCodigo) {
+        this.artCodigo = artCodigo;
     }
 
-    public BigDecimal getArtPrecio() {
+    public double getArtPrecio() {
         return artPrecio;
     }
 
-    public void setArtPrecio(BigDecimal artPrecio) {
+    public void setArtPrecio(double artPrecio) {
         this.artPrecio = artPrecio;
     }
 
@@ -95,11 +93,11 @@ public class ArticuloXFactura implements Serializable {
         this.artCantidad = artCantidad;
     }
 
-    public BigDecimal getArtDescuento() {
+    public Double getArtDescuento() {
         return artDescuento;
     }
 
-    public void setArtDescuento(BigDecimal artDescuento) {
+    public void setArtDescuento(Double artDescuento) {
         this.artDescuento = artDescuento;
     }
 
@@ -122,7 +120,7 @@ public class ArticuloXFactura implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (artID != null ? artID.hashCode() : 0);
+        hash += (artCodigo != null ? artCodigo.hashCode() : 0);
         return hash;
     }
 
@@ -133,7 +131,7 @@ public class ArticuloXFactura implements Serializable {
             return false;
         }
         ArticuloXFactura other = (ArticuloXFactura) object;
-        if ((this.artID == null && other.artID != null) || (this.artID != null && !this.artID.equals(other.artID))) {
+        if ((this.artCodigo == null && other.artCodigo != null) || (this.artCodigo != null && !this.artCodigo.equals(other.artCodigo))) {
             return false;
         }
         return true;
@@ -141,7 +139,7 @@ public class ArticuloXFactura implements Serializable {
 
     @Override
     public String toString() {
-        return "ferreteria_las_vegas.model.entities.ArticuloXFactura[ artID=" + artID + " ]";
+        return "ferreteria_las_vegas.model.entities.ArticuloXFactura[ artCodigo=" + artCodigo + " ]";
     }
     
 }

@@ -52,8 +52,8 @@ public class UsuarioJpaController {
      * @return
      */
     public Usuario SolicitarAcceso(String pusuario, String pcontraseña) {
-        try {
-            Query qry = em.createNamedQuery("Usuario.findByUsuLogin", Usuario.class);
+        try {            
+            Query qry = em.createQuery("SELECT u FROM Usuario u WHERE u.usuNombre = :usuUsuario AND u.usuContrase\u00f1a = :usuContrase\u00f1a",Usuario.class);
             qry.setParameter("usuUsuario", pusuario);
             qry.setParameter("usuContrase\u00f1a", pcontraseña);
             Usuario usuario = (Usuario) qry.getSingleResult();
@@ -196,7 +196,7 @@ Usuarios
 Usuarios 
     @JoinTable(name = "tb_permisos_usuarios", joinColumns = {
         @JoinColumn(name = "RPU_Usuarios", referencedColumnName = "Usu_Persona")}, inverseJoinColumns = {
-        @JoinColumn(name = "RPU_Permisos", referencedColumnName = "Per_ID")})
+        @JoinColumn(name = "RPU_Permisos", referencedColumnName = "Per_Codigo")})
     @ManyToMany
     private List<Permiso> permisoList;
 

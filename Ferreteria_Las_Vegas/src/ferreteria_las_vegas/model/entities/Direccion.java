@@ -27,15 +27,14 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Usuario
- * Entidad Mapeada
+ * @author Johan
  */
 @Entity
 @Table(name = "tb_direcciones")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Direccion.findAll", query = "SELECT d FROM Direccion d")
-    , @NamedQuery(name = "Direccion.findByDirID", query = "SELECT d FROM Direccion d WHERE d.dirID = :dirID")
+    , @NamedQuery(name = "Direccion.findByDirCodigo", query = "SELECT d FROM Direccion d WHERE d.dirCodigo = :dirCodigo")
     , @NamedQuery(name = "Direccion.findByDirDirExacta", query = "SELECT d FROM Direccion d WHERE d.dirDirExacta = :dirDirExacta")})
 public class Direccion implements Serializable {
 
@@ -43,27 +42,25 @@ public class Direccion implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "Dir_ID")
-    private Integer dirID;
+    @Column(name = "Dir_Codigo")
+    private Integer dirCodigo;
     @Basic(optional = false)
     @Column(name = "Dir_DirExacta")
     private String dirDirExacta;
-    
     @ManyToMany(mappedBy = "direccionList")    
-    private List<Persona> personaList;
-    
+    private List<Persona> personaList;    
     @JoinTable(name = "tb_direcciones_proveedores", joinColumns = {
-        @JoinColumn(name = "RDP_Direccion", referencedColumnName = "Dir_ID")}, inverseJoinColumns = {
-        @JoinColumn(name = "RDP_Proveedor", referencedColumnName = "Pro_ID")})
+        @JoinColumn(name = "RDP_Direccion", referencedColumnName = "Dir_Codigo")}, inverseJoinColumns = {
+        @JoinColumn(name = "RDP_Proveedor", referencedColumnName = "Pro_Codigo")})
     @ManyToMany
     private List<Proveedor> proveedorList;
-    @JoinColumn(name = "Dir_Canton", referencedColumnName = "Can_ID")
+    @JoinColumn(name = "Dir_Canton", referencedColumnName = "Can_Codigo")
     @ManyToOne
     private Canton dirCanton;
-    @JoinColumn(name = "Dir_Distrito", referencedColumnName = "Dis_ID")
+    @JoinColumn(name = "Dir_Distrito", referencedColumnName = "Dis_Codigo")
     @ManyToOne
     private Distrito dirDistrito;
-    @JoinColumn(name = "Dir_Provincia", referencedColumnName = "Pro_ID")
+    @JoinColumn(name = "Dir_Provincia", referencedColumnName = "Pro_Codigo")
     @ManyToOne
     private Provincia dirProvincia;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "bobDireccion")
@@ -72,21 +69,21 @@ public class Direccion implements Serializable {
     public Direccion() {
     }
 
-    public Direccion(Integer dirID) {
-        this.dirID = dirID;
+    public Direccion(Integer dirCodigo) {
+        this.dirCodigo = dirCodigo;
     }
 
-    public Direccion(Integer dirID, String dirDirExacta) {
-        this.dirID = dirID;
+    public Direccion(Integer dirCodigo, String dirDirExacta) {
+        this.dirCodigo = dirCodigo;
         this.dirDirExacta = dirDirExacta;
     }
 
-    public Integer getDirID() {
-        return dirID;
+    public Integer getDirCodigo() {
+        return dirCodigo;
     }
 
-    public void setDirID(Integer dirID) {
-        this.dirID = dirID;
+    public void setDirCodigo(Integer dirCodigo) {
+        this.dirCodigo = dirCodigo;
     }
 
     public String getDirDirExacta() {
@@ -151,7 +148,7 @@ public class Direccion implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (dirID != null ? dirID.hashCode() : 0);
+        hash += (dirCodigo != null ? dirCodigo.hashCode() : 0);
         return hash;
     }
 
@@ -162,7 +159,7 @@ public class Direccion implements Serializable {
             return false;
         }
         Direccion other = (Direccion) object;
-        if ((this.dirID == null && other.dirID != null) || (this.dirID != null && !this.dirID.equals(other.dirID))) {
+        if ((this.dirCodigo == null && other.dirCodigo != null) || (this.dirCodigo != null && !this.dirCodigo.equals(other.dirCodigo))) {
             return false;
         }
         return true;
@@ -170,7 +167,7 @@ public class Direccion implements Serializable {
 
     @Override
     public String toString() {
-        return "ferreteria_las_vegas.model.entities.Direccion[ dirID=" + dirID + " ]";
+        return "ferreteria_las_vegas.model.entities.Direccion[ dirCodigo=" + dirCodigo + " ]";
     }
     
 }

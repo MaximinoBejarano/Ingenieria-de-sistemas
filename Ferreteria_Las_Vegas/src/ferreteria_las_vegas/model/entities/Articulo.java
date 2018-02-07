@@ -6,7 +6,6 @@
 package ferreteria_las_vegas.model.entities;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -18,14 +17,14 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Usuario
- * Entidad Mapeada
+ * @author Johan
  */
 @Entity
 @Table(name = "tb_articulos")
@@ -41,8 +40,7 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Articulo.findByArtDescuento", query = "SELECT a FROM Articulo a WHERE a.artDescuento = :artDescuento")
     , @NamedQuery(name = "Articulo.findByArtEstadoDescuento", query = "SELECT a FROM Articulo a WHERE a.artEstadoDescuento = :artEstadoDescuento")
     , @NamedQuery(name = "Articulo.findByArtCodBarra", query = "SELECT a FROM Articulo a WHERE a.artCodBarra = :artCodBarra")
-    , @NamedQuery(name = "Articulo.findByArtEstado", query = "SELECT a FROM Articulo a WHERE a.artEstado = :artEstado")
-    , @NamedQuery(name = "Articulo.findByArtExistente", query = "SELECT a FROM Articulo a WHERE a.artNombre = :artNombre and a.artDescripcion = :artDescripcion and a.artMarca = :artMarca and a.artEstado = :artEstado")})
+    , @NamedQuery(name = "Articulo.findByArtEstado", query = "SELECT a FROM Articulo a WHERE a.artEstado = :artEstado")})
 public class Articulo implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -63,12 +61,12 @@ public class Articulo implements Serializable {
     @Basic(optional = false)
     @Column(name = "Art_UnidadMedida")
     private String artUnidadMedida;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Basic(optional = false)
     @Column(name = "Art_Precio")
-    private BigDecimal artPrecio;
+    private double artPrecio;    
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "Art_Descuento")
-    private BigDecimal artDescuento;
+    private Double artDescuento;
     @Column(name = "Art_EstadoDescuento")
     private String artEstadoDescuento;
     @Column(name = "Art_CodBarra")
@@ -76,10 +74,10 @@ public class Articulo implements Serializable {
     @Basic(optional = false)
     @Column(name = "Art_Estado")
     private String artEstado;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "invArticulo")
-    private List<Inventario> inventarioList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "artArticulo")
     private List<ArticuloXFactura> articuloXFacturaList;
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "invArticulo")
+    private Inventario inventario;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "artArticulo")
     private List<ArticuloXCompra> articuloXCompraList;
 
@@ -90,7 +88,7 @@ public class Articulo implements Serializable {
         this.artCodigo = artCodigo;
     }
 
-    public Articulo(Integer artCodigo, String artNombre, String artDescripcion, String artMarca, String artUnidadMedida, BigDecimal artPrecio, String artEstado) {
+    public Articulo(Integer artCodigo, String artNombre, String artDescripcion, String artMarca, String artUnidadMedida, double artPrecio, String artEstado) {
         this.artCodigo = artCodigo;
         this.artNombre = artNombre;
         this.artDescripcion = artDescripcion;
@@ -140,19 +138,19 @@ public class Articulo implements Serializable {
         this.artUnidadMedida = artUnidadMedida;
     }
 
-    public BigDecimal getArtPrecio() {
+    public double getArtPrecio() {
         return artPrecio;
     }
 
-    public void setArtPrecio(BigDecimal artPrecio) {
+    public void setArtPrecio(double artPrecio) {
         this.artPrecio = artPrecio;
     }
 
-    public BigDecimal getArtDescuento() {
+    public Double getArtDescuento() {
         return artDescuento;
     }
 
-    public void setArtDescuento(BigDecimal artDescuento) {
+    public void setArtDescuento(Double artDescuento) {
         this.artDescuento = artDescuento;
     }
 
@@ -181,21 +179,20 @@ public class Articulo implements Serializable {
     }
 
     @XmlTransient
-    public List<Inventario> getInventarioList() {
-        return inventarioList;
-    }
-
-    public void setInventarioList(List<Inventario> inventarioList) {
-        this.inventarioList = inventarioList;
-    }
-
-    @XmlTransient
     public List<ArticuloXFactura> getArticuloXFacturaList() {
         return articuloXFacturaList;
     }
 
     public void setArticuloXFacturaList(List<ArticuloXFactura> articuloXFacturaList) {
         this.articuloXFacturaList = articuloXFacturaList;
+    }
+
+    public Inventario getInventario() {
+        return inventario;
+    }
+
+    public void setInventario(Inventario inventario) {
+        this.inventario = inventario;
     }
 
     @XmlTransient

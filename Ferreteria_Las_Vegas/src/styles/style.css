@@ -1,3 +1,26 @@
+/*---------------------------Login--------------------------------*/
+.btnEstandar {
+-fx-text-fill: black;
+-fx-background-color: orange;
+}
+
+.btnEstandar:hover {  
+-fx-background-color: white;
+}
+
+.bbarra{       
+    -fx-accent: orange;    
+}
+.ttexto{
+    -fx-font: 20px System;
+    -fx-text-fill: #4CAF50;
+    -fx-stroke: black;
+    -fx-stroke-width: 1;    
+    -fx-font-weight: bold;
+}
+
+/*----------------------------------------------------------------*/
+
 .boton-Fac { 
 -fx-background-repeat: no-repeat;
 -fx-background-position: center 5px;

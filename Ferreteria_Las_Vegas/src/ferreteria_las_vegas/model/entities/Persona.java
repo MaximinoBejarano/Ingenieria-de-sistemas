@@ -15,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
@@ -24,8 +25,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Usuario
- * Entidad Mapeada
+ * @author Johan
  */
 @Entity
 @Table(name = "tb_personas")
@@ -57,28 +57,24 @@ public class Persona implements Serializable {
     private String perSApellido;
     @Basic(optional = false)
     @Column(name = "Per_Estado")
-    private String perEstado;    
-    @JoinTable(name = "tb_ferreteria_personas", joinColumns = {
-        @JoinColumn(name = "RFP_Persona", referencedColumnName = "Per_Cedula")}, inverseJoinColumns = {
-        @JoinColumn(name = "RFP_Ferreteria", referencedColumnName = "Fer_ID")})
-    @ManyToMany
-    private List<Ferreteria> ferreteriaList;
-    
+    private String perEstado;
     @JoinTable(name = "tb_personas_direcciones", joinColumns = {
         @JoinColumn(name = "RPD_Persona", referencedColumnName = "Per_Cedula")}, inverseJoinColumns = {
-        @JoinColumn(name = "RPD_Direccion", referencedColumnName = "Dir_ID")})
+        @JoinColumn(name = "RPD_Direccion", referencedColumnName = "Dir_Codigo")})
     @ManyToMany
     private List<Direccion> direccionList;        
     @JoinTable(name = "tb_personas_contactos", joinColumns = {
         @JoinColumn(name = "RPC_Persona", referencedColumnName = "Per_Cedula")}, inverseJoinColumns = {
-        @JoinColumn(name = "RPC_Contacto", referencedColumnName = "Con_ID")})
+        @JoinColumn(name = "RPC_Contacto", referencedColumnName = "Con_Codigo")})
     @ManyToMany
     private List<Contacto> contactoList;
-    
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "persona")
     private Usuario usuario;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "persona")
     private Cliente cliente;
+    @JoinColumn(name = "tb_Ferreteria", referencedColumnName = "Fer_Cedula")
+    @ManyToOne(optional = false)
+    private Ferreteria tbFerreteria;
 
     public Persona() {
     }
@@ -143,15 +139,6 @@ public class Persona implements Serializable {
     }
 
     @XmlTransient
-    public List<Ferreteria> getFerreteriaList() {
-        return ferreteriaList;
-    }
-
-    public void setFerreteriaList(List<Ferreteria> ferreteriaList) {
-        this.ferreteriaList = ferreteriaList;
-    }
-
-    @XmlTransient
     public List<Direccion> getDireccionList() {
         return direccionList;
     }
@@ -183,6 +170,14 @@ public class Persona implements Serializable {
 
     public void setCliente(Cliente cliente) {
         this.cliente = cliente;
+    }
+
+    public Ferreteria getTbFerreteria() {
+        return tbFerreteria;
+    }
+
+    public void setTbFerreteria(Ferreteria tbFerreteria) {
+        this.tbFerreteria = tbFerreteria;
     }
 
     @Override
