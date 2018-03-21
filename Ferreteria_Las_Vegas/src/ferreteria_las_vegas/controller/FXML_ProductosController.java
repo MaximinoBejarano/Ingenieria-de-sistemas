@@ -143,7 +143,7 @@ public class FXML_ProductosController implements Initializable {
         Articulo articulo = new Articulo();
         articulo = ExtraerDatos(articulo);
         if (ArticuloJpaController.getInstance().ConsultarArticuloCodBarras(articulo.getArtCodBarra()) == null) {
-            if (ArticuloJpaController.getInstance().ComprobarExistenciaArticulo(articulo).isEmpty()) {
+            if (ArticuloJpaController.getInstance().ComprobarExistenciaArticulo(articulo)==null) {
                 articulo = ArticuloJpaController.getInstance().InsertarArticulo(articulo);
                 AppContext.getInstance().set("articulo-Ingresado", articulo);
                 if (articulo != null) {
