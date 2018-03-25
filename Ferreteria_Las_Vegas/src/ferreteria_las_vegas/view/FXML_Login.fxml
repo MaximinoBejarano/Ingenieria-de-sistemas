@@ -9,6 +9,7 @@
 <?import javafx.scene.control.ProgressIndicator?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -21,12 +22,12 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<StackPane fx:id="mainPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="400.0" minWidth="630.0" prefHeight="400.0" prefWidth="814.0" style="-fx-background-color: #2E4053;" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ferreteria_las_vegas.controller.FXML_LoginController">
+<StackPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="400.0" minWidth="630.0" prefHeight="400.0" prefWidth="814.0" style="-fx-background-color: #2E4053;" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ferreteria_las_vegas.controller.FXML_LoginController">
     <stylesheets>
         <URL value="@LoginCSS.css" />
     </stylesheets>
    <children>
-      <VBox fx:id="dataPane" alignment="CENTER" fillWidth="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: #2E4053;">
+      <VBox alignment="CENTER" fillWidth="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: #2E4053;">
          <children>
             <AnchorPane id="AnchorPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="400.0" prefWidth="819.0" style="-fx-background-color: #2E4053;">
                <children>
@@ -66,7 +67,7 @@
                               <DropShadow />
                            </effect>
                         </Label>
-                        <TextField fx:id="txtUsuario" promptText="Campo Requerido" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+                        <TextField fx:id="txtUsuario" onAction="#txtContraseñaAction" onKeyTyped="#txtUsuarioTyped" promptText="Campo Requerido" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
                            <font>
                               <Font size="16.0" />
                            </font>
@@ -76,6 +77,9 @@
                            <effect>
                               <DropShadow />
                            </effect>
+                           <tooltip>
+                              <Tooltip text="Nombre de usuario registrado" />
+                           </tooltip>
                         </TextField>
                         <Label text="Contraseña" textFill="WHITE" GridPane.rowIndex="3">
                            <font>
@@ -85,7 +89,7 @@
                               <DropShadow />
                            </effect>
                         </Label>
-                        <PasswordField fx:id="txtContraseña" onAction="#txtContraseñaAction" promptText="Campo Requerido" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
+                        <PasswordField fx:id="txtContraseña" onAction="#txtContraseñaAction" onKeyTyped="#txtContraseñaTyped" promptText="Campo Requerido" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
                            <font>
                               <Font size="16.0" />
                            </font>
@@ -95,11 +99,13 @@
                            <effect>
                               <DropShadow />
                            </effect>
+                           <tooltip>
+                              <Tooltip text="Contraseña de usuario valida" />
+                           </tooltip>
                         </PasswordField>
-                        <Label fx:id="lblError" prefHeight="17.0" prefWidth="217.0" style="-fx-text-fill: red;" text="Verificar Usuario y Contraseña" visible="false" GridPane.rowIndex="5" />
                         <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="40.0" GridPane.rowIndex="6">
                            <children>
-                              <Button fx:id="btnLogin" contentDisplay="RIGHT" onAction="#verificarAcceso" prefHeight="59.0" prefWidth="169.0" styleClass="btnEstandar" stylesheets="@../../styles/style.css" text="Acceder">
+                              <Button fx:id="btnLogin" contentDisplay="RIGHT" onAction="#btnLoginClick" prefHeight="59.0" prefWidth="169.0" styleClass="btnEstandar" stylesheets="@../../styles/style.css" text="Acceder">
                                  <font>
                                     <Font size="16.0" />
                                  </font>
@@ -116,8 +122,15 @@
                                  <cursor>
                                     <Cursor fx:constant="HAND" />
                                  </cursor>
+                                 <tooltip>
+                                    <Tooltip text="Acceder al sistema" />
+                                 </tooltip>
                               </Button>
-                              <ProgressIndicator fx:id="progresbar" styleClass="bbarra" stylesheets="@../../styles/style.css" visible="false" />
+                              <ProgressIndicator fx:id="progresbar" styleClass="bbarra" stylesheets="@../../styles/style.css" visible="false">
+                                 <tooltip>
+                                    <Tooltip text="Procesando" />
+                                 </tooltip>
+                              </ProgressIndicator>
                            </children>
                         </HBox>
                      </children>
