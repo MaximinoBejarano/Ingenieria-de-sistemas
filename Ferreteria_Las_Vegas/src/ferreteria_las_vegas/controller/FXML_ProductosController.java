@@ -8,7 +8,6 @@ package ferreteria_las_vegas.controller;
 import ferreteria_las_vegas.model.controller.ArticuloJpaController;
 import ferreteria_las_vegas.model.entities.Articulo;
 import ferreteria_las_vegas.utils.AppContext;
-import java.math.BigDecimal;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -69,18 +68,18 @@ public class FXML_ProductosController implements Initializable {
     }
 
     @FXML
-    private void FinalizarProceso(ActionEvent event) {
+    private void btnFinalizarProceso_Click(ActionEvent event) {
         Stage stageAct = (Stage) btnSalir.getScene().getWindow();
         stageAct.close();
     }
 
     @FXML
-    private void EliminarProductos(ActionEvent event) {
+    private void btnEliminarProductos_Click(ActionEvent event) {
         EliminarProductos();
     }
 
     @FXML
-    private void EditarProductos(ActionEvent event) {
+    private void btnEditarProductos_Click(ActionEvent event) {
         if (txtNombre.getText().isEmpty()
                 || txtDescripcion.getText().isEmpty() || txtPrecio.getText().isEmpty()) {
             new Alert(Alert.AlertType.WARNING, "Advertencia: Es necesario completar los campos requeridos", ButtonType.OK).showAndWait();
@@ -90,12 +89,12 @@ public class FXML_ProductosController implements Initializable {
     }
 
     @FXML
-    private void BusquedadProductos(ActionEvent event) {
-        ProcesoBusquedad();
+    private void btnBusquedadProductos_Click(ActionEvent event) {
+        Lanzador_BusquedadProductos();
     }
 
     @FXML
-    private void AgregarProducto(ActionEvent e) {
+    private void btnAgregarProducto_Click(ActionEvent e) {
         if (txtNombre.getText().isEmpty() || txtDescripcion.getText().isEmpty() || txtPrecio.getText().isEmpty()) {
             new Alert(Alert.AlertType.WARNING, "Advertencia: Es necesario completar los campos requeridos", ButtonType.OK).showAndWait();
         } else {
@@ -104,7 +103,7 @@ public class FXML_ProductosController implements Initializable {
     }
 
     @FXML
-    private void LimpiarCamposClick(ActionEvent event) {
+    private void btnLimpiarCampos_Click(ActionEvent event) {
         LimpiarCampos();
     }
 
@@ -135,7 +134,7 @@ public class FXML_ProductosController implements Initializable {
     private void KeyTyped_txtUndMedida(KeyEvent event) {
     }
 
-    //*****************************************************++ Area de funciones ++****************************************************************+
+    //*****************************************************++ Area de Procesos ++****************************************************************+
     /**
      * Se realiza la insercion de articulos a la Base de datos
      */
@@ -159,6 +158,10 @@ public class FXML_ProductosController implements Initializable {
             new Alert(Alert.AlertType.WARNING, "Existe un articulo con este Codigo", ButtonType.OK).showAndWait();
         }
     }
+    /**
+     * Se realiza la edicion del articulo
+     * validando antes que se encuentre registrado en la base de datos
+     */
 
     private void EditarProductos() {
         Articulo pArticulo = (Articulo) AppContext.getInstance().get("seleccion-Articulo");
@@ -182,7 +185,10 @@ public class FXML_ProductosController implements Initializable {
             new Alert(Alert.AlertType.WARNING, "Debe consultar un producto existente", ButtonType.OK).showAndWait();
         }
     }
-
+   /**
+    * Se elimina los datos de la base de datos
+    * Se cambia el estado del producto de Activo a Inactivo
+    */  
     private void EliminarProductos() {
         Articulo pArticulo = (Articulo) AppContext.getInstance().get("seleccion-Articulo");
         if (pArticulo != null) {
@@ -203,27 +209,8 @@ public class FXML_ProductosController implements Initializable {
             }
         }
     }
-
-    /**
-     * Lanza la ventana de busqueda
-     */
-    void ProcesoBusquedad() {
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/ferreteria_las_vegas/view/FXML_Buscar_Productos.fxml"));
-            Parent root = (Parent) fxmlLoader.load();
-            Stage stage = new Stage(StageStyle.UTILITY);
-            stage.initOwner(btnBuscarProducto.getScene().getWindow());
-            stage.setScene(new Scene(root));
-            stage.initModality(Modality.WINDOW_MODAL);
-            stage.showAndWait();
-            CargasDatos();
-
-        } catch (Exception ex) {
-            System.err.print(ex);
-        }
-    }
-
-    //++++++++++++++++++++++++++++++++++++++  Area de procesos  ++++++++++++++++++++++++++++++++++++++++++++
+    
+    //++++++++++++++++++++++++++++++++++++++  Area de procesos en GUI ++++++++++++++++++++++++++++++++++++++++++++
     /**
      * Procesos de Extracion,carga y eliminación de datos en la vista
      */
@@ -302,6 +289,7 @@ public class FXML_ProductosController implements Initializable {
         }
     }
 
+    //++++++++++++++++++++++++++++++++++++++  Area de validaciones de componetes de la GUI ++++++++++++++++++++++++++++++++++++++++++++
     public void validarNumero(KeyEvent event) {
         String character = event.getCharacter();
         if (!checkNumerico(character)) {
@@ -310,7 +298,6 @@ public class FXML_ProductosController implements Initializable {
         }
 
     }
-
     public boolean checkNumerico(String value) {
         String number = value.replaceAll("\\s+", "");
         for (int j = 0; j < number.length(); j++) {
@@ -320,4 +307,22 @@ public class FXML_ProductosController implements Initializable {
         }
         return true;
     }
+    
+ //++++++++++++++++++++++++++++++++++++++  Area de metodos Lanzadores a pantallas ++++++++++++++++++++++++++++++++++++++++++++    
+    void Lanzador_BusquedadProductos() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/ferreteria_las_vegas/view/FXML_Buscar_Productos.fxml"));
+            Parent root = (Parent) fxmlLoader.load();
+            Stage stage = new Stage(StageStyle.UTILITY);
+            stage.initOwner(btnBuscarProducto.getScene().getWindow());
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.showAndWait();
+            CargasDatos();
+
+        } catch (Exception ex) {
+            System.err.print(ex);
+        }
+    }
+
 }

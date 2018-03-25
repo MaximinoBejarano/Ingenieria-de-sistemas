@@ -70,14 +70,14 @@ public class FXML_Buscar_ArticulosController implements Initializable {
     }
 
     @FXML
-    private void FinalizarProceso(ActionEvent event) {
+    private void btnFinalizarProceso_Click(ActionEvent event) {
         AppContext.getInstance().set("seleccion-Articulo",null);
         Stage stageAct = (Stage) btnSalir.getScene().getWindow();
         stageAct.close();
     }
 
     @FXML
-    private void ConfirmarArgregación(ActionEvent event) {
+    private void btnConfirmarArgregación_Click(ActionEvent event) {
 
         if (tblArticulos.getSelectionModel().getSelectedItem() != null) {
             AppContext.getInstance().set("seleccion-Articulo", tblArticulos.getSelectionModel().getSelectedItem());
@@ -88,6 +88,12 @@ public class FXML_Buscar_ArticulosController implements Initializable {
             new Alert(Alert.AlertType.WARNING, "Debe selecionar una fila de la tabla.", ButtonType.OK).showAndWait();
         }
     }
+    
+   //++++++++++++++++++++++++++++++++++++++  Area de procesos en GUI ++++++++++++++++++++++++++++++++++++++++++++
+    /**
+     * Se encarga de cargar los datos de todos los productos
+     * en la vista
+     */
     void CargarDatosTabla() {
 
         colCodigo.setCellValueFactory((cellData -> new SimpleStringProperty(cellData.getValue().getArtCodBarra())));
@@ -104,7 +110,11 @@ public class FXML_Buscar_ArticulosController implements Initializable {
 
         FiltroDatosTabla(LecturaList);
     }
-
+    
+   /**
+    * Se encarga de filtrar la lista de articulos segun el dato ingresado por el usuario
+    * @param OLecturaList 
+    */
     void FiltroDatosTabla(ObservableList<Articulo> OLecturaList) {
 
         FilteredList<Articulo> filteredData = new FilteredList<>(OLecturaList, p -> true);
