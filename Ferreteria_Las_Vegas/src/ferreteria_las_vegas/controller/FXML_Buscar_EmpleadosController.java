@@ -9,10 +9,13 @@ package ferreteria_las_vegas.controller;
 import ferreteria_las_vegas.model.controller.PersonaJpaController;
 import ferreteria_las_vegas.model.entities.Persona;
 import ferreteria_las_vegas.utils.AppContext;
+import ferreteria_las_vegas.utils.LoggerManager;
+import ferreteria_las_vegas.utils.Message;
 import java.net.URL;
 import javafx.fxml.FXML;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -68,36 +71,39 @@ public class FXML_Buscar_EmpleadosController implements Initializable {
         }
     }
 
-    /**
-     * Initializes the controller class.
-     */
+    /*--------------------------------------------------------------------------------------------------------------*/
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-        CargarDatosTabla();        
+        CargarDatosTabla();
     }
 
     void CargarDatosTabla() {
-        TableColumn<Persona, String> colInfoPersona = new TableColumn<>("Información de Empleados");
-        TableColumn<Persona, String> colCedulaPersona = new TableColumn<>("Cedula");
-        TableColumn<Persona, String> colNombrePersona = new TableColumn<>("Nombre");
-        TableColumn<Persona, String> colAppellidoPersona = new TableColumn<>("Apellido");
-        colInfoPersona.getColumns().addAll(colCedulaPersona, colNombrePersona, colAppellidoPersona);
-        tblUsuarios.getColumns().add(colInfoPersona);       
-        
-        colCedulaPersona.setCellValueFactory((cellData) -> new SimpleStringProperty(cellData.getValue().getPerCedula()));
-        colNombrePersona.setCellValueFactory((cellData) -> new SimpleStringProperty(cellData.getValue().getPerNombre()));
-        colAppellidoPersona.setCellValueFactory((cellData) -> new SimpleStringProperty(cellData.getValue().getPerPApellido()));        
+        try {
+            TableColumn<Persona, String> colInfoPersona = new TableColumn<>("Información de Empleados");
+            TableColumn<Persona, String> colCedulaPersona = new TableColumn<>("Cedula");
+            TableColumn<Persona, String> colNombrePersona = new TableColumn<>("Nombre");
+            TableColumn<Persona, String> colAppellidoPersona = new TableColumn<>("Apellido");
+            colInfoPersona.getColumns().addAll(colCedulaPersona, colNombrePersona, colAppellidoPersona);
+            tblUsuarios.getColumns().add(colInfoPersona);
 
-        List<Persona> PersonaList = PersonaJpaController.getInstance().ConsultarPersonasEmpleados();
-        ObservableList<Persona> OLecturaList = FXCollections.observableArrayList(PersonaList);
-        tblUsuarios.setItems(OLecturaList);         
-        
-        FiltroDatosTabla(OLecturaList);
+            colCedulaPersona.setCellValueFactory((cellData) -> new SimpleStringProperty(cellData.getValue().getPerCedula()));
+            colNombrePersona.setCellValueFactory((cellData) -> new SimpleStringProperty(cellData.getValue().getPerNombre()));
+            colAppellidoPersona.setCellValueFactory((cellData) -> new SimpleStringProperty(cellData.getValue().getPerPApellido()));
+
+            List<Persona> PersonaList = PersonaJpaController.getInstance().ConsultarPersonasEmpleados().stream().filter(e -> e.getPerEstado().equalsIgnoreCase("A")).collect(Collectors.toList());
+            ObservableList<Persona> OLecturaList = FXCollections.observableArrayList(PersonaList);
+            tblUsuarios.setItems(OLecturaList);
+
+            FiltroDatosTabla(OLecturaList);
+        } catch (Exception ex) {
+            Message.getInstance().Error("Error", "Ocurrió un error y no se pudo cargar la información de la tabla. "
+                    + "El codigo de error es: " + ex.toString());
+            LoggerManager.Logger().info(ex.toString());
+        }
     }
 
-    void FiltroDatosTabla(ObservableList<Persona> OLecturaList) {                      
-        
+    void FiltroDatosTabla(ObservableList<Persona> OLecturaList) {
         FilteredList<Persona> filteredData = new FilteredList<>(OLecturaList, p -> true);
         txtFiltro.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
             filteredData.setPredicate((Persona persona) -> {
@@ -120,4 +126,3 @@ public class FXML_Buscar_EmpleadosController implements Initializable {
         tblUsuarios.setItems(sortedData);
     }
 }
-
