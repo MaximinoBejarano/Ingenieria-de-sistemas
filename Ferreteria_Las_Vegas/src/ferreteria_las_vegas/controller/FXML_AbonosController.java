@@ -10,13 +10,42 @@ import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 
 /**
  * FXML Controller class
  *
- * @author Usuario
+ * @author Maximino
  */
 public class FXML_AbonosController implements Initializable {
+
+    @FXML
+    private Button btnSalir;
+    @FXML
+    private Button btnAgregarAbono;
+    @FXML
+    private Button btnEditarAbono;
+    @FXML
+    private Button btnEliminarAbono;
+    @FXML
+    private ComboBox<?> cmbCliente;
+    @FXML
+    private Button btnFiltrar;
+    @FXML
+    private Label lblNumFactura;
+    @FXML
+    private Label lblSaldoFact;
+    @FXML
+    private Label lblSaldoTotal;
+    @FXML
+    private DatePicker pickFecha;
+    @FXML
+    private TextField txtAbono;
 
     /**
      * Initializes the controller class.
@@ -24,10 +53,35 @@ public class FXML_AbonosController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-    }    
+    }
 
     @FXML
-    void SalirClick(ActionEvent event) {
+    private void btnSalir_Click(ActionEvent event) {
         ScenesManager.getInstance().LoadSceneMenu();
-    }    
+    }
+
+    @FXML
+    private void btnAgregarAbono_Click(ActionEvent event) {
+    }
+
+    @FXML
+    private void btnEditarAbono_Click(ActionEvent event) {
+    }
+
+    @FXML
+    private void btnEdliminarAbono_Click(MouseEvent event) {
+    }
+
+    @FXML
+    private void btnEdliminarAbono(ActionEvent event) {
+    }
+
+    @FXML
+    private void cmbCliente_Click(ActionEvent event) {
+    }
+
+    @FXML
+    private void btnFiltrar_Click(ActionEvent event) {
+    }
+
 }

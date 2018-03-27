@@ -8,6 +8,7 @@ package ferreteria_las_vegas.controller;
 import ferreteria_las_vegas.model.controller.ArticuloJpaController;
 import ferreteria_las_vegas.model.entities.Articulo;
 import ferreteria_las_vegas.utils.AppContext;
+import ferreteria_las_vegas.utils.Message;
 
 import java.math.BigDecimal;
 import java.net.URL;
@@ -85,7 +86,7 @@ public class FXML_Buscar_ArticulosController implements Initializable {
             Stage stageAct = (Stage) btnSeleccionar.getScene().getWindow();
             stageAct.close();
         } else {
-            new Alert(Alert.AlertType.WARNING, "Debe selecionar una fila de la tabla.", ButtonType.OK).showAndWait();
+            Message.getInstance().Warning("Cuidado:", "Debe selecionar una fila de la tabla");
         }
     }
     

@@ -5,6 +5,8 @@
  */
 package ferreteria_las_vegas.controller;
 
+import ferreteria_las_vegas.utils.Message;
+
 import ferreteria_las_vegas.model.controller.ArticuloJpaController;
 import ferreteria_las_vegas.model.entities.Articulo;
 import ferreteria_las_vegas.utils.AppContext;
@@ -82,7 +84,7 @@ public class FXML_ProductosController implements Initializable {
     private void btnEditarProductos_Click(ActionEvent event) {
         if (txtNombre.getText().isEmpty()
                 || txtDescripcion.getText().isEmpty() || txtPrecio.getText().isEmpty()) {
-            new Alert(Alert.AlertType.WARNING, "Advertencia: Es necesario completar los campos requeridos", ButtonType.OK).showAndWait();
+            Message.getInstance().Warning("Advertencia:", "Es necesario completar los campos requeridos");
         } else {
             EditarProductos();
         }
@@ -96,7 +98,7 @@ public class FXML_ProductosController implements Initializable {
     @FXML
     private void btnAgregarProducto_Click(ActionEvent e) {
         if (txtNombre.getText().isEmpty() || txtDescripcion.getText().isEmpty() || txtPrecio.getText().isEmpty()) {
-            new Alert(Alert.AlertType.WARNING, "Advertencia: Es necesario completar los campos requeridos", ButtonType.OK).showAndWait();
+            Message.getInstance().Warning("Advertencia:", "Es necesario completar los campos requeridos");
         } else {
             GuardarProducto();
         }
@@ -142,27 +144,27 @@ public class FXML_ProductosController implements Initializable {
         Articulo articulo = new Articulo();
         articulo = ExtraerDatos(articulo);
         if (ArticuloJpaController.getInstance().ConsultarArticuloCodBarras(articulo.getArtCodBarra()) == null) {
-            if (ArticuloJpaController.getInstance().ComprobarExistenciaArticulo(articulo)==null) {
+            if (ArticuloJpaController.getInstance().ComprobarExistenciaArticulo(articulo) == null) {
                 articulo = ArticuloJpaController.getInstance().InsertarArticulo(articulo);
                 AppContext.getInstance().set("articulo-Ingresado", articulo);
                 if (articulo != null) {
-                    new Alert(Alert.AlertType.INFORMATION, "Información: Se han ingresado los datos de forma exitosa ", ButtonType.OK).showAndWait();
+                    Message.getInstance().Information("Información:", "Se han ingresado los datos de forma exitosa ");
                     LimpiarCampos();
                 } else {
-                    new Alert(Alert.AlertType.ERROR, "Error: No se han guardado los datos", ButtonType.OK).showAndWait();
+                    Message.getInstance().Error("Error:", "No se han guardado los datos");
                 }
-            }else{
-               new Alert(Alert.AlertType.WARNING, "Este articulo ya existe registrado", ButtonType.OK).showAndWait();
+            } else {
+                Message.getInstance().Warning("Cuidado:", "Este articulo ya existe registrado");
             }
         } else {
-            new Alert(Alert.AlertType.WARNING, "Existe un articulo con este Codigo", ButtonType.OK).showAndWait();
+            Message.getInstance().Warning("Cuidado:", "Existe un articulo con este Codigo");
         }
     }
-    /**
-     * Se realiza la edicion del articulo
-     * validando antes que se encuentre registrado en la base de datos
-     */
 
+    /**
+     * Se realiza la edicion del articulo validando antes que se encuentre
+     * registrado en la base de datos
+     */
     private void EditarProductos() {
         Articulo pArticulo = (Articulo) AppContext.getInstance().get("seleccion-Articulo");
         if (pArticulo != null) {
@@ -171,24 +173,25 @@ public class FXML_ProductosController implements Initializable {
                 pArticulo = ExtraerDatos(pArticulo);
                 pArticulo = ArticuloJpaController.getInstance().ModificarArticulos(pArticulo);
                 if (pArticulo != null) {
-                    new Alert(Alert.AlertType.CONFIRMATION, "Se edito el articulo con exito", ButtonType.OK).showAndWait();
+                    Message.getInstance().Confirmation("Confirmación", "Se edito el articulo con exito");
                     btnEditarProducto.setDisable(true);
                     btnEliminarProducto.setDisable(true);
                     LimpiarCampos();
                 } else {
-                    new Alert(Alert.AlertType.ERROR, "Ocurrio un error y no se pudo editar el Producto.", ButtonType.OK).showAndWait();
+                    Message.getInstance().Error("Error:", "Ocurrio un error y no se pudo editar el Producto");
                 }
             } else {
-                new Alert(Alert.AlertType.WARNING, "No existe un Producto con el codigo ingresado.", ButtonType.OK).showAndWait();
+                Message.getInstance().Warning("Cuidado:", "No existe un Producto con el codigo ingresado");
             }
         } else {
-            new Alert(Alert.AlertType.WARNING, "Debe consultar un producto existente", ButtonType.OK).showAndWait();
+            Message.getInstance().Warning("Cuidado:", "Debe consultar un producto existente");
         }
     }
-   /**
-    * Se elimina los datos de la base de datos
-    * Se cambia el estado del producto de Activo a Inactivo
-    */  
+
+    /**
+     * Se elimina los datos de la base de datos Se cambia el estado del producto
+     * de Activo a Inactivo
+     */
     private void EliminarProductos() {
         Articulo pArticulo = (Articulo) AppContext.getInstance().get("seleccion-Articulo");
         if (pArticulo != null) {
@@ -197,19 +200,19 @@ public class FXML_ProductosController implements Initializable {
             if (pArticulo != null) {
                 pArticulo = ArticuloJpaController.getInstance().ModificarArticulos(pArticulo);
                 if (pArticulo != null) {
-                    new Alert(Alert.AlertType.CONFIRMATION, "Se elimino el Producto con exito", ButtonType.OK).showAndWait();
+                    Message.getInstance().Confirmation("Confirmación", "Se elimino el Producto con exito");
                     btnEditarProducto.setDisable(true);
                     btnEliminarProducto.setDisable(true);
                     LimpiarCampos();
                 } else {
-                    new Alert(Alert.AlertType.ERROR, "Ocurrio un error y no se pudo eliminar el Producto.", ButtonType.OK).showAndWait();
+                    Message.getInstance().Error("Error:", "Ocurrio un error y no se pudo eliminar el Producto");
                 }
             } else {
-                new Alert(Alert.AlertType.WARNING, "No existe un Producto con el codigo ingresado.", ButtonType.OK).showAndWait();
+                Message.getInstance().Warning("Cuidado:", "No existe un Producto con el codigo ingresado");
             }
         }
     }
-    
+
     //++++++++++++++++++++++++++++++++++++++  Area de procesos en GUI ++++++++++++++++++++++++++++++++++++++++++++
     /**
      * Procesos de Extracion,carga y eliminación de datos en la vista
@@ -234,7 +237,7 @@ public class FXML_ProductosController implements Initializable {
                 pArticulo.setArtCodBarra(txtCodBarras.getText());
             }
 
-            if (!txtDescuento.getText().isEmpty()) {                                
+            if (!txtDescuento.getText().isEmpty()) {
                 Descuento = Double.valueOf(txtDescuento.getText());
                 pArticulo.setArtDescuento(Descuento);
                 pArticulo.setArtEstadoDescuento("A");
@@ -294,10 +297,11 @@ public class FXML_ProductosController implements Initializable {
         String character = event.getCharacter();
         if (!checkNumerico(character)) {
             event.consume();
-            new Alert(Alert.AlertType.WARNING, "Este campo solo acepta numeros", ButtonType.OK).showAndWait();
+            Message.getInstance().Warning("Cuidado:", "Este campo solo acepta numeros");
         }
 
     }
+
     public boolean checkNumerico(String value) {
         String number = value.replaceAll("\\s+", "");
         for (int j = 0; j < number.length(); j++) {
@@ -307,8 +311,8 @@ public class FXML_ProductosController implements Initializable {
         }
         return true;
     }
-    
- //++++++++++++++++++++++++++++++++++++++  Area de metodos Lanzadores a pantallas ++++++++++++++++++++++++++++++++++++++++++++    
+
+    //++++++++++++++++++++++++++++++++++++++  Area de metodos Lanzadores a pantallas ++++++++++++++++++++++++++++++++++++++++++++    
     void Lanzador_BusquedadProductos() {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/ferreteria_las_vegas/view/FXML_Buscar_Productos.fxml"));
