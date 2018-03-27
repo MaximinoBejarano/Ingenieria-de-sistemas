@@ -69,7 +69,7 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </Button>
-                  <Button fx:id="btnEdliminarAbono" disable="true" layoutX="532.0" layoutY="6.0" minHeight="80.0" mnemonicParsing="false" onAction="#btnEliminarAbono" onDragDetected="#btnEdliminarAbono_Click" prefWidth="80.0" styleClass="botones_Mantenimiento" stylesheets="@../../styles/style.css" AnchorPane.bottomAnchor="6.0" AnchorPane.rightAnchor="118.0" AnchorPane.topAnchor="6.0">
+                  <Button fx:id="btnEliminarAbono" disable="true" layoutX="532.0" layoutY="6.0" minHeight="80.0" mnemonicParsing="false" onAction="#btnEliminarAbono_Click" prefWidth="80.0" styleClass="botones_Mantenimiento" stylesheets="@../../styles/style.css" AnchorPane.bottomAnchor="6.0" AnchorPane.rightAnchor="118.0" AnchorPane.topAnchor="6.0">
                      <graphic>
                         <ImageView fitHeight="60.0" fitWidth="65.0" pickOnBounds="true" preserveRatio="true">
                            <image>

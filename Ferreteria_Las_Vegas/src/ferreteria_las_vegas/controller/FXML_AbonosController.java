@@ -69,11 +69,7 @@ public class FXML_AbonosController implements Initializable {
     }
 
     @FXML
-    private void btnEdliminarAbono_Click(MouseEvent event) {
-    }
-
-    @FXML
-    private void btnEdliminarAbono(ActionEvent event) {
+    private void btnEliminarAbono_Click(ActionEvent event) {
     }
 
     @FXML
