@@ -57,7 +57,7 @@ public class CuentaXCobrar implements Serializable {
     @JoinColumn(name = "Cue_Cliente", referencedColumnName = "Cli_Persona")
     @ManyToOne(optional = false)
     private Cliente cueCliente;
-    @JoinColumn(name = "Cue_Factura", referencedColumnName = "Fac_Cliente")
+    @JoinColumn(name = "Cue_Factura", referencedColumnName = "Fac_Codigo")
     @ManyToOne(optional = false)
     private Factura cueFactura;
 
