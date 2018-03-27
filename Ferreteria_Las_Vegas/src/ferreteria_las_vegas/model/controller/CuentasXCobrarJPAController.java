@@ -5,18 +5,22 @@
  */
 package ferreteria_las_vegas.model.controller;
 
+import ferreteria_las_vegas.model.entities.Articulo;
 import ferreteria_las_vegas.utils.EntityManagerHelper;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import ferreteria_las_vegas.model.entities.CuentaXCobrar;
+import java.util.List;
 import javax.persistence.EntityExistsException;
+import javax.persistence.Query;
 
 /**
  *
  * @author Maximino
  */
 public class CuentasXCobrarJPAController {
-        private static CuentasXCobrarJPAController INSTANCE = null;
+
+    private static CuentasXCobrarJPAController INSTANCE = null;
 
     private static void createInstance() {
         if (INSTANCE == null) {
@@ -39,21 +43,22 @@ public class CuentasXCobrarJPAController {
 
     private EntityManager em = EntityManagerHelper.getInstance().getManager();
     private EntityTransaction et;
-    
-  //***************************** Area de Metodos***********************************
+
+    //***************************** Area de Metodos***********************************
     /**
      * Se agrega una nueva cuenta por cobrar
+     *
      * @param Cuenta
-     * @return 
+     * @return
      */
-   public CuentaXCobrar AgregarCuentaXCobrar(CuentaXCobrar Cuenta){
-    et = em.getTransaction();
+    public CuentaXCobrar AgregarCuentaXCobrar(CuentaXCobrar Cuenta) {
+        et = em.getTransaction();
         try {
             et.begin();
             em.persist(Cuenta);
             et.commit();
             return Cuenta;
-        }catch (EntityExistsException ex) {
+        } catch (EntityExistsException ex) {
             et.rollback();
             System.err.println(ex);
             return null;
@@ -62,5 +67,20 @@ public class CuentasXCobrarJPAController {
             System.err.println(ex);
             return null;
         }
-   }
+    }
+
+    /**
+     * Se realiza la consulta de todas las cuentas por cobrar
+     *
+     * @return
+     */
+    public List<CuentaXCobrar> ConsultarCuentasXCobrar() {
+        try {
+            Query qry = em.createNamedQuery("CuentaXCobrar.findAll", Articulo.class);// consulta todos las cuentas por cobrar
+            List<CuentaXCobrar> Cuentas = qry.getResultList();// Recibe el resultado de la consulta  
+            return Cuentas;
+        } catch (Exception ex) {
+            return null;
+        }
+    }
 }
