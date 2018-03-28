@@ -29,7 +29,7 @@
          <bottom>
             <AnchorPane prefHeight="90.0" prefWidth="720.0" style="-fx-background-color: #2E4053;">
                <children>
-                  <Button layoutX="621.0" layoutY="12.0" mnemonicParsing="false" onAction="#SalirClick" prefWidth="104.0" styleClass="boton-Exit" stylesheets="@../../styles/style.css" AnchorPane.bottomAnchor="6.0" AnchorPane.rightAnchor="6.0" AnchorPane.topAnchor="6.0">
+                  <Button fx:id="btnSalir" layoutX="621.0" layoutY="12.0" mnemonicParsing="false" onAction="#btnSalirClick" prefWidth="104.0" styleClass="boton-Exit" stylesheets="@../../styles/style.css" AnchorPane.bottomAnchor="6.0" AnchorPane.rightAnchor="6.0" AnchorPane.topAnchor="6.0">
                      <effect>
                         <DropShadow />
                      </effect>
@@ -43,8 +43,11 @@
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
+                     <tooltip>
+                        <Tooltip text="Volver al Menú" />
+                     </tooltip>
                   </Button>
-                  <Button layoutX="540.0" layoutY="6.0" minHeight="80.0" mnemonicParsing="false" prefWidth="80.0" styleClass="botones_Mantenimiento" stylesheets="@../../styles/style.css" AnchorPane.bottomAnchor="4.0" AnchorPane.rightAnchor="118.0" AnchorPane.topAnchor="6.0">
+                  <Button fx:id="btnEliminar" layoutX="540.0" layoutY="6.0" minHeight="80.0" mnemonicParsing="false" onAction="#btnEliminarClick" prefWidth="80.0" styleClass="botones_Mantenimiento" stylesheets="@../../styles/style.css" AnchorPane.bottomAnchor="4.0" AnchorPane.rightAnchor="118.0" AnchorPane.topAnchor="6.0">
                      <graphic>
                         <ImageView fitHeight="60.0" fitWidth="65.0" pickOnBounds="true" preserveRatio="true">
                            <effect>
@@ -58,8 +61,11 @@
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
+                     <tooltip>
+                        <Tooltip fx:id="totEliminar" text="Eliminar Proveedor" />
+                     </tooltip>
                   </Button>
-                  <Button layoutX="450.0" layoutY="5.0" minHeight="80.0" mnemonicParsing="false" prefWidth="80.0" styleClass="botones_Mantenimiento" stylesheets="@../../styles/style.css" AnchorPane.bottomAnchor="4.0" AnchorPane.rightAnchor="204.0" AnchorPane.topAnchor="6.0">
+                  <Button fx:id="btnEditar" layoutX="450.0" layoutY="5.0" minHeight="80.0" mnemonicParsing="false" onAction="#btnEditarClick" prefWidth="80.0" styleClass="botones_Mantenimiento" stylesheets="@../../styles/style.css" AnchorPane.bottomAnchor="4.0" AnchorPane.rightAnchor="204.0" AnchorPane.topAnchor="6.0">
                      <graphic>
                         <ImageView fitHeight="60.0" fitWidth="65.0" pickOnBounds="true" preserveRatio="true">
                            <effect>
@@ -73,8 +79,11 @@
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
+                     <tooltip>
+                        <Tooltip fx:id="totEditar" text="Editar Informaicón de Proveedor" />
+                     </tooltip>
                   </Button>
-                  <Button layoutX="362.0" layoutY="6.0" minHeight="80.0" mnemonicParsing="false" prefWidth="80.0" styleClass="botones_Mantenimiento" stylesheets="@../../styles/style.css" AnchorPane.bottomAnchor="4.0" AnchorPane.rightAnchor="290.0" AnchorPane.topAnchor="6.0">
+                  <Button fx:id="btnBuscar" layoutX="362.0" layoutY="6.0" minHeight="80.0" mnemonicParsing="false" onAction="#btnBuscarClick" prefWidth="80.0" styleClass="botones_Mantenimiento" stylesheets="@../../styles/style.css" AnchorPane.bottomAnchor="4.0" AnchorPane.rightAnchor="290.0" AnchorPane.topAnchor="6.0">
                      <graphic>
                         <ImageView fitHeight="60.0" fitWidth="65.0" pickOnBounds="true" preserveRatio="true">
                            <effect>
@@ -88,8 +97,11 @@
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
+                     <tooltip>
+                        <Tooltip fx:id="totEditar" text="Buscar Proveedores" />
+                     </tooltip>
                   </Button>
-                  <Button layoutX="273.0" layoutY="6.0" minHeight="80.0" mnemonicParsing="false" prefWidth="80.0" styleClass="botones_Mantenimiento" stylesheets="@../../styles/style.css" AnchorPane.bottomAnchor="4.0" AnchorPane.rightAnchor="376.0" AnchorPane.topAnchor="6.0">
+                  <Button fx:id="btnAgregar" layoutX="273.0" layoutY="6.0" minHeight="80.0" mnemonicParsing="false" onAction="#btnAgregarClick" prefWidth="80.0" styleClass="botones_Mantenimiento" stylesheets="@../../styles/style.css" AnchorPane.bottomAnchor="4.0" AnchorPane.rightAnchor="376.0" AnchorPane.topAnchor="6.0">
                      <graphic>
                         <ImageView fitHeight="60.0" fitWidth="65.0" pickOnBounds="true" preserveRatio="true">
                            <effect>
@@ -103,6 +115,9 @@
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
+                     <tooltip>
+                        <Tooltip fx:id="totAgregar" text="Agregar Proveedor" />
+                     </tooltip>
                   </Button>
                </children>
             </AnchorPane>
@@ -112,7 +127,7 @@
                <children>
                   <TabPane prefHeight="261.0" prefWidth="739.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
                      <tabs>
-                        <Tab style="-fx-font: 150% sans-serif;" text="Proveedores">
+                        <Tab onSelectionChanged="#tabProveedoresChange" style="-fx-font: 150% sans-serif;" text="Proveedores">
                           <content>
                             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                  <children>
@@ -166,7 +181,7 @@
                                                 <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
                                              </GridPane.margin>
                                           </Label>
-                                          <TextField fx:id="txtCedulaJuridica" onKeyTyped="#txtCedulaEmpTyped" promptText="Campo Requerido" GridPane.columnIndex="1">
+                                          <TextField fx:id="txtCedulaJuridica" onKeyTyped="#txtCedulaJuridicaTyped" promptText="Campo Requerido" GridPane.columnIndex="1">
                                              <font>
                                                 <Font size="16.0" />
                                              </font>
@@ -177,7 +192,7 @@
                                                 <Tooltip text="Cédula Jurídica del Proveedor" />
                                              </tooltip>
                                           </TextField>
-                                          <TextField fx:id="txtNombre" onKeyTyped="#txtNombreEmpTyped" promptText="Campo Requerido" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                          <TextField fx:id="txtNombre" onKeyTyped="#txtNombreTyped" promptText="Campo Requerido" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                              <font>
                                                 <Font size="16.0" />
                                              </font>
@@ -188,7 +203,7 @@
                                                 <Tooltip text="Nombre del Proveedor" />
                                              </tooltip>
                                           </TextField>
-                                          <TextField fx:id="txtCorreoEmp" onKeyTyped="#txtCorreoEmpTyped" prefHeight="30.0" prefWidth="507.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                          <TextField fx:id="txtCorreo" onKeyTyped="#txtCorreoEmpTyped" prefHeight="30.0" prefWidth="507.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                              <font>
                                                 <Font size="16.0" />
                                              </font>
@@ -208,7 +223,7 @@
                                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                              </rowConstraints>
                                              <children>
-                                                <TextField fx:id="txtTelefono" onKeyTyped="#txtTelefonoEmpTyped" promptText="Campo Requerido">
+                                                <TextField fx:id="txtTelefono" onKeyTyped="#txtTelefonoTyped" promptText="Campo Requerido">
                                                    <font>
                                                       <Font size="16.0" />
                                                    </font>
@@ -216,7 +231,7 @@
                                                       <Tooltip text="Teléfono #1 de Contacto" />
                                                    </tooltip>
                                                 </TextField>
-                                                <TextField fx:id="txtTelefono2" onKeyTyped="#txtTelefonoEmp2Typed" GridPane.columnIndex="1">
+                                                <TextField fx:id="txtTelefono2" onKeyTyped="#txtTelefono2Typed" GridPane.columnIndex="1">
                                                    <font>
                                                       <Font size="16.0" />
                                                    </font>
@@ -226,7 +241,7 @@
                                                 </TextField>
                                              </children>
                                           </GridPane>
-                                          <TextArea fx:id="txtDireccion" onKeyTyped="#txtDireccionEmpTyped" prefHeight="37.0" prefWidth="509.0" promptText="Campo Requerido" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                                          <TextArea fx:id="txtDireccion" onKeyTyped="#txtDireccionTyped" prefHeight="37.0" prefWidth="509.0" promptText="Campo Requerido" GridPane.columnIndex="1" GridPane.rowIndex="4">
                                              <font>
                                                 <Font size="16.0" />
                                              </font>
@@ -260,7 +275,7 @@
                               </AnchorPane>
                           </content>
                         </Tab>
-                        <Tab style="-fx-font: 150% sans-serif;" text="Compras">
+                        <Tab onSelectionChanged="#tabComprasChange" style="-fx-font: 150% sans-serif;" text="Compras">
                            <content>
                               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="374.0" prefWidth="739.0">
                                  <children>
@@ -367,7 +382,7 @@
                               </AnchorPane>
                            </content>
                         </Tab>
-                        <Tab style="-fx-font: 150% sans-serif;" text="Abonos">
+                        <Tab onSelectionChanged="#tabAbonosChange" style="-fx-font: 150% sans-serif;" text="Abonos">
                           <content>
                               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="374.0" prefWidth="739.0">
                                  <children>

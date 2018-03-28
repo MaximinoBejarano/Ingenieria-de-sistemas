@@ -14,6 +14,7 @@ import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.NoResultException;
+import javax.persistence.NonUniqueResultException;
 import javax.persistence.Query;
 
 /**
@@ -58,6 +59,41 @@ public class ProveedorJpaController {
         }
     }
     
+    public Proveedor ConsultarProveedorCedulaJuridica(String pCedulaJuridica) {
+        try {
+            Query qry = em.createQuery("SELECT p FROM Proveedor p WHERE p.proCedulaJuridica = :proCedulaJuridica", Proveedor.class);// consulta definida 
+            qry.setParameter("proCedulaJuridica", pCedulaJuridica);
+            Proveedor proveedor = (Proveedor) qry.getSingleResult();
+            return proveedor;
+        } catch (NoResultException ex) {
+            System.err.println(ex);
+            return null;
+        } catch (NonUniqueResultException ex) {
+            System.err.println(ex);
+            return null;
+        } catch (Exception ex) {
+            System.err.println(ex);
+            return null;
+        }
+    }
+    
+    public Proveedor ConsultarProvedorNombre(String pNombre) {
+        try {
+            Query qry = em.createQuery("SELECT p FROM Proveedor p WHERE p.proNombre = :proNombre", Proveedor.class);// consulta definida 
+            qry.setParameter("proNombre", pNombre);
+            Proveedor proveedor = (Proveedor) qry.getSingleResult();
+            return proveedor;
+        } catch (NoResultException ex) {
+            System.err.println(ex);
+            return null;
+        } catch (NonUniqueResultException ex) {
+            System.err.println(ex);
+            return null;
+        } catch (Exception ex) {
+            System.err.println(ex);
+            return null;
+        }
+    }
     
     public Proveedor ModificarProveedor(Proveedor pProveedor) {
         et = em.getTransaction();

@@ -11,6 +11,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.scene.Parent;
+import java.io.IOException;
 import java.time.LocalDate;
 import javafx.stage.Modality;
 import javafx.fxml.FXMLLoader;
@@ -28,8 +29,11 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.TextField;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import ferreteria_las_vegas.utils.Message;
 import javafx.scene.control.PasswordField;
 import ferreteria_las_vegas.utils.AppContext;
+import ferreteria_las_vegas.utils.GeneralUtils;
+import ferreteria_las_vegas.utils.LoggerManager;
 import ferreteria_las_vegas.model.entities.Cliente;
 import ferreteria_las_vegas.model.entities.Permiso;
 import ferreteria_las_vegas.model.entities.Persona;
@@ -39,10 +43,6 @@ import ferreteria_las_vegas.model.entities.Direccion;
 import ferreteria_las_vegas.model.controller.PermisoJpaController;
 import ferreteria_las_vegas.model.controller.PersonaJpaController;
 import ferreteria_las_vegas.model.controller.UsuarioJpaController;
-import ferreteria_las_vegas.utils.GeneralUtils;
-import ferreteria_las_vegas.utils.LoggerManager;
-import ferreteria_las_vegas.utils.Message;
-import java.io.IOException;
 
 /**
  * FXML Controller class
