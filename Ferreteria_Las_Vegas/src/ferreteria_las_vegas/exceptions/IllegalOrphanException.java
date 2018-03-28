@@ -1,3 +1,4 @@
+
 package ferreteria_las_vegas.exceptions;
 
 import java.util.ArrayList;
@@ -18,3 +19,4 @@ public class IllegalOrphanException extends Exception {
         return messages;
     }
 }
+

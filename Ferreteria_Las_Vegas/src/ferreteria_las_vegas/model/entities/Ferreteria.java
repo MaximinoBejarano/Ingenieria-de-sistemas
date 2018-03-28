@@ -47,7 +47,7 @@ public class Ferreteria implements Serializable {
     private String ferEstado;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "ferreteria")
     private Parametro parametro;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tbFerreteria")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "PerFerreteria")
     private List<Persona> personaList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "bodFerreteria")
     private List<Bodega> bodegaList;

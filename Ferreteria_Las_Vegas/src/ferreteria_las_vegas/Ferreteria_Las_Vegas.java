@@ -6,6 +6,7 @@
 package ferreteria_las_vegas;
 
 import ferreteria_las_vegas.controller.ScenesManager;
+import ferreteria_las_vegas.utils.LoggerManager;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -14,10 +15,16 @@ import javafx.stage.Stage;
  * @author wili
  */
 public class Ferreteria_Las_Vegas extends Application {
-
+    
     @Override
-    public void start(Stage stage) throws Exception {
-        ScenesManager.getInstance().LoadStage(stage);
+    public void start(Stage stage) throws Exception {        
+        LoggerManager.Open();        
+        ScenesManager.getInstance().LoadStage(stage);                
+    }
+    
+    @Override
+    public void stop(){
+        LoggerManager.Close();
     }
 
     /**

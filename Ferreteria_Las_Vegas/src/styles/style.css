@@ -1,11 +1,11 @@
 /*---------------------------Login--------------------------------*/
 .btnEstandar {
--fx-text-fill: black;
--fx-background-color: orange;
+    -fx-text-fill: black;
+    -fx-background-color: orange;
 }
 
 .btnEstandar:hover {  
--fx-background-color: white;
+    -fx-background-color: white;
 }
 
 .bbarra{       
@@ -22,84 +22,84 @@
 /*----------------------------------------------------------------*/
 
 .boton-Fac { 
--fx-background-repeat: no-repeat;
--fx-background-position: center 5px;
--fx-background-color:white;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center 5px;
+    -fx-background-color:white;
 }
 .boton-dePro:hover, .boton-Emp:hover, .boton-Inv:hover, .boton-Anu:hover, .boton-Fac:hover, .boton-Cli:hover,.boton-Facturacion:hover ,.boton-Abo:hover, .boton-deCli:hover { 
--fx-background-color:#5D6D7E;
--fx-background-size: 150px;
--fx-text-fill: white;
+    -fx-background-color:#5D6D7E;
+    -fx-background-size: 150px;
+    -fx-text-fill: white;
 }
 
 .boton-Cli { 
--fx-background-repeat: no-repeat;
--fx-background-position: center 5px;
--fx-background-color:white;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center 5px;
+    -fx-background-color:white;
 }
 .boton-Abo { 
--fx-background-repeat: no-repeat;
--fx-background-position: center 5px;
--fx-background-color:white;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center 5px;
+    -fx-background-color:white;
 }
 .boton-Facturacion { 
--fx-background-repeat: no-repeat;
--fx-background-position: center 5px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center 5px;
 }
 
 .boton-deCli { 
--fx-background-repeat: no-repeat;
--fx-background-position: center 5px;
--fx-background-color:white;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center 5px;
+    -fx-background-color:white;
 }
 .boton-dePro { 
--fx-background-repeat: no-repeat;
--fx-background-position: center 5px;
--fx-background-color:white;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center 5px;
+    -fx-background-color:white;
 }
 .boton-Emp { 
--fx-background-repeat: no-repeat;
--fx-background-position: center 5px;
--fx-background-color:white;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center 5px;
+    -fx-background-color:white;
 }
 .boton-Inv { 
--fx-background-repeat: no-repeat;
--fx-background-position: center 5px;
--fx-background-color:white;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center 5px;
+    -fx-background-color:white;
 }
 .boton-Anu { 
--fx-background-repeat: no-repeat;
--fx-background-position: center 5px;
--fx-background-color:white;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center 5px;
+    -fx-background-color:white;
 }
 
 /*---------------------------botones de barra inferior--------------------------------*/
 .boton-Sal {
--fx-background-color:red;        
--fx-background-repeat: no-repeat;
--fx-background-position: center center;
+    -fx-background-color:red;        
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center center;
 }
 .boton-Sal:hover {
     -fx-background-color:#DC7633; 
 }
 .boton-Conf { 
--fx-background-color:#2E4053;        
--fx-background-repeat: no-repeat;
--fx-background-position: center center;
+    -fx-background-color:#2E4053;        
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center center;
 }
 .boton-Rep { 
- -fx-background-color:#2E4053;    
--fx-background-repeat: no-repeat;
--fx-background-position: center center;
+    -fx-background-color:#2E4053;    
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center center;
 }
 .boton-Rep:hover,.boton-Conf:hover {
--fx-background-color:#AAB7B8  ;
+    -fx-background-color:#AAB7B8  ;
 }
 
 .img-Usu { 
--fx-background-image: url('../pictures/usu.png');
--fx-background-repeat: no-repeat;
--fx-background-position: left center;
+    -fx-background-image: url('../pictures/usu.png');
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: left center;
 }
 
 
@@ -107,20 +107,25 @@
 
 
 .boton-Exit { 
--fx-background-color:red;
+    -fx-background-color:red;
 }
 .boton-Exit:hover {
--fx-background-color:#DC7633; 
+    -fx-background-color:#DC7633; 
 }
 .botones_Mantenimiento:hover {
--fx-background-color:#AAB7B8  ;
+    -fx-background-color:#AAB7B8  ;
 }
 .botones_Mantenimiento {
--fx-background-color: #2E4053  ;
+    -fx-background-color: #2E4053  ;
 }
 .boton_Seleccionado:hover {
--fx-background-color:#AAB7B8  ;
+    -fx-background-color:#AAB7B8  ;
 }
 .boton_Seleccionado {
--fx-background-color:#008000 ;
+    -fx-background-color:#008000 ;
+}
+
+/*----------------------------alinear celdas tablas---------------------------------*/
+.table-column {
+    -fx-alignment: CENTER;
 }

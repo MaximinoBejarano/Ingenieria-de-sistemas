@@ -14,6 +14,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -52,12 +53,18 @@ public class CuentaXCobrar implements Serializable {
     @Basic(optional = false)
     @Column(name = "Cue_Estado")
     private String cueEstado;
-    @ManyToMany(mappedBy = "cuentaXCobrarList")
+    
+    
+    @JoinTable(name = "tb_cxc_abonos", joinColumns = {
+        @JoinColumn(name = "RCA_CuentaCobrar", referencedColumnName = "Cue_Codigo")}, inverseJoinColumns = {
+        @JoinColumn(name = "RCA_Abono", referencedColumnName = "Abo_Codigo")})
+    @ManyToMany
     private List<Abono> abonoList;
+    
     @JoinColumn(name = "Cue_Cliente", referencedColumnName = "Cli_Persona")
     @ManyToOne(optional = false)
     private Cliente cueCliente;
-    @JoinColumn(name = "Cue_Factura", referencedColumnName = "Fac_Cliente")
+    @JoinColumn(name = "Cue_Factura", referencedColumnName = "Fac_Codigo")
     @ManyToOne(optional = false)
     private Factura cueFactura;
 

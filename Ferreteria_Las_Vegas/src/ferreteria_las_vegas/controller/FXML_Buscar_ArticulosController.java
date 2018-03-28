@@ -8,6 +8,7 @@ package ferreteria_las_vegas.controller;
 import ferreteria_las_vegas.model.controller.ArticuloJpaController;
 import ferreteria_las_vegas.model.entities.Articulo;
 import ferreteria_las_vegas.utils.AppContext;
+import ferreteria_las_vegas.utils.Message;
 
 import java.math.BigDecimal;
 import java.net.URL;
@@ -70,14 +71,14 @@ public class FXML_Buscar_ArticulosController implements Initializable {
     }
 
     @FXML
-    private void FinalizarProceso(ActionEvent event) {
+    private void btnFinalizarProceso_Click(ActionEvent event) {
         AppContext.getInstance().set("seleccion-Articulo",null);
         Stage stageAct = (Stage) btnSalir.getScene().getWindow();
         stageAct.close();
     }
 
     @FXML
-    private void ConfirmarArgregación(ActionEvent event) {
+    private void btnConfirmarArgregación_Click(ActionEvent event) {
 
         if (tblArticulos.getSelectionModel().getSelectedItem() != null) {
             AppContext.getInstance().set("seleccion-Articulo", tblArticulos.getSelectionModel().getSelectedItem());
@@ -85,9 +86,15 @@ public class FXML_Buscar_ArticulosController implements Initializable {
             Stage stageAct = (Stage) btnSeleccionar.getScene().getWindow();
             stageAct.close();
         } else {
-            new Alert(Alert.AlertType.WARNING, "Debe selecionar una fila de la tabla.", ButtonType.OK).showAndWait();
+            Message.getInstance().Warning("Cuidado:", "Debe selecionar una fila de la tabla");
         }
     }
+    
+   //++++++++++++++++++++++++++++++++++++++  Area de procesos en GUI ++++++++++++++++++++++++++++++++++++++++++++
+    /**
+     * Se encarga de cargar los datos de todos los productos
+     * en la vista
+     */
     void CargarDatosTabla() {
 
         colCodigo.setCellValueFactory((cellData -> new SimpleStringProperty(cellData.getValue().getArtCodBarra())));
@@ -104,7 +111,11 @@ public class FXML_Buscar_ArticulosController implements Initializable {
 
         FiltroDatosTabla(LecturaList);
     }
-
+    
+   /**
+    * Se encarga de filtrar la lista de articulos segun el dato ingresado por el usuario
+    * @param OLecturaList 
+    */
     void FiltroDatosTabla(ObservableList<Articulo> OLecturaList) {
 
         FilteredList<Articulo> filteredData = new FilteredList<>(OLecturaList, p -> true);

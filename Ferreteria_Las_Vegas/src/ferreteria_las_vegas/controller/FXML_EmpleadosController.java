@@ -5,46 +5,44 @@
  */
 package ferreteria_las_vegas.controller;
 
-import ferreteria_las_vegas.model.controller.PermisoJpaController;
-import ferreteria_las_vegas.model.controller.PersonaJpaController;
-import ferreteria_las_vegas.model.controller.UsuarioJpaController;
+import java.net.URL;
+import java.util.List;
+import javafx.fxml.FXML;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+import javafx.scene.Parent;
+import java.time.LocalDate;
+import javafx.stage.Modality;
+import javafx.fxml.FXMLLoader;
+import javafx.stage.StageStyle;
+import javafx.event.ActionEvent;
+import java.util.ResourceBundle;
+import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
+import javafx.scene.control.Button;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.control.TabPane;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.TextField;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.control.PasswordField;
+import ferreteria_las_vegas.utils.AppContext;
 import ferreteria_las_vegas.model.entities.Cliente;
-import ferreteria_las_vegas.model.entities.Contacto;
-import ferreteria_las_vegas.model.entities.Direccion;
 import ferreteria_las_vegas.model.entities.Permiso;
 import ferreteria_las_vegas.model.entities.Persona;
 import ferreteria_las_vegas.model.entities.Usuario;
-import ferreteria_las_vegas.utils.AppContext;
-import java.net.URL;
-import java.time.LocalDate;
-import java.util.List;
-import java.util.ResourceBundle;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.stage.Stage;
-
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.ListView;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.VBox;
-import javafx.stage.Modality;
-import javafx.stage.StageStyle;
+import ferreteria_las_vegas.model.entities.Contacto;
+import ferreteria_las_vegas.model.entities.Direccion;
+import ferreteria_las_vegas.model.controller.PermisoJpaController;
+import ferreteria_las_vegas.model.controller.PersonaJpaController;
+import ferreteria_las_vegas.model.controller.UsuarioJpaController;
+import ferreteria_las_vegas.utils.GeneralUtils;
+import ferreteria_las_vegas.utils.LoggerManager;
+import ferreteria_las_vegas.utils.Message;
+import java.io.IOException;
 
 /**
  * FXML Controller class
@@ -52,9 +50,6 @@ import javafx.stage.StageStyle;
  * @author Usuario
  */
 public class FXML_EmpleadosController implements Initializable {
-
-    @FXML
-    private VBox dataPane;
 
     @FXML
     private Button btnSalir;
@@ -70,7 +65,7 @@ public class FXML_EmpleadosController implements Initializable {
 
     @FXML
     private Button btnAgregar;
-    
+
     @FXML
     private Button btnLimpiar;
 
@@ -99,7 +94,7 @@ public class FXML_EmpleadosController implements Initializable {
     private PasswordField txtContraseñaEmp;
 
     @FXML
-    private TextArea txtDireccionEmp;        
+    private TextArea txtDireccionEmp;
 
     @FXML
     private ListView<Permiso> lvDisponibles;
@@ -113,158 +108,398 @@ public class FXML_EmpleadosController implements Initializable {
     @FXML
     private TabPane tabPane;
 
+    /*--------------------------------------------------------------------------------------------------------------*/
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+
+        lvDisponibles.setCellFactory(param -> new ListCell<Permiso>() {
+            @Override
+            protected void updateItem(Permiso item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if (empty || item == null || item.getPerDescripcion() == null) {
+                    setText(null);
+                } else {
+                    setText(item.getPerDescripcion());
+                }
+            }
+        });
+
+        lvAsignados.setCellFactory(param -> new ListCell<Permiso>() {
+            @Override
+            protected void updateItem(Permiso item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if (empty || item == null || item.getPerDescripcion() == null) {
+                    setText(null);
+                } else {
+                    setText(item.getPerDescripcion());
+                }
+            }
+        });
+    }
+
+    /*--------------------------------------------------------------------------------------------------------------*/
     @FXML
-    void AgregarEmpleadoClick(ActionEvent event) {
+    void btnAgregarClick(ActionEvent event) {
         if (txtCedulaEmp.getText().isEmpty() || txtNombreEmp.getText().isEmpty() || txtPrimerAEmp.getText().isEmpty()
+                || txtSegundoAEmp.getText().isEmpty()
                 || txtTelefonoEmp.getText().isEmpty()
                 || txtContraseñaEmp.getText().isEmpty() || txtDireccionEmp.getText().isEmpty()) {
-            new Alert(Alert.AlertType.WARNING, "Debe completar todos los campos requeridos.", ButtonType.OK).showAndWait();
+            Message.getInstance().Warning("Información requerida", "Debe completar todos los campos requeridos.");
         } else {
             ProcesoAgregar();
         }
     }
 
     @FXML
-    void BuscarEmpleadosClick(ActionEvent event) {
+    void btnBuscarClick(ActionEvent event) {
         ProcesoBuscar();
     }
 
     @FXML
-    void EditarEmpleadoClick(ActionEvent event) {
+    void btnEditarClick(ActionEvent event) {
         if (txtCedulaEmp.getText().isEmpty() || txtNombreEmp.getText().isEmpty() || txtPrimerAEmp.getText().isEmpty()
                 || txtTelefonoEmp.getText().isEmpty()
                 || txtContraseñaEmp.getText().isEmpty() || txtDireccionEmp.getText().isEmpty()) {
-            new Alert(Alert.AlertType.WARNING, "Debe completar todos los campos requeridos.", ButtonType.OK).showAndWait();
+            Message.getInstance().Warning("Información requerida", "Debe completar todos los campos requeridos.");
         } else {
             ProcesoEditar();
         }
     }
 
     @FXML
-    void EliminarEmpleadoClick(ActionEvent event) {
+    void btnEliminarClick(ActionEvent event) {
         if (txtCedulaEmp.getText().isEmpty()) {
-            new Alert(Alert.AlertType.WARNING, "Debe Ingresar como minimo el campo cedula.", ButtonType.OK).showAndWait();
+            Message.getInstance().Warning("Información requerida", "Debe ingresar como mínimo el campo cédula.");
         } else {
             ProcesoEliminar();
-        }        
+        }
     }
 
     @FXML
-    void SalirClick(ActionEvent event) {                    
-        ScenesManager.getInstance().LoadSceneMenu();        
-    }
-    
-    @FXML
-    void LimpiarCamposClick(ActionEvent event) {
-        LimpiarControles();
+    void btnSalirClick(ActionEvent event) {
+        ScenesManager.getInstance().LoadSceneMenu();
     }
 
     @FXML
-    void CedulaAction(ActionEvent event) {
+    void btnLimpiarClick(ActionEvent event) {
+        LimpiarControlesGUI();
+    }
+
+    @FXML
+    void txtCedulaAction(ActionEvent event) {
         Persona persona = PersonaJpaController.getInstance().ConsultarPersonaCedula(txtCedulaEmp.getText());
         if (persona != null) {
             CargarDatosUsuario(persona);
         }
     }
-    
-      @FXML
-    void CedulaKeyTyped(KeyEvent event) {
-        //LimpiarControles();
-    }
-
-    void tabPaneEvent() {
-        tabPane.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends Tab> ov, Tab t, Tab t1) -> {
-            if (tabPane.getSelectionModel().getSelectedIndex() == 1) {
-
-            }
-        });
-    }
 
     @FXML
     void btnPasarClick(ActionEvent event) {
-        Permiso permiso = lvDisponibles.getSelectionModel().getSelectedItem();        
-        if(permiso!=null)
-        {
+        Permiso permiso = lvDisponibles.getSelectionModel().getSelectedItem();
+        if (permiso != null) {
             Persona persona = PersonaJpaController.getInstance().ConsultarPersonaCedula(txtCedulaEmp.getText());
-            if(persona !=null){
-                ProcesoAgregarPermiso(persona);   
-            }            
+            if (persona != null) {
+                ProcesoAgregarPermiso(persona);
+            }
+        } else {
+            Message.getInstance().Warning("Acción requerida", "Debe selecionar un permiso de la lista de permisos disponibles.");
         }
-        else
-        {
-            new Alert(Alert.AlertType.WARNING, "Debe selecionar un permiso de la lista de permisos disponibles.", ButtonType.OK).showAndWait();
-        }
-    }    
+    }
 
     @FXML
     void btnQuitarClick(ActionEvent event) {
-        Permiso permiso = lvAsignados.getSelectionModel().getSelectedItem();        
-        if(permiso!=null)
-        {
+        Permiso permiso = lvAsignados.getSelectionModel().getSelectedItem();
+        if (permiso != null) {
             Persona persona = PersonaJpaController.getInstance().ConsultarPersonaCedula(txtCedulaEmp.getText());
-            if(persona !=null){
-                ProcesoQuitarPermiso(persona);   
-            }            
-        }
-        else
-        {
-            new Alert(Alert.AlertType.WARNING, "Debe selecionar un permiso de la lista de permisos asignados.", ButtonType.OK).showAndWait();
+            if (persona != null) {
+                ProcesoQuitarPermiso(persona);
+            }
+        } else {
+            Message.getInstance().Warning("Acción requerida", "Debe selecionar un permiso de la lista de permisos asignados.");
         }
     }
-    
+
     @FXML
     void btnPasarTodosClick(ActionEvent event) {
         List<Permiso> permisos = lvDisponibles.getItems();
-        if(permisos!=null)
-        {
+        if (permisos != null) {
             Persona persona = PersonaJpaController.getInstance().ConsultarPersonaCedula(txtCedulaEmp.getText());
-            if(persona !=null){
-                ProcesoAgregarTodosPermisos(persona);   
-            }            
-        }
-        else
-        {
-            new Alert(Alert.AlertType.WARNING, "No hay mas permisos disponibles.", ButtonType.OK).showAndWait();
+            if (persona != null) {
+                ProcesoAgregarTodosPermisos(persona);
+            }
+        } else {
+            Message.getInstance().Warning("Permisos disponibles", "No hay más permisos disponibles.");
         }
     }
 
     @FXML
     void btnQuitarTodosClick(ActionEvent event) {
         List<Permiso> permisos = lvAsignados.getItems();
-        if(permisos!=null)
-        {
+        if (permisos != null) {
             Persona persona = PersonaJpaController.getInstance().ConsultarPersonaCedula(txtCedulaEmp.getText());
-            if(persona !=null){
-                ProcesoQuitarTodosPermisos(persona);   
-            }            
+            if (persona != null) {
+                ProcesoQuitarTodosPermisos(persona);
+            }
+        } else {
+            Message.getInstance().Warning("Permisos asignados", "No hay más permisos asignados.");
         }
-        else
-        {
-            new Alert(Alert.AlertType.WARNING, "No hay mas permisos asignados.", ButtonType.OK).showAndWait();
+    }
+
+    @FXML
+    void txtCedulaEmpTyped(KeyEvent event) {
+        GeneralUtils.getInstance().ValidarCampos(true, txtCedulaEmp.getText().length(), 30, event);
+    }
+
+    @FXML
+    void txtNombreEmpTyped(KeyEvent event) {
+        GeneralUtils.getInstance().ValidarCampos(false, txtNombreEmp.getText().length(), 30, event);
+    }
+
+    @FXML
+    void txtPrimerAEmpTyped(KeyEvent event) {
+        GeneralUtils.getInstance().ValidarCampos(false, txtPrimerAEmp.getText().length(), 30, event);
+    }
+
+    @FXML
+    void txtSegundoAEmpTyped(KeyEvent event) {
+        GeneralUtils.getInstance().ValidarCampos(false, txtSegundoAEmp.getText().length(), 30, event);
+    }
+
+    @FXML
+    void txtCorreoEmpTyped(KeyEvent event) {
+        GeneralUtils.getInstance().ValidarCampos(false, txtCorreoEmp.getText().length(), 30, event);
+    }
+
+    @FXML
+    void txtTelefonoEmpTyped(KeyEvent event) {
+        GeneralUtils.getInstance().ValidarCampos(true, txtTelefonoEmp.getText().length(), 30, event);
+    }
+
+    @FXML
+    void txtTelefonoEmp2Typed(KeyEvent event) {
+        GeneralUtils.getInstance().ValidarCampos(true, txtTelefonoEmp2.getText().length(), 30, event);
+    }
+
+    @FXML
+    void txtContraseñaEmpTyped(KeyEvent event) {
+        GeneralUtils.getInstance().ValidarCampos(false, txtContraseñaEmp.getText().length(), 30, event);
+    }
+
+    @FXML
+    void txtDireccionEmpTyped(KeyEvent event) {
+        GeneralUtils.getInstance().ValidarCampos(false, txtDireccionEmp.getText().length(), 500, event);
+    }
+
+    /*--------------------------------------------------------------------------------------------------------------*/
+    void ProcesoAgregar() {
+        try {
+            Persona persona = PersonaJpaController.getInstance().ConsultarPersonaCedula(txtCedulaEmp.getText());
+            if (persona == null) {
+                persona = new Persona(txtCedulaEmp.getText(), txtNombreEmp.getText(), txtPrimerAEmp.getText(), "A");
+
+                persona.setPerSApellido(txtSegundoAEmp.getText());
+                Usuario user = (Usuario) AppContext.getInstance().get("user");
+                persona.setPerFerreteria(user.getPersona().getPerFerreteria());
+
+                Usuario usuario = new Usuario(persona.getPerCedula(), persona.getPerCedula(), String.valueOf(txtContraseñaEmp.getText()), "A");
+                Cliente cliente = new Cliente(persona.getPerCedula(), java.sql.Date.valueOf(LocalDate.now()), "A");
+
+                String mail = "No tiene";
+                String tel2 = "No tiene";
+
+                if (!txtTelefonoEmp2.getText().isEmpty()) {
+                    tel2 = txtTelefonoEmp2.getText();
+                }
+
+                if (!txtCorreoEmp.getText().isEmpty()) {
+                    mail = txtCorreoEmp.getText();
+                }
+
+                Contacto contactoTel = new Contacto(Integer.SIZE, txtTelefonoEmp.getText(), "TEL");
+                Contacto contactoTel2 = new Contacto(Integer.SIZE, tel2, "TEL2");
+                Contacto contactoEma = new Contacto(Integer.SIZE, mail, "EMAIL");
+                Direccion direcion = new Direccion(Integer.SIZE, txtDireccionEmp.getText());
+
+                persona.setCliente(cliente);
+                persona.setUsuario(usuario);
+
+                persona = PersonaJpaController.getInstance().AgregarPersona(persona, direcion, contactoTel, contactoTel2, contactoEma);
+                if (persona != null) {
+                    Message.getInstance().Information("Acción exitosa", "Empleado agregado corectamente.");
+                    LimpiarControlesGUI();
+                } else {
+                    Message.getInstance().Error("Accion no exitosa", "Ocurrió un error y no se pudo agregar el empleado.");
+                }
+            } else {
+                if(Message.getInstance().Confirmation("Empleado Existente", "Ya existe un empleado registrado con el mismo numero de cedula.\n"
+                        + "¿Desea sobre actualizar la informacón?")){
+                    ProcesoEditar();
+                }                
+            }
+        } catch (Exception ex) {
+            Message.getInstance().Error("Error", "Ocurrió un error y no se pudo agregar el empleado. "
+                    + "El codigo de error es: " + ex.toString());
+            LoggerManager.Logger().info(ex.toString());
+        }
+    }
+
+    void ProcesoEditar() {
+        try {
+            Persona persona = PersonaJpaController.getInstance().ConsultarPersonaCedula(txtCedulaEmp.getText());
+            if (persona != null) {
+
+                persona.setPerNombre(txtNombreEmp.getText());
+                persona.setPerPApellido(txtPrimerAEmp.getText());
+                persona.setPerSApellido(txtSegundoAEmp.getText());
+
+                Contacto contactoTel = BuscarContactoTipo(persona, "TEL");
+                Contacto contactoTel2 = BuscarContactoTipo(persona, "TEL2");
+                Contacto contactoEma = BuscarContactoTipo(persona, "EMAIL");
+
+                Direccion direcion = persona.getDireccionList().get(0);
+
+                contactoTel.setConContacto(txtTelefonoEmp.getText());
+
+                if (contactoTel2 != null) {
+                    contactoTel2.setConContacto(txtTelefonoEmp2.getText());
+                }
+
+                if (contactoEma != null) {
+                    contactoEma.setConContacto(txtCorreoEmp.getText());
+                }
+                direcion.setDirDirExacta(txtDireccionEmp.getText());
+
+                persona.getUsuario().setUsuContraseña(String.valueOf(txtContraseñaEmp.getText()));
+                
+                persona.setPerEstado("A");
+                persona.getUsuario().setUsuEstado("A");
+                persona.getCliente().setCliEstado("A");
+
+                persona = PersonaJpaController.getInstance().ModificarPersona(persona);
+                if (persona != null) {
+                    Message.getInstance().Information("Acción exitosa", "Empleado editado corectamente.");
+                } else {
+                    Message.getInstance().Error("Accion no exitosa", "Ocurrió un error y no se pudieron editar los datos del empleado.");
+                }
+            } else {
+                Message.getInstance().Warning("Empleado no existente", "No existe un empleado con la cédula ingresada.");
+            }
+        } catch (Exception ex) {
+            Message.getInstance().Error("Error", "Ocurrió un error y no se pudo editar el empleado. "
+                    + "El codigo de error es: " + ex.toString());
+            LoggerManager.Logger().info(ex.toString());
+        }
+    }
+
+    void ProcesoBuscar() {
+        LanzarBusqueda();
+        Persona persona = (Persona) AppContext.getInstance().get("selected-persona");
+        if (persona != null) {
+            CargarDatosUsuario(persona);
+        }
+    }
+
+    void ProcesoEliminar() {
+        try {
+            Persona persona = PersonaJpaController.getInstance().ConsultarPersonaCedula(txtCedulaEmp.getText());
+            if (persona != null) {
+                persona.setPerEstado("I");
+                persona.getUsuario().setUsuEstado("I");
+                persona.getCliente().setCliEstado("I");
+                PersonaJpaController.getInstance().ModificarPersona(persona);
+                Message.getInstance().Information("Acción exitosa", "Empleado eliminado corectamente.");
+                LimpiarControlesGUI();
+            } else {
+                Message.getInstance().Warning("Empleado no existente", "No existe un empleado con la cédula ingresada.");
+            }
+        } catch (Exception ex) {
+            Message.getInstance().Error("Error", "Ocurrió un error y no se pudo eliminar el empleado. "
+                    + "El codigo de error es: " + ex.toString());
+            LoggerManager.Logger().info(ex.toString());
+        }
+    }
+
+    void ProcesoAgregarPermiso(Persona persona) {
+        try {
+            persona.getUsuario().getPermisoList().add(lvDisponibles.getSelectionModel().getSelectedItem());
+            UsuarioJpaController.getInstance().ModificarUsuario(persona.getUsuario());
+            CargarDatosUsuario(persona);
+        } catch (Exception ex) {
+            Message.getInstance().Error("Error", "Ocurrió un error y no se pudo agregar el permiso. "
+                    + "El codigo de error es: " + ex.toString());
+            LoggerManager.Logger().info(ex.toString());
+        }
+    }
+
+    void ProcesoQuitarPermiso(Persona persona) {
+        try {
+            persona.getUsuario().getPermisoList().remove(lvAsignados.getSelectionModel().getSelectedItem());
+            UsuarioJpaController.getInstance().ModificarUsuario(persona.getUsuario());
+            CargarDatosUsuario(persona);
+        } catch (Exception ex) {
+            Message.getInstance().Error("Error", "Ocurrió un error y no se pudo quitar el permiso. "
+                    + "El codigo de error es: " + ex.toString());
+            LoggerManager.Logger().info(ex.toString());
+        }
+    }
+
+    void ProcesoAgregarTodosPermisos(Persona persona) {
+        try {
+            List<Permiso> permisoAsignadosList = PermisoJpaController.getInstance().ConsultarPermisosAsignados(persona.getUsuario());
+            List<Permiso> permisoDisponibleList = PermisoJpaController.getInstance().ConsultarPermisosDisponibles(permisoAsignadosList);
+            persona.getUsuario().getPermisoList().addAll(permisoDisponibleList);
+            UsuarioJpaController.getInstance().ModificarUsuario(persona.getUsuario());
+            CargarDatosUsuario(persona);
+        } catch (Exception ex) {
+            Message.getInstance().Error("Error", "Ocurrió un error y no se pudieron agregar los permisos. "
+                    + "El codigo de error es: " + ex.toString());
+            LoggerManager.Logger().info(ex.toString());
+        }
+    }
+
+    void ProcesoQuitarTodosPermisos(Persona persona) {
+        try {
+            persona.getUsuario().getPermisoList().clear();
+            UsuarioJpaController.getInstance().ModificarUsuario(persona.getUsuario());
+            CargarDatosUsuario(persona);
+        } catch (Exception ex) {
+            Message.getInstance().Error("Error", "Ocurrió un error y no se pudieron quitar los permisos. "
+                    + "El codigo de error es: " + ex.toString());
+            LoggerManager.Logger().info(ex.toString());
         }
     }
 
     /*-----------------------------------------------------------------------------*/
-    void ProcesoAgregar() {
-        Persona persona = new Persona(txtCedulaEmp.getText(), txtNombreEmp.getText(), txtPrimerAEmp.getText(), "A");
-        persona.setPerSApellido(txtSegundoAEmp.getText());
-        Usuario usuario = new Usuario(persona.getPerCedula(), persona.getPerCedula(), String.valueOf(txtContraseñaEmp.getText()), "A");
-        Cliente cliente = new Cliente(persona.getPerCedula(), java.sql.Date.valueOf(LocalDate.now()), "A");
+    void CargarDatosUsuario(Persona persona) {
+        try {
+            txtCedulaEmp.setText(persona.getPerCedula());
+            txtNombreEmp.setText(persona.getPerNombre());
+            txtPrimerAEmp.setText(persona.getPerPApellido());
+            txtSegundoAEmp.setText(persona.getPerSApellido());
+            txtTelefonoEmp.setText(BuscarContactoContacto(persona, "TEL"));
+            txtTelefonoEmp2.setText(BuscarContactoContacto(persona, "TEL2"));
+            txtCorreoEmp.setText(BuscarContactoContacto(persona, "EMAIL"));
 
-        Contacto contactoTel = new Contacto(Integer.SIZE, txtTelefonoEmp.getText(), "TEL");
-        Contacto contactoTel2 = new Contacto(Integer.SIZE, txtTelefonoEmp2.getText(), "TEL2");
-        Contacto contactoEma = new Contacto(Integer.SIZE, txtCorreoEmp.getText(), "EMAIL");
-        Direccion direcion = new Direccion(Integer.SIZE, txtDireccionEmp.getText());
+            txtContraseñaEmp.setText(persona.getUsuario().getUsuContraseña());
 
-        persona.setCliente(cliente);
-        persona.setUsuario(usuario);
+            txtDireccionEmp.setText(persona.getDireccionList().get(0).getDirDirExacta());
 
-        persona = PersonaJpaController.getInstance().AgregarPersona(persona, direcion, contactoTel, contactoTel2, contactoEma);
-        if (persona != null) {
-            new Alert(Alert.AlertType.INFORMATION, "Empleado agregado corectamente.", ButtonType.OK).showAndWait();
-            LimpiarControles();
-        } else {
-            new Alert(Alert.AlertType.ERROR, "Ocurrio un error y no se pudo agregar el empleado.", ButtonType.OK).showAndWait();
+            lblUsuario.setText(persona.getPerCedula() + " " + persona.getPerNombre() + " " + persona.getPerPApellido());
+
+            List<Permiso> permisoAsignadosList = PermisoJpaController.getInstance().ConsultarPermisosAsignados(persona.getUsuario());
+            ObservableList<Permiso> oPermisoAsignadosList = FXCollections.observableArrayList(permisoAsignadosList);
+
+            List<Permiso> permisoDisponibleList = PermisoJpaController.getInstance().ConsultarPermisosDisponibles(permisoAsignadosList);
+            ObservableList<Permiso> oPermisoDisponibleList = FXCollections.observableArrayList(permisoDisponibleList);
+
+            lvAsignados.setItems(oPermisoAsignadosList);
+            lvDisponibles.setItems(oPermisoDisponibleList);
+        } catch (Exception ex) {
+            Message.getInstance().Error("Error", "Ocurrió un error y no se pudo cargar la información del empleado. "
+                    + "El codigo de error es: " + ex.toString());
+            LoggerManager.Logger().info(ex.toString());
         }
     }
 
@@ -286,113 +521,8 @@ public class FXML_EmpleadosController implements Initializable {
         return "";
     }
 
-    void ProcesoEditar() {
-        Persona persona = PersonaJpaController.getInstance().ConsultarPersonaCedula(txtCedulaEmp.getText());
-        if (persona != null) {
-
-            persona.setPerNombre(txtNombreEmp.getText());
-            persona.setPerPApellido(txtPrimerAEmp.getText());
-            persona.setPerSApellido(txtSegundoAEmp.getText());
-
-            Contacto contactoTel = BuscarContactoTipo(persona, "TEL");
-            Contacto contactoTel2 = BuscarContactoTipo(persona, "TEL2");
-            Contacto contactoEma = BuscarContactoTipo(persona, "EMAIL");
-
-            Direccion direcion = persona.getDireccionList().get(0);
-
-            contactoTel.setConContacto(txtTelefonoEmp.getText());
-            
-            if (contactoTel2 != null) {
-                contactoTel2.setConContacto(txtTelefonoEmp2.getText());
-            }
-
-            if (contactoEma != null) {
-                contactoEma.setConContacto(txtCorreoEmp.getText());
-            }
-            direcion.setDirDirExacta(txtDireccionEmp.getText());
-
-            persona.getUsuario().setUsuContraseña(String.valueOf(txtContraseñaEmp.getText()));
-
-            persona = PersonaJpaController.getInstance().ModificarPersona(persona);
-            if (persona != null) {
-                new Alert(Alert.AlertType.INFORMATION, "Empleado editado corectamente.", ButtonType.OK).showAndWait();
-            } else {
-                new Alert(Alert.AlertType.ERROR, "Ocurrio un error y no se pudo no se pudo editar el empleado.", ButtonType.OK).showAndWait();
-            }
-        } else {
-            new Alert(Alert.AlertType.WARNING, "No existe un empleado con la cedula ingresada.", ButtonType.OK).showAndWait();
-        }
-    }
-
-    void ProcesoBuscar() {
-        LanzarBusqueda();
-        Persona persona = (Persona) AppContext.getInstance().get("selected-persona");
-        if (persona != null) {
-            CargarDatosUsuario(persona);
-        }
-    }
-
-    void ProcesoEliminar() {
-        Persona persona = PersonaJpaController.getInstance().ConsultarPersonaCedula(txtCedulaEmp.getText());
-        persona.setPerEstado("I");
-        persona.getUsuario().setUsuEstado("I");
-        persona.getCliente().setCliEstado("I");
-        PersonaJpaController.getInstance().ModificarPersona(persona);                
-    }
-    
-    void ProcesoAgregarPermiso(Persona persona){
-        persona.getUsuario().getPermisoList().add(lvDisponibles.getSelectionModel().getSelectedItem());
-        UsuarioJpaController.getInstance().ModificarUsuario(persona.getUsuario());
-        CargarDatosUsuario(persona);        
-    }        
-    
-    void ProcesoQuitarPermiso(Persona persona){
-        persona.getUsuario().getPermisoList().remove(lvAsignados.getSelectionModel().getSelectedItem());                
-        UsuarioJpaController.getInstance().ModificarUsuario(persona.getUsuario());
-        CargarDatosUsuario(persona);
-    }
-        
-    void ProcesoAgregarTodosPermisos(Persona persona){
-        List<Permiso> permisoAsignadosList = PermisoJpaController.getInstance().ConsultarPermisosAsignados(persona.getUsuario());                        
-        List<Permiso> permisoDisponibleList = PermisoJpaController.getInstance().ConsultarPermisosDisponibles(permisoAsignadosList);        
-        persona.getUsuario().getPermisoList().addAll(permisoDisponibleList);
-        UsuarioJpaController.getInstance().ModificarUsuario(persona.getUsuario());
-        CargarDatosUsuario(persona);        
-    }
-    
-    void ProcesoQuitarTodosPermisos(Persona persona){        
-        persona.getUsuario().getPermisoList().clear();
-        UsuarioJpaController.getInstance().ModificarUsuario(persona.getUsuario());
-        CargarDatosUsuario(persona);        
-    }
-
-    /*-----------------------------------------------------------------------------*/
-    void CargarDatosUsuario(Persona persona) {
-        txtCedulaEmp.setText(persona.getPerCedula());
-        txtNombreEmp.setText(persona.getPerNombre());
-        txtPrimerAEmp.setText(persona.getPerPApellido());
-        txtSegundoAEmp.setText(persona.getPerSApellido());
-        txtTelefonoEmp.setText(BuscarContactoContacto(persona, "TEL"));
-        txtTelefonoEmp2.setText(BuscarContactoContacto(persona, "TEL2"));
-        txtCorreoEmp.setText(BuscarContactoContacto(persona, "EMAIL"));
-        
-        txtContraseñaEmp.setText(persona.getUsuario().getUsuContraseña());
-                
-        txtDireccionEmp.setText(persona.getDireccionList().get(0).getDirDirExacta());
-        
-        lblUsuario.setText(persona.getPerCedula() + " " + persona.getPerNombre() + " " + persona.getPerPApellido());                
-        
-        List<Permiso> permisoAsignadosList = PermisoJpaController.getInstance().ConsultarPermisosAsignados(persona.getUsuario());
-        ObservableList<Permiso> oPermisoAsignadosList = FXCollections.observableArrayList(permisoAsignadosList);
-                
-        List<Permiso> permisoDisponibleList = PermisoJpaController.getInstance().ConsultarPermisosDisponibles(permisoAsignadosList);
-        ObservableList<Permiso> oPermisoDisponibleList = FXCollections.observableArrayList(permisoDisponibleList);
-        
-        lvAsignados.setItems(oPermisoAsignadosList);      
-        lvDisponibles.setItems(oPermisoDisponibleList);                  
-    }
-
-    void LimpiarControles() {
+    /*--------------------------------------------------------------------------------------------------------------*/
+    void LimpiarControlesGUI() {
         txtCedulaEmp.setText("");
         txtNombreEmp.setText("");
         txtPrimerAEmp.setText("");
@@ -402,13 +532,12 @@ public class FXML_EmpleadosController implements Initializable {
         txtCorreoEmp.setText("");
         txtContraseñaEmp.setText("");
         txtDireccionEmp.setText("");
-        lblUsuario.setText("No se ha selecionado aún");
+        lblUsuario.setText("Busque y selecione un empleado en la pantalla anterior");
         lvAsignados.setItems(null);
         lvDisponibles.setItems(null);
     }
 
-    /*-----------------------------------------------------------------------------*/    
-
+    /*--------------------------------------------------------------------------------------------------------------*/
     void LanzarBusqueda() {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/ferreteria_las_vegas/view/FXML_Buscar_Empleados.fxml"));
@@ -418,40 +547,10 @@ public class FXML_EmpleadosController implements Initializable {
             stage.setScene(new Scene(root));
             stage.initModality(Modality.WINDOW_MODAL);
             stage.showAndWait();
-
-        } catch (Exception ex) {            
-            System.err.println(ex);
+        } catch (IOException ex) {
+            Message.getInstance().Error("Error", "Ocurrió un error y no se pudo lanzar la pantalla de búsqueda."
+                    + "El código de error es: " + ex.toString());
+            LoggerManager.Logger().info(ex.toString());
         }
     }
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        tabPaneEvent();
-
-        lvDisponibles.setCellFactory(param -> new ListCell<Permiso>() {
-            @Override
-            protected void updateItem(Permiso item, boolean empty) {
-                super.updateItem(item, empty);
-
-                if (empty || item == null || item.getPerDescripcion() == null) {
-                    setText(null);
-                } else {
-                    setText(item.getPerDescripcion());
-                }
-            }
-        });
-        
-        lvAsignados.setCellFactory(param -> new ListCell<Permiso>() {
-            @Override
-            protected void updateItem(Permiso item, boolean empty) {
-                super.updateItem(item, empty);
-
-                if (empty || item == null || item.getPerDescripcion() == null) {
-                    setText(null);
-                } else {
-                    setText(item.getPerDescripcion());
-                }
-            }
-        });                
-    }   
 }

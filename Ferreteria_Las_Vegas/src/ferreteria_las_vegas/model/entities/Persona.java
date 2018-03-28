@@ -58,6 +58,7 @@ public class Persona implements Serializable {
     @Basic(optional = false)
     @Column(name = "Per_Estado")
     private String perEstado;
+    
     @JoinTable(name = "tb_personas_direcciones", joinColumns = {
         @JoinColumn(name = "RPD_Persona", referencedColumnName = "Per_Cedula")}, inverseJoinColumns = {
         @JoinColumn(name = "RPD_Direccion", referencedColumnName = "Dir_Codigo")})
@@ -68,13 +69,14 @@ public class Persona implements Serializable {
         @JoinColumn(name = "RPC_Contacto", referencedColumnName = "Con_Codigo")})
     @ManyToMany
     private List<Contacto> contactoList;
+    
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "persona")
     private Usuario usuario;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "persona")
     private Cliente cliente;
-    @JoinColumn(name = "tb_Ferreteria", referencedColumnName = "Fer_Cedula")
+    @JoinColumn(name = "Per_Ferreteria", referencedColumnName = "Fer_Cedula")
     @ManyToOne(optional = false)
-    private Ferreteria tbFerreteria;
+    private Ferreteria PerFerreteria;
 
     public Persona() {
     }
@@ -87,7 +89,7 @@ public class Persona implements Serializable {
         this.perCedula = perCedula;
         this.perNombre = perNombre;
         this.perPApellido = perPApellido;
-        this.perEstado = perEstado;
+        this.perEstado = perEstado;        
     }
 
     public String getPerCedula() {
@@ -172,12 +174,12 @@ public class Persona implements Serializable {
         this.cliente = cliente;
     }
 
-    public Ferreteria getTbFerreteria() {
-        return tbFerreteria;
+    public Ferreteria getPerFerreteria() {
+        return PerFerreteria;
     }
 
-    public void setTbFerreteria(Ferreteria tbFerreteria) {
-        this.tbFerreteria = tbFerreteria;
+    public void setPerFerreteria(Ferreteria PerFerreteria) {
+        this.PerFerreteria = PerFerreteria;
     }
 
     @Override
