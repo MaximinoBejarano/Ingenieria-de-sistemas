@@ -2,3 +2,15 @@
 /Ferreteria_Las_Vegas/build/
 /Ferreteria_Las_Vegas/dist/
 /Ferreteria_Las_Vegas/logs/
+
+# Compiled class file
+*.class
+
+# Log file
+*.log
+
+# BlueJ files
+*.ctxt
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
