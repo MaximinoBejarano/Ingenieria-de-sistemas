@@ -203,7 +203,7 @@
                                                 <Tooltip text="Nombre del Proveedor" />
                                              </tooltip>
                                           </TextField>
-                                          <TextField fx:id="txtCorreo" onKeyTyped="#txtCorreoEmpTyped" prefHeight="30.0" prefWidth="507.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                          <TextField fx:id="txtCorreo" onKeyTyped="#txtCorreoTyped" prefHeight="30.0" prefWidth="507.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                              <font>
                                                 <Font size="16.0" />
                                              </font>
