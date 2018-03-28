@@ -27,18 +27,6 @@
          <bottom>
             <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: #2E4053;">
                <children>
-                  <Button fx:id="btnSalir" layoutX="621.0" layoutY="12.0" mnemonicParsing="false" onAction="#btnSalir_Click" prefWidth="104.0" styleClass="boton-Exit" stylesheets="@../../styles/style.css" AnchorPane.bottomAnchor="6.0" AnchorPane.rightAnchor="6.0" AnchorPane.topAnchor="6.0">
-                     <graphic>
-                        <ImageView fitHeight="60.0" fitWidth="65.0" pickOnBounds="true" preserveRatio="true" styleClass="boton-Sal">
-                           <image>
-                              <Image url="@../../pictures/salir.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                     <effect>
-                        <DropShadow />
-                     </effect>
-                  </Button>
                   <Button fx:id="btnAgregarAbono" layoutX="265.0" layoutY="6.0" minHeight="80.0" mnemonicParsing="false" onAction="#btnAgregarAbono_Click" prefWidth="80.0" styleClass="botones_Mantenimiento" stylesheets="@../../styles/style.css" AnchorPane.bottomAnchor="6.0" AnchorPane.rightAnchor="290.0" AnchorPane.topAnchor="6.0">
                      <graphic>
                         <ImageView fitHeight="60.0" fitWidth="65.0" pickOnBounds="true" preserveRatio="true">
@@ -83,6 +71,18 @@
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
+                  </Button>
+                  <Button fx:id="btnSalir" layoutX="621.0" layoutY="12.0" mnemonicParsing="false" onAction="#btnSalir_Click" prefWidth="104.0" styleClass="boton-Exit" stylesheets="@../../styles/style.css" AnchorPane.bottomAnchor="6.0" AnchorPane.rightAnchor="6.0" AnchorPane.topAnchor="6.0">
+                     <graphic>
+                        <ImageView fitHeight="60.0" fitWidth="65.0" pickOnBounds="true" preserveRatio="true" styleClass="boton-Sal">
+                           <image>
+                              <Image url="@../../pictures/salir.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <effect>
+                        <DropShadow />
+                     </effect>
                   </Button>
                </children>
             </AnchorPane>
@@ -198,10 +198,6 @@
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <DatePicker fx:id="pickFecha" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                           <GridPane.margin>
-                              <Insets bottom="4.0" top="4.0" />
-                           </GridPane.margin></DatePicker>
                         <TextField fx:id="txtAbono" GridPane.columnIndex="1">
                            <font>
                               <Font size="14.0" />
@@ -210,6 +206,10 @@
                               <Insets bottom="4.0" top="4.0" />
                            </GridPane.margin>
                         </TextField>
+                        <DatePicker fx:id="pickFecha" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                           <GridPane.margin>
+                              <Insets bottom="4.0" top="4.0" />
+                           </GridPane.margin></DatePicker>
                      </children>
                   </GridPane>
                   <Separator layoutX="10.0" layoutY="504.0" prefHeight="0.0" prefWidth="672.0" AnchorPane.bottomAnchor="94.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" />
