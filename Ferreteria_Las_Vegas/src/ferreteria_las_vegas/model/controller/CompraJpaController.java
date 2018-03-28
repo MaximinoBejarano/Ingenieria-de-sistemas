@@ -5,7 +5,7 @@
  */
 package ferreteria_las_vegas.model.controller;
 
-
+import ferreteria_las_vegas.model.entities.ArticuloXCompra;
 import ferreteria_las_vegas.model.entities.Compra;
 import ferreteria_las_vegas.utils.EntityManagerHelper;
 import java.util.List;
@@ -19,6 +19,7 @@ import javax.persistence.Query;
  * @author sanwi
  */
 public class CompraJpaController {
+
     private static CompraJpaController INSTANCE = null;
 
     private static void createInstance() {
@@ -50,20 +51,29 @@ public class CompraJpaController {
      * @param Com
      * @return compra
      */
-
-    public Compra InsertarCompra(Compra Com) {
+    public Compra InsertarCompra(Compra Com, List<ArticuloXCompra> Lista) {
         et = em.getTransaction();
         try {
             et.begin();
             em.persist(Com);
+            em.flush();
+ 
+            if (!Lista.isEmpty()) {
+                for (ArticuloXCompra Lista1 : Lista) {
+                    em.persist(Lista1);
+                    em.flush();
+                    Com.getArticuloXCompraList().add(Lista1);    
+                }
+            }
+            em.merge(Com);
             et.commit();
             return Com;
-        }catch (EntityExistsException ex) {
+        } catch (EntityExistsException ex) {
             et.rollback();
             System.err.println(ex);
             return null;
         } catch (Exception ex) {
-             
+
             et.rollback();
             System.err.println(ex);
             return null;
@@ -128,6 +138,5 @@ public class CompraJpaController {
         }
     }
 
-   
     //******************************************************************************************
 }

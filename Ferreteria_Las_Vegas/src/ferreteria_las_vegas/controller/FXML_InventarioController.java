@@ -5,17 +5,26 @@
  */
 package ferreteria_las_vegas.controller;
 
+import ferreteria_las_vegas.model.controller.ArticulosXCompraJpaController;
 import ferreteria_las_vegas.model.controller.CompraJpaController;
+import ferreteria_las_vegas.model.controller.CuentasXCobrarJPAController;
+import ferreteria_las_vegas.model.controller.CuestasXPagarJpaController;
 import ferreteria_las_vegas.model.controller.InventarioJpaController;
+import ferreteria_las_vegas.model.controller.ProveedorJpaController;
 import ferreteria_las_vegas.model.entities.Articulo;
 import ferreteria_las_vegas.model.entities.ArticuloXCompra;
 import ferreteria_las_vegas.model.entities.Compra;
+import ferreteria_las_vegas.model.entities.Contacto;
+import ferreteria_las_vegas.model.entities.CuentaXPagar;
+import ferreteria_las_vegas.model.entities.DetalleInventario;
+import ferreteria_las_vegas.model.entities.Direccion;
 import ferreteria_las_vegas.model.entities.Inventario;
 import ferreteria_las_vegas.model.entities.Proveedor;
 import ferreteria_las_vegas.utils.AppContext;
 import java.io.IOException;
 import java.net.URL;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.AbstractList;
 import java.util.ArrayList;
@@ -204,7 +213,6 @@ public class FXML_InventarioController implements Initializable {
     @FXML
     private void AgregarFactura(ActionEvent event) {
 
-
         if (!txtNomProveedor.getText().isEmpty() && !txtNumFactura.getText().isEmpty()
                 && pickFeccha.getValue() != null && !listaArticulos.isEmpty() && !txtFlete.getText().isEmpty()
                 && !txtServicioCarga.getText().isEmpty()) {
@@ -219,51 +227,70 @@ public class FXML_InventarioController implements Initializable {
     }
 
     public void NuevaFactura() {
-        String estado="";
-        if (ckbAplicar.isSelected()) {
-           estado="A";
-        } else {
-            estado="I";
-        }
-        Compra com = new Compra();
-        Proveedor pro = new Proveedor();
-        pro.setProCodigo(Integer.SIZE);
-        pro.setProNombre(txtNomProveedor.getText());
 
-        com.setComProveedor(pro);
-        com.setComNombre(txtNomProveedor.getText());
-        com.setComNumeroFact(txtNumFactura.getText());
-        com.setComFlete(Double.valueOf(txtFlete.getText()));
-        com.setComServCarga(Double.valueOf(txtServicioCarga.getText()));
+        Compra compra = new Compra();
+        // susutituir por metodo de busca de proveedor 
+        Proveedor pro = ProveedorJpaController.getInstance().ConsultarProveedoresTodos().get(0);
+
+        compra.setComProveedor(pro);
+        compra.setComNombre(txtNomProveedor.getText());
+        compra.setComNumeroFact(txtNumFactura.getText());
+        compra.setComFlete(Double.valueOf(txtFlete.getText()));
+        compra.setComServCarga(Double.valueOf(txtServicioCarga.getText()));
         if (rdbContado.isSelected()) {
-            com.setComTipoFact("D");
+            compra.setComTipoFact("D");
         } else if (rdbCredito.isSelected()) {
-            com.setComTipoFact("C");
+            compra.setComTipoFact("C");
         }
-        com.setComCodigo(Integer.SIZE);
-        com.setComFecha(Date.from(Instant.from(pickFeccha.getValue().atStartOfDay(ZoneId.systemDefault()))));
-        com.setComSubTotal(Double.valueOf(lblSubtotal.getText()));
-        com.setComDescuento(Double.valueOf(lblDescuento.getText()));
-        com.setComImpVenta(Double.valueOf(lblImpuesto.getText()));
-        com.setComTotal(Double.valueOf(lblTotal.getText()));
-        com.setComEstado("A");
-        com.setComFleteC(Double.valueOf(0));
-        
+        compra.setComCodigo(Integer.SIZE);
+        compra.setComFecha(Date.from(Instant.from(pickFeccha.getValue().atStartOfDay(ZoneId.systemDefault()))));
+        compra.setComSubTotal(Double.valueOf(lblSubtotal.getText()));
+        compra.setComDescuento(Double.valueOf(lblDescuento.getText()));
+        compra.setComImpVenta(Double.valueOf(lblImpuesto.getText()));
+        compra.setComTotal(Double.valueOf(lblTotal.getText()));
+        compra.setComEstado("A");
+        compra.setComFleteC(Double.valueOf(0));
+
         List<ArticuloXCompra> lArticulos = new ArrayList<>();
+        for (InventarioCompleto listaArticulo : listaArticulos) {
+            ArticuloXCompra articuloXcompra = new ArticuloXCompra();
+            articuloXcompra.setArtCodigo(Integer.SIZE);
+            articuloXcompra.setArtArticulo(listaArticulo.getArticulo());
+            articuloXcompra.setArtCantidad(listaArticulo.getCantArticulo());
+            articuloXcompra.setArtCompra(compra);
+            articuloXcompra.setArtPrecio(listaArticulo.getPrecioArt());
+            articuloXcompra.setArtEstado("A");
+            lArticulos.add(articuloXcompra);
 
-        for (int i = 0; i < listaArticulos.size(); i++) {
-            ArticuloXCompra a = new ArticuloXCompra();
-            a.setArtArticulo(listaArticulos.get(i).getArticulo());
-            a.setArtCantidad(listaArticulos.get(i).getCantArticulo());
-            a.setArtCompra(com);
-            a.setArtPrecio(listaArticulos.get(i).getPrecioArt());
-            a.setArtEstado(estado);
-            lArticulos.add(a);
+//            if (ckbAplicar.isSelected()) {
+//                DetalleInventario pDetalleInventario= new DetalleInventario();
+//                pDetalleInventario.setDetCodigo(Integer.SIZE);
+//                pDetalleInventario.setDetFecha(new Date());
+//                pDetalleInventario.setDetPrecio(listaArticulo.getCantArticulo());
+//                
+//                Inventario pInventario = new Inventario();
+//                pInventario.setInvCodigo(Integer.SIZE);
+//                pInventario.setInvArticulo(listaArticulo.getArticulo());
+//                pInventario.setInvBodega(null);
+//                pInventario.setInvCantidad(0);
+//                
+//            }
         }
 
+        if (rdbContado.isSelected()) {
+            new CompraJpaController().InsertarCompra(compra, lArticulos);
+        } else if (rdbCredito.isSelected()) {
+            Compra pCompra = new CompraJpaController().InsertarCompra(compra, lArticulos);
+            CuentaXPagar pCuenta = new CuentaXPagar();
+            pCuenta.setCueCodigo(Integer.SIZE);
+            pCuenta.setCueCompra(pCompra);
+            pCuenta.setCueProveedor(pCompra.getComProveedor());
+            pCuenta.setCueSaldo(pCompra.getComTotal());
+            pCuenta.setCueSaldoCompra(pCompra.getComTotal());
+            pCuenta.setCueEstado("A");
+            new CuestasXPagarJpaController().AgregarCuentaXCobrar(pCuenta);
+        }
 
-        com.setArticuloXCompraList(lArticulos);
-        new CompraJpaController().InsertarCompra(com);
     }
 
     @FXML
@@ -371,7 +398,7 @@ public class FXML_InventarioController implements Initializable {
     /*Otros metodos-----------------------------------------------------------*/
     public void EditarTable() {
         tcPrcioProducto.setOnEditCommit(data -> {
-            String valor=data.getNewValue().replace(",", ".");
+            String valor = data.getNewValue().replace(",", ".");
             data.getRowValue().setPrecioArt(Double.valueOf(valor));
         });
         tcCantidad.setOnEditCommit(data -> {

@@ -6,6 +6,7 @@
 package ferreteria_las_vegas.model.controller;
 
 import ferreteria_las_vegas.model.entities.Articulo;
+import ferreteria_las_vegas.model.entities.DetalleInventario;
 import ferreteria_las_vegas.model.entities.Inventario;
 import ferreteria_las_vegas.utils.EntityManagerHelper;
 import java.util.List;
@@ -51,11 +52,19 @@ public class InventarioJpaController {
      * @return articulo
      */
 
-    public Inventario InsertarInvetario(Inventario Art) {
+    public Inventario InsertarInvetario(Inventario Art, DetalleInventario Det) {
         et = em.getTransaction();
         try {
             et.begin();
             em.persist(Art);
+            em.flush();
+            
+            if(Det!=null){
+            em.persist(Det);
+            em.flush();
+            Art.getDetalleInventarioList().add(Det);
+            }
+            em.merge(Art);
             et.commit();
             return Art;
         } catch (Exception ex) {

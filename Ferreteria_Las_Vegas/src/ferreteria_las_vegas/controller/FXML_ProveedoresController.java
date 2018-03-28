@@ -1,31 +1,63 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package ferreteria_las_vegas.controller;
 
-import java.net.URL;
-import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
 
-/**
- * FXML Controller class
- *
- * @author wili
- */
-public class FXML_ProveedoresController implements Initializable {
+public class FXML_ProveedoresController {
 
-    /**
-     * Initializes the controller class.
-     */
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-    }    
-    
+    @FXML
+    private TextField txtCedulaJuridica;
+
+    @FXML
+    private TextField txtNombre;
+
+    @FXML
+    private TextField txtCorreoEmp;
+
+    @FXML
+    private TextField txtTelefono;
+
+    @FXML
+    private TextField txtTelefono2;
+
+    @FXML
+    private TextArea txtDireccion;
+
+ 
+
+    @FXML
+    void txtCedulaEmpTyped(KeyEvent event) {
+
+    }
+
+    @FXML
+    void txtCorreoEmpTyped(KeyEvent event) {
+
+    }
+
+    @FXML
+    void txtDireccionEmpTyped(KeyEvent event) {
+
+    }
+
+    @FXML
+    void txtNombreEmpTyped(KeyEvent event) {
+
+    }
+
+    @FXML
+    void txtTelefonoEmp2Typed(KeyEvent event) {
+
+    }
+
+    @FXML
+    void txtTelefonoEmpTyped(KeyEvent event) {
+
+    }
+
     @FXML
     void SalirClick(ActionEvent event) {
         ScenesManager.getInstance().LoadSceneMenu();
