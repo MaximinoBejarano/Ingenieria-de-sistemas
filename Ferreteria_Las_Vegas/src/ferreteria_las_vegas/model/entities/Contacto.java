@@ -50,10 +50,7 @@ public class Contacto implements Serializable {
     private String conTipoContacto;
     @ManyToMany(mappedBy = "contactoList")
     private List<Persona> personaList;    
-    @JoinTable(name = "tb_contactos_proveedores", joinColumns = {
-        @JoinColumn(name = "RCP_Contacto", referencedColumnName = "Con_Codigo")}, inverseJoinColumns = {
-        @JoinColumn(name = "RCP_Proveedor", referencedColumnName = "Pro_Codigo")})
-    @ManyToMany
+    @ManyToMany(mappedBy = "contactoList")
     private List<Proveedor> proveedorList;
 
     public Contacto() {

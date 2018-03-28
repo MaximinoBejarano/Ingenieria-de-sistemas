@@ -84,3 +84,16 @@ public class CuentasXCobrarJPAController {
         }
     }
 }
+
+/* No borrar
+*CuentaXCobrar
+@JoinTable(name = "tb_cxc_abonos", joinColumns = {
+        @JoinColumn(name = "RCA_CuentaCobrar", referencedColumnName = "Cue_Codigo")}, inverseJoinColumns = {
+        @JoinColumn(name = "RCA_Abono", referencedColumnName = "Abo_Codigo")})
+    @ManyToMany
+    private List<Abono> abonoList;
+
+*Abono
+@ManyToMany(mappedBy = "abonoList")
+    private List<CuentaXCobrar> cuentaXCobrarList;
+*/

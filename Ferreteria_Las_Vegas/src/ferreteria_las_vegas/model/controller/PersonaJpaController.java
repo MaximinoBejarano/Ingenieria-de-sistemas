@@ -57,7 +57,7 @@ public class PersonaJpaController {
      */
     public Persona ConsultarPersonaCedula(String pCedula) {
         try {
-            Query qry = em.createNamedQuery("Persona.findByPerCedula", Persona.class);// consulta definida 
+            Query qry = em.createQuery("SELECT p FROM Persona p WHERE p.perCedula = :perCedula", Persona.class);// consulta definida 
             qry.setParameter("perCedula", pCedula);
             Persona persona = (Persona) qry.getSingleResult();// trae el resultado de la consulta  
             return persona;
@@ -81,8 +81,8 @@ public class PersonaJpaController {
      */
     public List<Persona> ConsultarPersonasTodos() {
         try {
-            Query qry = em.createNamedQuery("Persona.findAll", Persona.class);// consulta definida por folio
-            List<Persona> personas = qry.getResultList();// Recibe el resultado de la consulta  
+            Query qry = em.createQuery("SELECT p FROM Persona p", Persona.class);
+            List<Persona> personas = qry.getResultList();
             return personas;
         } catch (NoResultException ex) {
             System.err.println(ex);
@@ -95,8 +95,8 @@ public class PersonaJpaController {
 
     public List<Persona> ConsultarPersonasEmpleados() {
         try {
-            Query qry = em.createNamedQuery("Persona.findAll", Persona.class);// consulta definida por folio
-            List<Persona> personas = qry.getResultList();// Recibe el resultado de la consulta         
+            Query qry = em.createQuery("SELECT p FROM Persona p", Persona.class);
+            List<Persona> personas = qry.getResultList();
             return personas.stream().filter(e -> e.getUsuario() != null).collect(Collectors.toList());
         } catch (NoResultException ex) {
             System.err.println(ex);
@@ -109,8 +109,8 @@ public class PersonaJpaController {
 
     public List<Persona> ConsultarPersonasNoEmpleados() {
         try {
-            Query qry = em.createNamedQuery("Persona.findAll", Persona.class);// consulta definida por folio
-            List<Persona> personas = qry.getResultList();// Recibe el resultado de la consulta         
+            Query qry = em.createQuery("SELECT p FROM Persona p", Persona.class);
+            List<Persona> personas = qry.getResultList();
             return personas.stream().filter(e -> e.getCliente() != null).collect(Collectors.toList());
         } catch (NoResultException ex) {
             System.err.println(ex);
@@ -169,38 +169,7 @@ public class PersonaJpaController {
             return null;
         }
     }
-
-    /*public Persona AgregarPersona(Persona pPersona, Direccion pDireccion, Contacto pTel, Contacto pEmail) {
-        et = em.getTransaction();
-        try {
-            et.begin();
-            em.persist(pPersona);
-            em.flush();
-
-            em.persist(pDireccion);
-            em.flush();
-
-            em.persist(pTel);
-            em.flush();
-
-            em.persist(pEmail);
-            em.flush();
-
-            pPersona.getDireccionList().add(pDireccion);
-            pPersona.getContactoList().add(pTel);
-            pPersona.getContactoList().add(pEmail);
-
-            em.merge(pPersona);
-
-            et.commit();
-
-            return pPersona;
-        } catch (Exception ex) {
-            et.rollback();
-            System.err.println(ex);
-            return null;
-        }
-    }*/
+    
     /**
      * Metodo que agrega una persona en la base de datos en la tabla tb_Personas
      * Ademas de agregar contacto y direccion (tb_Contactos, tb_Direcciones)
@@ -263,7 +232,7 @@ public class PersonaJpaController {
 
 
 /* No Borrar esto
-Persona
+*Persona
     @JoinTable(name = "tb_personas_direcciones", joinColumns = {
         @JoinColumn(name = "RPD_Persona", referencedColumnName = "Per_Cedula")}, inverseJoinColumns = {
         @JoinColumn(name = "RPD_Direccion", referencedColumnName = "Dir_Codigo")})
@@ -275,11 +244,11 @@ Persona
     @ManyToMany
     private List<Contacto> contactoList;
 
-Direccion
+*Direccion
     @ManyToMany(mappedBy = "direccionList")    
     private List<Persona> personaList;
 
-Contacto
+*Contacto
     @ManyToMany(mappedBy = "contactoList")
     private List<Persona> personaList;
  */

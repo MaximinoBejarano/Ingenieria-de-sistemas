@@ -11,7 +11,6 @@ import java.util.List;
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
-import javax.persistence.LockModeType;
 import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 import javax.persistence.Query;
@@ -79,7 +78,7 @@ public class UsuarioJpaController {
      */
     public Usuario ConsultarUsuarioCedula(String pCedula) {
         try {
-            Query qry = em.createNamedQuery("Usuario.findByUsuPersona", Usuario.class);// consulta definida 
+            Query qry = em.createQuery("SELECT u FROM Usuario u WHERE u.usuPersona = :usuPersona", Usuario.class);// consulta definida 
             qry.setParameter("usuPersona", pCedula);
             Usuario usuario = (Usuario) qry.getSingleResult();// trae el resultado de la consulta  
             return usuario;
@@ -96,12 +95,12 @@ public class UsuarioJpaController {
      * Metodo que consulta (mediante el nombre de usuario) y devuelve (en caso
      * de existir) un usuario desde la base de datos en la tabla tb_Usuarios.
      *
-     * @param pCedula
+     * @param pNombre     
      * @return
      */
     public Usuario ConsultarUsuarioNombre(String pNombre) {
         try {
-            Query qry = em.createNamedQuery("Usuario.findByUsuNombre", Usuario.class);// consulta definida 
+            Query qry = em.createQuery("SELECT u FROM Usuario u WHERE u.usuNombre = :usuNombre", Usuario.class);// consulta definida 
             qry.setParameter("usuNombre", pNombre);
             Usuario usuario = (Usuario) qry.getSingleResult();// trae el resultado de la consulta  
             return usuario;
