@@ -6,7 +6,6 @@
 package ferreteria_las_vegas.controller;
 
 import ferreteria_las_vegas.model.entities.Articulo;
-import ferreteria_las_vegas.model.entities.Inventario;
 
 /**
  *
@@ -14,15 +13,30 @@ import ferreteria_las_vegas.model.entities.Inventario;
  */
 public class InventarioCompleto {
     private Articulo articulo;
-    private Inventario inventario;
+    private int cantArticulo;
+    private double descuentoComercio;
+    private double precioArt;
 
     public InventarioCompleto() {
     }
-    
-    public InventarioCompleto(Articulo articulo, Inventario inventario) {
+
+    public InventarioCompleto(Articulo articulo, int cantArticulo, double descuentoComercio, double precioArt) {
         this.articulo = articulo;
-        this.inventario = inventario;
+        this.cantArticulo = cantArticulo;
+        this.descuentoComercio = descuentoComercio;
+        this.precioArt = precioArt;
     }
+
+   
+
+    public double getDescuentoComercio() {
+        return descuentoComercio;
+    }
+
+    public void setDescuentoComercio(double descuentoComercio) {
+        this.descuentoComercio = descuentoComercio;
+    }
+    
 
     public Articulo getArticulo() {
         return articulo;
@@ -32,13 +46,19 @@ public class InventarioCompleto {
         this.articulo = articulo;
     }
 
-    public Inventario getInventario() {
-        return inventario;
+    public int getCantArticulo() {
+        return cantArticulo;
     }
 
-    public void setInventario(Inventario inventario) {
-        this.inventario = inventario;
+    public void setCantArticulo(int cantArticulo) {
+        this.cantArticulo = cantArticulo;
     }
-    
-    
+
+    public double getPrecioArt() {
+        return precioArt;
+    }
+
+    public void setPrecioArt(double precioArt) {
+        this.precioArt = precioArt;
+    } 
 }
