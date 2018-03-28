@@ -28,6 +28,7 @@
     <class>ferreteria_las_vegas.model.entities.Canton</class>
     <class>ferreteria_las_vegas.model.entities.Cliente</class>
     <class>ferreteria_las_vegas.model.entities.Usuario</class>
+    <class>ferreteria_las_vegas.model.controller.CuestasXPagarJpaController</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/bd_fv"/>
       <property name="javax.persistence.jdbc.user" value="root"/>

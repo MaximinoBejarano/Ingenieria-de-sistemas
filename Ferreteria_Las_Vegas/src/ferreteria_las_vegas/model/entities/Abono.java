@@ -64,16 +64,15 @@ public class Abono implements Serializable {
     @Basic(optional = false)
     @Column(name = "Abo_Estado")
     private String aboEstado;
-    @JoinTable(name = "tb_cxp_abonos", joinColumns = {
-        @JoinColumn(name = "RCA_Abono", referencedColumnName = "Abo_Codigo")}, inverseJoinColumns = {
-        @JoinColumn(name = "RCA_CuentaPagar", referencedColumnName = "Cue_Codigo")})
-    @ManyToMany
+    
+    
+    @ManyToMany(mappedBy = "abonoList")
     private List<CuentaXPagar> cuentaXPagarList;
-    @JoinTable(name = "tb_cxc_abonos", joinColumns = {
-        @JoinColumn(name = "RCA_Abono", referencedColumnName = "Abo_Codigo")}, inverseJoinColumns = {
-        @JoinColumn(name = "RCA_CuentaCobrar", referencedColumnName = "Cue_Codigo")})
-    @ManyToMany
+    
+    @ManyToMany(mappedBy = "abonoList")
     private List<CuentaXCobrar> cuentaXCobrarList;
+    
+    
     @JoinColumn(name = "Abo_TipoPago", referencedColumnName = "Tip_Codigo")
     @ManyToOne(optional = false)
     private TipoPago aboTipoPago;

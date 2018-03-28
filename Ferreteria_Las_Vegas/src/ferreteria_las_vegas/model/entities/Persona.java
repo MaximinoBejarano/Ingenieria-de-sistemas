@@ -58,6 +58,7 @@ public class Persona implements Serializable {
     @Basic(optional = false)
     @Column(name = "Per_Estado")
     private String perEstado;
+    
     @JoinTable(name = "tb_personas_direcciones", joinColumns = {
         @JoinColumn(name = "RPD_Persona", referencedColumnName = "Per_Cedula")}, inverseJoinColumns = {
         @JoinColumn(name = "RPD_Direccion", referencedColumnName = "Dir_Codigo")})
@@ -68,6 +69,7 @@ public class Persona implements Serializable {
         @JoinColumn(name = "RPC_Contacto", referencedColumnName = "Con_Codigo")})
     @ManyToMany
     private List<Contacto> contactoList;
+    
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "persona")
     private Usuario usuario;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "persona")

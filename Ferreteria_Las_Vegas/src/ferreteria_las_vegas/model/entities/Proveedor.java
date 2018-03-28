@@ -14,6 +14,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -52,10 +54,21 @@ public class Proveedor implements Serializable {
     @Basic(optional = false)
     @Column(name = "Pro_Estado")
     private String proEstado;
-    @ManyToMany(mappedBy = "proveedorList")
+    
+    @JoinTable(name = "tb_contactos_proveedores", joinColumns = {
+        @JoinColumn(name = "RCP_Proveedor", referencedColumnName = "Pro_Codigo")}, inverseJoinColumns = {
+        @JoinColumn(name = "RCP_Contacto", referencedColumnName = "Con_Codigo")})
+    @ManyToMany
     private List<Contacto> contactoList;
-    @ManyToMany(mappedBy = "proveedorList")
+            
+    
+    @JoinTable(name = "tb_direcciones_proveedores", joinColumns = {
+        @JoinColumn(name = "RDP_Proveedor", referencedColumnName = "Pro_Codigo")}, inverseJoinColumns = {
+        @JoinColumn(name = "RDP_Direccion", referencedColumnName = "Dir_Codigo")})
+    @ManyToMany
     private List<Direccion> direccionList;
+    
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "cueProveedor")
     private List<CuentaXPagar> cuentaXPagarList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "comProveedor")

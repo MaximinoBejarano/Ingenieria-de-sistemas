@@ -47,13 +47,13 @@ public class Direccion implements Serializable {
     @Basic(optional = false)
     @Column(name = "Dir_DirExacta")
     private String dirDirExacta;
+    
     @ManyToMany(mappedBy = "direccionList")    
-    private List<Persona> personaList;    
-    @JoinTable(name = "tb_direcciones_proveedores", joinColumns = {
-        @JoinColumn(name = "RDP_Direccion", referencedColumnName = "Dir_Codigo")}, inverseJoinColumns = {
-        @JoinColumn(name = "RDP_Proveedor", referencedColumnName = "Pro_Codigo")})
-    @ManyToMany
+    private List<Persona> personaList;   
+    
+    @ManyToMany(mappedBy = "direccionList")
     private List<Proveedor> proveedorList;
+    
     @JoinColumn(name = "Dir_Canton", referencedColumnName = "Can_Codigo")
     @ManyToOne
     private Canton dirCanton;
