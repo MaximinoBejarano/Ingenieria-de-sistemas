@@ -136,11 +136,11 @@ public class FXML_AbonosController implements Initializable {
       nAbono.setAboFecha(Date.from(pickFecha.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
       nAbono.setAboMonto(Double.parseDouble(txtAbono.getText()));
       nAbono.setAboEstado("A");
-      List<CuentaXCobrar> listCuentas=nAbono.getCuentaXCobrarList();
+      List<CuentaXCobrar> listCuentas = nAbono.getCuentaXCobrarList();
       listCuentas.add(Cuenta);
       nAbono.setCuentaXCobrarList(listCuentas);
       nAbono.setAboTipoAbono("C");
-      nAbono.setAboTipoPago();
+      //nAbono.setAboTipoPago();
       CuentasXCobrarJPAController.getInstance().AgregarCuentaXCobrar(Cuenta);
      }
      public void EliminarAbono(){
