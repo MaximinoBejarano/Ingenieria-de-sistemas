@@ -73,20 +73,23 @@ public class InventarioJpaController {
             return null;
         }
     }
+    
+ 
 
     /**
      * Metodo para realizar la edicion de articulos
      *
-     * @param pArticulo
+     * @param pInventario
+     *
      * @return
      */
-    public Articulo ModificarArticulos(Articulo pArticulo) {
-        et = em.getTransaction();
-        try {
+    public Inventario ModificarInventario(Inventario pInventario) {
+         et = em.getTransaction();
+        try {            
             et.begin();
-            em.merge(pArticulo);
+            em.merge(pInventario);
             et.commit();
-            return pArticulo;
+            return pInventario;
         } catch (EntityExistsException ex) {
             et.rollback();
             System.err.println(ex);
@@ -121,7 +124,7 @@ public class InventarioJpaController {
      * @param pCodigo
      * @return
      */
-    public  Inventario ConsultarInventarioCodigoProducto(Articulo pCodigo) {
+    public  Inventario ConsultarInventarioCodigoProducto(int pCodigo) {
         try {
             Query qry = em.createNamedQuery("Inventario.findByInvCodArticulo", Inventario.class);// consulta definida 
             qry.setParameter("invArticulo", pCodigo);

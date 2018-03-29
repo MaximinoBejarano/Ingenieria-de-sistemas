@@ -37,6 +37,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Inventario.findAll", query = "SELECT i FROM Inventario i")
     , @NamedQuery(name = "Inventario.findByInvCodigo", query = "SELECT i FROM Inventario i WHERE i.invCodigo = :invCodigo")
+    , @NamedQuery(name = "Inventario.findByInvCodArticulo", query = "SELECT i FROM Inventario i WHERE i.invArticulo.artCodigo = :invArticulo")
     , @NamedQuery(name = "Inventario.findByInvFecha", query = "SELECT i FROM Inventario i WHERE i.invFecha = :invFecha")
     , @NamedQuery(name = "Inventario.findByInvCantidad", query = "SELECT i FROM Inventario i WHERE i.invCantidad = :invCantidad")
     , @NamedQuery(name = "Inventario.findByInvEstado", query = "SELECT i FROM Inventario i WHERE i.invEstado = :invEstado")})
@@ -162,5 +163,5 @@ public class Inventario implements Serializable {
     public String toString() {
         return "ferreteria_las_vegas.model.entities.Inventario[ invCodigo=" + invCodigo + " ]";
     }
-    
+
 }
