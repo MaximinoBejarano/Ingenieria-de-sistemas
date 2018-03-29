@@ -98,9 +98,9 @@ public class FXML_Buscar_CuentaXCobrar implements Initializable {
         colSaldoAct.setCellValueFactory((cellData -> new SimpleObjectProperty<Double>(cellData.getValue().getCueSaldo())));
         colSaldoFactura.setCellValueFactory((cellData -> new SimpleObjectProperty<Double>(cellData.getValue().getCueSaldoFac())));
 
-        List<CuentaXCobrar> ArticulosList = CuentasXCobrarJPAController.getInstance().ConsultarCuentasXCobrar();
-        ArticulosList = ArticulosList.stream().filter(x -> x.getCueEstado().equals("A")).collect(Collectors.toList());
-        ObservableList<CuentaXCobrar> CuentasList = FXCollections.observableArrayList(ArticulosList);
+        List<CuentaXCobrar> List = CuentasXCobrarJPAController.getInstance().ConsultarCuentasXCobrar();
+        List = List.stream().filter(x -> x.getCueEstado().equals("A")).collect(Collectors.toList());
+        ObservableList<CuentaXCobrar> CuentasList = FXCollections.observableArrayList(List);
         tblCuentaxCobrar.setItems(CuentasList);
         FiltroDatosTabla(CuentasList);
     }
