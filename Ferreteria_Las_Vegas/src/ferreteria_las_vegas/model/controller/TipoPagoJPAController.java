@@ -4,9 +4,8 @@
  * and open the template in the editor.
  */
 package ferreteria_las_vegas.model.controller;
-import ferreteria_las_vegas.model.entities.Abono;
-import ferreteria_las_vegas.model.entities.CuentaXCobrar;
 
+import ferreteria_las_vegas.model.entities.TipoPago;
 import ferreteria_las_vegas.utils.EntityManagerHelper;
 import java.util.List;
 import javax.persistence.EntityExistsException;
@@ -18,8 +17,8 @@ import javax.persistence.Query;
  *
  * @author Maximino
  */
-public class AbonosJPAController {
-      private static AbonosJPAController INSTANCE = null;
+public class TipoPagoJPAController {
+    private static TipoPagoJPAController INSTANCE = null;
 
     private static void createInstance() {
         if (INSTANCE == null) {
@@ -27,13 +26,13 @@ public class AbonosJPAController {
             synchronized (AbonosJPAController.class) {
 
                 if (INSTANCE == null) {
-                    INSTANCE = new AbonosJPAController();
+                    INSTANCE = new TipoPagoJPAController();
                 }
             }
         }
     }
 
-    public static AbonosJPAController getInstance() {
+    public static TipoPagoJPAController getInstance() {
         if (INSTANCE == null) {
             createInstance();
         }
@@ -43,19 +42,19 @@ public class AbonosJPAController {
     private EntityManager em = EntityManagerHelper.getInstance().getManager();
     private EntityTransaction et;
     
-    //***************************** Area de Metodos***********************************
+     //***************************** Area de Metodos***********************************
     /**
      * Se agrega un nuevo registro a la base de datos
-     * @param pAbono
+     * @param pTPago 
      * @return 
      */
-    public Abono AgregarAbono(Abono pAbono) {
+    public TipoPago AgregarTipoPago(TipoPago pTPago) {
         et = em.getTransaction();
         try {
             et.begin();
-            em.persist(pAbono);
+            em.persist(pTPago);
             et.commit();
-            return pAbono;
+            return pTPago;
         } catch (EntityExistsException ex) {
             et.rollback();
             System.err.println(ex);
@@ -68,18 +67,18 @@ public class AbonosJPAController {
     }
     
      /**
-     * Metodo para realizar la modificación de un registro de abono
+     * Metodo para realizar la modificación de un registro del tipo de pago
      *
-     * @param pAbono 
+     * @param pTipoPago  
      * @return
      */
-    public Abono ModificarAbono (Abono pAbono) {
+    public TipoPago Modificar_TipoPago (TipoPago pTipoPago) {
         et = em.getTransaction();
         try {
             et.begin();
-            em.merge(pAbono);
+            em.merge(pTipoPago);
             et.commit();
-            return pAbono;
+            return pTipoPago;
         } catch (EntityExistsException ex) {
             et.rollback();
             System.err.println(ex);
@@ -95,24 +94,48 @@ public class AbonosJPAController {
      *
      * @return
      */
-    public List<Abono> ConsultarAbonos() {
+    public List<TipoPago> Consultar_TiposPagos() {
         try {
-            Query qry = em.createNamedQuery("Abono.findAll", Abono.class);// consulta todos los abonos
-            List<Abono> Abonos = qry.getResultList();// Recibe el resultado de la consulta  
-            return Abonos;
+            Query qry = em.createNamedQuery("TipoPago.findAll", TipoPago.class);// consulta todos los abonos
+            List<TipoPago> ListTipoPago = qry.getResultList();// Recibe el resultado de la consulta  
+            return ListTipoPago;
         } catch (Exception ex) {
             return null;
         }
     }
     
-    public Abono ConsultarAbono_Codigo(int pCodigo) {
+     /**
+     * Consulta por codigo del tipoPago
+     *
+     * @param pTipoPago 
+     * @return
+     */
+    public TipoPago Consultar_TipoPagoCodigo(int pTipoPago) {
         try {
-            Query qry = em.createNamedQuery("Abono.findByAboCodigo", Abono.class);// consulta definida 
-            qry.setParameter("aboCodigo", pCodigo);
-            Abono pAbono = (Abono) qry.getSingleResult();// trae el resultado de la consulta  
-            return pAbono;
+            Query qry = em.createNamedQuery("TipoPago.findByTipCodigo", TipoPago.class);// consulta definida 
+            qry.setParameter("tipCodigo", pTipoPago);
+            TipoPago pTPago = (TipoPago) qry.getSingleResult();// trae el resultado de la consulta  
+            return pTPago;
         } catch (Exception ex) {
             return null;
         }
     }
+    
+     /**
+     * Consulta por Nombre del tipoPago
+     *
+     * @param pTipNombre 
+     * @return
+     */
+    public TipoPago Consultar_TipoPagoCodigo(String pTipNombre) {
+        try {
+            Query qry = em.createNamedQuery("TipoPago.findByTipNombre", TipoPago.class);// consulta definida 
+            qry.setParameter("tipNombre", pTipNombre);
+            TipoPago pTPago = (TipoPago) qry.getSingleResult();// trae el resultado de la consulta  
+            return pTPago;
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+    
 }
