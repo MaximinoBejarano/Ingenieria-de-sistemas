@@ -13,6 +13,7 @@ import ferreteria_las_vegas.model.entities.Abono;
 import ferreteria_las_vegas.model.entities.Persona;
 import ferreteria_las_vegas.model.entities.TipoPago;
 import ferreteria_las_vegas.utils.AppContext;
+import ferreteria_las_vegas.utils.GeneralUtils;
 import ferreteria_las_vegas.utils.Message;
 import ferreteria_las_vegas.utils.SearchComboBox;
 
@@ -79,8 +80,8 @@ public class FXML_AbonosController implements Initializable {
     private Label lblSaldoTotal;
     @FXML
     private Label lblFechaAbono;
-    @FXML
-    private Label lblCédula_Cliente;
+//    @FXML
+//    private Label lblCédula_Cliente;
     @FXML
     private TextField txtAbono;
 
@@ -115,13 +116,14 @@ public class FXML_AbonosController implements Initializable {
         Cuenta = null;
         lblFechaAbono.setText(formatter.format(fecha.getTime()));
         fecha = new Date();
-        //ComboBoxCliente();
+        ComboBoxCliente();
 
     }
 
     @FXML
     void btnLimpiarCampos_Click(ActionEvent event) {
         Inicializar_Componentes();
+        Limpiar_Vista();
     }
 
     @FXML
@@ -215,7 +217,7 @@ public class FXML_AbonosController implements Initializable {
 
     @FXML
     void KeyTyped_txtAbono(KeyEvent event) {
-        validarNumero(event);
+        GeneralUtils.getInstance().ValidarCampos(true, txtAbono.getText().length(), 8, event);
     }
 
     //*****************************************************++ Area de Procesos ++****************************************************************+
@@ -330,8 +332,8 @@ public class FXML_AbonosController implements Initializable {
         Cuenta = CuentasXCobrarJPAController.getInstance().Consultar_CuentaXCobrarCodigo(Cuenta.getCueCodigo());
         if (Cuenta.getCueEstado() != "I") {
             Persona pPersona = Cuenta.getCueCliente().getPersona();
-            lblCédula_Cliente.setText(pPersona.getPerCedula());
-            lblNumFactura.setText(Cuenta.getCueFactura().getFacCodigo().toString());
+            boxCliente_CxC.setValue(Cuenta);
+            lblNumFactura.setText(String.valueOf(Cuenta.getCueFactura().getFacCodigo()));
             lblSaldoFact.setText(String.valueOf(Cuenta.getCueSaldoFac()));
             lblSaldoTotal.setText(String.valueOf(Cuenta.getCueSaldo()));
             CargarTabla(Cuenta);
@@ -343,9 +345,7 @@ public class FXML_AbonosController implements Initializable {
             colAbono.setCellValueFactory((cellData -> new SimpleObjectProperty<Double>(cellData.getValue().getAboMonto())));
             colFecha.setCellValueFactory((cellData -> new SimpleObjectProperty<String>(formatter.format(cellData.getValue().getAboFecha()))));
             colNumAbono.setCellValueFactory((cellData -> new SimpleObjectProperty(cellData.getValue().getAboCodigo())));
-
-            //  List<Abono> abonosList = Cuenta.getAbonoList();   
-            //  abonosList = abonosList.stream().filter(x -> x.getAboEstado().equals("A")).collect(Collectors.toList());   
+            
             List<Abono> abonosList = new ArrayList<>();
             for (Abono pAbono : Cuenta.getAbonoList()) {
                 if (pAbono.getAboEstado().equals("A")) {
@@ -369,7 +369,6 @@ public class FXML_AbonosController implements Initializable {
         tblAbonos.getItems().clear();
         btnEditarAbono.setDisable(true);
         btnEliminarAbono.setDisable(true);
-        lblCédula_Cliente.setText("#####");
 
     }
 
@@ -380,26 +379,6 @@ public class FXML_AbonosController implements Initializable {
         btnEditarAbono.setDisable(true);
         btnEliminarAbono.setDisable(true);
         tblAbonos.getSelectionModel().clearSelection();
-    }
-
-    //++++++++++++++++++++++++++++++++++++++  Area de validaciones de componetes de la GUI ++++++++++++++++++++++++++++++++++++++++++++
-    public void validarNumero(KeyEvent event) {
-        String character = event.getCharacter();
-        if (!checkNumerico(character)) {
-            event.consume();
-            Message.getInstance().Warning("Cuidado:", "Este campo solo acepta numeros");
-        }
-
-    }
-
-    public boolean checkNumerico(String value) {
-        String number = value.replaceAll("\\s+", "");
-        for (int j = 0; j < number.length(); j++) {
-            if (!(((int) number.charAt(j) >= 47 && (int) number.charAt(j) <= 57)) && !((int) number.charAt(j) == 8)) {
-                return false;
-            }
-        }
-        return true;
     }
 
     //++++++++++++++++++++++++++++++++++++++  Area de Otros Procesos ++++++++++++++++++++++++++++++++++++++++++++/
@@ -413,7 +392,7 @@ public class FXML_AbonosController implements Initializable {
             stage.initModality(Modality.WINDOW_MODAL);
             stage.showAndWait();
             Cuenta = (CuentaXCobrar) AppContext.getInstance().get("seleccion-Cuenta");
-            CargarInformacion();
+            if(Cuenta!=null) CargarInformacion();
 
         } catch (Exception ex) {
             System.err.print(ex);
@@ -442,35 +421,15 @@ public class FXML_AbonosController implements Initializable {
             boxCliente_CxC.getSelectionModel().select(0);
             boxCliente_CxC.setPromptText("Selecionar Cliente");
             boxCliente_CxC.setFilter((CuentaXCobrar t, String u) -> (t.getCueCliente().getPersona().getPerCedula()).toUpperCase().contains(u.toUpperCase()));
-
-
-            /* 
-         List<CuentaXCobrar> List = CuentasXCobrarJPAController.getInstance().ConsultarCuentasXCobrar();
-         List = List.stream().filter(x -> x.getCueEstado().equals("A")).collect(Collectors.toList());
-         ObservableList<CuentaXCobrar> items = FXCollections.observableArrayList(List);
-
-         FilteredList<CuentaXCobrar> filteredItems = new FilteredList<>(items, p -> true );
-          
-           boxCliente_CxC.getEditor().textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
-            filteredItems.setPredicate((CuentaXCobrar pCXC) -> {
-                if (newValue == null || newValue.isEmpty()) {
-                    return true;
-                }
-                String lowerCaseFilter = newValue.toLowerCase();
-
-                if (pCXC.getCueCliente().getPersona().getPerCedula().toLowerCase().contains(lowerCaseFilter)) {
-                    return true;
-                } else if (pCXC.getCueFactura() != null) {
-                    if (pCXC.getCueFactura().getFacCodigo().toString().toLowerCase().contains(lowerCaseFilter)) {
-                        return true;
-                    }
-                }
-                return false;
-            });
-            
-        });
-            boxCliente_CxC.setItems(filteredItems);*/
             CargarCliente(boxCliente_CxC);
+            boxCliente_CxC.setOnAction((event) -> {
+            if (boxCliente_CxC.getSelectionModel().getSelectedItem() != null) {
+                Cuenta = boxCliente_CxC.getSelectionModel().getSelectedItem();
+                CargarInformacion();           
+            }else{
+             Cuenta=null;
+            }  
+        });
             SearchBoxGrid_Cliente.add(boxCliente_CxC, 0, 0);
 
         } catch (Exception ex) {

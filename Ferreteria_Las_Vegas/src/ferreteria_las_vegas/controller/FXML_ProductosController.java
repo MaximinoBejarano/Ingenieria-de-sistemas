@@ -10,6 +10,7 @@ import ferreteria_las_vegas.utils.Message;
 import ferreteria_las_vegas.model.controller.ArticuloJpaController;
 import ferreteria_las_vegas.model.entities.Articulo;
 import ferreteria_las_vegas.utils.AppContext;
+import ferreteria_las_vegas.utils.GeneralUtils;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -111,7 +112,7 @@ public class FXML_ProductosController implements Initializable {
 
     @FXML
     private void KeyTypeCodBarras(KeyEvent event) {
-        validarNumero(event);
+        GeneralUtils.getInstance().ValidarCampos(true, txtCodBarras.getText().length(), 30, event);
     }
 
     @FXML
@@ -124,12 +125,12 @@ public class FXML_ProductosController implements Initializable {
 
     @FXML
     private void KeyTyped_txtPrecio(KeyEvent event) {
-        validarNumero(event);
+       GeneralUtils.getInstance().ValidarCampos(true, txtPrecio.getText().length(), 10, event);
     }
 
     @FXML
     private void KeyType_txtDescuento(KeyEvent event) {
-        validarNumero(event);
+       GeneralUtils.getInstance().ValidarCampos(true, txtDescuento.getText().length(), 3, event);
     }
 
     @FXML
@@ -290,26 +291,6 @@ public class FXML_ProductosController implements Initializable {
             LimpiarCampos();
 
         }
-    }
-
-    //++++++++++++++++++++++++++++++++++++++  Area de validaciones de componetes de la GUI ++++++++++++++++++++++++++++++++++++++++++++
-    public void validarNumero(KeyEvent event) {
-        String character = event.getCharacter();
-        if (!checkNumerico(character)) {
-            event.consume();
-            Message.getInstance().Warning("Cuidado:", "Este campo solo acepta numeros");
-        }
-
-    }
-
-    public boolean checkNumerico(String value) {
-        String number = value.replaceAll("\\s+", "");
-        for (int j = 0; j < number.length(); j++) {
-            if (!(((int) number.charAt(j) >= 47 && (int) number.charAt(j) <= 57)) && !((int) number.charAt(j) == 8)) {
-                return false;
-            }
-        }
-        return true;
     }
 
     //++++++++++++++++++++++++++++++++++++++  Area de metodos Lanzadores a pantallas ++++++++++++++++++++++++++++++++++++++++++++    

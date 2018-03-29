@@ -29,6 +29,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -47,6 +48,8 @@ public class FXML_Buscar_CuentaXCobrar implements Initializable {
     private Button btnConfirmar;
     @FXML
     private TextField txtFiltro;
+    @FXML
+    private CheckBox ckbCancelados;
     @FXML
     private TableView<CuentaXCobrar> tblCuentaxCobrar;
     @FXML
@@ -69,20 +72,29 @@ public class FXML_Buscar_CuentaXCobrar implements Initializable {
 
     @FXML
     private void btnSalir_Click(ActionEvent event) {
-       // AppContext.getInstance().set("seleccion-Cuenta", null);
         Stage stageAct = (Stage) btnSalir.getScene().getWindow();
         stageAct.close();
     }
 
     @FXML
     private void btnConfirmar_Click(ActionEvent event) {
-        if (tblCuentaxCobrar.getSelectionModel().getSelectedItem() != null) {
-            AppContext.getInstance().set("seleccion-Cuenta", tblCuentaxCobrar.getSelectionModel().getSelectedItem());
-            Stage stageAct = (Stage) btnConfirmar.getScene().getWindow();
-            stageAct.close();
-        } else {
-            Message.getInstance().Warning("Cuidado:", "Debe selecionar una fila de la tabla");
+        if (!ckbCancelados.isSelected()) {
+            if (tblCuentaxCobrar.getSelectionModel().getSelectedItem() != null) {
+                AppContext.getInstance().set("seleccion-Cuenta", tblCuentaxCobrar.getSelectionModel().getSelectedItem());
+                Stage stageAct = (Stage) btnConfirmar.getScene().getWindow();
+                stageAct.close();
+            } else {
+                Message.getInstance().Warning("Cuidado:", "Debe selecionar una fila de la tabla");
+            }
+        }else{
+           Message.getInstance().Information("Informacón:","No se pueden modificar registros cancelados");
         }
+    }
+
+    @FXML
+    void ckbCancelados_Click(ActionEvent event) {
+        CargarDatosTabla();
+
     }
 
     //++++++++++++++++++++++++++++++++++++++  Area de procesos en GUI ++++++++++++++++++++++++++++++++++++++++++++
@@ -92,14 +104,17 @@ public class FXML_Buscar_CuentaXCobrar implements Initializable {
      *
      */
     void CargarDatosTabla() {
-
         colCliente.setCellValueFactory((cellData -> new SimpleObjectProperty(cellData.getValue().getCueCliente().getPersona().getPerCedula())));
         colFactura.setCellValueFactory((cellData -> new SimpleObjectProperty(cellData.getValue().getCueFactura().getFacCodigo())));
         colSaldoAct.setCellValueFactory((cellData -> new SimpleObjectProperty<Double>(cellData.getValue().getCueSaldo())));
         colSaldoFactura.setCellValueFactory((cellData -> new SimpleObjectProperty<Double>(cellData.getValue().getCueSaldoFac())));
 
         List<CuentaXCobrar> List = CuentasXCobrarJPAController.getInstance().ConsultarCuentasXCobrar();
-        List = List.stream().filter(x -> x.getCueEstado().equals("A")).collect(Collectors.toList());
+        if (!ckbCancelados.isSelected()) {
+            List = List.stream().filter(x -> x.getCueEstado().equals("A")).collect(Collectors.toList());
+        } else {
+            List = List.stream().filter(x -> x.getCueEstado().equals("I")).collect(Collectors.toList());
+        }
         ObservableList<CuentaXCobrar> CuentasList = FXCollections.observableArrayList(List);
         tblCuentaxCobrar.setItems(CuentasList);
         FiltroDatosTabla(CuentasList);
