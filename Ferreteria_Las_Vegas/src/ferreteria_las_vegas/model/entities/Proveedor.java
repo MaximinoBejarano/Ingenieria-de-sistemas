@@ -178,7 +178,7 @@ public class Proveedor implements Serializable {
 
     @Override
     public String toString() {
-        return "ferreteria_las_vegas.model.entities.Proveedor[ proCodigo=" + proCodigo + " ]";
+        return this.proEstado;
     }
     
 }

@@ -4,6 +4,7 @@
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
@@ -329,6 +330,14 @@
                                         <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                                       </rowConstraints>
                                        <children>
+                                          <Label text="Abonos">
+                                             <font>
+                                                <Font name="System Bold" size="18.0" />
+                                             </font>
+                                             <GridPane.margin>
+                                                <Insets left="4.0" right="4.0" top="4.0" />
+                                             </GridPane.margin>
+                                          </Label>
                                           <Label text="Número de Deposito" GridPane.rowIndex="1">
                                              <GridPane.margin>
                                                 <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
@@ -353,14 +362,11 @@
                                                 <Font size="14.0" />
                                              </font>
                                           </Label>
-                                          <TextField fx:id="txtNumeroDeposito" onKeyTyped="#txtNumeroDepositoTyped" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                          <DatePicker fx:id="dpkFechaAbono" maxWidth="1.7976931348623157E308" minHeight="30.0" promptText="Campo Requerido" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                              <GridPane.margin>
                                                 <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                                              </GridPane.margin>
-                                             <font>
-                                                <Font size="14.0" />
-                                             </font>
-                                          </TextField>
+                                          </DatePicker>
                                           <TextField fx:id="txtMontoAbono" onKeyTyped="#txtMontoAbonoTyped" promptText="Campo Requerido" GridPane.columnIndex="1" GridPane.rowIndex="3">
                                              <GridPane.margin>
                                                 <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
@@ -369,14 +375,6 @@
                                                 <Font size="14.0" />
                                              </font>
                                           </TextField>
-                                          <Label text="Abonos">
-                                             <font>
-                                                <Font name="System Bold" size="18.0" />
-                                             </font>
-                                             <GridPane.margin>
-                                                <Insets left="4.0" right="4.0" top="4.0" />
-                                             </GridPane.margin>
-                                          </Label>
                                           <Button fx:id="btnLimpiarAbono" mnemonicParsing="false" onAction="#btnLimpiarAbonoClick" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1">
                                              <graphic>
                                                 <ImageView fitHeight="29.0" fitWidth="41.0" pickOnBounds="true" preserveRatio="true">
@@ -422,11 +420,32 @@
                                                 <Tooltip text="Agregar Abono" />
                                              </tooltip>
                                           </Button>
-                                          <DatePicker fx:id="dpkFechaAbono" maxWidth="1.7976931348623157E308" minHeight="30.0" promptText="Campo Requerido" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                                             <GridPane.margin>
-                                                <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
-                                             </GridPane.margin>
-                                          </DatePicker>
+                                          <GridPane GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                            <columnConstraints>
+                                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="234.0" minWidth="10.0" prefWidth="217.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="150.0" minWidth="10.0" prefWidth="107.0" />
+                                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="154.0" minWidth="10.0" prefWidth="138.0" />
+                                            </columnConstraints>
+                                             <children>
+                                                <TextField fx:id="txtNumeroDeposito" onKeyTyped="#txtNumeroDepositoTyped">
+                                                   <GridPane.margin>
+                                                      <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                                                   </GridPane.margin>
+                                                   <font>
+                                                      <Font size="14.0" />
+                                                   </font>
+                                                </TextField>
+                                                <ComboBox fx:id="cbxFormaPago" maxWidth="1.7976931348623157E308" minHeight="30.0" promptText="Campo Requerido" GridPane.columnIndex="2" />
+                                                <Label text="Forma de Pago" GridPane.columnIndex="1">
+                                                   <font>
+                                                      <Font size="14.0" />
+                                                   </font>
+                                                   <GridPane.margin>
+                                                      <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                                                   </GridPane.margin>
+                                                </Label>
+                                             </children>
+                                          </GridPane>
                                        </children>
                                     </GridPane>
                                  </children>

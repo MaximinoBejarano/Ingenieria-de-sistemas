@@ -7,10 +7,13 @@ package ferreteria_las_vegas.controller;
 
 import ferreteria_las_vegas.model.controller.CuentasXPagarJpaController;
 import ferreteria_las_vegas.model.controller.ProveedorJpaController;
+import ferreteria_las_vegas.model.controller.TipoPagoJPAController;
+import ferreteria_las_vegas.model.entities.Abono;
 import ferreteria_las_vegas.model.entities.Contacto;
 import ferreteria_las_vegas.model.entities.CuentaXPagar;
 import ferreteria_las_vegas.model.entities.Direccion;
 import ferreteria_las_vegas.model.entities.Proveedor;
+import ferreteria_las_vegas.model.entities.TipoPago;
 import ferreteria_las_vegas.utils.AppContext;
 import ferreteria_las_vegas.utils.GeneralUtils;
 import ferreteria_las_vegas.utils.LoggerManager;
@@ -35,6 +38,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
@@ -45,6 +49,7 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.StringConverter;
 
 /**
  * FXML Controller class
@@ -52,7 +57,7 @@ import javafx.stage.Stage;
  * @author Johan
  */
 public class FXML_ProveedoresController implements Initializable {
-    
+
     @FXML
     private TabPane tabPanel;
 
@@ -130,6 +135,9 @@ public class FXML_ProveedoresController implements Initializable {
     @FXML
     private DatePicker dpkFechaAbono;
 
+    @FXML
+    private ComboBox<TipoPago> cbxFormaPago;
+
     /*--------------------------------------------------------------------------------------------------------------*/
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -137,6 +145,7 @@ public class FXML_ProveedoresController implements Initializable {
         comFlag = false;
         aboFlag = false;
         CargarCuentasXPagar();
+        CargarFormasPago();
     }
 
     /*--------------------------------------------------------------------------------------------------------------*/
@@ -155,8 +164,7 @@ public class FXML_ProveedoresController implements Initializable {
 
     @FXML
     void btnBuscarClick(ActionEvent event) {
-        if (proFlag) {
-            System.out.println("ferreteria_las_vegas.controller.FXML_ProveedoresController.btnBuscarClick()");
+        if (proFlag) {            
             ProcesoBuscarProveedor();
         }
     }
@@ -255,7 +263,19 @@ public class FXML_ProveedoresController implements Initializable {
     /*---------Parte de Cuentas por Pagar---------*/
     @FXML
     void btnAgregarAbonoClick(ActionEvent event) {
-        ProcesoAgregarAbono();
+        if (txtMontoAbono.getText().isEmpty() || dpkFechaAbono.getValue().toString().isEmpty() || cbxFormaPago.getSelectionModel().getSelectedItem()==null) {
+            Message.getInstance().Warning("Información requerida", "Debe completar todos los campos requeridos.");
+        } else {
+            if (tblCuentasXPagar.getSelectionModel().getSelectedItem() != null) {
+                if (tblCuentasXPagar.getSelectionModel().getSelectedItem().getCueSaldo() > 0) {
+                    ProcesoAgregarAbono();
+                } else {
+                    Message.getInstance().Warning("Cuenta cancelada", "La cuenta que selecionó ya fue pagada.");
+                }
+            } else {
+                Message.getInstance().Warning("Selección requerida", "Debe selecionar una cuenta por pagar.");
+            }
+        }
     }
 
     @FXML
@@ -393,12 +413,32 @@ public class FXML_ProveedoresController implements Initializable {
 
     /*---------Parte de Cuentas por Pagar---------*/
     void ProcesoAgregarAbono() {
+        try {
+            double nuevoMonto = Double.parseDouble(txtMontoAbono.getText());
+            CuentaXPagar cuenta = tblCuentasXPagar.getSelectionModel().getSelectedItem();
 
+            if ((cuenta.getCueSaldo() - nuevoMonto) >= 0) {
+                Abono abono = new Abono(Integer.SIZE, java.sql.Date.valueOf(dpkFechaAbono.getValue()), nuevoMonto, "P", "A");
+                abono.setAboNumeroDeposito(txtNumeroDeposito.getText());
+                abono.setAboTipoPago(cbxFormaPago.getSelectionModel().getSelectedItem());
+
+                cuenta.setCueSaldo(cuenta.getCueSaldo() - nuevoMonto);
+                CuentasXPagarJpaController.getInstance().ModificarCuentaXPagar(cuenta, abono);
+                CargarCuentasXPagar();
+                tblCuentasXPagar.getSelectionModel().select(cuenta);
+                Message.getInstance().Information("Acción Exitosa", "El abono se ingresó correctamente.");
+            } else {
+                Message.getInstance().Warning("Monto invalido", "El monto ingresado es mayor que el monto actual.");
+            }
+        } catch (Exception ex) {
+            Message.getInstance().Error("Error", "Ocurrió un error y no se pudo eliminar el abono. "
+                    + "El codigo de error es: " + ex.toString());
+            LoggerManager.Logger().info(ex.toString());
+        }
     }
 
     /*--------------------------------------------------------------------------------------------------------------*/
-    
-    /*---------Parte de Proveedores---------*/
+ /*---------Parte de Proveedores---------*/
     void CargarDatosUsuario(Proveedor proveedor) {
         try {
             txtCedulaJuridica.setText(proveedor.getProCedulaJuridica());
@@ -494,10 +534,33 @@ public class FXML_ProveedoresController implements Initializable {
         sortedData.comparatorProperty().bind(tblCuentasXPagar.comparatorProperty());
         tblCuentasXPagar.setItems(sortedData);
     }
-    
-    /*---------Parte de Cuentas por Pagar---------*/
-    void CargarHistorialAbonos(){
-        
+
+    void CargarFormasPago() {
+        try {
+            ObservableList<TipoPago> OMedidorList = FXCollections.observableArrayList(TipoPagoJPAController.getInstance().Consultar_TiposPagos());
+
+            cbxFormaPago.setConverter(new StringConverter<TipoPago>() {
+                @Override
+                public String toString(TipoPago object) {
+                    return object.getTipNombre();
+                }
+
+                @Override
+                public TipoPago fromString(String string) {
+                    throw new UnsupportedOperationException("Parse Error.");
+                }
+            });
+            cbxFormaPago.setItems(OMedidorList);
+
+        } catch (Exception ex) {
+            LoggerManager.Logger().info(ex.toString());
+            Message.getInstance().Error("Error", "Ocurrió un error y no se pudo cargar la información de formas de pago. "
+                    + "El codigo de error es: " + ex.toString());
+        }
+    }
+
+    void CargarHistorialAbonos() {
+
     }
 
     /*--------------------------------------------------------------------------------------------------------------*/

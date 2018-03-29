@@ -5,6 +5,7 @@
  */
 package ferreteria_las_vegas.model.controller;
 
+import ferreteria_las_vegas.model.entities.Abono;
 import ferreteria_las_vegas.model.entities.CuentaXPagar;
 import ferreteria_las_vegas.utils.EntityManagerHelper;
 import java.util.List;
@@ -72,6 +73,29 @@ public class CuentasXPagarJpaController {
         et = em.getTransaction();
         try {            
             et.begin();
+            em.merge(pCuenta);
+            et.commit();
+            return pCuenta;
+        } catch (EntityExistsException ex) {
+            et.rollback();
+            System.err.println(ex);
+            return null;
+        } catch (Exception ex) {
+            et.rollback();
+            System.err.println(ex);
+            return null;
+        }
+    }
+    
+    public CuentaXPagar ModificarCuentaXPagar(CuentaXPagar pCuenta, Abono abono) {
+        et = em.getTransaction();
+        try {            
+            et.begin();
+            
+            em.persist(abono);
+            em.flush();
+            pCuenta.getAbonoList().add(abono);
+            
             em.merge(pCuenta);
             et.commit();
             return pCuenta;
