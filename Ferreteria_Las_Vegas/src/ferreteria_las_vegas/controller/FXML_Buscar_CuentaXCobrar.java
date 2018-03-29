@@ -69,7 +69,7 @@ public class FXML_Buscar_CuentaXCobrar implements Initializable {
 
     @FXML
     private void btnSalir_Click(ActionEvent event) {
-        AppContext.getInstance().set("seleccion-Cuenta", null);
+       // AppContext.getInstance().set("seleccion-Cuenta", null);
         Stage stageAct = (Stage) btnSalir.getScene().getWindow();
         stageAct.close();
     }
