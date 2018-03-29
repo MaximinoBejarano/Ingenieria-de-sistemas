@@ -6,7 +6,6 @@
 package ferreteria_las_vegas.controller;
 
 import ferreteria_las_vegas.model.controller.CompraJpaController;
-import ferreteria_las_vegas.model.controller.CuentasXCobrarJPAController;
 import ferreteria_las_vegas.model.controller.CuentasXPagarJpaController;
 import ferreteria_las_vegas.model.controller.DetalleInventarioJpaController;
 import ferreteria_las_vegas.model.controller.InventarioJpaController;
@@ -19,6 +18,9 @@ import ferreteria_las_vegas.model.entities.DetalleInventario;
 import ferreteria_las_vegas.model.entities.Inventario;
 import ferreteria_las_vegas.model.entities.Proveedor;
 import ferreteria_las_vegas.utils.AppContext;
+import ferreteria_las_vegas.utils.GeneralUtils;
+import ferreteria_las_vegas.utils.LoggerManager;
+import ferreteria_las_vegas.utils.Message;
 import ferreteria_las_vegas.utils.SearchComboBox;
 import java.io.IOException;
 import java.net.URL;
@@ -56,6 +58,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
@@ -162,6 +165,7 @@ public class FXML_InventarioController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         ComboBoxProveedores();
+        BloquearBotones();
     }
 
     /*Evenetos FXML-----------------------------------------------------------*/
@@ -179,7 +183,6 @@ public class FXML_InventarioController implements Initializable {
                 if (articulo != null) {
 
                     InventarioCompleto inventarioCompleto;
-
                     inventarioCompleto = new InventarioCompleto(articulo, 0, 0, 0);
 
                     if (listaArticulos.isEmpty()) {
@@ -189,7 +192,8 @@ public class FXML_InventarioController implements Initializable {
                         for (int i = 0; i < listasize; i++) {
 
                             if (Objects.equals(listaArticulos.get(i).getArticulo().getArtCodigo(), inventarioCompleto.getArticulo().getArtCodigo())) {
-                                new Alert(Alert.AlertType.WARNING, "Los datos de este Articulo ya se encuentran en la tabla.", ButtonType.OK).showAndWait();
+                                Message.getInstance().Information("Cuidado", "Estos datos ya se encuentran ingresados en la tabla.");
+
                                 break;
                             }
                             if (!listaArticulos.get(i).equals(inventarioCompleto) && ((i + 1) == listasize)) {
@@ -203,7 +207,9 @@ public class FXML_InventarioController implements Initializable {
                 //rellenar los datos del formulario
             }
         } catch (Exception ex) {
-            System.err.print(ex);
+            Message.getInstance().Error("Error", "Ocurrió un error y no se pudo agregar un nuevo producto. "
+                    + "El codigo de error es: " + ex.toString());
+            LoggerManager.Logger().info(ex.toString());
         }
     }
 
@@ -213,58 +219,84 @@ public class FXML_InventarioController implements Initializable {
         if (!txtNomProveedor.getText().isEmpty() && !txtNumFactura.getText().isEmpty()
                 && pickFeccha.getValue() != null && !listaArticulos.isEmpty() && !txtFlete.getText().isEmpty()
                 && !txtServicioCarga.getText().isEmpty()) {
-
             ProcesoNuevaFactura();
 
         } else {
-            new Alert(Alert.AlertType.WARNING, "Debe selecionar un cliente de la tabla.", ButtonType.OK).showAndWait();
-
+            Message.getInstance().Error("Acción no exitosa", "Se deben completar los campos requeridos.");
         }
-
     }
-
 
     @FXML
     private void BuscarArticulo(ActionEvent event) {
-        ProcesoBusquedad();
-        Articulo articulo = (Articulo) AppContext.getInstance().get("articulo-Ingresado");
-        if (articulo != null) {
+        try {
+            ProcesoBusquedad();
+            Articulo articulo = (Articulo) AppContext.getInstance().get("articulo-Ingresado");
+            if (articulo != null) {
 
-            InventarioCompleto inventarioCompleto;
-            inventarioCompleto = new InventarioCompleto(articulo, 0, 0, 0);
+                InventarioCompleto inventarioCompleto;
+                inventarioCompleto = new InventarioCompleto(articulo, 0, 0, 0);
 
-            if (listaArticulos.isEmpty()) {
-                listaArticulos.add(inventarioCompleto);
-            } else {
-                int listasize = listaArticulos.size();
-                for (int i = 0; i < listasize; i++) {
-
-                    if (listaArticulos.get(i).getArticulo().getArtCodigo() == inventarioCompleto.getArticulo().getArtCodigo()) {
-                        new Alert(Alert.AlertType.WARNING, "Los datos de este Articulo ya se encuentran en la tabla.", ButtonType.OK).showAndWait();
-                        break;
+                if (listaArticulos.isEmpty()) {
+                    listaArticulos.add(inventarioCompleto);
+                } else {
+                    int listasize = listaArticulos.size();
+                    for (int i = 0; i < listasize; i++) {
+                        if (Objects.equals(listaArticulos.get(i).getArticulo().getArtCodigo(), inventarioCompleto.getArticulo().getArtCodigo())) {
+                            Message.getInstance().Information("Cuidado", "Estos datos ya se encuentran ingresados en la tabla.");
+                            break;
+                        }
+                        if (!listaArticulos.get(i).equals(inventarioCompleto) && ((i + 1) == listasize)) {
+                            listaArticulos.add(inventarioCompleto);
+                        }
                     }
-                    if (!listaArticulos.get(i).equals(inventarioCompleto) && ((i + 1) == listasize)) {
-                        listaArticulos.add(inventarioCompleto);
-                    }
-
                 }
+
+                RecargarTblClientes();
             }
-
-            RecargarTblClientes();
+        } catch (Exception ex) {
+            Message.getInstance().Error("Error", "Ocurrió un error y no se pudo búscar un nuevo producto. "
+                    + "El codigo de error es: " + ex.toString());
+            LoggerManager.Logger().info(ex.toString());
         }
-
     }
 
     @FXML
     private void EliminarArticuloLista(ActionEvent event) {
-        if (tblProductos.getSelectionModel().getSelectedItem() != null) {
-            listaArticulos.remove(tblProductos.getSelectionModel().getSelectedItem());
-            RecargarTblClientes();
-        } else {
-            new Alert(Alert.AlertType.WARNING, "Debe selecionar una fila de la tabla.", ButtonType.OK).showAndWait();
+        try {
+            if (tblProductos.getSelectionModel().getSelectedItem() != null) {
+                listaArticulos.remove(tblProductos.getSelectionModel().getSelectedItem());
+                RecargarTblClientes();
+            } else {
+                Message.getInstance().Information("Información", "Seleccione un registro de la tabla.");
+            }
+        } catch (Exception ex) {
+            Message.getInstance().Error("Error", "Ocurrió un error y no se pudo eliminar un producto de la tabla. "
+                    + "El codigo de error es: " + ex.toString());
+            LoggerManager.Logger().info(ex.toString());
         }
     }
 
+      @FXML
+    void txtFleteTyped(KeyEvent event) {
+        GeneralUtils.getInstance().ValidarCampos(true, txtFlete.getText().length(), 8, event);
+    }
+
+    @FXML
+    void txtNombreVendTyped(KeyEvent event) {
+        GeneralUtils.getInstance().ValidarCampos(false, txtNomProveedor.getText().length(), 30, event);
+    }
+
+    @FXML
+    void txtNumFacturaTyped(KeyEvent event) {
+        GeneralUtils.getInstance().ValidarCampos(false, txtNumFactura.getText().length(), 30, event);
+    }
+
+    @FXML
+    void txtServicioCargaTyped(KeyEvent event) {
+        GeneralUtils.getInstance().ValidarCampos(true, txtServicioCarga.getText().length(), 8, event);
+    }
+
+    
     /*Procesos fundamentales--------------------------------------------------*/
     public void ProcesoBusquedad() {
         try {
@@ -277,90 +309,105 @@ public class FXML_InventarioController implements Initializable {
             stage.showAndWait();
 
         } catch (Exception ex) {
-            System.err.print(ex);
+            Message.getInstance().Error("Error", "Ocurrió un error y no se pudo abrir la pantalla de búsqueda de productos. "
+                    + "El codigo de error es: " + ex.toString());
+            LoggerManager.Logger().info(ex.toString());
         }
     }
 
     public void ProcesoNuevaFactura() {
+        try {
+            if (!lblTotal.getText().equals("0")) {
+                Compra compra = new Compra();
+                // susutituir por metodo de busca de proveedor 
+                Proveedor pro = ProveedorJpaController.getInstance().ConsultarProveedoresTodos().get(0);
 
-        Compra compra = new Compra();
-        // susutituir por metodo de busca de proveedor 
-        Proveedor pro = ProveedorJpaController.getInstance().ConsultarProveedoresTodos().get(0);
-
-        compra.setComProveedor(pro);
-        compra.setComNombre(txtNomProveedor.getText());
-        compra.setComNumeroFact(txtNumFactura.getText());
-        compra.setComFlete(Double.valueOf(txtFlete.getText()));
-        compra.setComServCarga(Double.valueOf(txtServicioCarga.getText()));
-        if (rdbContado.isSelected()) {
-            compra.setComTipoFact("D");
-        } else if (rdbCredito.isSelected()) {
-            compra.setComTipoFact("C");
-        }
-        compra.setComCodigo(Integer.SIZE);
-        compra.setComFecha(Date.from(Instant.from(pickFeccha.getValue().atStartOfDay(ZoneId.systemDefault()))));
-        compra.setComSubTotal(Double.valueOf(lblSubtotal.getText()));
-        compra.setComDescuento(Double.valueOf(lblDescuento.getText()));
-        compra.setComImpVenta(Double.valueOf(lblImpuesto.getText()));
-        compra.setComTotal(Double.valueOf(lblTotal.getText()));
-        compra.setComEstado("A");
-        compra.setComFleteC(Double.valueOf(0));
-
-        List<ArticuloXCompra> lArticulos = new ArrayList<>();
-
-        for (InventarioCompleto listaArticulo : listaArticulos) {
-
-            ArticuloXCompra articuloXcompra = new ArticuloXCompra();
-            articuloXcompra.setArtCodigo(Integer.SIZE);
-            articuloXcompra.setArtArticulo(listaArticulo.getArticulo());
-            articuloXcompra.setArtCantidad(listaArticulo.getCantArticulo());
-            articuloXcompra.setArtCompra(compra);
-            articuloXcompra.setArtPrecio(listaArticulo.getPrecioArt());
-            articuloXcompra.setArtEstado("A");
-            lArticulos.add(articuloXcompra);
-
-            if (ckbAplicar.isSelected()) {
-
-                Inventario pInventario = new Inventario();
-                pInventario.setInvCodigo(Integer.SIZE);
-                pInventario.setInvArticulo(listaArticulo.getArticulo());
-                pInventario.setInvBodega(null);
-                pInventario.setInvFecha(new Date());
-                pInventario.setInvCantidad(listaArticulo.getCantArticulo());
-                pInventario.setInvEstado("A");
-
-                DetalleInventario pDetalleInventario = new DetalleInventario();
-                pDetalleInventario.setDetCodigo(Integer.SIZE);
-                pDetalleInventario.setDetFecha(new Date());
-                pDetalleInventario.setDetPrecio(listaArticulo.getPrecioArt());
-                pDetalleInventario.setDetInventario(pInventario);
-
-                Inventario i = new InventarioJpaController().ConsultarInventarioCodigoProducto(pInventario.getInvArticulo().getArtCodigo());
-
-                if (new InventarioJpaController().ConsultarInventarioCodigoProducto(pInventario.getInvArticulo().getArtCodigo()) != null) {
-
-                    pInventario = new InventarioJpaController().ConsultarInventarioCodigoProducto(pInventario.getInvArticulo().getArtCodigo());
-                    pInventario.setInvCantidad(pInventario.getInvCantidad() + listaArticulo.getCantArticulo());
-                    pDetalleInventario.setDetInventario(pInventario);
-                    new DetalleInventarioJpaController().AgregarDetalleInventario(pDetalleInventario);
-                    new InventarioJpaController().ModificarInventario(pInventario);
-                } else {
-                    new InventarioJpaController().InsertarInvetario(pInventario, pDetalleInventario);
+                compra.setComProveedor(pro);
+                compra.setComNombre(txtNomProveedor.getText());
+                compra.setComNumeroFact(txtNumFactura.getText());
+                compra.setComFlete(Double.valueOf(txtFlete.getText()));
+                compra.setComServCarga(Double.valueOf(txtServicioCarga.getText()));
+                if (rdbContado.isSelected()) {
+                    compra.setComTipoFact("D");
+                } else if (rdbCredito.isSelected()) {
+                    compra.setComTipoFact("C");
                 }
+                compra.setComCodigo(Integer.SIZE);
+                compra.setComFecha(Date.from(Instant.from(pickFeccha.getValue().atStartOfDay(ZoneId.systemDefault()))));
+                compra.setComSubTotal(Double.valueOf(lblSubtotal.getText()));
+                compra.setComDescuento(Double.valueOf(lblDescuento.getText()));
+                compra.setComImpVenta(Double.valueOf(lblImpuesto.getText()));
+                compra.setComTotal(Double.valueOf(lblTotal.getText()));
+                compra.setComEstado("A");
+                compra.setComFleteC(Double.valueOf(0));
+
+                List<ArticuloXCompra> lArticulos = new ArrayList<>();
+
+                for (InventarioCompleto listaArticulo : listaArticulos) {
+
+                    ArticuloXCompra articuloXcompra = new ArticuloXCompra();
+                    articuloXcompra.setArtCodigo(Integer.SIZE);
+                    articuloXcompra.setArtArticulo(listaArticulo.getArticulo());
+                    articuloXcompra.setArtCantidad(listaArticulo.getCantArticulo());
+                    articuloXcompra.setArtCompra(compra);
+                    articuloXcompra.setArtPrecio(listaArticulo.getPrecioArt());
+                    articuloXcompra.setArtEstado("A");
+                    lArticulos.add(articuloXcompra);
+
+                    if (ckbAplicar.isSelected()) {
+
+                        Inventario pInventario = new Inventario();
+                        pInventario.setInvCodigo(Integer.SIZE);
+                        pInventario.setInvArticulo(listaArticulo.getArticulo());
+                        pInventario.setInvBodega(null);
+                        pInventario.setInvFecha(new Date());
+                        pInventario.setInvCantidad(listaArticulo.getCantArticulo());
+                        pInventario.setInvEstado("A");
+
+                        DetalleInventario pDetalleInventario = new DetalleInventario();
+                        pDetalleInventario.setDetCodigo(Integer.SIZE);
+                        pDetalleInventario.setDetFecha(new Date());
+                        pDetalleInventario.setDetPrecio(listaArticulo.getPrecioArt());
+                        pDetalleInventario.setDetInventario(pInventario);
+
+                        Inventario i = new InventarioJpaController().ConsultarInventarioCodigoProducto(pInventario.getInvArticulo().getArtCodigo());
+
+                        if (new InventarioJpaController().ConsultarInventarioCodigoProducto(pInventario.getInvArticulo().getArtCodigo()) != null) {
+
+                            pInventario = new InventarioJpaController().ConsultarInventarioCodigoProducto(pInventario.getInvArticulo().getArtCodigo());
+                            pInventario.setInvCantidad(pInventario.getInvCantidad() + listaArticulo.getCantArticulo());
+                            pDetalleInventario.setDetInventario(pInventario);
+                            new DetalleInventarioJpaController().AgregarDetalleInventario(pDetalleInventario);
+                            new InventarioJpaController().ModificarInventario(pInventario);
+                        } else {
+                            new InventarioJpaController().InsertarInvetario(pInventario, pDetalleInventario);
+                        }
+                    }
+                }
+                if (rdbContado.isSelected()) {
+                    new CompraJpaController().InsertarCompra(compra, lArticulos);
+                } else if (rdbCredito.isSelected()) {
+                    Compra pCompra = new CompraJpaController().InsertarCompra(compra, lArticulos);
+                    CuentaXPagar pCuenta = new CuentaXPagar();
+                    pCuenta.setCueCodigo(Integer.SIZE);
+                    pCuenta.setCueCompra(pCompra);
+                    pCuenta.setCueProveedor(pCompra.getComProveedor());
+                    pCuenta.setCueSaldo(pCompra.getComTotal());
+                    pCuenta.setCueSaldoCompra(pCompra.getComTotal());
+                    pCuenta.setCueEstado("A");
+                    new CuentasXPagarJpaController().AgregarCuentaXCobrar(pCuenta);
+                }
+
+                Message.getInstance().Confirmation("Exito", "El proceso de registro de una factura de inventario se a realizado exitosamente.");
+                LimpiarInterface();
+            } else {
+                Message.getInstance().Error("Error", "El proceso de registro de una factura de inventario no se puede realizar con un monto total de cero.");
             }
-        }
-        if (rdbContado.isSelected()) {
-            new CompraJpaController().InsertarCompra(compra, lArticulos);
-        } else if (rdbCredito.isSelected()) {
-            Compra pCompra = new CompraJpaController().InsertarCompra(compra, lArticulos);
-            CuentaXPagar pCuenta = new CuentaXPagar();
-            pCuenta.setCueCodigo(Integer.SIZE);
-            pCuenta.setCueCompra(pCompra);
-            pCuenta.setCueProveedor(pCompra.getComProveedor());
-            pCuenta.setCueSaldo(pCompra.getComTotal());
-            pCuenta.setCueSaldoCompra(pCompra.getComTotal());
-            pCuenta.setCueEstado("A");
-            new CuentasXPagarJpaController().AgregarCuentaXCobrar(pCuenta);
+
+        } catch (Exception ex) {
+            Message.getInstance().Error("Error", "Ocurrió un error y no se pudo agregar la factura de Inventario. "
+                    + "El codigo de error es: " + ex.toString());
+            LoggerManager.Logger().info(ex.toString());
         }
     }
 
@@ -374,7 +421,9 @@ public class FXML_InventarioController implements Initializable {
             stage.initOwner(btnNuevoProducto.getScene().getWindow());
             stage.showAndWait();
         } catch (IOException ex) {
-            Logger.getLogger(FXML_InventarioController.class.getName()).log(Level.SEVERE, null, ex);
+            Message.getInstance().Error("Error", "Ocurrió un error al intentar abrir la pantalla de Productos. "
+                    + "El codigo de error es: " + ex.toString());
+            LoggerManager.Logger().info(ex.toString());
         }
 
     }
@@ -395,98 +444,130 @@ public class FXML_InventarioController implements Initializable {
             EditarTable();
             tcDescuento.setCellValueFactory((cellData) -> new SimpleStringProperty(String.valueOf(cellData.getValue().getDescuentoComercio())));
             tblProductos.setItems(FXCollections.observableArrayList(listaArticulos));
-        } catch (Exception e) {
-            new Alert(Alert.AlertType.ERROR, "Ocurrio un error al recargar la tabla.", ButtonType.OK).showAndWait();
+            AppContext.getInstance().set("articulo-Ingresado", null);
+        } catch (Exception ex) {
+            Message.getInstance().Error("Error", "Ocurrió un error y no se pudo recargar la tabla. "
+                    + "El codigo de error es: " + ex.toString());
+            LoggerManager.Logger().info(ex.toString());
         }
     }
 
     /*Otros metodos-----------------------------------------------------------*/
     public void EditarTable() {
-        tcPrcioProducto.setOnEditCommit(data -> {
-            String valor = data.getNewValue().replace(",", ".");
-            data.getRowValue().setPrecioArt(Double.valueOf(valor));
-        });
-        tcCantidad.setOnEditCommit(data -> {
-            if (data.getRowValue().getPrecioArt() != 0) {
-                if (!txtFlete.getText().isEmpty() && !txtServicioCarga.getText().isEmpty()) {
-                    TextInputDialog dialog = new TextInputDialog("0");
-                    dialog.setTitle("Descuentos");
-                    dialog.setHeaderText("¿Desea agregar un descuento a este producto?");
-                    dialog.setContentText("Porcentaje del descuento:");
-                    Optional<String> result = dialog.showAndWait();
-                    if (result.isPresent()) {
-                        if (result.get().length() > 1) {
-                            data.getRowValue().setDescuentoComercio(Double.valueOf("0." + result.get()));
-                        } else {
-                            data.getRowValue().setDescuentoComercio(Double.valueOf("0.0" + result.get()));
+        try {
+            tcPrcioProducto.setOnEditCommit(data -> {
+                String valor = data.getNewValue().replace(",", ".");
+                data.getRowValue().setPrecioArt(Double.valueOf(valor));
+                
+            });
+            tcCantidad.setOnEditCommit(data -> {
+                if (data.getRowValue().getPrecioArt() != 0) {
+                    if (!txtFlete.getText().isEmpty() && !txtServicioCarga.getText().isEmpty()) {
+                        TextInputDialog dialog = new TextInputDialog("0");
+                        dialog.setTitle("Descuentos");
+                        dialog.setHeaderText("¿Desea agregar un descuento a este producto?");
+                        dialog.setContentText("Porcentaje del descuento:");
+                        Optional<String> result = dialog.showAndWait();
+                        if (result.isPresent()) {
+                            if (result.get().length() > 1) {
+                                data.getRowValue().setDescuentoComercio(Double.valueOf("0." + result.get()));
+                            } else {
+                                data.getRowValue().setDescuentoComercio(Double.valueOf("0.0" + result.get()));
+                            }
+                            RecargarTblClientes();
                         }
+                        data.getRowValue().setCantArticulo(Integer.valueOf(data.getNewValue()));
+
+                        lblSubtotal.setText(String.format("%.2f", (Double.valueOf(lblSubtotal.getText())
+                                + (data.getRowValue().getArticulo().getArtPrecio()
+                                * Double.valueOf(data.getNewValue()))))
+                        );
+                        lblImpuesto.setText(String.format("%.2f", ((Double.valueOf(lblSubtotal.getText()) - Double.valueOf(lblDescuento.getText())) * 0.13)));
+                        lblDescuento.setText(String.format("%.2f", (Double.valueOf(lblDescuento.getText()) + ((data.getRowValue().getArticulo().getArtPrecio()
+                                * Double.valueOf(data.getNewValue())) * data.getRowValue().getDescuentoComercio())))
+                        );
+                        lblTotal.setText(String.format("%.2f", ((Double.valueOf(lblSubtotal.getText()) - Double.valueOf(lblDescuento.getText()))
+                                + (Double.valueOf(lblImpuesto.getText()) + Double.valueOf(txtFlete.getText()) + Double.valueOf(txtServicioCarga.getText())))));
+                    } else {
+                        Message.getInstance().Error("Error", "Ocurrió un error y se debe completar el campo del valor del flete y servicio de carga.");
+                        data.consume();
                         RecargarTblClientes();
                     }
-                    data.getRowValue().setCantArticulo(Integer.valueOf(data.getNewValue()));
-
-                    lblSubtotal.setText(String.format("%.2f", (Double.valueOf(lblSubtotal.getText())
-                            + (data.getRowValue().getArticulo().getArtPrecio()
-                            * Double.valueOf(data.getNewValue()))))
-                    );
-                    lblImpuesto.setText(String.format("%.2f", ((Double.valueOf(lblSubtotal.getText()) - Double.valueOf(lblDescuento.getText())) * 0.13)));
-                    lblDescuento.setText(String.format("%.2f", (Double.valueOf(lblDescuento.getText()) + ((data.getRowValue().getArticulo().getArtPrecio()
-                            * Double.valueOf(data.getNewValue())) * data.getRowValue().getDescuentoComercio())))
-                    );
-                    lblTotal.setText(String.format("%.2f", ((Double.valueOf(lblSubtotal.getText()) - Double.valueOf(lblDescuento.getText()))
-                            + (Double.valueOf(lblImpuesto.getText()) + Double.valueOf(txtFlete.getText()) + Double.valueOf(txtServicioCarga.getText())))));
                 } else {
-                    new Alert(Alert.AlertType.ERROR, "Se debe completar el campo del valor del flete y servicio de carga", ButtonType.OK).showAndWait();
+                    Message.getInstance().Information("Cuidado", "El precio de un articulo no puede ser 0");
                     data.consume();
                     RecargarTblClientes();
                 }
-            } else {
-                new Alert(Alert.AlertType.ERROR, "El precio de un articulo no puede ser 0", ButtonType.OK).showAndWait();
-                data.consume();
-                RecargarTblClientes();
-            }
-        });
-
-    }
-    
-        private void CargarProveedores(SearchComboBox<Proveedor> box) {
-        try {
-            List<Proveedor> proveedores = new ProveedorJpaController().ConsultarProveedoresTodos().stream().filter(e -> e.getProEstado().equalsIgnoreCase("A")).collect(Collectors.toList());
- 
-            ObservableList<Proveedor> OClienteList = FXCollections.observableArrayList(proveedores);
-         
-            box.setItems(OClienteList);
+            });
         } catch (Exception ex) {
-           
-            new Alert(Alert.AlertType.ERROR, "Ocurrió un error al cargar los clientes. Codigo de error: " + ex, ButtonType.OK).showAndWait();
+            Message.getInstance().Error("Error", "Ocurrió un error y no se pudo búscar un nuevo producto. "
+                    + "El codigo de error es: " + ex.toString());
+            LoggerManager.Logger().info(ex.toString());
         }
     }
-    
-    private void ComboBoxProveedores(){
-    
+
+    private void CargarProveedores(SearchComboBox<Proveedor> box) {
+        try {
+            List<Proveedor> proveedores = new ProveedorJpaController().ConsultarProveedoresTodos().stream().filter(e -> e.getProEstado().equalsIgnoreCase("A")).collect(Collectors.toList());
+
+            ObservableList<Proveedor> OClienteList = FXCollections.observableArrayList(proveedores);
+
+            box.setItems(OClienteList);
+
+        } catch (Exception ex) {
+
+            Message.getInstance().Error("Error", "Ocurrió un error y no se pudo cargar la información de los proveedores. "
+                    + "El codigo de error es: " + ex.toString());
+            LoggerManager.Logger().info(ex.toString());
+        }
+    }
+
+    private void ComboBoxProveedores() {
+
         try {
             boxProveedores = new SearchComboBox<>();
             boxProveedores.setMinHeight(33);
             boxProveedores.setMinWidth(176);
             boxProveedores.getSelectionModel().select(0);
             boxProveedores.setPromptText("Selecionar Proveedor");
-            boxProveedores.setFilter((Proveedor t, String u) -> (t.getProCedulaJuridica()).toUpperCase().contains(u.toUpperCase()));
+            boxProveedores.setFilter((Proveedor t, String u) -> (t.getProNombre()).toUpperCase().contains(u.toUpperCase()));
             CargarProveedores(boxProveedores);
 
             SearchBoxGrid.add(boxProveedores, 0, 0);
 
-
         } catch (Exception ex) {
-    
-            new Alert(Alert.AlertType.ERROR, "Ocurrió un error al cargar los clientes. Codigo de error: " + ex, ButtonType.OK).showAndWait();
+            Message.getInstance().Error("Error", "Ocurrió un error y no se pudo cargar el combo box de proveedores. "
+                    + "El codigo de error es: " + ex.toString());
+            LoggerManager.Logger().info(ex.toString());
         }
 
-        
     }
- 
 
     /*Metodos GUI-------------------------------------------------------------*/
- /*Metodos Lanzadores------------------------------------------------------*/
+    private void LimpiarInterface() {
+        txtFlete.clear();
+        txtServicioCarga.clear();
+        txtNomProveedor.clear();
+        txtNumFactura.clear();
+        rdbContado.setSelected(true);
+        pickFeccha.getEditor().clear();
+        ckbAplicar.setSelected(false);
+        tblProductos.getItems().clear();
+        lblDescuento.setText("0");
+        lblImpuesto.setText("0");
+        lblSubtotal.setText("0");
+        lblTotal.setText("0");
+        btnEliminarProducto.setDisable(true);
+        btnEliminarFactura.setDisable(true);
+        btnEditarFactura.setDisable(true);
+    }
+    private void BloquearBotones(){
+        btnEliminarProducto.setDisable(false);
+        btnEliminarFactura.setDisable(false);
+        btnEditarFactura.setDisable(false);
+    }
+    /*Metodos Lanzadores------------------------------------------------------*/
  /*Variables de Clase------------------------------------------------------*/
-   private ArrayList<InventarioCompleto> listaArticulos = new ArrayList<InventarioCompleto>();
-   private SearchComboBox<Proveedor> boxProveedores;
+    private ArrayList<InventarioCompleto> listaArticulos = new ArrayList<InventarioCompleto>();
+    private SearchComboBox<Proveedor> boxProveedores;
 }

@@ -119,7 +119,7 @@
                               <Insets bottom="1.0" left="10.0" right="1.0" top="1.0" />
                            </GridPane.margin>
                         </Label>
-                        <Label text="Número de Factura:" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+                        <Label text="Número de Factura:" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.valignment="CENTER">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -127,7 +127,7 @@
                               <Insets bottom="1.0" left="10.0" right="1.0" top="1.0" />
                            </GridPane.margin>
                         </Label>
-                        <Label prefHeight="20.0" prefWidth="250.0" text="Tipo de pagó de Compra:" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.valignment="CENTER">
+                        <Label prefHeight="20.0" prefWidth="250.0" text="Tipo de pagó de Compra:" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -135,7 +135,7 @@
                               <Insets bottom="1.0" left="10.0" right="1.0" top="1.0" />
                            </GridPane.margin>
                         </Label>
-                        <TextField fx:id="txtNomProveedor" prefHeight="30.0" prefWidth="275.0" promptText="Campo Requerido" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                        <TextField fx:id="txtNomProveedor" onKeyTyped="#txtNombreVendTyped" prefHeight="30.0" prefWidth="275.0" promptText="Campo Requerido" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -143,10 +143,32 @@
                               <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
                            </GridPane.margin>
                            <tooltip>
-                              <Tooltip text="Nombre del Proveedor" />
+                              <Tooltip text="Nombre del vendedor de los productos." />
                            </tooltip>
                         </TextField>
-                        <TextField fx:id="txtNumFactura" promptText="Campo Requerido" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+                        <TextField fx:id="txtFlete" onKeyTyped="#txtFleteTyped" promptText="Campo Requerido" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                           <GridPane.margin>
+                              <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
+                           </GridPane.margin>
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                           <tooltip>
+                              <Tooltip text="Monto que se paga por el  transporte del material." />
+                           </tooltip>
+                        </TextField>
+                        <TextField fx:id="txtServicioCarga" onKeyTyped="#txtServicioCargaTyped" promptText="Campo Requerido" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                           <GridPane.margin>
+                              <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
+                           </GridPane.margin>
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                           <tooltip>
+                              <Tooltip text="Monto que se paga por la carga y descarga de materiales." />
+                           </tooltip>
+                        </TextField>
+                        <TextField fx:id="txtNumFactura" onKeyTyped="#txtNumFacturaTyped" promptText="Campo Requerido" GridPane.columnIndex="3" GridPane.halignment="LEFT" GridPane.valignment="CENTER">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -154,26 +176,10 @@
                               <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
                            </GridPane.margin>
                            <tooltip>
-                              <Tooltip text="Número de la Factura de Compra" />
+                              <Tooltip text="Número de la Factura de Compra." />
                            </tooltip>
                         </TextField>
-                        <TextField fx:id="txtFlete" promptText="Campo Requerido" GridPane.columnIndex="1" GridPane.rowIndex="3">
-                           <GridPane.margin>
-                              <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
-                           </GridPane.margin>
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                        </TextField>
-                        <TextField fx:id="txtServicioCarga" promptText="Campo Requerido" GridPane.columnIndex="1" GridPane.rowIndex="4">
-                           <GridPane.margin>
-                              <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
-                           </GridPane.margin>
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                        </TextField>
-                        <GridPane GridPane.columnIndex="3" GridPane.halignment="LEFT" GridPane.valignment="CENTER">
+                        <GridPane GridPane.columnIndex="3" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                            <children>
                               <RadioButton fx:id="rdbContado" mnemonicParsing="false" selected="true" text="Contado" GridPane.halignment="LEFT" GridPane.valignment="CENTER">
                                  <GridPane.margin>
@@ -206,17 +212,23 @@
                               <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
                            </GridPane.margin>
                         </GridPane>
-                        <DatePicker fx:id="pickFeccha" prefHeight="25.0" prefWidth="219.0" promptText="Campo Requerido" GridPane.columnIndex="3" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                        <DatePicker fx:id="pickFeccha" prefHeight="25.0" prefWidth="219.0" promptText="Campo Requerido" GridPane.columnIndex="3" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="CENTER">
                            <GridPane.margin>
                               <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
                            </GridPane.margin>
+                           <tooltip>
+                              <Tooltip text="Fécha en la que se realiza la compra." />
+                           </tooltip>
                         </DatePicker>
-                        <CheckBox fx:id="ckbAplicar" mnemonicParsing="false" text="Aplicada " GridPane.columnIndex="3" GridPane.rowIndex="2">
+                        <CheckBox fx:id="ckbAplicar" mnemonicParsing="false" text="Aplicada " GridPane.columnIndex="3" GridPane.rowIndex="3">
                            <font>
                               <Font size="14.0" />
                            </font>
+                           <tooltip>
+                              <Tooltip text="Esta casilla permite enviar los productos al inventario directamente." />
+                           </tooltip>
                         </CheckBox>
-                        <Label text="Fécha de Recibido:" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                        <Label text="Fécha de Recibido:" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="CENTER">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -224,21 +236,21 @@
                               <Insets bottom="1.0" left="10.0" right="1.0" top="1.0" />
                            </GridPane.margin>
                         </Label>
-                        <Label text="Flete: " GridPane.rowIndex="3">
+                        <Label text="Flete: " GridPane.rowIndex="2">
                            <GridPane.margin>
                               <Insets bottom="1.0" left="10.0" right="1.0" top="1.0" />
                            </GridPane.margin>
                            <font>
                               <Font size="14.0" />
                            </font></Label>
-                        <Label text="Servicio de Carga: " GridPane.rowIndex="4">
+                        <Label text="Servicio de Carga: " GridPane.rowIndex="3">
                            <GridPane.margin>
                               <Insets bottom="1.0" left="10.0" right="1.0" top="1.0" />
                            </GridPane.margin>
                            <font>
                               <Font size="14.0" />
                            </font></Label>
-                        <Label text="Estado de la Factura: " GridPane.columnIndex="2" GridPane.rowIndex="2">
+                        <Label text="Estado de la Factura: " GridPane.columnIndex="2" GridPane.rowIndex="3">
                            <GridPane.margin>
                               <Insets bottom="1.0" left="10.0" right="1.0" top="1.0" />
                            </GridPane.margin>
@@ -277,7 +289,6 @@
                         <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                   </GridPane>
                   <GridPane layoutY="517.0" prefHeight="76.0" prefWidth="300.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0">
@@ -306,7 +317,7 @@
                               <Tooltip text="Bucar y cargar Articulos ya Creados" />
                            </tooltip>
                         </Button>
-                        <Button fx:id="btnEliminarProducto" mnemonicParsing="false" onAction="#EliminarArticuloLista" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                        <Button fx:id="btnEliminarProducto" disable="true" mnemonicParsing="false" onAction="#EliminarArticuloLista" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                            <graphic>
                               <ImageView fitHeight="40.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
