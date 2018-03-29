@@ -100,8 +100,8 @@ public class FXML_BuscarProveedoresController implements Initializable {
     }
     
     /*--------------------------------------------------------------------------------------------------------------*/
-    void FiltroDatosTabla(ObservableList<Proveedor> OLecturaList){
-        FilteredList<Proveedor> filteredData = new FilteredList<>(OLecturaList, p -> true);
+    void FiltroDatosTabla(ObservableList<Proveedor> OList){
+        FilteredList<Proveedor> filteredData = new FilteredList<>(OList, p -> true);
         txtFiltro.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
             filteredData.setPredicate((Proveedor proveedor) -> {
                 if (newValue == null || newValue.isEmpty()) {

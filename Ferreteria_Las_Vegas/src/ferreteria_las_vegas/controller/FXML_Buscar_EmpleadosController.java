@@ -103,8 +103,8 @@ public class FXML_Buscar_EmpleadosController implements Initializable {
     }
 
     /*--------------------------------------------------------------------------------------------------------------*/
-    void FiltroDatosTabla(ObservableList<Persona> OLecturaList) {
-        FilteredList<Persona> filteredData = new FilteredList<>(OLecturaList, p -> true);
+    void FiltroDatosTabla(ObservableList<Persona> OList) {
+        FilteredList<Persona> filteredData = new FilteredList<>(OList, p -> true);
         txtFiltro.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
             filteredData.setPredicate((Persona persona) -> {
                 if (newValue == null || newValue.isEmpty()) {

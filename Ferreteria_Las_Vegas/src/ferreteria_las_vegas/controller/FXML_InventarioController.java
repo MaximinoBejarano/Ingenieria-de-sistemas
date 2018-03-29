@@ -8,7 +8,7 @@ package ferreteria_las_vegas.controller;
 import ferreteria_las_vegas.model.controller.ArticulosXCompraJpaController;
 import ferreteria_las_vegas.model.controller.CompraJpaController;
 import ferreteria_las_vegas.model.controller.CuentasXCobrarJPAController;
-import ferreteria_las_vegas.model.controller.CuestasXPagarJpaController;
+import ferreteria_las_vegas.model.controller.CuentasXPagarJpaController;
 import ferreteria_las_vegas.model.controller.InventarioJpaController;
 import ferreteria_las_vegas.model.controller.ProveedorJpaController;
 import ferreteria_las_vegas.model.entities.Articulo;
@@ -288,7 +288,7 @@ public class FXML_InventarioController implements Initializable {
             pCuenta.setCueSaldo(pCompra.getComTotal());
             pCuenta.setCueSaldoCompra(pCompra.getComTotal());
             pCuenta.setCueEstado("A");
-            new CuestasXPagarJpaController().AgregarCuentaXCobrar(pCuenta);
+            new CuentasXPagarJpaController().AgregarCuentaXCobrar(pCuenta);
         }
 
     }

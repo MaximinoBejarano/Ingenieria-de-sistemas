@@ -334,7 +334,7 @@ public class FXML_EmpleadosController implements Initializable {
                 }
             } else {
                 if(Message.getInstance().Confirmation("Empleado Existente", "Ya existe un empleado registrado con el mismo numero de cedula.\n"
-                        + "¿Desea sobre actualizar la informacón?")){
+                        + "¿Desea actualizar la informacón?")){
                     ProcesoEditar();
                 }                
             }
@@ -542,7 +542,7 @@ public class FXML_EmpleadosController implements Initializable {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/ferreteria_las_vegas/view/FXML_Buscar_Empleados.fxml"));
             Parent root = (Parent) fxmlLoader.load();
-            Stage stage = new Stage(StageStyle.UTILITY);
+            Stage stage = new Stage();
             stage.initOwner(btnBuscar.getScene().getWindow());
             stage.setScene(new Scene(root));
             stage.initModality(Modality.WINDOW_MODAL);
