@@ -6,6 +6,7 @@
 package ferreteria_las_vegas.model.controller;
 
 import ferreteria_las_vegas.model.entities.Articulo;
+import ferreteria_las_vegas.model.entities.DetalleInventario;
 import ferreteria_las_vegas.model.entities.Inventario;
 import ferreteria_las_vegas.utils.EntityManagerHelper;
 import java.util.List;
@@ -51,11 +52,19 @@ public class InventarioJpaController {
      * @return articulo
      */
 
-    public Inventario InsertarInvetario(Inventario Art) {
+    public Inventario InsertarInvetario(Inventario Art, DetalleInventario Det) {
         et = em.getTransaction();
         try {
             et.begin();
             em.persist(Art);
+            em.flush();
+            
+            if(Det!=null){
+            em.persist(Det);
+            em.flush();
+            Art.getDetalleInventarioList().add(Det);
+            }
+            em.merge(Art);
             et.commit();
             return Art;
         } catch (Exception ex) {
@@ -64,20 +73,23 @@ public class InventarioJpaController {
             return null;
         }
     }
+    
+ 
 
     /**
      * Metodo para realizar la edicion de articulos
      *
-     * @param pArticulo
+     * @param pInventario
+     *
      * @return
      */
-    public Articulo ModificarArticulos(Articulo pArticulo) {
-        et = em.getTransaction();
-        try {
+    public Inventario ModificarInventario(Inventario pInventario) {
+         et = em.getTransaction();
+        try {            
             et.begin();
-            em.merge(pArticulo);
+            em.merge(pInventario);
             et.commit();
-            return pArticulo;
+            return pInventario;
         } catch (EntityExistsException ex) {
             et.rollback();
             System.err.println(ex);
@@ -112,7 +124,7 @@ public class InventarioJpaController {
      * @param pCodigo
      * @return
      */
-    public  Inventario ConsultarInventarioCodigoProducto(Articulo pCodigo) {
+    public  Inventario ConsultarInventarioCodigoProducto(int pCodigo) {
         try {
             Query qry = em.createNamedQuery("Inventario.findByInvCodArticulo", Inventario.class);// consulta definida 
             qry.setParameter("invArticulo", pCodigo);

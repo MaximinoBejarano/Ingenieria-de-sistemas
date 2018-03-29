@@ -18,22 +18,22 @@ import javax.persistence.Query;
  * @author johan
  */
 
-public class CuestasXPagarJpaController {
-    private static CuestasXPagarJpaController INSTANCE = null;
+public class CuentasXPagarJpaController {
+    private static CuentasXPagarJpaController INSTANCE = null;
 
     private static void createInstance() {
         if (INSTANCE == null) {
 
-            synchronized (CuestasXPagarJpaController.class) {
+            synchronized (CuentasXPagarJpaController.class) {
 
                 if (INSTANCE == null) {
-                    INSTANCE = new CuestasXPagarJpaController();
+                    INSTANCE = new CuentasXPagarJpaController();
                 }
             }
         }
     }
 
-    public static CuestasXPagarJpaController getInstance() {
+    public static CuentasXPagarJpaController getInstance() {
         if (INSTANCE == null) {
             createInstance();
         }

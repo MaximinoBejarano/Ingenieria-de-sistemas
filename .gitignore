@@ -1,3 +1,20 @@
 /Ferreteria_Las_Vegas/nbproject/private/
 /Ferreteria_Las_Vegas/build/
 /Ferreteria_Las_Vegas/dist/
+<<<<<<< HEAD
+/Ferreteria_Las_Vegas/logs/
+=======
+/Ferreteria_Las_Vegas/logs/
+
+# Compiled class file
+*.class
+
+# Log file
+*.log
+
+# BlueJ files
+*.ctxt
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+>>>>>>> 9743de685bdc23e1d5a060c079b9bf8e7b7b708f
