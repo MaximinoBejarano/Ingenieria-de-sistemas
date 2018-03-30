@@ -87,7 +87,7 @@ public class CuentasXPagarJpaController {
         }
     }
     
-    public CuentaXPagar ModificarCuentaXPagar(CuentaXPagar pCuenta, Abono abono) {
+    public CuentaXPagar ModificarCuentaXPagarAgregarAbono(CuentaXPagar pCuenta, Abono abono) {
         et = em.getTransaction();
         try {            
             et.begin();
@@ -95,6 +95,29 @@ public class CuentasXPagarJpaController {
             em.persist(abono);
             em.flush();
             pCuenta.getAbonoList().add(abono);
+            
+            em.merge(pCuenta);
+            et.commit();
+            return pCuenta;
+        } catch (EntityExistsException ex) {
+            et.rollback();
+            System.err.println(ex);
+            return null;
+        } catch (Exception ex) {
+            et.rollback();
+            System.err.println(ex);
+            return null;
+        }
+    }
+    
+    public CuentaXPagar ModificarCuentaXPagarEliminarAbono(CuentaXPagar pCuenta, Abono abono) {
+        et = em.getTransaction();
+        try {            
+            et.begin();
+            
+            em.remove(abono);
+            em.flush();
+            pCuenta.getAbonoList().remove(abono);
             
             em.merge(pCuenta);
             et.commit();
