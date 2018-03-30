@@ -12,7 +12,9 @@ import ferreteria_las_vegas.model.entities.Cliente;
 import ferreteria_las_vegas.model.entities.Contacto;
 import ferreteria_las_vegas.model.entities.Direccion;
 import ferreteria_las_vegas.model.entities.Persona;
+import ferreteria_las_vegas.model.entities.Usuario;
 import ferreteria_las_vegas.utils.AppContext;
+import ferreteria_las_vegas.utils.Message;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -65,7 +67,7 @@ public class FXML_ClientesController implements Initializable {
     @FXML
     private TextArea TxtDireccionCliente;
     @FXML
-    private VBox dataPane;   
+    private VBox dataPane;
 
     void LanzarBusqueda() {
         try {
@@ -120,8 +122,13 @@ public class FXML_ClientesController implements Initializable {
     }
 
     void ProcesoAgregar() {
-        Persona persona = new Persona(txtCedCliente.getText(), txtNombreCliente.getText(), txtPApellidoCliente.getText(), "A");
+        Persona persona = PersonaJpaController.getInstance().ConsultarPersonaCedula(txtCedCliente.getText());
+        if(persona==null){
+        persona = new Persona(txtCedCliente.getText(), txtNombreCliente.getText(), txtPApellidoCliente.getText(), "A");
         persona.setPerSApellido(txtSApellidoCliente.getText());
+        
+        Usuario user = (Usuario) AppContext.getInstance().get("user");
+        persona.setPerFerreteria(user.getPersona().getPerFerreteria());
 
         Contacto contactoTel1 = new Contacto(Integer.SIZE, txtTelefono1Cliente.getText(), "TEL");
         Contacto contactoTel2 = null;
@@ -147,6 +154,9 @@ public class FXML_ClientesController implements Initializable {
             LimpiarControles();
         } else {
             new Alert(Alert.AlertType.ERROR, "No se pudo Modificar el Cliente.", ButtonType.OK).showAndWait();
+        }
+        }else{
+            Message.getInstance().Warning("Cliente Existente", "Ya existe un cliente registrado con el mismo numero de cedula");
         }
     }
 
