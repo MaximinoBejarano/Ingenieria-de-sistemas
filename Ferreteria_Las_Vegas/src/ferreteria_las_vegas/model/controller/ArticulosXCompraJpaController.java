@@ -5,7 +5,6 @@
  */
 package ferreteria_las_vegas.model.controller;
 
-
 import ferreteria_las_vegas.model.entities.ArticuloXCompra;
 import ferreteria_las_vegas.utils.EntityManagerHelper;
 import javax.persistence.EntityExistsException;
@@ -17,7 +16,8 @@ import javax.persistence.EntityTransaction;
  * @author sanwi
  */
 public class ArticulosXCompraJpaController {
-   private static ArticulosXCompraJpaController INSTANCE = null;
+
+    private static ArticulosXCompraJpaController INSTANCE = null;
 
     private static void createInstance() {
         if (INSTANCE == null) {
@@ -55,8 +55,25 @@ public class ArticulosXCompraJpaController {
             return null;
         }
     }
-    
-    
+
+    public ArticuloXCompra ModificarArticuloXCompra(ArticuloXCompra pArticuloXCompra) {
+        et = em.getTransaction();
+        try {
+            et.begin();
+            em.merge(pArticuloXCompra);
+            et.commit();
+            return pArticuloXCompra;
+        } catch (EntityExistsException ex) {
+            et.rollback();
+            System.err.println(ex);
+            return null;
+        } catch (Exception ex) {
+            et.rollback();
+            System.err.println(ex);
+            return null;
+        }
+    }
+
     private EntityManager em = EntityManagerHelper.getInstance().getManager();
     private EntityTransaction et;
 }

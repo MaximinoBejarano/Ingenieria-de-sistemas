@@ -65,7 +65,7 @@ public class CompraJpaController {
                     Com.getArticuloXCompraList().add(Lista1);    
                 }
             }
-            em.merge(Com);
+            em.merge(Com );
             et.commit();
             return Com;
         } catch (EntityExistsException ex) {
@@ -103,7 +103,32 @@ public class CompraJpaController {
             return null;
         }
     }
+  public Compra ModificarCompra(Compra Com, List<ArticuloXCompra> Lista) {
+        et = em.getTransaction();
+        try {
+            et.begin();
+           
+ 
+            if (!Lista.isEmpty()) {
+                for (ArticuloXCompra Lista1 : Lista) {
 
+                    Com.getArticuloXCompraList().add(Lista1);    
+                }
+            }
+            em.merge(Com);
+            et.commit();
+            return Com;
+        } catch (EntityExistsException ex) {
+            et.rollback();
+            System.err.println(ex);
+            return null;
+        } catch (Exception ex) {
+
+            et.rollback();
+            System.err.println(ex);
+            return null;
+        }
+    }
     //***********************************Area de procedimientos*******************************
     /**
      * Procedimiento para consultar todos los articulos que se encuentren en la
@@ -127,10 +152,10 @@ public class CompraJpaController {
      * @param pCodigo
      * @return
      */
-    public Compra ConsultarCompraCodigo(int pCodigo) {
+    public Compra ConsultarCompraCodigoFac(String pCodigo) {
         try {
-            Query qry = em.createNamedQuery("Compra.findByComCodigo", Compra.class);// consulta definida 
-            qry.setParameter("comCodigo", pCodigo);
+            Query qry = em.createNamedQuery("Compra.findByComNumeroFact", Compra.class);// consulta definida 
+            qry.setParameter("comNumeroFact", pCodigo);
             Compra articulo = (Compra) qry.getSingleResult();// trae el resultado de la consulta  
             return articulo;
         } catch (Exception ex) {

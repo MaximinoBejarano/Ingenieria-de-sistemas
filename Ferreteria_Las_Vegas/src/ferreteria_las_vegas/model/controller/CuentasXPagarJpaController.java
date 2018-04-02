@@ -40,7 +40,7 @@ public class CuentasXPagarJpaController {
         return INSTANCE;
     }
  
-    public CuentaXPagar AgregarCuentaXCobrar(CuentaXPagar pCuenta) {
+    public CuentaXPagar AgregarCuentasXPagar(CuentaXPagar pCuenta) {
         et = em.getTransaction();
         try {
             et.begin();
@@ -85,6 +85,18 @@ public class CuentasXPagarJpaController {
             return null;
         }
     }
+    
+     public CuentaXPagar ConsultarCuentaXPagar(int pCodigo) {
+        try {
+            Query qry = em.createNamedQuery("CuentaXPagar.findByCueCodigoCompra", CuentaXPagar.class);// consulta definida 
+            qry.setParameter("cueCompra", pCodigo);
+            CuentaXPagar cuentaXPagar = (CuentaXPagar) qry.getSingleResult();// trae el resultado de la consulta  
+            return cuentaXPagar;
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+    
     
     private EntityManager em = EntityManagerHelper.getInstance().getManager();
     private EntityTransaction et;

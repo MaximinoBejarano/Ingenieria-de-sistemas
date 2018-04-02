@@ -25,6 +25,7 @@ public class InventarioCompleto {
         this.cantArticulo = cantArticulo;
         this.descuentoComercio = descuentoComercio;
         this.precioArt = precioArt;
+   
     }
 
    
@@ -60,5 +61,7 @@ public class InventarioCompleto {
 
     public void setPrecioArt(double precioArt) {
         this.precioArt = precioArt;
-    } 
+    }
+
+    
 }
