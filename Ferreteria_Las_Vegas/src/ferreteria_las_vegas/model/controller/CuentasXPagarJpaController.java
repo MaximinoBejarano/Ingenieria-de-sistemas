@@ -5,6 +5,8 @@
  */
 package ferreteria_las_vegas.model.controller;
 
+import ferreteria_las_vegas.model.entities.Abono;
+import ferreteria_las_vegas.model.entities.CuentaXCobrar;
 import ferreteria_las_vegas.model.entities.CuentaXPagar;
 import ferreteria_las_vegas.utils.EntityManagerHelper;
 import java.util.List;
@@ -86,17 +88,62 @@ public class CuentasXPagarJpaController {
         }
     }
     
-     public CuentaXPagar ConsultarCuentaXPagar(int pCodigo) {
-        try {
+    public CuentaXPagar ConsultarCuentaXPagar(int pCuenta){
+     try {
             Query qry = em.createNamedQuery("CuentaXPagar.findByCueCodigoCompra", CuentaXPagar.class);// consulta definida 
-            qry.setParameter("cueCompra", pCodigo);
-            CuentaXPagar cuentaXPagar = (CuentaXPagar) qry.getSingleResult();// trae el resultado de la consulta  
-            return cuentaXPagar;
+            qry.setParameter("cueCompra", pCuenta);
+            CuentaXPagar articulo = (CuentaXPagar) qry.getSingleResult();// trae el resultado de la consulta  
+            return articulo;
         } catch (Exception ex) {
             return null;
         }
     }
     
+    public CuentaXPagar ModificarCuentaXPagarAgregarAbono(CuentaXPagar pCuenta, Abono abono) {
+        et = em.getTransaction();
+        try {            
+            et.begin();
+            
+            em.persist(abono);
+            em.flush();
+            pCuenta.getAbonoList().add(abono);
+            
+            em.merge(pCuenta);
+            et.commit();
+            return pCuenta;
+        } catch (EntityExistsException ex) {
+            et.rollback();
+            System.err.println(ex);
+            return null;
+        } catch (Exception ex) {
+            et.rollback();
+            System.err.println(ex);
+            return null;
+        }
+    }
+    
+    public CuentaXPagar ModificarCuentaXPagarEliminarAbono(CuentaXPagar pCuenta, Abono abono) {
+        et = em.getTransaction();
+        try {            
+            et.begin();
+            
+            em.remove(abono);
+            em.flush();
+            pCuenta.getAbonoList().remove(abono);
+            
+            em.merge(pCuenta);
+            et.commit();
+            return pCuenta;
+        } catch (EntityExistsException ex) {
+            et.rollback();
+            System.err.println(ex);
+            return null;
+        } catch (Exception ex) {
+            et.rollback();
+            System.err.println(ex);
+            return null;
+        }
+    }
     
     private EntityManager em = EntityManagerHelper.getInstance().getManager();
     private EntityTransaction et;

@@ -96,7 +96,7 @@ public class TipoPagoJPAController {
      */
     public List<TipoPago> Consultar_TiposPagos() {
         try {
-            Query qry = em.createNamedQuery("TipoPago.findAll", TipoPago.class);// consulta todos los abonos
+            Query qry = em.createQuery("SELECT t FROM TipoPago t", TipoPago.class);// consulta todos los abonos
             List<TipoPago> ListTipoPago = qry.getResultList();// Recibe el resultado de la consulta  
             return ListTipoPago;
         } catch (Exception ex) {

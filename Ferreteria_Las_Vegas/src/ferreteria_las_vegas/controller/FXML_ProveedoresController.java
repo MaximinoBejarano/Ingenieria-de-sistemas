@@ -7,19 +7,25 @@ package ferreteria_las_vegas.controller;
 
 import ferreteria_las_vegas.model.controller.CuentasXPagarJpaController;
 import ferreteria_las_vegas.model.controller.ProveedorJpaController;
+import ferreteria_las_vegas.model.controller.TipoPagoJPAController;
+import ferreteria_las_vegas.model.entities.Abono;
 import ferreteria_las_vegas.model.entities.Contacto;
 import ferreteria_las_vegas.model.entities.CuentaXPagar;
 import ferreteria_las_vegas.model.entities.Direccion;
 import ferreteria_las_vegas.model.entities.Proveedor;
+import ferreteria_las_vegas.model.entities.TipoPago;
 import ferreteria_las_vegas.utils.AppContext;
 import ferreteria_las_vegas.utils.GeneralUtils;
 import ferreteria_las_vegas.utils.LoggerManager;
 import ferreteria_las_vegas.utils.Message;
 import java.io.IOException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -35,16 +41,21 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.TabPane;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.StringConverter;
 
 /**
  * FXML Controller class
@@ -52,7 +63,7 @@ import javafx.stage.Stage;
  * @author Johan
  */
 public class FXML_ProveedoresController implements Initializable {
-    
+
     @FXML
     private TabPane tabPanel;
 
@@ -130,13 +141,25 @@ public class FXML_ProveedoresController implements Initializable {
     @FXML
     private DatePicker dpkFechaAbono;
 
+    @FXML
+    private ComboBox<TipoPago> cbxFormaPago;
+
+    /*---------Parte de Abonos---------*/
+    @FXML
+    private Label lblCuenta;
+
+    @FXML
+    private TableView<Abono> tblAbonos;
+
     /*--------------------------------------------------------------------------------------------------------------*/
+ /*---------General---------*/
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         proFlag = true;
         comFlag = false;
         aboFlag = false;
         CargarCuentasXPagar();
+        CargarFormasPago();
     }
 
     /*--------------------------------------------------------------------------------------------------------------*/
@@ -156,7 +179,6 @@ public class FXML_ProveedoresController implements Initializable {
     @FXML
     void btnBuscarClick(ActionEvent event) {
         if (proFlag) {
-            System.out.println("ferreteria_las_vegas.controller.FXML_ProveedoresController.btnBuscarClick()");
             ProcesoBuscarProveedor();
         }
     }
@@ -182,9 +204,17 @@ public class FXML_ProveedoresController implements Initializable {
                 ProcesoEliminarProveedor();
             }
         } else if (comFlag) {
-
+            if (tblCuentasXPagar.getSelectionModel().getSelectedItem() != null) {
+                ProcesoEliminarCuenta();
+            } else {
+                Message.getInstance().Warning("Selección requerida", "Debe selecionar una cuenta por pagar.");
+            }
         } else if (aboFlag) {
-
+            if (tblAbonos.getSelectionModel().getSelectedItem() != null) {
+                ProcesoEliminarAbono();
+            } else {
+                Message.getInstance().Warning("Selección requerida", "Debe selecionar un abono.");
+            }
         }
     }
 
@@ -224,16 +254,46 @@ public class FXML_ProveedoresController implements Initializable {
     }
 
     @FXML
-    void chbPagadasClick(ActionEvent event) {
-        CargarCuentasXPagar();
-    }
-
-    @FXML
     void tabProveedoresChange(Event event) {
         proFlag = true;
         comFlag = false;
         aboFlag = false;
         ProveedoresGUI();
+    }    
+
+    /*---------Parte de Cuentas por Pagar---------*/
+    @FXML
+    void tblCuentasXPagarClicked(MouseEvent event) {
+        if (tblCuentasXPagar.getSelectionModel().getSelectedItem() != null) {
+            CargarHistorialAbonos(tblCuentasXPagar.getSelectionModel().getSelectedItem());
+        }
+    }
+
+    @FXML
+    void btnAgregarAbonoClick(ActionEvent event) {
+        if (txtMontoAbono.getText().isEmpty() || dpkFechaAbono.getValue().toString().isEmpty() || cbxFormaPago.getSelectionModel().getSelectedItem() == null) {
+            Message.getInstance().Warning("Información requerida", "Debe completar todos los campos requeridos.");
+        } else {
+            if (tblCuentasXPagar.getSelectionModel().getSelectedItem() != null) {
+                if (tblCuentasXPagar.getSelectionModel().getSelectedItem().getCueSaldo() > 0) {
+                    ProcesoAgregarAbono();
+                } else {
+                    Message.getInstance().Warning("Cuenta cancelada", "La cuenta que selecionó ya fue pagada.");
+                }
+            } else {
+                Message.getInstance().Warning("Selección requerida", "Debe selecionar una cuenta por pagar.");
+            }
+        }
+    }
+
+    @FXML
+    void btnHistoriaAbonosClick(ActionEvent event) {
+        if (tblCuentasXPagar.getSelectionModel().getSelectedItem() != null) {
+            CargarHistorialAbonos(tblCuentasXPagar.getSelectionModel().getSelectedItem());
+            tabPanel.getSelectionModel().selectNext();
+        } else {
+            Message.getInstance().Warning("Selección requerida", "Debe selecionar una cuenta por pagar.");
+        }
     }
 
     @FXML
@@ -245,28 +305,13 @@ public class FXML_ProveedoresController implements Initializable {
     }
 
     @FXML
-    void tabAbonosChange(Event event) {
-        proFlag = false;
-        comFlag = false;
-        aboFlag = true;
-        AbonosGUI();
-    }
-
-    /*---------Parte de Cuentas por Pagar---------*/
-    @FXML
-    void btnAgregarAbonoClick(ActionEvent event) {
-        ProcesoAgregarAbono();
-    }
-
-    @FXML
-    void btnHistoriaAbonosClick(ActionEvent event) {
-        tabPanel.getSelectionModel().selectNext();
-        CargarHistorialAbonos();
-    }
-
-    @FXML
     void btnLimpiarAbonoClick(ActionEvent event) {
         LimpiarControlesCuentasGUI();
+    }
+
+    @FXML
+    void chbPagadasClick(ActionEvent event) {
+        CargarCuentasXPagar();
     }
 
     @FXML
@@ -277,6 +322,19 @@ public class FXML_ProveedoresController implements Initializable {
     @FXML
     void txtMontoAbonoTyped(KeyEvent event) {
         GeneralUtils.getInstance().ValidarCampos(true, txtMontoAbono.getText().length(), 8, event);
+    }
+ 
+    /*---------Parte de Abonos---------*/
+    @FXML
+    void tabAbonosChange(Event event) {
+        proFlag = false;
+        comFlag = false;
+        aboFlag = true;
+        if(tblCuentasXPagar.getSelectionModel().getSelectedItem()==null){
+            lblCuenta.setText("No se ha selecionado ninguna cuenta por pagar.");
+            tblAbonos.setItems(null);
+        }
+        AbonosGUI();
     }
 
     /*--------------------------------------------------------------------------------------------------------------*/
@@ -377,12 +435,15 @@ public class FXML_ProveedoresController implements Initializable {
         try {
             Proveedor proveedor = ProveedorJpaController.getInstance().ConsultarProveedorCedulaJuridica(txtCedulaJuridica.getText());
             if (proveedor != null) {
-                proveedor.setProEstado("I");
-                ProveedorJpaController.getInstance().ModificarProveedor(proveedor);
-                Message.getInstance().Information("Acción exitosa", "Empleado eliminado corectamente.");
-                LimpiarControlesProveedorGUI();
+                if (Message.getInstance().Confirmation("Eliminar Proveedor", "Esta seguro.\n"
+                        + "¿Desea eliminar al proveedor?")) {
+                    proveedor.setProEstado("I");
+                    ProveedorJpaController.getInstance().ModificarProveedor(proveedor);
+                    Message.getInstance().Information("Acción exitosa", "Proveedor eliminado corectamente.");
+                    LimpiarControlesProveedorGUI();
+                }
             } else {
-                Message.getInstance().Warning("Empleado no existente", "No existe un empleado con la cédula ingresada.");
+                Message.getInstance().Warning("Empleado no existente", "No existe un proveedor con los datos ingresados.");
             }
         } catch (Exception ex) {
             Message.getInstance().Error("Error", "Ocurrió un error y no se pudo eliminar el proveedor. "
@@ -393,12 +454,76 @@ public class FXML_ProveedoresController implements Initializable {
 
     /*---------Parte de Cuentas por Pagar---------*/
     void ProcesoAgregarAbono() {
+        try {
+            double nuevoMonto = Double.parseDouble(txtMontoAbono.getText());
+            CuentaXPagar cuenta = tblCuentasXPagar.getSelectionModel().getSelectedItem();
 
+            if ((cuenta.getCueSaldo() - nuevoMonto) >= 0) {
+                Abono abono = new Abono(Integer.SIZE, java.sql.Date.valueOf(dpkFechaAbono.getValue()), nuevoMonto, "P", "A");
+                if (txtNumeroDeposito.getText().isEmpty()) {
+                    abono.setAboNumeroDeposito("No especificado.");
+                } else {
+                    abono.setAboNumeroDeposito(txtNumeroDeposito.getText());
+                }
+                abono.setAboTipoPago(cbxFormaPago.getSelectionModel().getSelectedItem());
+
+                cuenta.setCueSaldo(cuenta.getCueSaldo() - nuevoMonto);
+                CuentasXPagarJpaController.getInstance().ModificarCuentaXPagarAgregarAbono(cuenta, abono);
+                CargarCuentasXPagar();
+                tblCuentasXPagar.getSelectionModel().select(cuenta);
+                LimpiarControlesCuentasGUI();
+                Message.getInstance().Information("Acción Exitosa", "El abono se ingresó correctamente.");
+            } else {
+                Message.getInstance().Warning("Monto invalido", "El monto ingresado es mayor que el monto actual.");
+            }
+        } catch (Exception ex) {
+            Message.getInstance().Error("Error", "Ocurrió un error y no se pudo eliminar el abono. "
+                    + "El codigo de error es: " + ex.toString());
+            LoggerManager.Logger().info(ex.toString());
+        }
+    }
+
+    void ProcesoEliminarCuenta() {
+        try {
+            if (Message.getInstance().Confirmation("Eliminar Cuenta", "Esta seguro.\n"
+                    + "¿Desea eliminar la cuenta por pagar?")) {
+                CuentaXPagar cuenta = tblCuentasXPagar.getSelectionModel().getSelectedItem();
+                cuenta.setCueEstado("I");
+                CuentasXPagarJpaController.getInstance().ModificarCuentaXPagar(cuenta);
+                Message.getInstance().Information("Acción exitosa", "Cuenta eliminada corectamente.");
+                CargarCuentasXPagar();
+            }
+        } catch (Exception ex) {
+            Message.getInstance().Error("Error", "Ocurrió un error y no se pudo eliminar la cuenta. "
+                    + "El codigo de error es: " + ex.toString());
+            LoggerManager.Logger().info(ex.toString());
+        }
+    }
+
+    /*---------Parte de Abonos---------*/
+    void ProcesoEliminarAbono() {
+        try {
+            if (Message.getInstance().Confirmation("Eliminar Abono", "Eliminar un abono implica agregar "
+                    + "\nel monto del abono de nuevo a la cuenta por pagar.\n"
+                    + "¿Desea eliminar el abono?")) {
+                CuentaXPagar cuenta = tblCuentasXPagar.getSelectionModel().getSelectedItem();
+                Abono abono = tblAbonos.getSelectionModel().getSelectedItem();
+                cuenta.setCueSaldo(cuenta.getCueSaldo() + abono.getAboMonto());                                
+                CuentasXPagarJpaController.getInstance().ModificarCuentaXPagarEliminarAbono(cuenta, abono);
+                Message.getInstance().Information("Acción exitosa", "Abono eliminado corectamente.");
+                CargarCuentasXPagar();
+                tblCuentasXPagar.getSelectionModel().select(cuenta);
+                CargarHistorialAbonos(cuenta);
+            }
+        } catch (Exception ex) {
+            Message.getInstance().Error("Error", "Ocurrió un error y no se pudo eliminar el abono. "
+                    + "El codigo de error es: " + ex.toString());
+            LoggerManager.Logger().info(ex.toString());
+        }
     }
 
     /*--------------------------------------------------------------------------------------------------------------*/
-    
-    /*---------Parte de Proveedores---------*/
+ /*---------Parte de Proveedores---------*/
     void CargarDatosUsuario(Proveedor proveedor) {
         try {
             txtCedulaJuridica.setText(proveedor.getProCedulaJuridica());
@@ -438,8 +563,9 @@ public class FXML_ProveedoresController implements Initializable {
         try {
             tblCuentasXPagar.setItems(null);
             tblCuentasXPagar.getColumns().clear();
+            tblAbonos.setItems(null);
 
-            TableColumn<CuentaXPagar, String> colInfoCuenta = new TableColumn<>("Información de Cuentas");
+            TableColumn<CuentaXPagar, String> colInfoCuenta = new TableColumn<>("Cuentas por Pagar");
             TableColumn<CuentaXPagar, String> colCompra = new TableColumn<>("Factura de Compra");
             TableColumn<CuentaXPagar, String> colProveedor = new TableColumn<>("Proveedor");
             TableColumn<CuentaXPagar, String> colSaldoOriginal = new TableColumn<>("Saldo Original");
@@ -494,10 +620,77 @@ public class FXML_ProveedoresController implements Initializable {
         sortedData.comparatorProperty().bind(tblCuentasXPagar.comparatorProperty());
         tblCuentasXPagar.setItems(sortedData);
     }
-    
-    /*---------Parte de Cuentas por Pagar---------*/
-    void CargarHistorialAbonos(){
-        
+
+    void CargarFormasPago() {
+        try {
+            ObservableList<TipoPago> OMedidorList = FXCollections.observableArrayList(TipoPagoJPAController.getInstance().Consultar_TiposPagos());
+            cbxFormaPago.setConverter(new StringConverter<TipoPago>() {
+                @Override
+                public String toString(TipoPago object) {
+                    return object.getTipNombre();
+                }
+
+                @Override
+                public TipoPago fromString(String string) {
+                    throw new UnsupportedOperationException("Parse Error.");
+                }
+            });
+            cbxFormaPago.setItems(OMedidorList);
+        } catch (Exception ex) {
+            LoggerManager.Logger().info(ex.toString());
+            Message.getInstance().Error("Error", "Ocurrió un error y no se pudo cargar la información de formas de pago. "
+                    + "El codigo de error es: " + ex.toString());
+        }
+    }
+
+    /*---------Parte de Abonos---------*/
+    void CargarHistorialAbonos(CuentaXPagar cuenta) {
+        try {
+            if (cuenta != null) {
+                tblAbonos.setItems(null);
+                tblAbonos.getColumns().clear();
+
+                TableColumn<Abono, String> colInfoAbono = new TableColumn<>("Historial de Abonos");
+                TableColumn<Abono, Date> colFecha = new TableColumn<>("Fecha del Abono");
+                TableColumn<Abono, String> colDetalle = new TableColumn<>("Detalle");
+                TableColumn<Abono, String> colMonto = new TableColumn<>("Monto");
+                TableColumn<Abono, String> colTipoPago = new TableColumn<>("Forma de Pago");
+
+                colInfoAbono.getColumns().addAll(colFecha, colDetalle, colMonto, colTipoPago);
+                tblAbonos.getColumns().add(colInfoAbono);
+
+                colFecha.setCellValueFactory((cellData) -> new SimpleObjectProperty(cellData.getValue().getAboFecha()));
+                colDetalle.setCellValueFactory((cellData) -> new SimpleStringProperty(cellData.getValue().getAboNumeroDeposito()));
+                colMonto.setCellValueFactory((cellData) -> new SimpleStringProperty(String.valueOf(cellData.getValue().getAboMonto())));
+                colTipoPago.setCellValueFactory((cellData) -> new SimpleStringProperty(cellData.getValue().getAboTipoPago().getTipNombre()));
+
+                SimpleDateFormat formater = new SimpleDateFormat("dd-MM-yyyy");
+                colFecha.setCellFactory(column -> {
+                    return new TableCell<Abono, Date>() {
+                        @Override
+                        protected void updateItem(Date item, boolean empty) {
+                            super.updateItem(item, empty);
+
+                            if (item == null || empty) {
+                                setText(null);
+                                setStyle("");
+                            } else {
+                                setText(formater.format(item).toUpperCase());
+                            }
+                        }
+                    };
+                });
+                List<Abono> abonoList = cuenta.getAbonoList();
+                ObservableList<Abono> OCuentasList = FXCollections.observableArrayList(abonoList);
+                tblAbonos.setItems(OCuentasList);
+                lblCuenta.setText(cuenta.getCueCompra().getComNumeroFact() + " "+ cuenta.getCueProveedor().getProNombre());
+                //FiltroCuentasXPagar(OCuentasList);
+            }
+        } catch (Exception ex) {
+            Message.getInstance().Error("Error", "Ocurrió un error y no se pudo cargar la información de la tabla de cuentas. "
+                    + "El codigo de error es: " + ex.toString());
+            LoggerManager.Logger().info(ex.toString());
+        }
     }
 
     /*--------------------------------------------------------------------------------------------------------------*/
@@ -538,6 +731,7 @@ public class FXML_ProveedoresController implements Initializable {
         txtNumeroDeposito.setText("");
         txtMontoAbono.setText("");
         dpkFechaAbono.setValue(null);
+        cbxFormaPago.getSelectionModel().clearSelection();
     }
 
 

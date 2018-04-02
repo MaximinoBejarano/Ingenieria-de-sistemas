@@ -4,12 +4,12 @@
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
-<?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
@@ -281,11 +281,11 @@
                            <content>
                               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="374.0" prefWidth="739.0">
                                  <children>
-                                    <GridPane layoutY="14.0" prefHeight="38.0" prefWidth="663.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="61.0" AnchorPane.topAnchor="14.0">
+                                    <GridPane layoutY="14.0" prefHeight="38.0" prefWidth="663.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="14.0">
                                       <columnConstraints>
-                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="181.0" minWidth="10.0" prefWidth="102.0" />
-                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="606.0" minWidth="10.0" prefWidth="435.0" />
-                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="606.0" minWidth="10.0" prefWidth="121.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="102.0" minWidth="102.0" prefWidth="102.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" />
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="121.0" minWidth="121.0" prefWidth="121.0" />
                                       </columnConstraints>
                                       <rowConstraints>
                                         <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
@@ -298,6 +298,9 @@
                                              <font>
                                                 <Font size="14.0" />
                                              </font>
+                                             <tooltip>
+                                                <Tooltip text="Datos a buscar en la Tabla" />
+                                             </tooltip>
                                           </TextField>
                                           <Label text="Búsqueda">
                                              <GridPane.margin>
@@ -307,13 +310,19 @@
                                                 <Font name="System Bold" size="18.0" />
                                              </font>
                                           </Label>
-                                          <CheckBox fx:id="chbPagadas" mnemonicParsing="false" onAction="#chbPagadasClick" text="Ver Finalizadas" GridPane.columnIndex="2" GridPane.halignment="RIGHT" />
+                                          <CheckBox fx:id="chbPagadas" mnemonicParsing="false" onAction="#chbPagadasClick" text="Ver Pagadas" GridPane.columnIndex="2" GridPane.halignment="RIGHT">
+                                             <tooltip>
+                                                <Tooltip text="Ver las cuentas que ya se pagaron" />
+                                             </tooltip></CheckBox>
                                        </children>
                                     </GridPane>
-                                    <TableView fx:id="tblCuentasXPagar" layoutX="15.0" layoutY="59.0" prefHeight="187.0" prefWidth="709.0" AnchorPane.bottomAnchor="168.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="59.0">
+                                    <TableView fx:id="tblCuentasXPagar" layoutX="15.0" layoutY="59.0" onMouseClicked="#tblCuentasXPagarClicked" prefHeight="187.0" prefWidth="709.0" AnchorPane.bottomAnchor="168.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="59.0">
                                        <columnResizePolicy>
                                           <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                                        </columnResizePolicy>
+                                       <tooltip>
+                                          <Tooltip text="Tabla de Cuentas por Pagar" />
+                                       </tooltip>
                                     </TableView>
                                     <Separator layoutX="15.0" layoutY="253.0" prefHeight="10.0" prefWidth="713.0" AnchorPane.bottomAnchor="151.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" />
                                     <GridPane layoutX="32.0" layoutY="281.0" prefHeight="146.0" prefWidth="641.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0">
@@ -329,7 +338,15 @@
                                         <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                                       </rowConstraints>
                                        <children>
-                                          <Label text="Número de Deposito" GridPane.rowIndex="1">
+                                          <Label text="Abonos">
+                                             <font>
+                                                <Font name="System Bold" size="18.0" />
+                                             </font>
+                                             <GridPane.margin>
+                                                <Insets left="4.0" right="4.0" top="4.0" />
+                                             </GridPane.margin>
+                                          </Label>
+                                          <Label text="Detalle de Abono" GridPane.rowIndex="1">
                                              <GridPane.margin>
                                                 <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                                              </GridPane.margin>
@@ -337,7 +354,7 @@
                                                 <Font size="14.0" />
                                              </font>
                                           </Label>
-                                          <Label text="Fecha del Deposito" GridPane.rowIndex="2">
+                                          <Label text="Fecha del Abono" GridPane.rowIndex="2">
                                              <GridPane.margin>
                                                 <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                                              </GridPane.margin>
@@ -353,14 +370,44 @@
                                                 <Font size="14.0" />
                                              </font>
                                           </Label>
-                                          <TextField fx:id="txtNumeroDeposito" onKeyTyped="#txtNumeroDepositoTyped" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                          <GridPane GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                            <columnConstraints>
+                                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="150.0" minWidth="10.0" prefWidth="107.0" />
+                                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="154.0" minWidth="10.0" prefWidth="138.0" />
+                                            </columnConstraints>
+                                             <children>
+                                                <TextField fx:id="txtNumeroDeposito" onKeyTyped="#txtNumeroDepositoTyped">
+                                                   <GridPane.margin>
+                                                      <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                                                   </GridPane.margin>
+                                                   <font>
+                                                      <Font size="14.0" />
+                                                   </font>
+                                                </TextField>
+                                                <Label text="Forma de Pago" GridPane.columnIndex="1" GridPane.halignment="CENTER">
+                                                   <font>
+                                                      <Font size="14.0" />
+                                                   </font>
+                                                   <GridPane.margin>
+                                                      <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                                                   </GridPane.margin>
+                                                </Label>
+                                                <ComboBox fx:id="cbxFormaPago" maxWidth="1.7976931348623157E308" minHeight="30.0" promptText="Campo Requerido" GridPane.columnIndex="2">
+                                                   <tooltip>
+                                                      <Tooltip text="Forma de pago empleada" />
+                                                   </tooltip>
+                                                </ComboBox>
+                                             </children>
+                                          </GridPane>
+                                          <DatePicker fx:id="dpkFechaAbono" maxWidth="1.7976931348623157E308" minHeight="30.0" promptText="Campo Requerido" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                              <GridPane.margin>
                                                 <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                                              </GridPane.margin>
-                                             <font>
-                                                <Font size="14.0" />
-                                             </font>
-                                          </TextField>
+                                             <tooltip>
+                                                <Tooltip text="Fecha en que se hizo el abono" />
+                                             </tooltip>
+                                          </DatePicker>
                                           <TextField fx:id="txtMontoAbono" onKeyTyped="#txtMontoAbonoTyped" promptText="Campo Requerido" GridPane.columnIndex="1" GridPane.rowIndex="3">
                                              <GridPane.margin>
                                                 <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
@@ -368,15 +415,10 @@
                                              <font>
                                                 <Font size="14.0" />
                                              </font>
+                                             <tooltip>
+                                                <Tooltip text="Monto que se abona" />
+                                             </tooltip>
                                           </TextField>
-                                          <Label text="Abonos">
-                                             <font>
-                                                <Font name="System Bold" size="18.0" />
-                                             </font>
-                                             <GridPane.margin>
-                                                <Insets left="4.0" right="4.0" top="4.0" />
-                                             </GridPane.margin>
-                                          </Label>
                                           <Button fx:id="btnLimpiarAbono" mnemonicParsing="false" onAction="#btnLimpiarAbonoClick" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1">
                                              <graphic>
                                                 <ImageView fitHeight="29.0" fitWidth="41.0" pickOnBounds="true" preserveRatio="true">
@@ -389,7 +431,7 @@
                                                 <Cursor fx:constant="HAND" />
                                              </cursor>
                                              <tooltip>
-                                                <Tooltip text="Limpiar" />
+                                                <Tooltip text="Limpiar Campos" />
                                              </tooltip>
                                           </Button>
                                           <Button fx:id="btnHistoriaAbonos" mnemonicParsing="false" onAction="#btnHistoriaAbonosClick" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2">
@@ -422,11 +464,6 @@
                                                 <Tooltip text="Agregar Abono" />
                                              </tooltip>
                                           </Button>
-                                          <DatePicker fx:id="dpkFechaAbono" maxWidth="1.7976931348623157E308" minHeight="30.0" promptText="Campo Requerido" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                                             <GridPane.margin>
-                                                <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
-                                             </GridPane.margin>
-                                          </DatePicker>
                                        </children>
                                     </GridPane>
                                  </children>
@@ -439,22 +476,14 @@
                                  <children>
                                     <GridPane layoutX="27.0" layoutY="45.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="20.0">
                                        <columnConstraints>
-                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="152.0" minWidth="10.0" prefWidth="104.0" />
-                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="606.0" minWidth="10.0" prefWidth="605.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="75.0" minWidth="75.0" prefWidth="75.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
                                        </columnConstraints>
                                        <rowConstraints>
                                           <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                                        </rowConstraints>
                                        <children>
-                                          <TextField promptText="Filtro" GridPane.columnIndex="1">
-                                             <GridPane.margin>
-                                                <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
-                                             </GridPane.margin>
-                                             <font>
-                                                <Font size="14.0" />
-                                             </font>
-                                          </TextField>
-                                          <Label text="Búsqueda">
+                                          <Label text="Cuenta">
                                              <GridPane.margin>
                                                 <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                                              </GridPane.margin>
@@ -462,80 +491,23 @@
                                                 <Font name="System Bold" size="18.0" />
                                              </font>
                                           </Label>
+                                          <Label fx:id="lblCuenta" text="No se ha selecionado ninguna cuenta por pagar." GridPane.columnIndex="1">
+                                             <font>
+                                                <Font size="18.0" />
+                                             </font>
+                                          </Label>
                                        </children>
                                     </GridPane>
                                     <Separator layoutX="10.0" layoutY="58.0" prefHeight="10.0" prefWidth="713.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="58.0" />
-                                    <TableView layoutX="14.0" layoutY="68.0" prefHeight="200.0" prefWidth="714.0" AnchorPane.bottomAnchor="145.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="70.0">
-                                       <columns>
-                                          <TableColumn prefWidth="75.0" text="C1" />
-                                          <TableColumn prefWidth="75.0" text="C2" />
-                                       </columns>
+                                    <TableView fx:id="tblAbonos" layoutX="14.0" layoutY="68.0" prefHeight="316.0" prefWidth="709.0" AnchorPane.bottomAnchor="28.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="70.0">
                                        <columnResizePolicy>
                                           <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                                        </columnResizePolicy>
+                                       <tooltip>
+                                          <Tooltip text="Tabla de Abonos Realizados" />
+                                       </tooltip>
                                     </TableView>
-                                    <Separator layoutX="10.0" layoutY="271.0" prefHeight="10.0" prefWidth="713.0" AnchorPane.bottomAnchor="133.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" />
-                                    <GridPane layoutX="10.0" layoutY="445.0" prefHeight="128.0" prefWidth="719.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0">
-                                       <columnConstraints>
-                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="163.0" />
-                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="538.0" minWidth="10.0" prefWidth="537.0" />
-                                       </columnConstraints>
-                                       <rowConstraints>
-                                          <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-                                          <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-                                          <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-                                       </rowConstraints>
-                                       <children>
-                                          <Label text="Número de Deposito">
-                                             <GridPane.margin>
-                                                <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
-                                             </GridPane.margin>
-                                             <font>
-                                                <Font size="14.0" />
-                                             </font>
-                                          </Label>
-                                          <Label text="Fecha del Deposito" GridPane.rowIndex="1">
-                                             <GridPane.margin>
-                                                <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
-                                             </GridPane.margin>
-                                             <font>
-                                                <Font size="14.0" />
-                                             </font>
-                                          </Label>
-                                          <Label text="Monto Depositado" GridPane.rowIndex="2">
-                                             <GridPane.margin>
-                                                <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
-                                             </GridPane.margin>
-                                             <font>
-                                                <Font size="14.0" />
-                                             </font>
-                                          </Label>
-                                          <TextField GridPane.columnIndex="1">
-                                             <GridPane.margin>
-                                                <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
-                                             </GridPane.margin>
-                                             <font>
-                                                <Font size="14.0" />
-                                             </font>
-                                          </TextField>
-                                          <TextField GridPane.columnIndex="1" GridPane.rowIndex="1">
-                                             <GridPane.margin>
-                                                <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
-                                             </GridPane.margin>
-                                             <font>
-                                                <Font size="14.0" />
-                                             </font>
-                                          </TextField>
-                                          <TextField GridPane.columnIndex="1" GridPane.rowIndex="2">
-                                             <GridPane.margin>
-                                                <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
-                                             </GridPane.margin>
-                                             <font>
-                                                <Font size="14.0" />
-                                             </font>
-                                          </TextField>
-                                       </children>
-                                    </GridPane>
+                                    <Separator layoutX="15.0" layoutY="390.0" prefHeight="10.0" prefWidth="713.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" />
                                  </children>
                               </AnchorPane>
                           </content>

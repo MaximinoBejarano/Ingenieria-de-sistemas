@@ -10,9 +10,12 @@ import ferreteria_las_vegas.model.controller.CuentasXCobrarJPAController;
 import ferreteria_las_vegas.model.controller.TipoPagoJPAController;
 import ferreteria_las_vegas.model.entities.CuentaXCobrar;
 import ferreteria_las_vegas.model.entities.Abono;
+import ferreteria_las_vegas.model.entities.Persona;
 import ferreteria_las_vegas.model.entities.TipoPago;
 import ferreteria_las_vegas.utils.AppContext;
+import ferreteria_las_vegas.utils.GeneralUtils;
 import ferreteria_las_vegas.utils.Message;
+import ferreteria_las_vegas.utils.SearchComboBox;
 
 import java.net.URL;
 import java.text.SimpleDateFormat;
@@ -24,9 +27,11 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import static javafx.collections.FXCollections.observableList;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -35,13 +40,13 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -62,7 +67,9 @@ public class FXML_AbonosController implements Initializable {
     @FXML
     private Button btnEliminarAbono;
     @FXML
-    private ComboBox<?> cmbCliente;
+    private Button btnLimpiar;
+    @FXML
+    private GridPane SearchBoxGrid_Cliente;
     @FXML
     private Button btnFiltrar;
     @FXML
@@ -73,6 +80,8 @@ public class FXML_AbonosController implements Initializable {
     private Label lblSaldoTotal;
     @FXML
     private Label lblFechaAbono;
+//    @FXML
+//    private Label lblCédula_Cliente;
     @FXML
     private TextField txtAbono;
 
@@ -107,7 +116,15 @@ public class FXML_AbonosController implements Initializable {
         Cuenta = null;
         lblFechaAbono.setText(formatter.format(fecha.getTime()));
         fecha = new Date();
+        ComboBoxCliente();
 
+    }
+
+    @FXML
+    void btnLimpiarCampos_Click(ActionEvent event) {
+        Inicializar_Componentes();
+        Cuenta = null;
+        Limpiar_Vista();
     }
 
     @FXML
@@ -126,16 +143,13 @@ public class FXML_AbonosController implements Initializable {
                 } else {
                     if (AbonosJPAController.getInstance().ConsultarAbono_Codigo(nAbono.getAboCodigo()) != null) {
                         Message.getInstance().Information("Información:", "Abono existente, ingrese uno nuevo");
-                        nAbono = new Abono();
-                        lblFechaAbono.setText(formatter.format(fecha.getTime()));
-                        txtAbono.setText("");
-                        btnEditarAbono.setDisable(true);
-                        btnEliminarAbono.setDisable(true);
+                        Inicializar_Componentes();
                     }
                 }
             }
         } else {
-            Message.getInstance().Warning("Advertencia:", "Por favor consulte la cuenta a abonar");
+            Inicializar_Componentes();
+            Message.getInstance().Warning("Advertencia:", "Por favor consulte un cliente o cuenta por cobrar");
         }
     }
 
@@ -187,8 +201,7 @@ public class FXML_AbonosController implements Initializable {
     }
 
     @FXML
-    void tblMouse_Click(MouseEvent event
-    ) { // se carga en los componentes el item selecionado
+    void tblMouse_Click(MouseEvent event) { // se carga en los componentes el item selecionado
         if (tblAbonos.getSelectionModel().getSelectedItem() != null) {
             nAbono = (Abono) tblAbonos.getSelectionModel().getSelectedItem();
             lblFechaAbono.setText(formatter.format(nAbono.getAboFecha()));
@@ -200,12 +213,12 @@ public class FXML_AbonosController implements Initializable {
 
     @FXML
     void tblKeyPressed(KeyEvent event) {
-        
+
     }
 
     @FXML
     void KeyTyped_txtAbono(KeyEvent event) {
-        validarNumero(event);
+        GeneralUtils.getInstance().ValidarCampos(true, txtAbono.getText().length(), 8, event);
     }
 
     //*****************************************************++ Area de Procesos ++****************************************************************+
@@ -319,7 +332,9 @@ public class FXML_AbonosController implements Initializable {
         nAbono = new Abono();
         Cuenta = CuentasXCobrarJPAController.getInstance().Consultar_CuentaXCobrarCodigo(Cuenta.getCueCodigo());
         if (Cuenta.getCueEstado() != "I") {
-            lblNumFactura.setText(Cuenta.getCueFactura().getFacCodigo().toString());
+            Persona pPersona = Cuenta.getCueCliente().getPersona();
+            boxCliente_CxC.setValue(Cuenta);
+            lblNumFactura.setText(String.valueOf(Cuenta.getCueFactura().getFacCodigo()));
             lblSaldoFact.setText(String.valueOf(Cuenta.getCueSaldoFac()));
             lblSaldoTotal.setText(String.valueOf(Cuenta.getCueSaldo()));
             CargarTabla(Cuenta);
@@ -331,9 +346,7 @@ public class FXML_AbonosController implements Initializable {
             colAbono.setCellValueFactory((cellData -> new SimpleObjectProperty<Double>(cellData.getValue().getAboMonto())));
             colFecha.setCellValueFactory((cellData -> new SimpleObjectProperty<String>(formatter.format(cellData.getValue().getAboFecha()))));
             colNumAbono.setCellValueFactory((cellData -> new SimpleObjectProperty(cellData.getValue().getAboCodigo())));
-
-            //  List<Abono> abonosList = Cuenta.getAbonoList();   
-            //  abonosList = abonosList.stream().filter(x -> x.getAboEstado().equals("A")).collect(Collectors.toList());   
+            
             List<Abono> abonosList = new ArrayList<>();
             for (Abono pAbono : Cuenta.getAbonoList()) {
                 if (pAbono.getAboEstado().equals("A")) {
@@ -349,7 +362,7 @@ public class FXML_AbonosController implements Initializable {
     }
 
     public void Limpiar_Vista() {
-        lblNumFactura.setText("######");
+        lblNumFactura.setText("#####");
         lblSaldoFact.setText("00000");
         lblSaldoTotal.setText("00000");
         lblFechaAbono.setText(formatter.format(fecha.getTime()));
@@ -359,25 +372,14 @@ public class FXML_AbonosController implements Initializable {
         btnEliminarAbono.setDisable(true);
 
     }
-    //++++++++++++++++++++++++++++++++++++++  Area de validaciones de componetes de la GUI ++++++++++++++++++++++++++++++++++++++++++++
 
-    public void validarNumero(KeyEvent event) {
-        String character = event.getCharacter();
-        if (!checkNumerico(character)) {
-            event.consume();
-            Message.getInstance().Warning("Cuidado:", "Este campo solo acepta numeros");
-        }
-
-    }
-
-    public boolean checkNumerico(String value) {
-        String number = value.replaceAll("\\s+", "");
-        for (int j = 0; j < number.length(); j++) {
-            if (!(((int) number.charAt(j) >= 47 && (int) number.charAt(j) <= 57)) && !((int) number.charAt(j) == 8)) {
-                return false;
-            }
-        }
-        return true;
+    public void Inicializar_Componentes() {
+        nAbono = new Abono();
+        lblFechaAbono.setText(formatter.format(fecha.getTime()));
+        txtAbono.setText("");
+        btnEditarAbono.setDisable(true);
+        btnEliminarAbono.setDisable(true);
+        tblAbonos.getSelectionModel().clearSelection();
     }
 
     //++++++++++++++++++++++++++++++++++++++  Area de Otros Procesos ++++++++++++++++++++++++++++++++++++++++++++/
@@ -391,10 +393,52 @@ public class FXML_AbonosController implements Initializable {
             stage.initModality(Modality.WINDOW_MODAL);
             stage.showAndWait();
             Cuenta = (CuentaXCobrar) AppContext.getInstance().get("seleccion-Cuenta");
-            CargarInformacion();
+            if(Cuenta!=null) CargarInformacion();
 
         } catch (Exception ex) {
             System.err.print(ex);
         }
     }
+
+    private void CargarCliente(SearchComboBox<CuentaXCobrar> box) {
+        try {
+            List<CuentaXCobrar> listCuentaXCobrar = new CuentasXCobrarJPAController().ConsultarCuentasXCobrar().stream().filter(e -> e.getCueEstado().equals("A")).collect(Collectors.toList());
+
+            ObservableList<CuentaXCobrar> OClienteList = FXCollections.observableArrayList(listCuentaXCobrar);
+
+            box.setItems(OClienteList);
+        } catch (Exception ex) {
+            Message.getInstance().Error("Error:", "Ocurrió un error al cargar los clientes. Codigo de error: " + ex);
+
+        }
+    }
+
+    private void ComboBoxCliente() {
+
+        try {
+            boxCliente_CxC = new SearchComboBox<>();
+            boxCliente_CxC.setMinHeight(33);
+            boxCliente_CxC.setMinWidth(176);
+            boxCliente_CxC.getSelectionModel().select(0);
+            boxCliente_CxC.setPromptText("Selecionar Cliente");
+            boxCliente_CxC.setFilter((CuentaXCobrar t, String u) -> (t.getCueCliente().getPersona().getPerCedula()).toUpperCase().contains(u.toUpperCase()));
+            CargarCliente(boxCliente_CxC);
+            boxCliente_CxC.setOnAction((event) -> {
+            if (boxCliente_CxC.getSelectionModel().getSelectedItem() != null) {
+                Cuenta = boxCliente_CxC.getSelectionModel().getSelectedItem();
+                CargarInformacion();           
+            }else{
+             Cuenta=null;
+            }  
+        });
+            SearchBoxGrid_Cliente.add(boxCliente_CxC, 0, 0);
+
+        } catch (Exception ex) {
+
+            Message.getInstance().Error("Error:", "Ocurrió un error al cargar los clientes. Codigo de error: " + ex);
+        }
+
+    }
+    /*Variables de Clase------------------------------------------------------*/
+    private SearchComboBox<CuentaXCobrar> boxCliente_CxC;
 }
