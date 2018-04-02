@@ -5,6 +5,7 @@
  */
 package ferreteria_las_vegas.controller;
 
+import ferreteria_las_vegas.model.controller.ArticuloJpaController;
 import ferreteria_las_vegas.model.entities.Factura;
 import ferreteria_las_vegas.model.entities.Articulo;
 import ferreteria_las_vegas.model.entities.ArticuloXFactura;
@@ -15,10 +16,15 @@ import ferreteria_las_vegas.utils.AppContext;
 import java.io.IOException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -27,8 +33,10 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -59,31 +67,49 @@ public class FXML_FacturaciónController implements Initializable {
     @FXML
     private Button btnBorrarLinea;
     @FXML
-    private TableView<?> tbl_Factura;
+    private TableView<InventarioCompleto> tbl_Factura;
+    @FXML
+    private TableColumn<InventarioCompleto, String> colCodigo;
+
+    @FXML
+    private TableColumn<InventarioCompleto, String> ColProducto;
+
+    @FXML
+    private TableColumn<InventarioCompleto, String> colDescripción;
+
+    @FXML
+    private TableColumn<InventarioCompleto, String> colUnidadMedida;
+
+    @FXML
+    private TableColumn<InventarioCompleto, String> colDescuento;
+
+    @FXML
+    private TableColumn<InventarioCompleto, String> colCantida;
+
+    @FXML
+    private TableColumn<InventarioCompleto, String> colPrecio;
     @FXML
     private Label lblTotal;
     @FXML
     private Label lblCliente;
     @FXML
     private Label lblFecha;
-    
-     /**
+
+    /**
      * Area de variables Globales
      */
-    Cliente cliente; 
     SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
     Date fecha = new Date();
-    
-    
+
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         lblFecha.setText(formatter.format(fecha.getTime()));
-      
-    }    
-    
+        ListArticulos = new ArrayList<>();
+    }
+
     @FXML
     private void btnBuscarArticulo_Click(ActionEvent event) {
         Lanzar_FXMLBuscarArticulo();
@@ -101,20 +127,20 @@ public class FXML_FacturaciónController implements Initializable {
 
     @FXML
     private void btnCobrarFactura_Click(ActionEvent event) {
-         Lanzar_FXMLPagos();
+        Lanzar_FXMLPagos();
     }
 
     @FXML
     private void btnGuardarPedido_Click(ActionEvent event) {
-        
+
     }
 
     @FXML
     private void btnCliente_Click(ActionEvent event) {
         Lanzar_FXMLBuscarCliente();
         cliente = (Cliente) AppContext.getInstance().get("selected-Cliente");
-        Persona per=cliente.getPersona();
-        lblCliente.setText(String.valueOf(per.getPerCedula())+" "+per.getPerNombre()+" "+per.getPerPApellido());
+        Persona per = cliente.getPersona();
+        lblCliente.setText(String.valueOf(per.getPerCedula()) + " " + per.getPerNombre() + " " + per.getPerPApellido());
     }
 
     @FXML
@@ -124,64 +150,171 @@ public class FXML_FacturaciónController implements Initializable {
     @FXML
     private void btnBorrarLinea_Click(ActionEvent event) {
     }
-    
-    
- /*+++++++++++++++++++++++++++++++++++++++++++++++++++++++Procesos fundamentales++++++++++++++++++++++++++++++++++++++++++++++++++++*/    
+
+    /*+++++++++++++++++++++++++++++++++++++++++++++++++++++++Procesos fundamentales++++++++++++++++++++++++++++++++++++++++++++++++++++*/
  /*+++++++++++++++++++++++++++++++++++++++++++++++++Metodos importantes que no son procesos+++++++++++++++++++++++++++++++++++++++++*/
- /*+++++++++++++++++++++++++++++++++++++++++++++++++++++++Otros metodos+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/ 
- /*+++++++++++++++++++++++++++++++++++++++++++++++++++++++Metodos GUI-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
- /*++++++++++++++++++++++++++++++++++++++++++++++++++++++Metodos Lanzadores+++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-     public void Lanzar_FXMLPagos(){
-     try {
+ /*+++++++++++++++++++++++++++++++++++++++++++++++++++++++Otros metodos+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+    public void Calcular_Total() {
+        //Calculo el subtotal y el descuento de cada uno de los articulos
+        Subtotal = Descuento = Total = ImpuestoVenta = 0;
+        for (InventarioCompleto art : ListArticulos) {
+            Subtotal += art.getCantArticulo() * art.getArticulo().getArtPrecio();
+            Descuento += (art.getCantArticulo() * art.getArticulo().getArtPrecio()) * art.getArticulo().getArtDescuento();
+        }
+
+        ImpuestoVenta = (Subtotal - Descuento) * 0.13;
+        Total = ((Subtotal - Descuento) + ImpuestoVenta);
+        lblTotal.setText(String.valueOf(Total));
+
+    }
+
+    /*+++++++++++++++++++++++++++++++++++++++++++++++++++++++Metodos GUI-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+    public void CargarTabla() {
+        try {
+            colCodigo.setCellValueFactory((cellData -> new SimpleStringProperty(cellData.getValue().getArticulo().getArtCodigo().toString())));
+            ColProducto.setCellValueFactory((cellData -> new SimpleStringProperty(cellData.getValue().getArticulo().getArtNombre())));
+            colDescripción.setCellValueFactory((cellData -> new SimpleStringProperty(cellData.getValue().getArticulo().getArtDescripcion())));
+            colUnidadMedida.setCellValueFactory((cellData -> new SimpleStringProperty(cellData.getValue().getArticulo().getArtUnidadMedida())));
+            colDescuento.setCellValueFactory((cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getArticulo().getArtDescuento()))));
+            colCantida.setCellValueFactory((cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getCantArticulo()))));
+            colPrecio.setCellValueFactory((cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getArticulo().getArtPrecio()))));
+
+            colCantida.setCellFactory(TextFieldTableCell.forTableColumn());
+
+            ModificarTabla();
+            ObservableList<InventarioCompleto> ListArCompletos = FXCollections.observableArrayList(ListArticulos);
+            tbl_Factura.setItems(ListArCompletos);
+        } catch (Exception e) {
+            System.err.println(e);
+        }
+
+    }
+
+    public void ModificarTabla() {
+        try {
+            colCantida.setOnEditCommit(Date -> {
+                if (Date.getNewValue() != "" || Integer.valueOf(Date.getNewValue()) > 0) {
+                    Date.getRowValue().setCantArticulo(Integer.valueOf(Date.getNewValue()));
+                    Calcular_Total();
+
+                }
+            });
+        } catch (Exception ex) {
+            System.err.println(ex);
+        }
+
+    }
+
+    public void CargasDatos() {
+        try {
+            if (pArticulo == null) {
+                if (txtCodigoArticulo.getText() != " ") {
+                    pArticulo = ArticuloJpaController.getInstance().ConsultarArticuloCodBarras(txtCodigoArticulo.getText());
+                    ProcesoCargaInformacion();
+                }
+            } else {
+                ProcesoCargaInformacion();
+            }
+        } catch (Exception ex) {
+            System.err.println(ex);
+        }
+    }
+
+    public void ProcesoCargaInformacion() {
+        InventarioCompleto pCompleto = new InventarioCompleto();
+        pCompleto.setArticulo(pArticulo);
+        boolean bandera=false;
+        try {
+            if (!ListArticulos.isEmpty()) {
+                for (InventarioCompleto pArCompleto : ListArticulos) {
+                    if (pArCompleto.getArticulo().equals(pCompleto.getArticulo())) {
+                        ListArticulos.remove(pArCompleto);
+                        pArCompleto.setCantArticulo(pArCompleto.getCantArticulo() + 1);//Aumento la cantidad de articulos
+                        ListArticulos.add(pArCompleto);
+                    } else {
+                        bandera=true;
+                    }
+                }
+                if(bandera){
+                    pCompleto.setCantArticulo(1);
+                    ListArticulos.add(pCompleto);  
+                }
+            } else {
+                pCompleto.setCantArticulo(1);
+                ListArticulos.add(pCompleto);
+            }
+            Calcular_Total();
+            CargarTabla();
+
+        } catch (Exception ex) {
+            System.err.println(ex);
+        }
+
+    }
+
+    public void Limpiar_Vista() {
+        lblTotal.setText("");
+        lblCliente.setText("");
+        lblFecha.setText(formatter.format(fecha.getTime()));
+        tbl_Factura.getItems().clear();
+    }
+
+    /*++++++++++++++++++++++++++++++++++++++++++++++++++++++Metodos Lanzadores+++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+    public void Lanzar_FXMLPagos() {
+        try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/ferreteria_las_vegas/view/FXML_Pagos.fxml"));
-           
-                Parent root1 = (Parent) fxmlLoader.load();
-                Stage stage = new Stage(StageStyle.UTILITY);
-                stage.setScene(new Scene(root1));
-                stage.initModality(Modality.WINDOW_MODAL);
-                stage.initOwner(btnCobrarFactura.getScene().getWindow());
-                stage.showAndWait();
+
+            Parent root1 = (Parent) fxmlLoader.load();
+            Stage stage = new Stage(StageStyle.UTILITY);
+            stage.setScene(new Scene(root1));
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.initOwner(btnCobrarFactura.getScene().getWindow());
+            stage.showAndWait();
 
         } catch (IOException ex) {
             Logger.getLogger(FXML_FacturaciónController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    public void Lanzar_FXMLBuscarCliente(){
-       try {
+
+    public void Lanzar_FXMLBuscarCliente() {
+        try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/ferreteria_las_vegas/view/FXML_Buscar_Clientes.fxml"));
-           
-                Parent root1 = (Parent) fxmlLoader.load();
-                Stage stage = new Stage(StageStyle.UTILITY);
-                stage.setScene(new Scene(root1));
-                stage.initModality(Modality.WINDOW_MODAL);
-                stage.initOwner(btnCliente.getScene().getWindow());
-                stage.showAndWait();
+
+            Parent root1 = (Parent) fxmlLoader.load();
+            Stage stage = new Stage(StageStyle.UTILITY);
+            stage.setScene(new Scene(root1));
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.initOwner(btnCliente.getScene().getWindow());
+            stage.showAndWait();
 
         } catch (IOException ex) {
             Logger.getLogger(FXML_FacturaciónController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
 
-    public void Lanzar_FXMLBuscarArticulo(){
-       try {
+    public void Lanzar_FXMLBuscarArticulo() {
+        try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/ferreteria_las_vegas/view/FXML_Buscar_Productos.fxml"));
-           
-                Parent root1 = (Parent) fxmlLoader.load();
-                Stage stage = new Stage(StageStyle.UTILITY);
-                stage.setScene(new Scene(root1));
-                stage.initModality(Modality.WINDOW_MODAL);
-                stage.initOwner(btnBuscarArticulo.getScene().getWindow());
-                stage.showAndWait();
+            Parent root1 = (Parent) fxmlLoader.load();
+            Stage stage = new Stage(StageStyle.UTILITY);
+            stage.setScene(new Scene(root1));
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.initOwner(btnBuscarArticulo.getScene().getWindow());
+            stage.showAndWait();
+            pArticulo = (Articulo) AppContext.getInstance().get("seleccion-Articulo");
+            CargasDatos();
 
         } catch (IOException ex) {
             Logger.getLogger(FXML_FacturaciónController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-     public void Lanzar_FXML_Abonos(){
-      ScenesManager.getInstance().LoadSceneAbonos();
+
+    public void Lanzar_FXML_Abonos() {
+        ScenesManager.getInstance().LoadSceneAbonos();
     }
- /*+++++++++++++++++++++++++++++++++++++++++++++++++++++Variables de Clase++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-      
+    /*+++++++++++++++++++++++++++++++++++++++++++++++++++++Variables de Clase++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+    Cliente cliente;
+    Articulo pArticulo;
+    List<InventarioCompleto> ListArticulos;
+    double Total, Subtotal, Descuento, ImpuestoVenta;
 }
