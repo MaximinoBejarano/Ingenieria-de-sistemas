@@ -5,6 +5,9 @@
  */
 package ferreteria_las_vegas.controller;
 
+import ferreteria_las_vegas.utils.LoggerManager;
+import ferreteria_las_vegas.utils.Message;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -18,9 +21,6 @@ import javafx.fxml.FXML;
  */
 public class FXML_AnulaciónController implements Initializable {
 
-    /**
-     * Initializes the controller class.
-     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
@@ -28,6 +28,11 @@ public class FXML_AnulaciónController implements Initializable {
 
     @FXML
     void SalirClick(ActionEvent event) {
-        ScenesManager.getInstance().LoadSceneMenu();
+        try {
+            ScenesManager.getInstance().LoadSceneMenu();
+        } catch (IOException ex) {
+            Message.getInstance().Error("Error", "Ocurrió un error y no se pudo volver a la pantalla de menú.");
+            LoggerManager.Logger().info(ex.toString());
+        }
     }
 }

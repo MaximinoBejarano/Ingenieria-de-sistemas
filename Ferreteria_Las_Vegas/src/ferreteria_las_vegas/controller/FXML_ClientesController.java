@@ -14,7 +14,9 @@ import ferreteria_las_vegas.model.entities.Direccion;
 import ferreteria_las_vegas.model.entities.Persona;
 import ferreteria_las_vegas.model.entities.Usuario;
 import ferreteria_las_vegas.utils.AppContext;
+import ferreteria_las_vegas.utils.LoggerManager;
 import ferreteria_las_vegas.utils.Message;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -84,10 +86,7 @@ public class FXML_ClientesController implements Initializable {
             System.err.println(ex);
         }
     }
-
-    /**
-     * Initializes the controller class.
-     */
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
@@ -95,7 +94,12 @@ public class FXML_ClientesController implements Initializable {
 
     @FXML
     void SalirClick(ActionEvent event) {
-        ScenesManager.getInstance().LoadSceneMenu();
+        try {
+            ScenesManager.getInstance().LoadSceneMenu();
+        } catch (IOException ex) {
+            Message.getInstance().Error("Error", "Ocurrió un error y no se pudo volver a la pantalla de menú.");
+            LoggerManager.Logger().info(ex.toString());
+        }
     }
 
     @FXML
@@ -123,39 +127,39 @@ public class FXML_ClientesController implements Initializable {
 
     void ProcesoAgregar() {
         Persona persona = PersonaJpaController.getInstance().ConsultarPersonaCedula(txtCedCliente.getText());
-        if(persona==null){
-        persona = new Persona(txtCedCliente.getText(), txtNombreCliente.getText(), txtPApellidoCliente.getText(), "A");
-        persona.setPerSApellido(txtSApellidoCliente.getText());
-        
-        Usuario user = (Usuario) AppContext.getInstance().get("user");
-        persona.setPerFerreteria(user.getPersona().getPerFerreteria());
+        if (persona == null) {
+            persona = new Persona(txtCedCliente.getText(), txtNombreCliente.getText(), txtPApellidoCliente.getText(), "A");
+            persona.setPerSApellido(txtSApellidoCliente.getText());
 
-        Contacto contactoTel1 = new Contacto(Integer.SIZE, txtTelefono1Cliente.getText(), "TEL");
-        Contacto contactoTel2 = null;
-        if (!txtTelefono2Cliente.getText().isEmpty()) {
-            contactoTel2 = new Contacto(Integer.SIZE, txtTelefono2Cliente.getText(), "TEL2");
-        } else {
-            contactoTel2 = new Contacto(Integer.SIZE, "N/A", "TEL2");
-        }
-        Contacto contactoEma = null;
-        if (!txtCorreoCliente.getText().isEmpty()) {
-            contactoEma = new Contacto(Integer.SIZE, txtCorreoCliente.getText(), "EMAIL");
-        } else {
-            contactoEma = new Contacto(Integer.SIZE, "N/A", "EMAIL");
-        }
-        Direccion direcion = new Direccion(Integer.SIZE, TxtDireccionCliente.getText());
+            Usuario user = (Usuario) AppContext.getInstance().get("user");
+            persona.setPerFerreteria(user.getPersona().getPerFerreteria());
 
-        persona = PersonaJpaController.getInstance().AgregarPersona(persona, direcion, contactoTel1, contactoTel2, contactoEma);
-        Cliente cliente;
-        cliente = new ClienteJpaController().AgregarCliente(new Cliente(persona.getPerCedula(), new java.sql.Date(new java.util.Date().getTime()), "A"));
+            Contacto contactoTel1 = new Contacto(Integer.SIZE, txtTelefono1Cliente.getText(), "TEL");
+            Contacto contactoTel2 = null;
+            if (!txtTelefono2Cliente.getText().isEmpty()) {
+                contactoTel2 = new Contacto(Integer.SIZE, txtTelefono2Cliente.getText(), "TEL2");
+            } else {
+                contactoTel2 = new Contacto(Integer.SIZE, "N/A", "TEL2");
+            }
+            Contacto contactoEma = null;
+            if (!txtCorreoCliente.getText().isEmpty()) {
+                contactoEma = new Contacto(Integer.SIZE, txtCorreoCliente.getText(), "EMAIL");
+            } else {
+                contactoEma = new Contacto(Integer.SIZE, "N/A", "EMAIL");
+            }
+            Direccion direcion = new Direccion(Integer.SIZE, TxtDireccionCliente.getText());
 
-        if (persona != null && cliente != null) {
-            new Alert(Alert.AlertType.INFORMATION, "Cliente Agregado Correctamente.", ButtonType.OK).showAndWait();
-            LimpiarControles();
+            persona = PersonaJpaController.getInstance().AgregarPersona(persona, direcion, contactoTel1, contactoTel2, contactoEma);
+            Cliente cliente;
+            cliente = new ClienteJpaController().AgregarCliente(new Cliente(persona.getPerCedula(), new java.sql.Date(new java.util.Date().getTime()), "A"));
+
+            if (persona != null && cliente != null) {
+                new Alert(Alert.AlertType.INFORMATION, "Cliente Agregado Correctamente.", ButtonType.OK).showAndWait();
+                LimpiarControles();
+            } else {
+                new Alert(Alert.AlertType.ERROR, "No se pudo Modificar el Cliente.", ButtonType.OK).showAndWait();
+            }
         } else {
-            new Alert(Alert.AlertType.ERROR, "No se pudo Modificar el Cliente.", ButtonType.OK).showAndWait();
-        }
-        }else{
             Message.getInstance().Warning("Cliente Existente", "Ya existe un cliente registrado con el mismo numero de cedula");
         }
     }

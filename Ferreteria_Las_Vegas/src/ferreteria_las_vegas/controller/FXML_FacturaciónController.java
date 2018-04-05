@@ -12,6 +12,8 @@ import ferreteria_las_vegas.model.entities.ArticuloXFactura;
 import ferreteria_las_vegas.model.entities.Cliente;
 import ferreteria_las_vegas.model.entities.Persona;
 import ferreteria_las_vegas.utils.AppContext;
+import ferreteria_las_vegas.utils.LoggerManager;
+import ferreteria_las_vegas.utils.Message;
 
 import java.io.IOException;
 import java.net.URL;
@@ -117,7 +119,12 @@ public class FXML_FacturaciónController implements Initializable {
 
     @FXML
     private void btnSalir_Click(ActionEvent event) {
-        ScenesManager.getInstance().LoadSceneMenu();
+        try {
+            ScenesManager.getInstance().LoadSceneMenu();
+        } catch (IOException ex) {
+            Message.getInstance().Error("Error", "Ocurrió un error y no se pudo volver a la pantalla de menú.");
+            LoggerManager.Logger().info(ex.toString());
+        }
     }
 
     @FXML
@@ -272,7 +279,8 @@ public class FXML_FacturaciónController implements Initializable {
             stage.showAndWait();
 
         } catch (IOException ex) {
-            Logger.getLogger(FXML_FacturaciónController.class.getName()).log(Level.SEVERE, null, ex);
+            Message.getInstance().Error("Error", "Ocurrió un error y no se pudo lanzar la pantalla de búsqueda de pagos.");
+            LoggerManager.Logger().info(ex.toString());
         }
     }
 
@@ -288,7 +296,8 @@ public class FXML_FacturaciónController implements Initializable {
             stage.showAndWait();
 
         } catch (IOException ex) {
-            Logger.getLogger(FXML_FacturaciónController.class.getName()).log(Level.SEVERE, null, ex);
+            Message.getInstance().Error("Error", "Ocurrió un error y no se pudo lanzar la pantalla de búsqueda de clientes.");
+            LoggerManager.Logger().info(ex.toString());
         }
     }
 
@@ -303,14 +312,19 @@ public class FXML_FacturaciónController implements Initializable {
             stage.showAndWait();
             pArticulo = (Articulo) AppContext.getInstance().get("seleccion-Articulo");
             CargasDatos();
-
         } catch (IOException ex) {
-            Logger.getLogger(FXML_FacturaciónController.class.getName()).log(Level.SEVERE, null, ex);
+            Message.getInstance().Error("Error", "Ocurrió un error y no se pudo lanzar la pantalla de búsqueda de artículo.");
+            LoggerManager.Logger().info(ex.toString());
         }
     }
 
-    public void Lanzar_FXML_Abonos() {
-        ScenesManager.getInstance().LoadSceneAbonos();
+    public void Lanzar_FXML_Abonos() {        
+        try {
+            ScenesManager.getInstance().LoadSceneAbonos();
+        } catch (IOException ex) {
+            Message.getInstance().Error("Error", "Ocurrió un error y no se pudo lanzar la pantalla de abonos.");
+            LoggerManager.Logger().info(ex.toString());
+        }
     }
     /*+++++++++++++++++++++++++++++++++++++++++++++++++++++Variables de Clase++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
     Cliente cliente;

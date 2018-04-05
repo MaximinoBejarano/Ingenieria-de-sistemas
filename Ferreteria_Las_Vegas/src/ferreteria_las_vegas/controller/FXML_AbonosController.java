@@ -14,8 +14,10 @@ import ferreteria_las_vegas.model.entities.Persona;
 import ferreteria_las_vegas.model.entities.TipoPago;
 import ferreteria_las_vegas.utils.AppContext;
 import ferreteria_las_vegas.utils.GeneralUtils;
+import ferreteria_las_vegas.utils.LoggerManager;
 import ferreteria_las_vegas.utils.Message;
 import ferreteria_las_vegas.utils.SearchComboBox;
+import java.io.IOException;
 
 import java.net.URL;
 import java.text.SimpleDateFormat;
@@ -129,7 +131,12 @@ public class FXML_AbonosController implements Initializable {
 
     @FXML
     private void btnSalir_Click(ActionEvent event) {
-        ScenesManager.getInstance().LoadSceneMenu();
+        try {
+            ScenesManager.getInstance().LoadSceneMenu();
+        } catch (IOException ex) {
+            Message.getInstance().Error("Error", "Ocurrió un error y no se pudo volver a la pantalla de menú.");
+            LoggerManager.Logger().info(ex.toString());
+        }
     }
 
     @FXML

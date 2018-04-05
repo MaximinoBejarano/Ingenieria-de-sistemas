@@ -56,7 +56,6 @@ public class ScenesManager {
         //stage.getIcons().add(new Image("src/pictures/logo.png"));
         stage.setTitle("Sistema de Facturación Ferretería las Vegas");
         stage.show();
-
         PermisosManager.getInstance().setScene(scene);
     }
 
@@ -65,14 +64,10 @@ public class ScenesManager {
         scene.setRoot(root);
     }
 
-    public void LoadSceneMenu() {
-        try {
-            root = FXMLLoader.load(getClass().getResource("/ferreteria_las_vegas/view/FXML_Menu.fxml"));
-            scene.setRoot(root);
-            PermisosManager.getInstance().Menu();
-        } catch (IOException ex) {
-            
-        }
+    public void LoadSceneMenu() throws IOException {
+        root = FXMLLoader.load(getClass().getResource("/ferreteria_las_vegas/view/FXML_Menu.fxml"));
+        scene.setRoot(root);
+        PermisosManager.getInstance().Menu();
     }
 
     public void LoadSceneEmpleados() throws IOException {

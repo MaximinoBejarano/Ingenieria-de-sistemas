@@ -178,7 +178,12 @@ public class FXML_EmpleadosController implements Initializable {
 
     @FXML
     void btnSalirClick(ActionEvent event) {
-        ScenesManager.getInstance().LoadSceneMenu();
+        try {
+            ScenesManager.getInstance().LoadSceneMenu();
+        } catch (IOException ex) {
+            Message.getInstance().Error("Error", "Ocurrió un error y no se pudo volver a la pantalla de menú.");
+            LoggerManager.Logger().info(ex.toString());
+        }
     }
 
     @FXML

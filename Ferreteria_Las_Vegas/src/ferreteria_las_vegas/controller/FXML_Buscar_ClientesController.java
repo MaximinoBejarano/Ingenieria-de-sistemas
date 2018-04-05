@@ -59,9 +59,7 @@ public class FXML_Buscar_ClientesController implements Initializable {
     @FXML
     private TableColumn<Cliente, String> tcDireccionCliente;
 
-    /**
-     * Initializes the controller class.
-     */
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         RecargarTblClientes();
@@ -96,10 +94,8 @@ public class FXML_Buscar_ClientesController implements Initializable {
 
     @FXML
     private void CerrarPantallaBusqueda(ActionEvent event) {
-
         Stage stageAct = (Stage) btnSalirCliente.getScene().getWindow();
         stageAct.close();
-
     }
 
     @FXML

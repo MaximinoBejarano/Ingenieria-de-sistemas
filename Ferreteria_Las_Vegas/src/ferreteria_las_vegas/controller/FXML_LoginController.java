@@ -22,6 +22,7 @@ import ferreteria_las_vegas.utils.GeneralUtils;
 import ferreteria_las_vegas.utils.LoggerManager;
 import ferreteria_las_vegas.model.entities.Usuario;
 import ferreteria_las_vegas.model.controller.UsuarioJpaController;
+import java.io.IOException;
 
 public class FXML_LoginController implements Initializable {
 
@@ -132,6 +133,11 @@ public class FXML_LoginController implements Initializable {
 
     /*--------------------------------------------------------------------------------------------------------------*/
     void LanzarMenu() {
-        ScenesManager.getInstance().LoadSceneMenu();
+        try {
+            ScenesManager.getInstance().LoadSceneMenu();
+        } catch (IOException ex) {
+            Message.getInstance().Error("Error", "Ocurrió un error y no se pudo ir a la pantalla de menú.");
+            LoggerManager.Logger().info(ex.toString());
+        }
     }
 }
