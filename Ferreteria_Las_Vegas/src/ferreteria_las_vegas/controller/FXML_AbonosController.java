@@ -21,19 +21,14 @@ import java.io.IOException;
 
 import java.net.URL;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
-import static javafx.collections.FXCollections.observableList;
 import javafx.collections.ObservableList;
-import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -41,7 +36,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -106,10 +100,7 @@ public class FXML_AbonosController implements Initializable {
     TipoPago tipPago;
     SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
     Date fecha = new Date();
-
-    /**
-     * Initializes the controller class.
-     */
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
@@ -119,7 +110,6 @@ public class FXML_AbonosController implements Initializable {
         lblFechaAbono.setText(formatter.format(fecha.getTime()));
         fecha = new Date();
         ComboBoxCliente();
-
     }
 
     @FXML
@@ -130,7 +120,7 @@ public class FXML_AbonosController implements Initializable {
     }
 
     @FXML
-    private void btnSalir_Click(ActionEvent event) {
+    void btnSalir_Click(ActionEvent event) {
         try {
             ScenesManager.getInstance().LoadSceneMenu();
         } catch (IOException ex) {
@@ -140,70 +130,63 @@ public class FXML_AbonosController implements Initializable {
     }
 
     @FXML
-    private void btnAgregarAbono_Click(ActionEvent event) {
+    void btnAgregarAbono_Click(ActionEvent event) {
         if (Cuenta != null) {
             if (txtAbono.getText().isEmpty()) {
-                Message.getInstance().Warning("Advertencia:", "Es necesario completar los campos requeridos");
+                Message.getInstance().Warning("Advertencia", "Es necesario completar los campos requeridos.");
             } else {
                 if (nAbono.getAboCodigo() == null) {
                     AgregarAbono();
                 } else {
                     if (AbonosJPAController.getInstance().ConsultarAbono_Codigo(nAbono.getAboCodigo()) != null) {
-                        Message.getInstance().Information("Información:", "Abono existente, ingrese uno nuevo");
+                        Message.getInstance().Information("Información", "Abono existente, ingrese uno nuevo.");
                         Inicializar_Componentes();
                     }
                 }
             }
         } else {
             Inicializar_Componentes();
-            Message.getInstance().Warning("Advertencia:", "Por favor consulte un cliente o cuenta por cobrar");
+            Message.getInstance().Warning("Advertencia", "Por favor consulte un cliente o cuenta por cobrar.");
         }
     }
 
     @FXML
-    private void btnEditarAbono_Click(ActionEvent event
+    void btnEditarAbono_Click(ActionEvent event
     ) {
         if (txtAbono.getText().isEmpty()) {
-            Message.getInstance().Warning("Advertencia:", "Es necesario completar los campos requeridos");
+            Message.getInstance().Warning("Advertencia", "Es necesario completar los campos requeridos.");
         } else {
             if (tblAbonos.getSelectionModel().getSelectedItem() != null && nAbono != null) {
                 if (formatter.format(nAbono.getAboFecha()).equals(formatter.format(fecha.getTime()))) {
                     ModificarAbono();
                 } else {
-                    Message.getInstance().Warning("Advertencia:", "Solo modificar abonos con la fecha: " + formatter.format(fecha.getTime()));
+                    Message.getInstance().Warning("Advertencia", "Solo modificar abonos con la fecha: " + formatter.format(fecha.getTime()) + ".");
                 }
             } else {
-                Message.getInstance().Warning("Advertencia:", "Debe selecionar una fila de la tabla");
+                Message.getInstance().Warning("Advertencia", "Debe seleccionar una fila de la tabla.");
             }
         }
     }
 
     @FXML
-    private void btnEliminarAbono_Click(ActionEvent event
-    ) {
+    void btnEliminarAbono_Click(ActionEvent event) {
         if (txtAbono.getText().isEmpty()) {
-            Message.getInstance().Warning("Advertencia:", "Es necesario completar los campos requeridos");
+            Message.getInstance().Warning("Advertencia", "Es necesario completar los campos requeridos.");
         } else {
             if (tblAbonos.getSelectionModel().getSelectedItem() != null && nAbono != null) {
                 if (formatter.format(nAbono.getAboFecha()).equals(formatter.format(fecha.getTime()))) {
                     EliminarAbono();
                 } else {
-                    Message.getInstance().Warning("Advertencia:", "Solo eliminar abonos con la fecha: " + formatter.format(fecha.getTime()));
+                    Message.getInstance().Warning("Advertencia", "Solo eliminar abonos con la fecha: " + formatter.format(fecha.getTime()) + ".");
                 }
             } else {
-                Message.getInstance().Warning("Advertencia:", "Debe selecionar una fila de la tabla");
+                Message.getInstance().Warning("Advertencia", "Debe seleccionar una fila de la tabla.");
             }
         }
     }
 
     @FXML
-    private void cmbCliente_Click(ActionEvent event
-    ) {
-    }
-
-    @FXML
-    private void btnFiltrar_Click(ActionEvent event
-    ) {
+    void btnFiltrar_Click(ActionEvent event) {
         LanzarBusqudad_CuentaxCobrar();
     }
 
@@ -237,22 +220,20 @@ public class FXML_AbonosController implements Initializable {
             nAbono = new Abono();
             nAbono = Extraerdatos(nAbono);
             if (nAbono != null) {
-
                 if (CuentasXCobrarJPAController.getInstance().Modificar_CuentaXCobrar_Abonos(Cuenta, nAbono) != null) {
-                    Message.getInstance().Information("Información:", "Se han ingresado los datos de forma exitosa");
+                    Message.getInstance().Information("Información", "Se han ingresado los datos de forma exitosa.");
                     CargarInformacion(); //Actualiza la pantalla con los nuevos cambios
                 } else {
-                    Message.getInstance().Error("Error:", "No se han guardado los datos");
+                    Message.getInstance().Error("Error", "No se han guardado los datos.");
                 }
-
             }
-
         } catch (Exception ex) {
-            System.err.println(ex);
+            Message.getInstance().Error("Error", "Ocurrió un error y no se pudo agregar el abono.");
+            LoggerManager.Logger().info(ex.toString());
         }
     }
 
-    public void ModificarAbono() {
+    void ModificarAbono() {
         double saldo;
         try {
             saldo = Cuenta.getCueSaldo() + nAbono.getAboMonto();
@@ -261,36 +242,35 @@ public class FXML_AbonosController implements Initializable {
             Cuenta.setCueSaldo(saldo);
             if (CuentasXCobrarJPAController.getInstance().Modificar_CuentaXCobrar(Cuenta) != null
                     && AbonosJPAController.getInstance().ModificarAbono(nAbono) != null) {
-                Message.getInstance().Information("Información:", "Se han modificado los datos de forma exitosa");
+                Message.getInstance().Information("Información", "Se han modificado los datos de forma exitosa.");
                 CargarInformacion(); //Actualiza la pantalla con los nuevos cambios
             } else {
-                Message.getInstance().Error("Error:", "No se han guardado los datos");
+                Message.getInstance().Error("Error", "No se han guardado los datos.");
             }
         } catch (Exception ex) {
-            System.err.println(ex);
+            Message.getInstance().Error("Error", "Ocurrió un error y no se pudo modificar el abono.");
+            LoggerManager.Logger().info(ex.toString());
         }
-
     }
 
-    public void EliminarAbono() {
-
+    void EliminarAbono() {
         try {
             Cuenta.setCueSaldo(Cuenta.getCueSaldo() + nAbono.getAboMonto());
             nAbono.setAboEstado("I");
             if (CuentasXCobrarJPAController.getInstance().Modificar_CuentaXCobrar(Cuenta) != null
                     && AbonosJPAController.getInstance().ModificarAbono(nAbono) != null) {
-                Message.getInstance().Information("Información:", "Se han eliminados los datos de forma exitosa");
+                Message.getInstance().Information("Información", "Se han eliminados los datos de forma exitosa.");
                 CargarInformacion(); //Actualiza la pantalla con los nuevos cambios
             } else {
-                Message.getInstance().Error("Error:", "No se han guardado los datos");
+                Message.getInstance().Error("Error", "No se han guardado los datos.");
             }
         } catch (Exception ex) {
-            System.err.println(ex);
+            Message.getInstance().Error("Error", "Ocurrió un error y no se pudo eliminar el abono.");
+            LoggerManager.Logger().info(ex.toString());
         }
-
     }
 
-    public TipoPago CargarTipoPago() {
+    TipoPago CargarTipoPago() {
         tipPago = TipoPagoJPAController.getInstance().Consultar_TipoPagoCodigo("Contado");
         return tipPago;
     }
@@ -299,7 +279,7 @@ public class FXML_AbonosController implements Initializable {
     /*
        Extrae los datos de la vista, para crear un abono
      */
-    public Abono Extraerdatos(Abono pAbono) {
+    Abono Extraerdatos(Abono pAbono) {
         try {
             //no borrar Date.from(pickFecha.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant())
             pAbono.setAboFecha(new java.sql.Date(new java.util.Date().getTime()));
@@ -316,25 +296,25 @@ public class FXML_AbonosController implements Initializable {
                     if ((Cuenta.getCueSaldo() - pAbono.getAboMonto()) == 0) {
                         Cuenta.setCueSaldo(Cuenta.getCueSaldo() - pAbono.getAboMonto());
                         //Cuenta.setCueEstado("I");
-                        Message.getInstance().Information("Información:", "Se ha cancelado el saldo total de la cuenta por cobrar");
+                        Message.getInstance().Information("Información", "Se ha cancelado el saldo total de la cuenta por cobrar.");
                     } else {
-                        Message.getInstance().Warning("Advertencia:", "El monto a abonar es mayor que el Saldo a pagar");
+                        Message.getInstance().Warning("Advertencia", "El monto a abonar es mayor que el Saldo a pagar.");
                         return null;
                     }
                 }
-
             } else {
-                Message.getInstance().Warning("Advertencia:", "Por favor solo ingrese digitos mayores a cero");
+                Message.getInstance().Warning("Advertencia", "Por favor solo ingrese digitos mayores a cero.");
                 return null;
             }
             return pAbono;
-        } catch (Exception e) {
-            System.err.println(e);
+        } catch (Exception ex) {
+            Message.getInstance().Error("Error", "Ocurrió un error y no se pudieron cargar los datos del abono.");
+            LoggerManager.Logger().info(ex.toString());
             return null;
         }
     }
 
-    public void CargarInformacion() {
+    void CargarInformacion() {
         Limpiar_Vista();
         nAbono = new Abono();
         Cuenta = CuentasXCobrarJPAController.getInstance().Consultar_CuentaXCobrarCodigo(Cuenta.getCueCodigo());
@@ -348,12 +328,12 @@ public class FXML_AbonosController implements Initializable {
         }
     }
 
-    public void CargarTabla(CuentaXCobrar Cuenta) {
+    void CargarTabla(CuentaXCobrar Cuenta) {
         try {
             colAbono.setCellValueFactory((cellData -> new SimpleObjectProperty<Double>(cellData.getValue().getAboMonto())));
             colFecha.setCellValueFactory((cellData -> new SimpleObjectProperty<String>(formatter.format(cellData.getValue().getAboFecha()))));
             colNumAbono.setCellValueFactory((cellData -> new SimpleObjectProperty(cellData.getValue().getAboCodigo())));
-            
+
             List<Abono> abonosList = new ArrayList<>();
             for (Abono pAbono : Cuenta.getAbonoList()) {
                 if (pAbono.getAboEstado().equals("A")) {
@@ -362,13 +342,13 @@ public class FXML_AbonosController implements Initializable {
             }
             ObservableList<Abono> ListAbonos = FXCollections.observableArrayList(abonosList);
             tblAbonos.setItems(ListAbonos);
-        } catch (Exception e) {
-            System.err.println(e);
+        } catch (Exception ex) {
+            Message.getInstance().Error("Error", "Ocurrió un error y no se pudo cargar la tabla de abonos.");
+            LoggerManager.Logger().info(ex.toString());
         }
-
     }
 
-    public void Limpiar_Vista() {
+    void Limpiar_Vista() {
         lblNumFactura.setText("#####");
         lblSaldoFact.setText("00000");
         lblSaldoTotal.setText("00000");
@@ -377,10 +357,9 @@ public class FXML_AbonosController implements Initializable {
         tblAbonos.getItems().clear();
         btnEditarAbono.setDisable(true);
         btnEliminarAbono.setDisable(true);
-
     }
 
-    public void Inicializar_Componentes() {
+    void Inicializar_Componentes() {
         nAbono = new Abono();
         lblFechaAbono.setText(formatter.format(fecha.getTime()));
         txtAbono.setText("");
@@ -390,7 +369,7 @@ public class FXML_AbonosController implements Initializable {
     }
 
     //++++++++++++++++++++++++++++++++++++++  Area de Otros Procesos ++++++++++++++++++++++++++++++++++++++++++++/
-    public void LanzarBusqudad_CuentaxCobrar() {
+    void LanzarBusqudad_CuentaxCobrar() {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/ferreteria_las_vegas/view/FXML_Buscar_CuentaXCobrar.fxml"));
             Parent root = (Parent) fxmlLoader.load();
@@ -400,51 +379,48 @@ public class FXML_AbonosController implements Initializable {
             stage.initModality(Modality.WINDOW_MODAL);
             stage.showAndWait();
             Cuenta = (CuentaXCobrar) AppContext.getInstance().get("seleccion-Cuenta");
-            if(Cuenta!=null) CargarInformacion();
-
-        } catch (Exception ex) {
-            System.err.print(ex);
+            if (Cuenta != null) {
+                CargarInformacion();
+            }
+        } catch (IOException ex) {
+            Message.getInstance().Error("Error", "Ocurrió un error y no se pudo lanzar la pantalla de búsqueda de cuentas.");
+            LoggerManager.Logger().info(ex.toString());
         }
     }
 
-    private void CargarCliente(SearchComboBox<CuentaXCobrar> box) {
+    void CargarCliente(SearchComboBox<CuentaXCobrar> box) {
         try {
             List<CuentaXCobrar> listCuentaXCobrar = new CuentasXCobrarJPAController().ConsultarCuentasXCobrar().stream().filter(e -> e.getCueEstado().equals("A")).collect(Collectors.toList());
-
             ObservableList<CuentaXCobrar> OClienteList = FXCollections.observableArrayList(listCuentaXCobrar);
-
             box.setItems(OClienteList);
         } catch (Exception ex) {
-            Message.getInstance().Error("Error:", "Ocurrió un error al cargar los clientes. Codigo de error: " + ex);
-
+            Message.getInstance().Error("Error", "Ocurrió un error y no se pudo carga los clientes.");
+            LoggerManager.Logger().info(ex.toString());
         }
     }
 
-    private void ComboBoxCliente() {
-
+    void ComboBoxCliente() {
         try {
             boxCliente_CxC = new SearchComboBox<>();
             boxCliente_CxC.setMinHeight(33);
             boxCliente_CxC.setMinWidth(176);
             boxCliente_CxC.getSelectionModel().select(0);
-            boxCliente_CxC.setPromptText("Selecionar Cliente");
+            boxCliente_CxC.setPromptText("Seleccionar Cliente");
             boxCliente_CxC.setFilter((CuentaXCobrar t, String u) -> (t.getCueCliente().getPersona().getPerCedula()).toUpperCase().contains(u.toUpperCase()));
             CargarCliente(boxCliente_CxC);
             boxCliente_CxC.setOnAction((event) -> {
-            if (boxCliente_CxC.getSelectionModel().getSelectedItem() != null) {
-                Cuenta = boxCliente_CxC.getSelectionModel().getSelectedItem();
-                CargarInformacion();           
-            }else{
-             Cuenta=null;
-            }  
-        });
+                if (boxCliente_CxC.getSelectionModel().getSelectedItem() != null) {
+                    Cuenta = boxCliente_CxC.getSelectionModel().getSelectedItem();
+                    CargarInformacion();
+                } else {
+                    Cuenta = null;
+                }
+            });
             SearchBoxGrid_Cliente.add(boxCliente_CxC, 0, 0);
-
         } catch (Exception ex) {
-
-            Message.getInstance().Error("Error:", "Ocurrió un error al cargar los clientes. Codigo de error: " + ex);
+            Message.getInstance().Error("Error", "Ocurrió un error y no se pudo carga los clientes.");
+            LoggerManager.Logger().info(ex.toString());
         }
-
     }
     /*Variables de Clase------------------------------------------------------*/
     private SearchComboBox<CuentaXCobrar> boxCliente_CxC;

@@ -8,9 +8,13 @@ package ferreteria_las_vegas.model.controller;
 import ferreteria_las_vegas.model.entities.Contacto;
 import ferreteria_las_vegas.model.entities.Persona;
 import ferreteria_las_vegas.utils.EntityManagerHelper;
+import ferreteria_las_vegas.utils.LoggerManager;
+import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.LockModeType;
+import javax.persistence.NoResultException;
+import javax.persistence.NonUniqueResultException;
 import javax.persistence.Query;
 
 /**
@@ -47,6 +51,7 @@ public class ContactoJpaController {
      * le pertenece
      *
      * @param pPersona
+     * @param pTipo
      * @return
      */
     public Contacto ConsultarContactoPersona(Persona pPersona, String pTipo) {
@@ -55,7 +60,14 @@ public class ContactoJpaController {
             qry.setParameter("perCedula", pPersona.getPerCedula());
             Persona persona = (Persona) qry.getSingleResult();// trae el resultado de la consulta  
             return persona.getContactoList().get(1);
+        } catch (NoResultException ex) {
+            LoggerManager.Logger().info(ex.toString());
+            return null;
+        } catch (NonUniqueResultException ex) {
+            LoggerManager.Logger().info(ex.toString());
+            return null;
         } catch (Exception ex) {
+            LoggerManager.Logger().info(ex.toString());
             return null;
         }
     }
@@ -82,8 +94,13 @@ public class ContactoJpaController {
             em.persist(pPersona);
             et.commit();
             return pContacto;
+        } catch (EntityExistsException ex) {
+            et.rollback();
+            LoggerManager.Logger().info(ex.toString());
+            return null;
         } catch (Exception ex) {
             et.rollback();
+            LoggerManager.Logger().info(ex.toString());
             return null;
         }
     }
@@ -98,7 +115,6 @@ public class ContactoJpaController {
      */
     public Contacto ModificarContactoPersona(Persona pPersona, Contacto pContacto) {
         et = em.getTransaction();
-        
         try {            
             Contacto auxCon = BuscarContactoTipo(pPersona, pContacto.getConTipoContacto());
             if(auxCon!=null)
@@ -111,8 +127,13 @@ public class ContactoJpaController {
             em.persist(pPersona);
             et.commit();
             return pContacto;
+        } catch (EntityExistsException ex) {
+            et.rollback();
+            LoggerManager.Logger().info(ex.toString());
+            return null;
         } catch (Exception ex) {
             et.rollback();
+            LoggerManager.Logger().info(ex.toString());
             return null;
         }
     }

@@ -9,10 +9,13 @@ import ferreteria_las_vegas.model.entities.Articulo;
 import ferreteria_las_vegas.model.entities.DetalleInventario;
 import ferreteria_las_vegas.model.entities.Inventario;
 import ferreteria_las_vegas.utils.EntityManagerHelper;
+import ferreteria_las_vegas.utils.LoggerManager;
 import java.util.List;
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
+import javax.persistence.NoResultException;
+import javax.persistence.NonUniqueResultException;
 import javax.persistence.Query;
 
 /**
@@ -67,9 +70,13 @@ public class InventarioJpaController {
             em.merge(Art);
             et.commit();
             return Art;
+        } catch (EntityExistsException ex) {
+            et.rollback();
+            LoggerManager.Logger().info(ex.toString());
+            return null;
         } catch (Exception ex) {
             et.rollback();
-            System.err.println(ex);
+            LoggerManager.Logger().info(ex.toString());
             return null;
         }
     }
@@ -92,11 +99,11 @@ public class InventarioJpaController {
             return pInventario;
         } catch (EntityExistsException ex) {
             et.rollback();
-            System.err.println(ex);
+            LoggerManager.Logger().info(ex.toString());
             return null;
         } catch (Exception ex) {
             et.rollback();
-            System.err.println(ex);
+            LoggerManager.Logger().info(ex.toString());
             return null;
         }
     }
@@ -113,7 +120,11 @@ public class InventarioJpaController {
             Query qry = em.createNamedQuery("Inventario.findAll", Inventario.class);// consulta todos los articulos 
             List<Inventario> inventario = qry.getResultList();// Recibe el resultado de la consulta  
             return inventario;
+        } catch (NoResultException ex) {
+            LoggerManager.Logger().info(ex.toString());
+            return null;
         } catch (Exception ex) {
+            LoggerManager.Logger().info(ex.toString());
             return null;
         }
     }
@@ -130,7 +141,14 @@ public class InventarioJpaController {
             qry.setParameter("invArticulo", pCodigo);
             Inventario articulo = (Inventario) qry.getSingleResult();// trae el resultado de la consulta  
             return articulo;
+        } catch (NoResultException ex) {
+            LoggerManager.Logger().info(ex.toString());
+            return null;
+        } catch (NonUniqueResultException ex) {
+            LoggerManager.Logger().info(ex.toString());
+            return null;
         } catch (Exception ex) {
+            LoggerManager.Logger().info(ex.toString());
             return null;
         }
     }

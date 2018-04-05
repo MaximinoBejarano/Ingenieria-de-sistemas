@@ -8,6 +8,7 @@ package ferreteria_las_vegas.model.controller;
 import ferreteria_las_vegas.model.entities.Permiso;
 import ferreteria_las_vegas.model.entities.Usuario;
 import ferreteria_las_vegas.utils.EntityManagerHelper;
+import ferreteria_las_vegas.utils.LoggerManager;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -49,10 +50,10 @@ public class PermisoJpaController {
             List<Permiso> permisos = qry.getResultList();
             return permisos;
         } catch (NoResultException ex) {
-            System.err.println(ex);
+            LoggerManager.Logger().info(ex.toString());
             return null;
         } catch (Exception ex) {
-            System.err.println(ex);
+            LoggerManager.Logger().info(ex.toString());
             return null;
         }
     }    
@@ -60,14 +61,13 @@ public class PermisoJpaController {
     public List<Permiso> ConsultarPermisosDisponibles(List<Permiso> permisosAsig) {
         try {
             Query qry = em.createNamedQuery("Permiso.findAll", Permiso.class);
-            List<Permiso> permisos = qry.getResultList();
-            
+            List<Permiso> permisos = qry.getResultList();          
             return permisos.stream().filter(e->(!permisosAsig.contains(e))).collect(Collectors.toList());                        
         } catch (NoResultException ex) {
-            System.err.println(ex);
+            LoggerManager.Logger().info(ex.toString());
             return null;
         } catch (Exception ex) {
-            System.err.println(ex);
+            LoggerManager.Logger().info(ex.toString());
             return null;
         }
     }
@@ -76,10 +76,10 @@ public class PermisoJpaController {
         try {            
             return usuario.getPermisoList();
         } catch (NoResultException ex) {
-            System.err.println(ex);
+            LoggerManager.Logger().info(ex.toString());
             return null;
         } catch (Exception ex) {
-            System.err.println(ex);
+            LoggerManager.Logger().info(ex.toString());
             return null;
         }
     }

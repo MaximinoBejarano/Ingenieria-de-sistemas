@@ -7,6 +7,7 @@ package ferreteria_las_vegas.model.controller;
 
 import ferreteria_las_vegas.model.entities.Usuario;
 import ferreteria_las_vegas.utils.EntityManagerHelper;
+import ferreteria_las_vegas.utils.LoggerManager;
 import java.util.List;
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
@@ -58,13 +59,13 @@ public class UsuarioJpaController {
             Usuario usuario = (Usuario) qry.getSingleResult();
             return usuario;
         } catch (NoResultException ex) {
-            System.err.println(ex);
+            LoggerManager.Logger().info(ex.toString());
             return null;
         } catch (NonUniqueResultException ex) {
-            System.err.println(ex);
+            LoggerManager.Logger().info(ex.toString());
             return null;
         } catch (Exception ex) {
-            System.err.println(ex);
+            LoggerManager.Logger().info(ex.toString());
             return null;
         }
     }
@@ -83,10 +84,13 @@ public class UsuarioJpaController {
             Usuario usuario = (Usuario) qry.getSingleResult();// trae el resultado de la consulta  
             return usuario;
         } catch (NoResultException ex) {
-            System.err.println(ex);
+            LoggerManager.Logger().info(ex.toString());
+            return null;
+        } catch (NonUniqueResultException ex) {
+            LoggerManager.Logger().info(ex.toString());
             return null;
         } catch (Exception ex) {
-            System.err.println(ex);
+            LoggerManager.Logger().info(ex.toString());
             return null;
         }
     }
@@ -105,10 +109,13 @@ public class UsuarioJpaController {
             Usuario usuario = (Usuario) qry.getSingleResult();// trae el resultado de la consulta  
             return usuario;
         } catch (NoResultException ex) {
-            System.err.println(ex);
+            LoggerManager.Logger().info(ex.toString());
+            return null;
+        } catch (NonUniqueResultException ex) {
+            LoggerManager.Logger().info(ex.toString());
             return null;
         } catch (Exception ex) {
-            System.err.println(ex);
+            LoggerManager.Logger().info(ex.toString());
             return null;
         }
     }
@@ -125,10 +132,10 @@ public class UsuarioJpaController {
             List<Usuario> empleados = qry.getResultList();// Recibe el resultado de la consulta  
             return empleados;
         } catch (NoResultException ex) {
-            System.err.println(ex);
+            LoggerManager.Logger().info(ex.toString());
             return null;
         } catch (Exception ex) {
-            System.err.println(ex);
+            LoggerManager.Logger().info(ex.toString());
             return null;
         }
     }
@@ -148,11 +155,11 @@ public class UsuarioJpaController {
             return pUsuario;
         } catch (EntityExistsException ex) {
             et.rollback();
-            System.err.println(ex);
+            LoggerManager.Logger().info(ex.toString());
             return null;
         } catch (Exception ex) {
             et.rollback();
-            System.err.println(ex);
+            LoggerManager.Logger().info(ex.toString());
             return null;
         }
     }
@@ -173,11 +180,11 @@ public class UsuarioJpaController {
             return pUsuario;
         } catch (EntityExistsException ex) {
             et.rollback();
-            System.err.println(ex);
+            LoggerManager.Logger().info(ex.toString());
             return null;
         } catch (Exception ex) {
             et.rollback();
-            System.err.println(ex);
+            LoggerManager.Logger().info(ex.toString());
             return null;
         }
     }
