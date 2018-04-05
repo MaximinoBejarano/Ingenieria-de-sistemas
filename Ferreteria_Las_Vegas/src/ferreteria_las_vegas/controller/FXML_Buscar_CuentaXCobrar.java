@@ -16,10 +16,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -60,10 +57,7 @@ public class FXML_Buscar_CuentaXCobrar implements Initializable {
     private TableColumn<CuentaXCobrar, Double> colSaldoAct;
     @FXML
     private TableColumn<CuentaXCobrar, Double> colSaldoFactura;
-
-    /**
-     * Initializes the controller class.
-     */
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
@@ -71,23 +65,23 @@ public class FXML_Buscar_CuentaXCobrar implements Initializable {
     }
 
     @FXML
-    private void btnSalir_Click(ActionEvent event) {
+    void btnSalir_Click(ActionEvent event) {
         Stage stageAct = (Stage) btnSalir.getScene().getWindow();
         stageAct.close();
     }
 
     @FXML
-    private void btnConfirmar_Click(ActionEvent event) {
+    void btnConfirmar_Click(ActionEvent event) {
         if (!ckbCancelados.isSelected()) {
             if (tblCuentaxCobrar.getSelectionModel().getSelectedItem() != null) {
                 AppContext.getInstance().set("seleccion-Cuenta", tblCuentaxCobrar.getSelectionModel().getSelectedItem());
                 Stage stageAct = (Stage) btnConfirmar.getScene().getWindow();
                 stageAct.close();
             } else {
-                Message.getInstance().Warning("Cuidado:", "Debe selecionar una fila de la tabla");
+                Message.getInstance().Warning("Cuidado", "Debe seleccionar una fila de la tabla.");
             }
-        }else{
-           Message.getInstance().Information("Informacón:","No se pueden modificar registros cancelados");
+        } else {
+            Message.getInstance().Information("Informacón", "No se pueden modificar registros cancelados.");
         }
     }
 

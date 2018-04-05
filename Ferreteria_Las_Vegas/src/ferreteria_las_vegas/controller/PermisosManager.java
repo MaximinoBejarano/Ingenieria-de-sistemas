@@ -106,7 +106,6 @@ public class PermisosManager {
         btnEliminarCliente.setDisable(true);
 
         for (Permiso permiso : usuario.getPermisoList()) {
-
             if (permiso.getPerNombre().equalsIgnoreCase("AGR_CLIENTE")) {
                 btnAgregarCliente.setDisable(false);
             } else if (permiso.getPerNombre().equalsIgnoreCase("BUS_CLIENTE")) {

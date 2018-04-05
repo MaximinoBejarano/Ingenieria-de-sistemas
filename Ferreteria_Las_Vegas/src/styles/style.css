@@ -1,7 +1,7 @@
 /*---------------------------Login--------------------------------*/
 .btnEstandar {
     -fx-text-fill: black;
-    -fx-background-color: orange;
+    -fx-background-color: #FF8408;
 }
 
 .btnEstandar:hover {  
@@ -9,7 +9,7 @@
 }
 
 .bbarra{       
-    -fx-accent: orange;    
+    -fx-accent: #FF8408;    
 }
 .ttexto{
     -fx-font: 20px System;

@@ -15,7 +15,6 @@ import java.io.IOException;
 import java.time.LocalDate;
 import javafx.stage.Modality;
 import javafx.fxml.FXMLLoader;
-import javafx.stage.StageStyle;
 import javafx.event.ActionEvent;
 import java.util.ResourceBundle;
 import javafx.fxml.Initializable;
@@ -327,20 +326,19 @@ public class FXML_EmpleadosController implements Initializable {
 
                 persona = PersonaJpaController.getInstance().AgregarPersona(persona, direcion, contactoTel, contactoTel2, contactoEma);
                 if (persona != null) {
-                    Message.getInstance().Information("Acción exitosa", "Empleado agregado corectamente.");
+                    Message.getInstance().Information("Acción exitosa", "Empleado agregado correctamente.");
                     LimpiarControlesGUI();
                 } else {
                     Message.getInstance().Error("Accion no exitosa", "Ocurrió un error y no se pudo agregar el empleado.");
                 }
             } else {
-                if(Message.getInstance().Confirmation("Empleado Existente", "Ya existe un empleado registrado con el mismo numero de cedula.\n"
-                        + "¿Desea actualizar la informacón?")){
+                if (Message.getInstance().Confirmation("Empleado existente", "Ya existe un empleado registrado con el mismo número de cédula.\n"
+                        + "¿Desea actualizar la informacón?")) {
                     ProcesoEditar();
-                }                
+                }
             }
         } catch (Exception ex) {
-            Message.getInstance().Error("Error", "Ocurrió un error y no se pudo agregar el empleado. "
-                    + "El codigo de error es: " + ex.toString());
+            Message.getInstance().Error("Error", "Ocurrió un error y no se pudo agregar el empleado.");
             LoggerManager.Logger().info(ex.toString());
         }
     }
@@ -372,7 +370,7 @@ public class FXML_EmpleadosController implements Initializable {
                 direcion.setDirDirExacta(txtDireccionEmp.getText());
 
                 persona.getUsuario().setUsuContraseña(String.valueOf(txtContraseñaEmp.getText()));
-                
+
                 persona.setPerEstado("A");
                 persona.getUsuario().setUsuEstado("A");
                 persona.getCliente().setCliEstado("A");
@@ -387,8 +385,7 @@ public class FXML_EmpleadosController implements Initializable {
                 Message.getInstance().Warning("Empleado no existente", "No existe un empleado con la cédula ingresada.");
             }
         } catch (Exception ex) {
-            Message.getInstance().Error("Error", "Ocurrió un error y no se pudo editar el empleado. "
-                    + "El codigo de error es: " + ex.toString());
+            Message.getInstance().Error("Error", "Ocurrió un error y no se pudo editar el empleado. ");
             LoggerManager.Logger().info(ex.toString());
         }
     }
@@ -415,8 +412,7 @@ public class FXML_EmpleadosController implements Initializable {
                 Message.getInstance().Warning("Empleado no existente", "No existe un empleado con la cédula ingresada.");
             }
         } catch (Exception ex) {
-            Message.getInstance().Error("Error", "Ocurrió un error y no se pudo eliminar el empleado. "
-                    + "El codigo de error es: " + ex.toString());
+            Message.getInstance().Error("Error", "Ocurrió un error y no se pudo eliminar el empleado.");
             LoggerManager.Logger().info(ex.toString());
         }
     }
@@ -427,8 +423,7 @@ public class FXML_EmpleadosController implements Initializable {
             UsuarioJpaController.getInstance().ModificarUsuario(persona.getUsuario());
             CargarDatosUsuario(persona);
         } catch (Exception ex) {
-            Message.getInstance().Error("Error", "Ocurrió un error y no se pudo agregar el permiso. "
-                    + "El codigo de error es: " + ex.toString());
+            Message.getInstance().Error("Error", "Ocurrió un error y no se pudo agregar el permiso.");
             LoggerManager.Logger().info(ex.toString());
         }
     }
@@ -439,8 +434,7 @@ public class FXML_EmpleadosController implements Initializable {
             UsuarioJpaController.getInstance().ModificarUsuario(persona.getUsuario());
             CargarDatosUsuario(persona);
         } catch (Exception ex) {
-            Message.getInstance().Error("Error", "Ocurrió un error y no se pudo quitar el permiso. "
-                    + "El codigo de error es: " + ex.toString());
+            Message.getInstance().Error("Error", "Ocurrió un error y no se pudo quitar el permiso.");
             LoggerManager.Logger().info(ex.toString());
         }
     }
@@ -453,8 +447,7 @@ public class FXML_EmpleadosController implements Initializable {
             UsuarioJpaController.getInstance().ModificarUsuario(persona.getUsuario());
             CargarDatosUsuario(persona);
         } catch (Exception ex) {
-            Message.getInstance().Error("Error", "Ocurrió un error y no se pudieron agregar los permisos. "
-                    + "El codigo de error es: " + ex.toString());
+            Message.getInstance().Error("Error", "Ocurrió un error y no se pudieron agregar los permisos.");
             LoggerManager.Logger().info(ex.toString());
         }
     }
@@ -465,8 +458,7 @@ public class FXML_EmpleadosController implements Initializable {
             UsuarioJpaController.getInstance().ModificarUsuario(persona.getUsuario());
             CargarDatosUsuario(persona);
         } catch (Exception ex) {
-            Message.getInstance().Error("Error", "Ocurrió un error y no se pudieron quitar los permisos. "
-                    + "El codigo de error es: " + ex.toString());
+            Message.getInstance().Error("Error", "Ocurrió un error y no se pudieron quitar los permisos.");
             LoggerManager.Logger().info(ex.toString());
         }
     }
@@ -497,8 +489,7 @@ public class FXML_EmpleadosController implements Initializable {
             lvAsignados.setItems(oPermisoAsignadosList);
             lvDisponibles.setItems(oPermisoDisponibleList);
         } catch (Exception ex) {
-            Message.getInstance().Error("Error", "Ocurrió un error y no se pudo cargar la información del empleado. "
-                    + "El codigo de error es: " + ex.toString());
+            Message.getInstance().Error("Error", "Ocurrió un error y no se pudo cargar la información del empleado.");
             LoggerManager.Logger().info(ex.toString());
         }
     }
@@ -532,7 +523,7 @@ public class FXML_EmpleadosController implements Initializable {
         txtCorreoEmp.setText("");
         txtContraseñaEmp.setText("");
         txtDireccionEmp.setText("");
-        lblUsuario.setText("Busque y selecione un empleado en la pantalla anterior");
+        lblUsuario.setText("Busque y selecione un empleado en la pantalla anterior.");
         lvAsignados.setItems(null);
         lvDisponibles.setItems(null);
     }
@@ -548,8 +539,7 @@ public class FXML_EmpleadosController implements Initializable {
             stage.initModality(Modality.WINDOW_MODAL);
             stage.showAndWait();
         } catch (IOException ex) {
-            Message.getInstance().Error("Error", "Ocurrió un error y no se pudo lanzar la pantalla de búsqueda."
-                    + "El código de error es: " + ex.toString());
+            Message.getInstance().Error("Error", "Ocurrió un error y no se pudo lanzar la pantalla de búsqueda.");                    
             LoggerManager.Logger().info(ex.toString());
         }
     }

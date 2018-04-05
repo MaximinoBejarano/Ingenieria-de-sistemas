@@ -25,6 +25,7 @@ import ferreteria_las_vegas.model.controller.UsuarioJpaController;
 
 public class FXML_LoginController implements Initializable {
 
+    /*--------------------------------------------------------------------------------------------------------------*/
     @FXML
     private TextField txtUsuario;
 
@@ -123,10 +124,9 @@ public class FXML_LoginController implements Initializable {
             btnLogin.setText("Accediendo...");
             thread.start();
 
-        } catch (Exception ex) {
+        } catch (Exception ex) {            
+            Message.getInstance().Error("Error", "Ocurrió un error al intentar acceder al sistema.");
             LoggerManager.Logger().info(ex.toString());
-            Message.getInstance().Error("Error", "Ocurrió un error al intentar acceder al sistema. El código de error es "
-                    + "el siguiente: " + ex);
         }
     }
 

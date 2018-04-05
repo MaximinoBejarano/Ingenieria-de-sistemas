@@ -23,21 +23,13 @@
 <?import javafx.scene.text.Font?>
 
 <StackPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="400.0" minWidth="630.0" prefHeight="400.0" prefWidth="814.0" style="-fx-background-color: #2E4053;" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ferreteria_las_vegas.controller.FXML_LoginController">
-    <stylesheets>
-        <URL value="@LoginCSS.css" />
-    </stylesheets>
    <children>
       <VBox alignment="CENTER" fillWidth="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: #2E4053;">
          <children>
             <AnchorPane id="AnchorPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="400.0" prefWidth="819.0" style="-fx-background-color: #2E4053;">
                <children>
-                  <Separator layoutX="300.0" layoutY="25.0" orientation="VERTICAL" prefHeight="350.0" prefWidth="8.0" AnchorPane.bottomAnchor="22.0" AnchorPane.rightAnchor="322.0" AnchorPane.topAnchor="22.0" />
-                  <ImageView fitHeight="356.0" fitWidth="469.0" layoutX="14.0" layoutY="22.0" pickOnBounds="true" AnchorPane.bottomAnchor="22.0" AnchorPane.leftAnchor="6.0" AnchorPane.rightAnchor="339.0" AnchorPane.topAnchor="22.0">
-                     <image>
-                        <Image url="@../../pictures/logo%20-%20copia.png" />
-                     </image>
-                  </ImageView>
-                  <GridPane layoutX="327.0" layoutY="44.0" prefHeight="300.0" prefWidth="269.0" AnchorPane.bottomAnchor="40.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="45.0">
+                  <Separator layoutX="415.0" layoutY="22.0" orientation="VERTICAL" prefHeight="350.0" prefWidth="8.0" AnchorPane.bottomAnchor="22.0" AnchorPane.leftAnchor="415.0" AnchorPane.rightAnchor="391.0" AnchorPane.topAnchor="22.0" />
+                  <GridPane layoutX="327.0" layoutY="44.0" prefHeight="300.0" prefWidth="269.0" AnchorPane.bottomAnchor="40.0" AnchorPane.rightAnchor="56.0" AnchorPane.topAnchor="45.0">
                      <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                      </columnConstraints>
@@ -116,15 +108,15 @@
                                        </image>
                                     </ImageView>
                                  </graphic>
-                                 <effect>
-                                    <DropShadow />
-                                 </effect>
                                  <cursor>
                                     <Cursor fx:constant="HAND" />
                                  </cursor>
                                  <tooltip>
                                     <Tooltip text="Acceder al sistema" />
                                  </tooltip>
+                                 <effect>
+                                    <DropShadow />
+                                 </effect>
                               </Button>
                               <ProgressIndicator fx:id="progresbar" styleClass="bbarra" stylesheets="@../../styles/style.css" visible="false">
                                  <tooltip>
@@ -135,6 +127,14 @@
                         </HBox>
                      </children>
                   </GridPane>
+                  <ImageView fitHeight="326.0" fitWidth="331.0" layoutX="56.0" layoutY="40.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="56.0">
+                     <image>
+                        <Image url="@../../pictures/logo-new.png" />
+                     </image>
+                     <effect>
+                        <DropShadow />
+                     </effect>
+                  </ImageView>
                </children>
             </AnchorPane>
          </children>

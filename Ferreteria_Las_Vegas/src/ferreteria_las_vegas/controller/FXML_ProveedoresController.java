@@ -207,13 +207,13 @@ public class FXML_ProveedoresController implements Initializable {
             if (tblCuentasXPagar.getSelectionModel().getSelectedItem() != null) {
                 ProcesoEliminarCuenta();
             } else {
-                Message.getInstance().Warning("Selección requerida", "Debe selecionar una cuenta por pagar.");
+                Message.getInstance().Warning("Selección requerida", "Debe seleccionar una cuenta por pagar.");
             }
         } else if (aboFlag) {
             if (tblAbonos.getSelectionModel().getSelectedItem() != null) {
                 ProcesoEliminarAbono();
             } else {
-                Message.getInstance().Warning("Selección requerida", "Debe selecionar un abono.");
+                Message.getInstance().Warning("Selección requerida", "Debe seleccionar un abono.");
             }
         }
     }
@@ -259,7 +259,7 @@ public class FXML_ProveedoresController implements Initializable {
         comFlag = false;
         aboFlag = false;
         ProveedoresGUI();
-    }    
+    }
 
     /*---------Parte de Cuentas por Pagar---------*/
     @FXML
@@ -278,10 +278,10 @@ public class FXML_ProveedoresController implements Initializable {
                 if (tblCuentasXPagar.getSelectionModel().getSelectedItem().getCueSaldo() > 0) {
                     ProcesoAgregarAbono();
                 } else {
-                    Message.getInstance().Warning("Cuenta cancelada", "La cuenta que selecionó ya fue pagada.");
+                    Message.getInstance().Warning("Cuenta cancelada", "La cuenta que seleccionó ya fue pagada.");
                 }
             } else {
-                Message.getInstance().Warning("Selección requerida", "Debe selecionar una cuenta por pagar.");
+                Message.getInstance().Warning("Selección requerida", "Debe seleccionar una cuenta por pagar.");
             }
         }
     }
@@ -292,7 +292,7 @@ public class FXML_ProveedoresController implements Initializable {
             CargarHistorialAbonos(tblCuentasXPagar.getSelectionModel().getSelectedItem());
             tabPanel.getSelectionModel().selectNext();
         } else {
-            Message.getInstance().Warning("Selección requerida", "Debe selecionar una cuenta por pagar.");
+            Message.getInstance().Warning("Selección requerida", "Debe seleccionar una cuenta por pagar.");
         }
     }
 
@@ -323,15 +323,15 @@ public class FXML_ProveedoresController implements Initializable {
     void txtMontoAbonoTyped(KeyEvent event) {
         GeneralUtils.getInstance().ValidarCampos(true, txtMontoAbono.getText().length(), 8, event);
     }
- 
+
     /*---------Parte de Abonos---------*/
     @FXML
     void tabAbonosChange(Event event) {
         proFlag = false;
         comFlag = false;
         aboFlag = true;
-        if(tblCuentasXPagar.getSelectionModel().getSelectedItem()==null){
-            lblCuenta.setText("No se ha selecionado ninguna cuenta por pagar.");
+        if (tblCuentasXPagar.getSelectionModel().getSelectedItem() == null) {
+            lblCuenta.setText("No se ha seleccionado ninguna cuenta por pagar.");
             tblAbonos.setItems(null);
         }
         AbonosGUI();
@@ -369,14 +369,13 @@ public class FXML_ProveedoresController implements Initializable {
                     Message.getInstance().Error("Accion no exitosa", "Ocurrió un error y no se pudo agregar el proveedor.");
                 }
             } else {
-                if (Message.getInstance().Confirmation("Proveedor Existente", "Ya existe un proveedor registrado con los mismos datos.\n"
+                if (Message.getInstance().Confirmation("Proveedor existente", "Ya existe un proveedor registrado con los mismos datos.\n"
                         + "¿Desea actualizar la informacón?")) {
                     ProcesoEditarProveedor();
                 }
             }
         } catch (Exception ex) {
-            Message.getInstance().Error("Error", "Ocurrió un error y no se pudo agregar el proveedor. "
-                    + "El codigo de error es: " + ex.toString());
+            Message.getInstance().Error("Error", "Ocurrió un error y no se pudo agregar el proveedor.");
             LoggerManager.Logger().info(ex.toString());
         }
     }
@@ -417,16 +416,15 @@ public class FXML_ProveedoresController implements Initializable {
 
                 proveedor = ProveedorJpaController.getInstance().ModificarProveedor(proveedor);
                 if (proveedor != null) {
-                    Message.getInstance().Information("Acción exitosa", "Proveedor editado corectamente.");
+                    Message.getInstance().Information("Acción exitosa", "Proveedor editado correctamente.");
                 } else {
-                    Message.getInstance().Error("Accion no exitosa", "Ocurrió un error y no se pudieron editar los datos del Proveedor.");
+                    Message.getInstance().Error("Acción no exitosa", "Ocurrió un error y no se pudieron editar los datos del proveedor.");
                 }
             } else {
                 Message.getInstance().Warning("Proveedor no existente", "No existe un Proveedor con la información ingresada.");
             }
         } catch (Exception ex) {
-            Message.getInstance().Error("Error", "Ocurrió un error y no se pudo editar el proveedor. "
-                    + "El codigo de error es: " + ex.toString());
+            Message.getInstance().Error("Error", "Ocurrió un error y no se pudo editar el proveedor.");
             LoggerManager.Logger().info(ex.toString());
         }
     }
@@ -446,8 +444,7 @@ public class FXML_ProveedoresController implements Initializable {
                 Message.getInstance().Warning("Empleado no existente", "No existe un proveedor con los datos ingresados.");
             }
         } catch (Exception ex) {
-            Message.getInstance().Error("Error", "Ocurrió un error y no se pudo eliminar el proveedor. "
-                    + "El codigo de error es: " + ex.toString());
+            Message.getInstance().Error("Error", "Ocurrió un error y no se pudo eliminar el proveedor.");
             LoggerManager.Logger().info(ex.toString());
         }
     }
@@ -474,11 +471,10 @@ public class FXML_ProveedoresController implements Initializable {
                 LimpiarControlesCuentasGUI();
                 Message.getInstance().Information("Acción Exitosa", "El abono se ingresó correctamente.");
             } else {
-                Message.getInstance().Warning("Monto invalido", "El monto ingresado es mayor que el monto actual.");
+                Message.getInstance().Warning("Monto inválido", "El monto ingresado es mayor que el monto actual.");
             }
         } catch (Exception ex) {
-            Message.getInstance().Error("Error", "Ocurrió un error y no se pudo eliminar el abono. "
-                    + "El codigo de error es: " + ex.toString());
+            Message.getInstance().Error("Error", "Ocurrió un error y no se pudo eliminar el abono. ");
             LoggerManager.Logger().info(ex.toString());
         }
     }
@@ -490,12 +486,11 @@ public class FXML_ProveedoresController implements Initializable {
                 CuentaXPagar cuenta = tblCuentasXPagar.getSelectionModel().getSelectedItem();
                 cuenta.setCueEstado("I");
                 CuentasXPagarJpaController.getInstance().ModificarCuentaXPagar(cuenta);
-                Message.getInstance().Information("Acción exitosa", "Cuenta eliminada corectamente.");
+                Message.getInstance().Information("Acción exitosa", "Cuenta eliminada correctamente.");
                 CargarCuentasXPagar();
             }
         } catch (Exception ex) {
-            Message.getInstance().Error("Error", "Ocurrió un error y no se pudo eliminar la cuenta. "
-                    + "El codigo de error es: " + ex.toString());
+            Message.getInstance().Error("Error", "Ocurrió un error y no se pudo eliminar la cuenta.");
             LoggerManager.Logger().info(ex.toString());
         }
     }
@@ -503,12 +498,12 @@ public class FXML_ProveedoresController implements Initializable {
     /*---------Parte de Abonos---------*/
     void ProcesoEliminarAbono() {
         try {
-            if (Message.getInstance().Confirmation("Eliminar Abono", "Eliminar un abono implica agregar "
-                    + "\nel monto del abono de nuevo a la cuenta por pagar.\n"
+            if (Message.getInstance().Confirmation("Eliminar Abono", "Eliminar un abono implica agregar el monto"
+                    + "\n del abono de nuevo a la cuenta por pagar.\n"
                     + "¿Desea eliminar el abono?")) {
                 CuentaXPagar cuenta = tblCuentasXPagar.getSelectionModel().getSelectedItem();
                 Abono abono = tblAbonos.getSelectionModel().getSelectedItem();
-                cuenta.setCueSaldo(cuenta.getCueSaldo() + abono.getAboMonto());                                
+                cuenta.setCueSaldo(cuenta.getCueSaldo() + abono.getAboMonto());
                 CuentasXPagarJpaController.getInstance().ModificarCuentaXPagarEliminarAbono(cuenta, abono);
                 Message.getInstance().Information("Acción exitosa", "Abono eliminado corectamente.");
                 CargarCuentasXPagar();
@@ -516,8 +511,7 @@ public class FXML_ProveedoresController implements Initializable {
                 CargarHistorialAbonos(cuenta);
             }
         } catch (Exception ex) {
-            Message.getInstance().Error("Error", "Ocurrió un error y no se pudo eliminar el abono. "
-                    + "El codigo de error es: " + ex.toString());
+            Message.getInstance().Error("Error", "Ocurrió un error y no se pudo eliminar el abono.");
             LoggerManager.Logger().info(ex.toString());
         }
     }
@@ -534,8 +528,7 @@ public class FXML_ProveedoresController implements Initializable {
             txtDireccion.setText(proveedor.getDireccionList().get(0).getDirDirExacta());
 
         } catch (Exception ex) {
-            Message.getInstance().Error("Error", "Ocurrió un error y no se pudo cargar la información del proveedor. "
-                    + "El codigo de error es: " + ex.toString());
+            Message.getInstance().Error("Error", "Ocurrió un error y no se pudo cargar la información del proveedor.");
             LoggerManager.Logger().info(ex.toString());
         }
     }
@@ -590,8 +583,7 @@ public class FXML_ProveedoresController implements Initializable {
 
             FiltroCuentasXPagar(OCuentasList);
         } catch (Exception ex) {
-            Message.getInstance().Error("Error", "Ocurrió un error y no se pudo cargar la información de la tabla de cuentas. "
-                    + "El codigo de error es: " + ex.toString());
+            Message.getInstance().Error("Error", "Ocurrió un error y no se pudo cargar la información de la tabla de cuentas.");
             LoggerManager.Logger().info(ex.toString());
         }
     }
@@ -636,10 +628,9 @@ public class FXML_ProveedoresController implements Initializable {
                 }
             });
             cbxFormaPago.setItems(OMedidorList);
-        } catch (Exception ex) {
+        } catch (Exception ex) {            
+            Message.getInstance().Error("Error", "Ocurrió un error y no se pudo cargar la información de formas de pago.");
             LoggerManager.Logger().info(ex.toString());
-            Message.getInstance().Error("Error", "Ocurrió un error y no se pudo cargar la información de formas de pago. "
-                    + "El codigo de error es: " + ex.toString());
         }
     }
 
@@ -683,12 +674,11 @@ public class FXML_ProveedoresController implements Initializable {
                 List<Abono> abonoList = cuenta.getAbonoList();
                 ObservableList<Abono> OCuentasList = FXCollections.observableArrayList(abonoList);
                 tblAbonos.setItems(OCuentasList);
-                lblCuenta.setText(cuenta.getCueCompra().getComNumeroFact() + " "+ cuenta.getCueProveedor().getProNombre());
+                lblCuenta.setText(cuenta.getCueCompra().getComNumeroFact() + " " + cuenta.getCueProveedor().getProNombre());
                 //FiltroCuentasXPagar(OCuentasList);
             }
         } catch (Exception ex) {
-            Message.getInstance().Error("Error", "Ocurrió un error y no se pudo cargar la información de la tabla de cuentas. "
-                    + "El codigo de error es: " + ex.toString());
+            Message.getInstance().Error("Error", "Ocurrió un error y no se pudo cargar la información de la tabla de cuentas.");
             LoggerManager.Logger().info(ex.toString());
         }
     }
@@ -759,8 +749,7 @@ public class FXML_ProveedoresController implements Initializable {
             stage.initModality(Modality.WINDOW_MODAL);
             stage.showAndWait();
         } catch (IOException ex) {
-            Message.getInstance().Error("Error", "Ocurrió un error y no se pudo lanzar la pantalla de búsqueda."
-                    + "El código de error es: " + ex.toString());
+            Message.getInstance().Error("Error", "Ocurrió un error y no se pudo lanzar la pantalla de búsqueda.");
             LoggerManager.Logger().info(ex.toString());
         }
     }
