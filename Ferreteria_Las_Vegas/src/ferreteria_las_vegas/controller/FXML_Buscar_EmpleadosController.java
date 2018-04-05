@@ -39,12 +39,12 @@ public class FXML_Buscar_EmpleadosController implements Initializable {
 
     @FXML
     private Button btnSalir;
-
-    @FXML
-    private Button btnSelecionar;
-
+    
     @FXML
     private TextField txtFiltro;
+
+    @FXML
+    private Button btnSelecionar;    
 
     @FXML
     private TableView<Persona> tblUsuarios;
@@ -72,7 +72,7 @@ public class FXML_Buscar_EmpleadosController implements Initializable {
             Stage stageAct = (Stage) btnSalir.getScene().getWindow();
             stageAct.close();
         } else {
-            Message.getInstance().Warning("Aviso", "Debe selecionar una fila de la tabla.");
+            Message.getInstance().Warning("Aviso", "Debe seleccionar una fila de la tabla.");
         }
     }
        
@@ -80,7 +80,7 @@ public class FXML_Buscar_EmpleadosController implements Initializable {
     void CargarDatosTabla() {
         try {
             TableColumn<Persona, String> colInfoPersona = new TableColumn<>("Información de Empleados");
-            TableColumn<Persona, String> colCedulaPersona = new TableColumn<>("Cedula");
+            TableColumn<Persona, String> colCedulaPersona = new TableColumn<>("Cédula");
             TableColumn<Persona, String> colNombrePersona = new TableColumn<>("Nombre");
             TableColumn<Persona, String> colAppellidoPersona = new TableColumn<>("Apellido");
             colInfoPersona.getColumns().addAll(colCedulaPersona, colNombrePersona, colAppellidoPersona);
@@ -96,8 +96,7 @@ public class FXML_Buscar_EmpleadosController implements Initializable {
 
             FiltroDatosTabla(OPersonaList);
         } catch (Exception ex) {
-            Message.getInstance().Error("Error", "Ocurrió un error y no se pudo cargar la información de la tabla. "
-                    + "El codigo de error es: " + ex.toString());
+            Message.getInstance().Error("Error", "Ocurrió un error y no se pudo cargar la información de la tabla.");
             LoggerManager.Logger().info(ex.toString());
         }
     }

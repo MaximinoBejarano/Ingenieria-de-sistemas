@@ -34,9 +34,9 @@ import javafx.stage.Stage;
  *
  * @author johan
  */
-public class FXML_BuscarProveedoresController implements Initializable {
+public class FXML_Buscar_ProveedoresController implements Initializable {
 
-     @FXML
+    @FXML
     private Button btnSalir;
 
     @FXML
@@ -47,7 +47,7 @@ public class FXML_BuscarProveedoresController implements Initializable {
 
     @FXML
     private TableView<Proveedor> tblProveedores;
-    
+
     /*--------------------------------------------------------------------------------------------------------------*/
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -71,21 +71,21 @@ public class FXML_BuscarProveedoresController implements Initializable {
             Stage stageAct = (Stage) btnSalir.getScene().getWindow();
             stageAct.close();
         } else {
-            Message.getInstance().Warning("Aviso", "Debe selecionar una fila de la tabla.");
+            Message.getInstance().Warning("Aviso", "Debe seleccionar una fila de la tabla.");
         }
-    }            
-    
+    }
+
     /*--------------------------------------------------------------------------------------------------------------*/
-    void CargarTablaProveedores(){
+    void CargarTablaProveedores() {
         try {
             TableColumn<Proveedor, String> colInfoProveedor = new TableColumn<>("Información de Proveedores");
-            TableColumn<Proveedor, String> colCedulaJuriducaProveedor = new TableColumn<>("Cedula Jurídica");
-            TableColumn<Proveedor, String> colNombreProveedor = new TableColumn<>("Nombre");            
+            TableColumn<Proveedor, String> colCedulaJuriducaProveedor = new TableColumn<>("Cédula Jurídica");
+            TableColumn<Proveedor, String> colNombreProveedor = new TableColumn<>("Nombre");
             colInfoProveedor.getColumns().addAll(colCedulaJuriducaProveedor, colNombreProveedor);
             tblProveedores.getColumns().add(colInfoProveedor);
 
             colCedulaJuriducaProveedor.setCellValueFactory((cellData) -> new SimpleStringProperty(cellData.getValue().getProCedulaJuridica()));
-            colNombreProveedor.setCellValueFactory((cellData) -> new SimpleStringProperty(cellData.getValue().getProNombre()));            
+            colNombreProveedor.setCellValueFactory((cellData) -> new SimpleStringProperty(cellData.getValue().getProNombre()));
 
             List<Proveedor> ProveedorList = ProveedorJpaController.getInstance().ConsultarProveedoresTodos().stream().filter(e -> e.getProEstado().equalsIgnoreCase("A")).collect(Collectors.toList());
             ObservableList<Proveedor> OProveedorList = FXCollections.observableArrayList(ProveedorList);
@@ -93,14 +93,13 @@ public class FXML_BuscarProveedoresController implements Initializable {
 
             FiltroDatosTabla(OProveedorList);
         } catch (Exception ex) {
-            Message.getInstance().Error("Error", "Ocurrió un error y no se pudo cargar la información de la tabla. "
-                    + "El codigo de error es: " + ex.toString());
+            Message.getInstance().Error("Error", "Ocurrió un error y no se pudo cargar la información de la tabla.");
             LoggerManager.Logger().info(ex.toString());
         }
     }
-    
+
     /*--------------------------------------------------------------------------------------------------------------*/
-    void FiltroDatosTabla(ObservableList<Proveedor> OList){
+    void FiltroDatosTabla(ObservableList<Proveedor> OList) {
         FilteredList<Proveedor> filteredData = new FilteredList<>(OList, p -> true);
         txtFiltro.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
             filteredData.setPredicate((Proveedor proveedor) -> {

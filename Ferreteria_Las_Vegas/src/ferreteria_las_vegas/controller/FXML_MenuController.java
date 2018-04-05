@@ -7,16 +7,16 @@ package ferreteria_las_vegas.controller;
 
 import ferreteria_las_vegas.model.entities.Usuario;
 import ferreteria_las_vegas.utils.AppContext;
+import ferreteria_las_vegas.utils.LoggerManager;
+import ferreteria_las_vegas.utils.Message;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
-import javafx.scene.layout.VBox;
 
 /**
  * FXML Controller class
@@ -47,129 +47,139 @@ public class FXML_MenuController implements Initializable {
     private Button btnProveedores;
 
     @FXML
-    private Button btnAnulacion;   
+    private Button btnAnulacion;
 
     @FXML
     private Button btnEstadisticas;
 
     @FXML
     private Button btnConfiguraciones;
-    
+
+    @FXML
+    private Button btnSalir;
+
     @FXML
     private Label lblDate;
 
     @FXML
     private Label lblUserName;
-
-    @FXML
-    private void accesoCliente(ActionEvent e) {
-        try {
-            if (true) {
-                ScenesManager.getInstance().LoadSceneClientes();
-            } else {
-                new Alert(Alert.AlertType.WARNING, "No cuenta con los permisos para entrar aquí.", ButtonType.OK).showAndWait();
-            }
-        } catch (Exception ex) {
-            System.out.println(ex);
-        }
-    }
-
-    @FXML
-    private void accesoEmpleados(ActionEvent e) {
-        if (true) {
-            ScenesManager.getInstance().LoadSceneEmpleados();
-        } else {
-            new Alert(Alert.AlertType.WARNING, "No cuenta con los permisos para entrar aquí.", ButtonType.OK).showAndWait();
-        }
-    }
-
-    @FXML
-    private void accesoInventario(ActionEvent e) {
-        try {
-            if (true) {
-                ScenesManager.getInstance().LoadSceneInventario();
-            } else {
-                new Alert(Alert.AlertType.WARNING, "No cuenta con los permisos para entrar aquí.", ButtonType.OK).showAndWait();
-            }
-        } catch (Exception ex) {
-            System.out.println(ex);
-        }
-    }
-
-    @FXML
-    private void accesoProveedores(ActionEvent e) {
-        try {
-            if (true) {
-                ScenesManager.getInstance().LoadSceneProveedores();
-            } else {
-                new Alert(Alert.AlertType.WARNING, "No cuenta con los permisos para entrar aquí.", ButtonType.OK).showAndWait();
-            }
-        } catch (Exception ex) {
-            System.out.println(ex);
-        }
-    }
-
-    @FXML
-    private void accesoAnulacion(ActionEvent e) {
-        try {
-            if (true) {
-                ScenesManager.getInstance().LoadSceneAnulacion();
-            } else {
-                new Alert(Alert.AlertType.WARNING, "No cuenta con los permisos para entrar aquí.", ButtonType.OK).showAndWait();
-            }
-        } catch (Exception ex) {
-            System.out.println(ex);
-        }
-    }
-
-    @FXML
-    private void accesoAbonos(ActionEvent e) {
-        try {
-            if (true) {
-                ScenesManager.getInstance().LoadSceneAbonos();
-            } else {
-                new Alert(Alert.AlertType.WARNING, "No cuenta con los permisos para entrar aquí.", ButtonType.OK).showAndWait();
-            }
-        } catch (Exception ex) {
-            System.out.println(ex);
-        }
-    }
-
-    @FXML
-    private void accesoVales(ActionEvent e) {
-        try {
-            if (true) {
-                ScenesManager.getInstance().LoadSceneVales();
-            } else {
-                new Alert(Alert.AlertType.WARNING, "No cuenta con los permisos para entrar aquí.", ButtonType.OK).showAndWait();
-            }
-        } catch (Exception ex) {
-            System.out.println(ex);
-        }
-    }
-
-    @FXML
-    private void accesoFacturacion(ActionEvent e) {
-        try {
-            if (true) {
-                ScenesManager.getInstance().LoadSceneFacturacion();
-            } else {
-                new Alert(Alert.AlertType.WARNING, "No cuenta con los permisos para entrar aquí.", ButtonType.OK).showAndWait();
-            }
-        } catch (Exception ex) {
-            System.out.println(ex);
-        }
-    }
-
-    @FXML
-    void SalirClick(ActionEvent event) {
-        ScenesManager.getInstance().LoadSceneLogin();
-    }
-
+    
+    /*--------------------------------------------------------------------------------------------------------------*/
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         Usuario usuario = (Usuario) AppContext.getInstance().get("user");
         lblUserName.setText(lblUserName.getText() + usuario.getPersona().getPerNombre() + " " + usuario.getPersona().getPerPApellido());
         lblDate.setText("Bienvenido");
     }
+
+    /*--------------------------------------------------------------------------------------------------------------*/
+    @FXML
+    void btnFacturacionClick(ActionEvent e) {
+        try {
+            ScenesManager.getInstance().LoadSceneFacturacion();
+        } catch (IOException ex) {            
+            Message.getInstance().Error("Error", "Ocurrió un error y no se pudo lanzar la pantalla de facturación.");            
+            LoggerManager.Logger().info(ex.toString());
+        }
+    }
+
+    @FXML
+    void btnAbonosClick(ActionEvent e) {
+        try {
+            ScenesManager.getInstance().LoadSceneAbonos();
+        } catch (IOException ex) {
+            Message.getInstance().Error("Error", "Ocurrió un error y no se pudo lanzar la pantalla de abonos.");
+            LoggerManager.Logger().info(ex.toString());
+        }
+    }
+
+    @FXML
+    void btnNotaCreditoClick(ActionEvent e) {
+        try {
+            ScenesManager.getInstance().LoadSceneVales();
+        } catch (IOException ex) {
+            Message.getInstance().Error("Error", "Ocurrió un error y no se pudo lanzar la pantalla de vales.");
+            LoggerManager.Logger().info(ex.toString());
+        }
+    }
+
+    @FXML
+    void btnInventarioClick(ActionEvent e) {
+        try {
+            ScenesManager.getInstance().LoadSceneInventario();
+        } catch (IOException ex) {
+            Message.getInstance().Error("Error", "Ocurrió un error y no se pudo lanzar la pantalla de inventario.");
+            LoggerManager.Logger().info(ex.toString());
+        }
+    }
+
+    @FXML
+    void btnClientesClick(ActionEvent e) {
+        try {
+            ScenesManager.getInstance().LoadSceneClientes();
+        } catch (IOException ex) {
+            Message.getInstance().Error("Error", "Ocurrió un error y no se pudo lanzar la pantalla de clientes.");
+            LoggerManager.Logger().info(ex.toString());
+        }
+    }
+
+    @FXML
+    void btnEmpleadosClick(ActionEvent e) {
+        try {
+            ScenesManager.getInstance().LoadSceneEmpleados();
+        } catch (IOException ex) {
+            Message.getInstance().Error("Error", "Ocurrió un error y no se pudo lanzar la pantalla de empleados.");
+            LoggerManager.Logger().info(ex.toString());
+        }
+    }
+
+    @FXML
+    void btnProveedoresClick(ActionEvent e) {
+        try {
+            ScenesManager.getInstance().LoadSceneProveedores();
+        } catch (IOException ex) {
+            Message.getInstance().Error("Error", "Ocurrió un error y no se pudo lanzar la pantalla de proveedores.");
+            LoggerManager.Logger().info(ex.toString());
+        }
+    }
+
+    @FXML
+    void btnAnulacionClick(ActionEvent e) {
+        try {
+            ScenesManager.getInstance().LoadSceneAnulacion();
+        } catch (IOException ex) {
+            Message.getInstance().Error("Error", "Ocurrió un error y no se pudo lanzar la pantalla de anulaciones.");
+            LoggerManager.Logger().info(ex.toString());
+        }
+    }
+
+    @FXML
+    void btnSalirClick(ActionEvent event) {        
+        try {
+            ScenesManager.getInstance().LoadSceneLogin();
+        } catch (IOException ex) {
+            Message.getInstance().Error("Error", "Ocurrió un error y no se pudo lanzar la pantalla de login.");
+            LoggerManager.Logger().info(ex.toString());
+        }
+    }
+
+    @FXML
+    void btnEstadisticasClick(ActionEvent event) {
+        /*try {
+            
+        } catch (IOException ex) {
+            Message.getInstance().Error("Error", "Ocurrió un error y no se pudo lanzar la pantalla de estadisticas.");
+            LoggerManager.Logger().info(ex.toString());
+        }*/
+    }
+
+    @FXML
+    void btnConfiguracionesClick(ActionEvent event) {
+        /*try {
+            
+        } catch (IOException ex) {
+            Message.getInstance().Error("Error", "Ocurrió un error y no se pudo lanzar la pantalla de configuraciones.");
+            LoggerManager.Logger().info(ex.toString());
+        }*/
+    }    
 }
