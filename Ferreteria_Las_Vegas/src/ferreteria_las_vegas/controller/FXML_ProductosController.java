@@ -136,6 +136,11 @@ public class FXML_ProductosController implements Initializable {
     @FXML
     private void KeyTyped_txtUndMedida(KeyEvent event) {
     }
+    @FXML
+    void txtCodBarras_OnAction(ActionEvent event) {
+      txtCodBarras.setText("");
+        
+    }
 
     //*****************************************************++ Area de Procesos ++****************************************************************+
     /**

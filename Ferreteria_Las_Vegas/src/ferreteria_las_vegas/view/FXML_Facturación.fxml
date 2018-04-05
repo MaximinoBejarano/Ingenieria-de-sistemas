@@ -40,7 +40,7 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </Button>
-                  <TextField fx:id="txtCodigoArticulo" layoutX="347.0" layoutY="26.0" prefHeight="39.0" prefWidth="997.0" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="347.0" AnchorPane.rightAnchor="126.0" AnchorPane.topAnchor="26.0">
+                  <TextField fx:id="txtCodigoArticulo" layoutX="347.0" layoutY="26.0" onAction="#txtCodigoArticulo_OnAction" onKeyTyped="#txtCodigoArticulo_KeyTyped" prefHeight="39.0" prefWidth="997.0" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="347.0" AnchorPane.rightAnchor="126.0" AnchorPane.topAnchor="26.0">
                      <font>
                         <Font size="18.0" />
                      </font>
