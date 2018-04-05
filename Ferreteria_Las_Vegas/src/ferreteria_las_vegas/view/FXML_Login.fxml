@@ -59,7 +59,7 @@
                               <DropShadow />
                            </effect>
                         </Label>
-                        <TextField fx:id="txtUsuario" onAction="#txtContraseñaAction" onKeyTyped="#txtUsuarioTyped" promptText="Campo Requerido" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+                        <TextField fx:id="txtUsuario" onAction="#txtContraseñaAction" onKeyTyped="#txtUsuarioTyped" promptText="Campo Requerido" text="root" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
                            <font>
                               <Font size="16.0" />
                            </font>
@@ -81,7 +81,7 @@
                               <DropShadow />
                            </effect>
                         </Label>
-                        <PasswordField fx:id="txtContraseña" onAction="#txtContraseñaAction" onKeyTyped="#txtContraseñaTyped" promptText="Campo Requerido" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
+                        <PasswordField fx:id="txtContraseña" onAction="#txtContraseñaAction" onKeyTyped="#txtContraseñaTyped" promptText="Campo Requerido" text="root" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
                            <font>
                               <Font size="16.0" />
                            </font>

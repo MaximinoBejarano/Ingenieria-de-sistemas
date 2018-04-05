@@ -6,6 +6,7 @@
 package ferreteria_las_vegas.model.controller;
 
 import ferreteria_las_vegas.model.entities.Abono;
+import ferreteria_las_vegas.model.entities.CuentaXCobrar;
 import ferreteria_las_vegas.model.entities.CuentaXPagar;
 import ferreteria_las_vegas.utils.EntityManagerHelper;
 import java.util.List;
@@ -41,7 +42,7 @@ public class CuentasXPagarJpaController {
         return INSTANCE;
     }
  
-    public CuentaXPagar AgregarCuentaXCobrar(CuentaXPagar pCuenta) {
+    public CuentaXPagar AgregarCuentasXPagar(CuentaXPagar pCuenta) {
         et = em.getTransaction();
         try {
             et.begin();
@@ -83,6 +84,17 @@ public class CuentasXPagarJpaController {
         } catch (Exception ex) {
             et.rollback();
             System.err.println(ex);
+            return null;
+        }
+    }
+    
+    public CuentaXPagar ConsultarCuentaXPagar(int pCuenta){
+     try {
+            Query qry = em.createNamedQuery("CuentaXPagar.findByCueCodigoCompra", CuentaXPagar.class);// consulta definida 
+            qry.setParameter("cueCompra", pCuenta);
+            CuentaXPagar articulo = (CuentaXPagar) qry.getSingleResult();// trae el resultado de la consulta  
+            return articulo;
+        } catch (Exception ex) {
             return null;
         }
     }

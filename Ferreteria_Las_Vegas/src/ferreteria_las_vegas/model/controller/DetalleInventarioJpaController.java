@@ -5,6 +5,7 @@
  */
 package ferreteria_las_vegas.model.controller;
 
+import ferreteria_las_vegas.model.entities.ArticuloXCompra;
 import ferreteria_las_vegas.model.entities.DetalleInventario;
 import ferreteria_las_vegas.model.entities.Persona;
 import ferreteria_las_vegas.utils.EntityManagerHelper;
@@ -48,6 +49,26 @@ public class DetalleInventarioJpaController {
             et.commit();
             return pDetalleInventario;
         }catch (EntityExistsException ex) {
+            et.rollback();
+            System.err.println(ex);
+            return null;
+        } catch (Exception ex) {
+            et.rollback();
+            System.err.println(ex);
+            return null;
+        }
+    }
+    
+    
+    
+       public ArticuloXCompra ModificarArticuloXCompra(ArticuloXCompra pArticuloXCompra) {
+        et = em.getTransaction();
+        try {
+            et.begin();
+            em.merge(pArticuloXCompra);
+            et.commit();
+            return pArticuloXCompra;
+        } catch (EntityExistsException ex) {
             et.rollback();
             System.err.println(ex);
             return null;

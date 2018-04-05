@@ -123,6 +123,7 @@ public class FXML_AbonosController implements Initializable {
     @FXML
     void btnLimpiarCampos_Click(ActionEvent event) {
         Inicializar_Componentes();
+        Cuenta = null;
         Limpiar_Vista();
     }
 
@@ -148,7 +149,7 @@ public class FXML_AbonosController implements Initializable {
             }
         } else {
             Inicializar_Componentes();
-            Message.getInstance().Warning("Advertencia:", "Por favor consulte la cuenta a abonar");
+            Message.getInstance().Warning("Advertencia:", "Por favor consulte un cliente o cuenta por cobrar");
         }
     }
 

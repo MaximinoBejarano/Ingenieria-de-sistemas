@@ -35,10 +35,10 @@ public class GeneralUtils {
     }
 
     public void ValidarCampos(boolean numeros, int cantidad, int restriccion, KeyEvent a) {
-
+        
         if (numeros == true) {
             char c = a.getCharacter().charAt(0);
-            if (Character.isLetter(c)) {
+            if (!Character.isDigit(c)&& c!='.') {
                 a.consume();
             }
         }

@@ -43,7 +43,7 @@
                         <Tooltip text="Regresa al Menú Principal" />
                      </tooltip>
                   </Button>
-                  <Button fx:id="btnAgregarFactura" layoutX="265.0" layoutY="6.0" minHeight="80.0" mnemonicParsing="false" onAction="#AgregarFactura" prefWidth="80.0" styleClass="botones_Mantenimiento" stylesheets="@../../styles/style.css" AnchorPane.bottomAnchor="6.0" AnchorPane.rightAnchor="376.0" AnchorPane.topAnchor="6.0">
+                  <Button fx:id="btnAgregarFacturas" layoutX="265.0" layoutY="6.0" minHeight="80.0" mnemonicParsing="false" onAction="#AgregarFactura" prefWidth="80.0" styleClass="botones_Mantenimiento" stylesheets="@../../styles/style.css" AnchorPane.bottomAnchor="6.0" AnchorPane.rightAnchor="376.0" AnchorPane.topAnchor="6.0">
                      <graphic>
                         <ImageView fitHeight="60.0" fitWidth="65.0" pickOnBounds="true" preserveRatio="true">
                            <effect>
@@ -58,7 +58,7 @@
                         <Tooltip text="Agrega una Nueva Factura al Inventario" />
                      </tooltip>
                   </Button>
-                  <Button fx:id="btnBuscarFactura" layoutX="354.0" layoutY="6.0" minHeight="80.0" mnemonicParsing="false" prefWidth="80.0" styleClass="botones_Mantenimiento" stylesheets="@../../styles/style.css" AnchorPane.bottomAnchor="6.0" AnchorPane.rightAnchor="290.0" AnchorPane.topAnchor="6.0">
+                  <Button fx:id="btnBuscarFacturas" layoutX="354.0" layoutY="6.0" minHeight="80.0" mnemonicParsing="false" onAction="#BuscarFacturaInventario" prefWidth="80.0" styleClass="botones_Mantenimiento" stylesheets="@../../styles/style.css" AnchorPane.bottomAnchor="6.0" AnchorPane.rightAnchor="290.0" AnchorPane.topAnchor="6.0">
                      <graphic>
                         <ImageView fitHeight="60.0" fitWidth="65.0" pickOnBounds="true" preserveRatio="true">
                            <effect>
@@ -73,7 +73,7 @@
                         <Tooltip text="Busca la Lista de Facturas de Invetario Ingresadas" />
                      </tooltip>
                   </Button>
-                  <Button fx:id="btnEditarFactura" disable="true" layoutX="442.0" layoutY="5.0" minHeight="80.0" mnemonicParsing="false" prefWidth="80.0" styleClass="botones_Mantenimiento" stylesheets="@../../styles/style.css" AnchorPane.bottomAnchor="6.0" AnchorPane.rightAnchor="204.0" AnchorPane.topAnchor="6.0">
+                  <Button fx:id="btnEditarFacturas" disable="true" layoutX="442.0" layoutY="5.0" minHeight="80.0" mnemonicParsing="false" onAction="#EditarFacturaInventario" prefWidth="80.0" styleClass="botones_Mantenimiento" stylesheets="@../../styles/style.css" AnchorPane.bottomAnchor="6.0" AnchorPane.rightAnchor="204.0" AnchorPane.topAnchor="6.0">
                      <graphic>
                         <ImageView fitHeight="60.0" fitWidth="65.0" pickOnBounds="true" preserveRatio="true">
                            <effect>
@@ -88,7 +88,7 @@
                         <Tooltip text="Edita una Factura Ingresada de Inventario" />
                      </tooltip>
                   </Button>
-                  <Button fx:id="btnEliminarFactura" disable="true" layoutX="532.0" layoutY="6.0" minHeight="80.0" mnemonicParsing="false" prefWidth="80.0" styleClass="botones_Mantenimiento" stylesheets="@../../styles/style.css" AnchorPane.bottomAnchor="6.0" AnchorPane.rightAnchor="118.0" AnchorPane.topAnchor="6.0">
+                  <Button fx:id="btnEliminarFacturas" disable="true" layoutX="532.0" layoutY="6.0" minHeight="80.0" mnemonicParsing="false" onAction="#EliminarFacturaInventario" prefWidth="80.0" styleClass="botones_Mantenimiento" stylesheets="@../../styles/style.css" AnchorPane.bottomAnchor="6.0" AnchorPane.rightAnchor="118.0" AnchorPane.topAnchor="6.0">
                      <graphic>
                         <ImageView fitHeight="60.0" fitWidth="65.0" pickOnBounds="true" preserveRatio="true">
                            <effect>
@@ -101,6 +101,21 @@
                      </graphic>
                      <tooltip>
                         <Tooltip text="Elimina una Factura de Inventario" />
+                     </tooltip>
+                  </Button>
+                  <Button fx:id="btnLimpiarPantalla" minHeight="80.0" mnemonicParsing="false" onAction="#btnLimpiarCampos" prefWidth="80.0" styleClass="botones_Mantenimiento" stylesheets="@../../styles/style.css" AnchorPane.bottomAnchor="6.0" AnchorPane.leftAnchor="6.0" AnchorPane.topAnchor="6.0">
+                     <graphic>
+                        <ImageView fitHeight="60.0" fitWidth="65.0" pickOnBounds="true" preserveRatio="true">
+                           <effect>
+                              <DropShadow />
+                           </effect>
+                           <image>
+                              <Image url="@../../pictures/refresh.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <tooltip>
+                        <Tooltip text="Limpiar Campos" />
                      </tooltip>
                   </Button>
                </children>
@@ -127,7 +142,7 @@
                               <Insets bottom="1.0" left="10.0" right="1.0" top="1.0" />
                            </GridPane.margin>
                         </Label>
-                        <Label prefHeight="20.0" prefWidth="250.0" text="Tipo de pagó de Compra:" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                        <Label prefHeight="20.0" prefWidth="250.0" text="Tipo de Compra:" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="CENTER">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -168,6 +183,17 @@
                               <Tooltip text="Monto que se paga por la carga y descarga de materiales." />
                            </tooltip>
                         </TextField>
+                        <TextField fx:id="txtDescuento" onKeyTyped="#txtDescuentoTyped" promptText="Campo Requerido" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                           <tooltip>
+                              <Tooltip text="Porcentaje de descuento en la factura" />
+                           </tooltip>
+                           <GridPane.margin>
+                              <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
+                           </GridPane.margin>
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </TextField>
                         <TextField fx:id="txtNumFactura" onKeyTyped="#txtNumFacturaTyped" promptText="Campo Requerido" GridPane.columnIndex="3" GridPane.halignment="LEFT" GridPane.valignment="CENTER">
                            <font>
                               <Font size="14.0" />
@@ -179,7 +205,12 @@
                               <Tooltip text="Número de la Factura de Compra." />
                            </tooltip>
                         </TextField>
-                        <GridPane GridPane.columnIndex="3" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                        <DatePicker fx:id="pickFeccha" prefHeight="25.0" prefWidth="219.0" promptText="Campo Requerido" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                           <tooltip>
+                              <Tooltip text="Fécha en la que se realiza la compra." />
+                           </tooltip>
+                        </DatePicker>
+                        <GridPane GridPane.columnIndex="3" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="CENTER">
                            <children>
                               <RadioButton fx:id="rdbContado" mnemonicParsing="false" selected="true" text="Contado" GridPane.halignment="LEFT" GridPane.valignment="CENTER">
                                  <GridPane.margin>
@@ -212,14 +243,6 @@
                               <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
                            </GridPane.margin>
                         </GridPane>
-                        <DatePicker fx:id="pickFeccha" prefHeight="25.0" prefWidth="219.0" promptText="Campo Requerido" GridPane.columnIndex="3" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="CENTER">
-                           <GridPane.margin>
-                              <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
-                           </GridPane.margin>
-                           <tooltip>
-                              <Tooltip text="Fécha en la que se realiza la compra." />
-                           </tooltip>
-                        </DatePicker>
                         <CheckBox fx:id="ckbAplicar" mnemonicParsing="false" text="Aplicada " GridPane.columnIndex="3" GridPane.rowIndex="3">
                            <font>
                               <Font size="14.0" />
@@ -228,7 +251,7 @@
                               <Tooltip text="Esta casilla permite enviar los productos al inventario directamente." />
                            </tooltip>
                         </CheckBox>
-                        <Label text="Fécha de Recibido:" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+                        <Label text="Fécha de Recibido:" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -277,6 +300,14 @@
                               <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
                            </GridPane.margin>
                         </GridPane>
+                        <Label text="Descuento (%): " GridPane.halignment="LEFT" GridPane.rowIndex="4" GridPane.valignment="CENTER">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                           <GridPane.margin>
+                              <Insets bottom="1.0" left="10.0" right="1.0" top="1.0" />
+                           </GridPane.margin>
+                        </Label>
                      </children>
                      <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" maxWidth="227.0" minWidth="10.0" />
@@ -289,11 +320,12 @@
                         <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                   </GridPane>
                   <GridPane layoutY="517.0" prefHeight="76.0" prefWidth="300.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0">
                      <children>
-                        <Button fx:id="btnNuevoProducto" mnemonicParsing="false" onAction="#AgregarProducto" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                        <Button fx:id="btnNuevoProductos" mnemonicParsing="false" onAction="#AgregarProducto" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                            <graphic>
                               <ImageView fitHeight="40.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -305,7 +337,7 @@
                               <Tooltip text="Agrega un Nuevo Articulo a la Base de Datos y la Tabla." />
                            </tooltip>
                         </Button>
-                        <Button fx:id="btnBuscarProducto" mnemonicParsing="false" onAction="#BuscarArticulo" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                        <Button fx:id="btnBuscarProductos" mnemonicParsing="false" onAction="#BuscarArticulo" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                            <graphic>
                               <ImageView fitHeight="40.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -317,7 +349,7 @@
                               <Tooltip text="Bucar y cargar Articulos ya Creados" />
                            </tooltip>
                         </Button>
-                        <Button fx:id="btnEliminarProducto" disable="true" mnemonicParsing="false" onAction="#EliminarArticuloLista" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                        <Button fx:id="btnEliminarProductos" disable="false" mnemonicParsing="false" onAction="#EliminarArticuloLista" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                            <graphic>
                               <ImageView fitHeight="40.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -342,7 +374,6 @@
                   <TableView fx:id="tblProductos" layoutX="14.0" layoutY="182.0" prefHeight="335.0" prefWidth="785.0" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="190.0">
                      <columns>
                         <TableColumn fx:id="tcCodigoProducto" maxWidth="160.0" minWidth="130.0" prefWidth="130.0" text="Código de Producto" />
-                        <TableColumn fx:id="tcDescuento" maxWidth="150.0" minWidth="110.0" prefWidth="110.0" text="Descuento (%)" />
                         <TableColumn fx:id="tcNombreProducto" maxWidth="170.0" minWidth="100.0" prefWidth="150.0" text="Nombre" />
                         <TableColumn fx:id="tcMarcaProducto" maxWidth="190.0" minWidth="100.0" prefWidth="150.0" text="Marca" />
                         <TableColumn fx:id="tcUnidadProducto" maxWidth="150.0" minWidth="100.0" prefWidth="150.0" text="Unidad/Medida" />

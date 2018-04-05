@@ -33,6 +33,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "CuentaXPagar.findAll", query = "SELECT c FROM CuentaXPagar c")
     , @NamedQuery(name = "CuentaXPagar.findByCueCodigo", query = "SELECT c FROM CuentaXPagar c WHERE c.cueCodigo = :cueCodigo")
+    , @NamedQuery(name = "CuentaXPagar.findByCueCodigoCompra", query = "SELECT c FROM CuentaXPagar c WHERE c.cueCompra.comCodigo = :cueCompra")
     , @NamedQuery(name = "CuentaXPagar.findByCueSaldo", query = "SELECT c FROM CuentaXPagar c WHERE c.cueSaldo = :cueSaldo")
     , @NamedQuery(name = "CuentaXPagar.findByCueSaldoCompra", query = "SELECT c FROM CuentaXPagar c WHERE c.cueSaldoCompra = :cueSaldoCompra")
     , @NamedQuery(name = "CuentaXPagar.findByCueEstado", query = "SELECT c FROM CuentaXPagar c WHERE c.cueEstado = :cueEstado")})
@@ -53,13 +54,13 @@ public class CuentaXPagar implements Serializable {
     @Basic(optional = false)
     @Column(name = "Cue_Estado")
     private String cueEstado;
-    
+
     @JoinTable(name = "tb_cxp_abonos", joinColumns = {
         @JoinColumn(name = "RCA_CuentaPagar", referencedColumnName = "Cue_Codigo")}, inverseJoinColumns = {
         @JoinColumn(name = "RCA_Abono", referencedColumnName = "Abo_Codigo")})
-    @ManyToMany    
+    @ManyToMany
     private List<Abono> abonoList;
-    
+
     @JoinColumn(name = "Cue_Compra", referencedColumnName = "Com_Codigo")
     @ManyToOne(optional = false)
     private Compra cueCompra;
@@ -161,5 +162,5 @@ public class CuentaXPagar implements Serializable {
     public String toString() {
         return "ferreteria_las_vegas.model.entities.CuentaXPagar[ cueCodigo=" + cueCodigo + " ]";
     }
-    
+
 }
