@@ -12,11 +12,7 @@ import ferreteria_las_vegas.model.entities.ArticuloXFactura;
 import ferreteria_las_vegas.model.entities.Cliente;
 import ferreteria_las_vegas.model.entities.Persona;
 import ferreteria_las_vegas.utils.AppContext;
-
 import ferreteria_las_vegas.utils.LoggerManager;
-
-import ferreteria_las_vegas.utils.GeneralUtils;
-
 import ferreteria_las_vegas.utils.Message;
 
 import java.io.IOException;
@@ -24,7 +20,6 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -44,7 +39,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.TextFieldTableCell;
-import javafx.scene.input.KeyEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -164,17 +158,6 @@ public class FXML_FacturaciónController implements Initializable {
     private void btnBorrarLinea_Click(ActionEvent event) {
     }
 
-    @FXML
-    void txtCodigoArticulo_KeyTyped(KeyEvent event) {
-        GeneralUtils.getInstance().ValidarCampos(true, txtCodigoArticulo.getText().length(), 44, event);
-    }
-
-    @FXML
-    void txtCodigoArticulo_OnAction(ActionEvent event) {
-        CargasDatos();
-    }
-
-
     /*+++++++++++++++++++++++++++++++++++++++++++++++++++++++Procesos fundamentales++++++++++++++++++++++++++++++++++++++++++++++++++++*/
  /*+++++++++++++++++++++++++++++++++++++++++++++++++Metodos importantes que no son procesos+++++++++++++++++++++++++++++++++++++++++*/
  /*+++++++++++++++++++++++++++++++++++++++++++++++++++++++Otros metodos+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
@@ -216,9 +199,8 @@ public class FXML_FacturaciónController implements Initializable {
 
     public void ModificarTabla() {
         try {
-            // Se encarga de abstraer el valor de "Cantidad" ingresado por el usuario
             colCantida.setOnEditCommit(Date -> {
-                if (!Date.getNewValue().isEmpty() || Integer.valueOf(Date.getNewValue()) > 0) {
+                if (Date.getNewValue() != "" || Integer.valueOf(Date.getNewValue()) > 0) {
                     Date.getRowValue().setCantArticulo(Integer.valueOf(Date.getNewValue()));
                     Calcular_Total();
 
@@ -233,22 +215,13 @@ public class FXML_FacturaciónController implements Initializable {
     public void CargasDatos() {
         try {
             if (pArticulo == null) {
-                if (!txtCodigoArticulo.getText().isEmpty()) {
+                if (txtCodigoArticulo.getText() != " ") {
                     pArticulo = ArticuloJpaController.getInstance().ConsultarArticuloCodBarras(txtCodigoArticulo.getText());
-
-                    if (pArticulo != null) {
-                        Limpiar_Vista();
-                        ProcesoCargaInformacion();
-                        pArticulo = null;
-                    } else {
-                        txtCodigoArticulo.setText("");
-                        Message.getInstance().Warning("Advertencia:", "El Artículo no existe");
-                    }
+                    ProcesoCargaInformacion();
                 }
             } else {
                 ProcesoCargaInformacion();
             }
-
         } catch (Exception ex) {
             System.err.println(ex);
         }
@@ -257,24 +230,21 @@ public class FXML_FacturaciónController implements Initializable {
     public void ProcesoCargaInformacion() {
         InventarioCompleto pCompleto = new InventarioCompleto();
         pCompleto.setArticulo(pArticulo);
-        boolean bandera = false;
+        boolean bandera=false;
         try {
             if (!ListArticulos.isEmpty()) {
-
-//                Iterator<InventarioCompleto> pArCompleto = ListArticulos.iterator();
-//                while (pArCompleto.hasNext()) 
                 for (InventarioCompleto pArCompleto : ListArticulos) {
                     if (pArCompleto.getArticulo().equals(pCompleto.getArticulo())) {
                         ListArticulos.remove(pArCompleto);
                         pArCompleto.setCantArticulo(pArCompleto.getCantArticulo() + 1);//Aumento la cantidad de articulos
                         ListArticulos.add(pArCompleto);
                     } else {
-                        bandera = true;
+                        bandera=true;
                     }
                 }
-                if (bandera) {
+                if(bandera){
                     pCompleto.setCantArticulo(1);
-                    ListArticulos.add(pCompleto);
+                    ListArticulos.add(pCompleto);  
                 }
             } else {
                 pCompleto.setCantArticulo(1);
@@ -293,7 +263,6 @@ public class FXML_FacturaciónController implements Initializable {
         lblTotal.setText("");
         lblCliente.setText("");
         lblFecha.setText(formatter.format(fecha.getTime()));
-        txtCodigoArticulo.setText("");
         tbl_Factura.getItems().clear();
     }
 
