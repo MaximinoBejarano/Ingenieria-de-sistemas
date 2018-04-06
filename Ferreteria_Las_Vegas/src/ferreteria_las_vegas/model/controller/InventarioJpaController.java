@@ -13,6 +13,7 @@ import java.util.List;
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
 /**
@@ -20,21 +21,22 @@ import javax.persistence.Query;
  * @author wili
  */
 public class InventarioJpaController {
-  private static InventarioJpaController INSTANCE = null;
+
+    private static InventarioJpaController INSTANCE = null;
 
     private static void createInstance() {
         if (INSTANCE == null) {
 
-            synchronized ( InventarioJpaController.class) {
+            synchronized (InventarioJpaController.class) {
 
                 if (INSTANCE == null) {
-                    INSTANCE = new  InventarioJpaController();
+                    INSTANCE = new InventarioJpaController();
                 }
             }
         }
     }
 
-    public static  InventarioJpaController getInstance() {
+    public static InventarioJpaController getInstance() {
         if (INSTANCE == null) {
             createInstance();
         }
@@ -51,18 +53,17 @@ public class InventarioJpaController {
      * @param Art
      * @return articulo
      */
-
     public Inventario InsertarInvetario(Inventario Art, DetalleInventario Det) {
         et = em.getTransaction();
         try {
             et.begin();
             em.persist(Art);
             em.flush();
-            
-            if(Det!=null){
-            em.persist(Det);
-            em.flush();
-            Art.getDetalleInventarioList().add(Det);
+
+            if (Det != null) {
+                em.persist(Det);
+                em.flush();
+                Art.getDetalleInventarioList().add(Det);
             }
             em.merge(Art);
             et.commit();
@@ -73,8 +74,6 @@ public class InventarioJpaController {
             return null;
         }
     }
-    
- 
 
     /**
      * Metodo para realizar la edicion de articulos
@@ -84,8 +83,8 @@ public class InventarioJpaController {
      * @return
      */
     public Inventario ModificarInventario(Inventario pInventario) {
-         et = em.getTransaction();
-        try {            
+        et = em.getTransaction();
+        try {
             et.begin();
             em.merge(pInventario);
             et.commit();
@@ -124,16 +123,19 @@ public class InventarioJpaController {
      * @param pCodigo
      * @return
      */
-    public  Inventario ConsultarInventarioCodigoProducto(int pCodigo) {
+    public Inventario ConsultarInventarioCodigoProducto(int pCodigo) {
         try {
             Query qry = em.createNamedQuery("Inventario.findByInvCodArticulo", Inventario.class);// consulta definida 
             qry.setParameter("invArticulo", pCodigo);
             Inventario articulo = (Inventario) qry.getSingleResult();// trae el resultado de la consulta  
             return articulo;
+        } catch (NoResultException ex) {
+            System.err.println(ex);
+            return null;
         } catch (Exception ex) {
             return null;
         }
     }
-
+    
     //******************************************************************************************
 }

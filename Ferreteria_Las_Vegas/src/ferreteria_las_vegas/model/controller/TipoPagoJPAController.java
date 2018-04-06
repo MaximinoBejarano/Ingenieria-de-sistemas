@@ -11,6 +11,7 @@ import java.util.List;
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
 /**
@@ -18,6 +19,7 @@ import javax.persistence.Query;
  * @author Maximino
  */
 public class TipoPagoJPAController {
+
     private static TipoPagoJPAController INSTANCE = null;
 
     private static void createInstance() {
@@ -41,12 +43,13 @@ public class TipoPagoJPAController {
 
     private EntityManager em = EntityManagerHelper.getInstance().getManager();
     private EntityTransaction et;
-    
-     //***************************** Area de Metodos***********************************
+
+    //***************************** Area de Metodos***********************************
     /**
      * Se agrega un nuevo registro a la base de datos
-     * @param pTPago 
-     * @return 
+     *
+     * @param pTPago
+     * @return
      */
     public TipoPago AgregarTipoPago(TipoPago pTPago) {
         et = em.getTransaction();
@@ -65,14 +68,14 @@ public class TipoPagoJPAController {
             return null;
         }
     }
-    
-     /**
+
+    /**
      * Metodo para realizar la modificación de un registro del tipo de pago
      *
-     * @param pTipoPago  
+     * @param pTipoPago
      * @return
      */
-    public TipoPago Modificar_TipoPago (TipoPago pTipoPago) {
+    public TipoPago Modificar_TipoPago(TipoPago pTipoPago) {
         et = em.getTransaction();
         try {
             et.begin();
@@ -89,7 +92,8 @@ public class TipoPagoJPAController {
             return null;
         }
     }
-     /**
+
+    /**
      * Se realiza la consulta todos los abonos
      *
      * @return
@@ -103,11 +107,11 @@ public class TipoPagoJPAController {
             return null;
         }
     }
-    
-     /**
+
+    /**
      * Consulta por codigo del tipoPago
      *
-     * @param pTipoPago 
+     * @param pTipoPago
      * @return
      */
     public TipoPago Consultar_TipoPagoCodigo(int pTipoPago) {
@@ -120,22 +124,25 @@ public class TipoPagoJPAController {
             return null;
         }
     }
-    
-     /**
+
+    /**
      * Consulta por Nombre del tipoPago
      *
-     * @param pTipNombre 
+     * @param pTipNombre
      * @return
      */
-    public TipoPago Consultar_TipoPagoCodigo(String pTipNombre) {
+    public TipoPago Consultar_TipoPagoNombre(String pTipNombre) {
         try {
             Query qry = em.createNamedQuery("TipoPago.findByTipNombre", TipoPago.class);// consulta definida 
             qry.setParameter("tipNombre", pTipNombre);
             TipoPago pTPago = (TipoPago) qry.getSingleResult();// trae el resultado de la consulta  
             return pTPago;
+        } catch (NoResultException ex) {
+            System.err.println(ex);
+            return null;
         } catch (Exception ex) {
             return null;
         }
     }
-    
+
 }

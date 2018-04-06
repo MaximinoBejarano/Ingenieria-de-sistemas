@@ -13,6 +13,8 @@ import ferreteria_las_vegas.utils.AppContext;
 import ferreteria_las_vegas.utils.GeneralUtils;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -130,7 +132,18 @@ public class FXML_ProductosController implements Initializable {
 
     @FXML
     private void KeyType_txtDescuento(KeyEvent event) {
-       GeneralUtils.getInstance().ValidarCampos(true, txtDescuento.getText().length(), 3, event);
+       GeneralUtils.getInstance().ValidarCampos(true, txtDescuento.getText().length(),4, event);
+        txtDescuento.focusedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                if (txtDescuento.getText().length() == 1) {
+                    txtDescuento.setText("0.0" + txtDescuento.getText());
+                } else {
+                    txtDescuento.setText("0." + txtDescuento.getText());
+                    txtDescuento.setText(txtDescuento.getText().replace("0.0.", "0."));
+                }
+            }
+        });
     }
 
     @FXML
@@ -138,10 +151,9 @@ public class FXML_ProductosController implements Initializable {
     }
     @FXML
     void txtCodBarras_OnAction(ActionEvent event) {
-      txtCodBarras.setText("");
-        
+     
     }
-
+    
     //*****************************************************++ Area de Procesos ++****************************************************************+
     /**
      * Se realiza la insercion de articulos a la Base de datos

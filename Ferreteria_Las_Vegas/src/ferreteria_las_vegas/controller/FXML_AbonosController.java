@@ -291,7 +291,7 @@ public class FXML_AbonosController implements Initializable {
     }
 
     public TipoPago CargarTipoPago() {
-        tipPago = TipoPagoJPAController.getInstance().Consultar_TipoPagoCodigo("Contado");
+        tipPago = TipoPagoJPAController.getInstance().Consultar_TipoPagoNombre("Contado");
         return tipPago;
     }
 
