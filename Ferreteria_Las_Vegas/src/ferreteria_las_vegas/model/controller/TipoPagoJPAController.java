@@ -13,10 +13,7 @@ import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.NoResultException;
-<<<<<<< HEAD
-=======
 import javax.persistence.NonUniqueResultException;
->>>>>>> fac5e3905975db1d856331fdb4f79f0d1149bd5e
 import javax.persistence.Query;
 
 /**
@@ -154,14 +151,11 @@ public class TipoPagoJPAController {
             TipoPago pTPago = (TipoPago) qry.getSingleResult();// trae el resultado de la consulta  
             return pTPago;
         } catch (NoResultException ex) {
-<<<<<<< HEAD
-            System.err.println(ex);
-=======
             LoggerManager.Logger().info(ex.toString());
             return null;
         } catch (NonUniqueResultException ex) {
             LoggerManager.Logger().info(ex.toString());
->>>>>>> fac5e3905975db1d856331fdb4f79f0d1149bd5e
+
             return null;
         } catch (Exception ex) {
             LoggerManager.Logger().info(ex.toString());
