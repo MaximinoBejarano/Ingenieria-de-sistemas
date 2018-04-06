@@ -7,6 +7,8 @@ package ferreteria_las_vegas;
 
 import ferreteria_las_vegas.controller.ScenesManager;
 import ferreteria_las_vegas.utils.LoggerManager;
+import ferreteria_las_vegas.utils.Message;
+import java.io.IOException;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -18,8 +20,14 @@ public class Ferreteria_Las_Vegas extends Application {
     
     @Override
     public void start(Stage stage) throws Exception {        
-        LoggerManager.Open();        
-        ScenesManager.getInstance().LoadStage(stage);                
+        LoggerManager.Open();                
+        try {
+            ScenesManager.getInstance().LoadStage(stage);   
+        } catch (IOException ex) {            
+            Message.getInstance().Error("Error", "Ocurrió un error y no se pudo lanzar la aplicación.");            
+            LoggerManager.Logger().info(ex.toString());
+            LoggerManager.Close();
+        }
     }
     
     @Override

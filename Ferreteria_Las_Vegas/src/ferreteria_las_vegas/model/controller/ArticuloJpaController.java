@@ -9,9 +9,11 @@ import ferreteria_las_vegas.utils.EntityManagerHelper;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import ferreteria_las_vegas.model.entities.Articulo;
+import ferreteria_las_vegas.utils.LoggerManager;
 import java.util.List;
 import javax.persistence.EntityExistsException;
-import javax.persistence.LockModeType;
+import javax.persistence.NoResultException;
+import javax.persistence.NonUniqueResultException;
 import javax.persistence.Query;
 
 /**
@@ -40,9 +42,6 @@ public class ArticuloJpaController {
         }
         return INSTANCE;
     }
-
-    private EntityManager em = EntityManagerHelper.getInstance().getManager();
-    private EntityTransaction et;
     //**********************************Area de metodos **************************************************
 
     /**
@@ -51,7 +50,6 @@ public class ArticuloJpaController {
      * @param Art
      * @return articulo
      */
-
     public Articulo InsertarArticulo(Articulo Art) {
         et = em.getTransaction();
         try {
@@ -59,13 +57,13 @@ public class ArticuloJpaController {
             em.persist(Art);
             et.commit();
             return Art;
-        }catch (EntityExistsException ex) {
+        } catch (EntityExistsException ex) {
             et.rollback();
-            System.err.println(ex);
+            LoggerManager.Logger().info(ex.toString());
             return null;
         } catch (Exception ex) {
             et.rollback();
-            System.err.println(ex);
+            LoggerManager.Logger().info(ex.toString());
             return null;
         }
     }
@@ -85,11 +83,11 @@ public class ArticuloJpaController {
             return pArticulo;
         } catch (EntityExistsException ex) {
             et.rollback();
-            System.err.println(ex);
+            LoggerManager.Logger().info(ex.toString());
             return null;
         } catch (Exception ex) {
             et.rollback();
-            System.err.println(ex);
+            LoggerManager.Logger().info(ex.toString());
             return null;
         }
     }
@@ -106,7 +104,11 @@ public class ArticuloJpaController {
             Query qry = em.createNamedQuery("Articulo.findAll", Articulo.class);// consulta todos los articulos 
             List<Articulo> Articulos = qry.getResultList();// Recibe el resultado de la consulta  
             return Articulos;
+        } catch (NoResultException ex) {
+            LoggerManager.Logger().info(ex.toString());
+            return null;
         } catch (Exception ex) {
+            LoggerManager.Logger().info(ex.toString());
             return null;
         }
     }
@@ -123,7 +125,14 @@ public class ArticuloJpaController {
             qry.setParameter("artCodigo", pCodigo);
             Articulo articulo = (Articulo) qry.getSingleResult();// trae el resultado de la consulta  
             return articulo;
+        } catch (NoResultException ex) {
+            LoggerManager.Logger().info(ex.toString());
+            return null;
+        } catch (NonUniqueResultException ex) {
+            LoggerManager.Logger().info(ex.toString());
+            return null;
         } catch (Exception ex) {
+            LoggerManager.Logger().info(ex.toString());
             return null;
         }
     }
@@ -140,24 +149,37 @@ public class ArticuloJpaController {
             qry.setParameter("artCodBarra", pCodigo);
             Articulo articulo = (Articulo) qry.getSingleResult();// trae el resultado de la consulta  
             return articulo;
+        } catch (NoResultException ex) {
+            LoggerManager.Logger().info(ex.toString());
+            return null;
+        } catch (NonUniqueResultException ex) {
+            LoggerManager.Logger().info(ex.toString());
+            return null;
         } catch (Exception ex) {
+            LoggerManager.Logger().info(ex.toString());
             return null;
         }
     }
-    
-     public List<Articulo>  ComprobarExistenciaArticulo(Articulo Objeto) {
+
+    public List<Articulo> ComprobarExistenciaArticulo(Articulo Objeto) {
         try {
             Query qry = em.createNamedQuery("Articulo.findByArtExistente", Articulo.class);// consulta definida 
-            qry.setParameter("artNombre",Objeto.getArtNombre());
-            qry.setParameter("artDescripcion",Objeto.getArtDescripcion());
-            qry.setParameter("artMarca",Objeto.getArtMarca());
-            qry.setParameter("artEstado",Objeto.getArtEstado());
-            List<Articulo> Articulos =  qry.getResultList();// trae el resultado de la consulta  
+            qry.setParameter("artNombre", Objeto.getArtNombre());
+            qry.setParameter("artDescripcion", Objeto.getArtDescripcion());
+            qry.setParameter("artMarca", Objeto.getArtMarca());
+            qry.setParameter("artEstado", Objeto.getArtEstado());
+            List<Articulo> Articulos = qry.getResultList();// trae el resultado de la consulta  
             return Articulos;
+        } catch (NoResultException ex) {
+            LoggerManager.Logger().info(ex.toString());
+            return null;
         } catch (Exception ex) {
+            LoggerManager.Logger().info(ex.toString());
             return null;
         }
     }
-    
+
     //******************************************************************************************
+    private EntityManager em = EntityManagerHelper.getInstance().getManager();
+    private EntityTransaction et;
 }

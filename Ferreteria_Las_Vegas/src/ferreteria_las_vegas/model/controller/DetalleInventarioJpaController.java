@@ -7,20 +7,19 @@ package ferreteria_las_vegas.model.controller;
 
 import ferreteria_las_vegas.model.entities.ArticuloXCompra;
 import ferreteria_las_vegas.model.entities.DetalleInventario;
-import ferreteria_las_vegas.model.entities.Persona;
 import ferreteria_las_vegas.utils.EntityManagerHelper;
+import ferreteria_las_vegas.utils.LoggerManager;
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
-import javax.persistence.LockModeType;
-import javax.persistence.Query;
 
 /**
  *
  * @author sanwi
  */
 public class DetalleInventarioJpaController {
-  private static DetalleInventarioJpaController INSTANCE = null;
+
+    private static DetalleInventarioJpaController INSTANCE = null;
 
     private static void createInstance() {
         if (INSTANCE == null) {
@@ -39,29 +38,27 @@ public class DetalleInventarioJpaController {
             createInstance();
         }
         return INSTANCE;
-    }   
-    
+    }
+
     public DetalleInventario AgregarDetalleInventario(DetalleInventario pDetalleInventario) {
-         et = em.getTransaction();
+        et = em.getTransaction();
         try {
             et.begin();
             em.persist(pDetalleInventario);
             et.commit();
             return pDetalleInventario;
-        }catch (EntityExistsException ex) {
+        } catch (EntityExistsException ex) {
             et.rollback();
-            System.err.println(ex);
+            LoggerManager.Logger().info(ex.toString());
             return null;
         } catch (Exception ex) {
             et.rollback();
-            System.err.println(ex);
+            LoggerManager.Logger().info(ex.toString());
             return null;
         }
     }
-    
-    
-    
-       public ArticuloXCompra ModificarArticuloXCompra(ArticuloXCompra pArticuloXCompra) {
+
+    public ArticuloXCompra ModificarArticuloXCompra(ArticuloXCompra pArticuloXCompra) {
         et = em.getTransaction();
         try {
             et.begin();
@@ -70,16 +67,14 @@ public class DetalleInventarioJpaController {
             return pArticuloXCompra;
         } catch (EntityExistsException ex) {
             et.rollback();
-            System.err.println(ex);
+            LoggerManager.Logger().info(ex.toString());
             return null;
         } catch (Exception ex) {
             et.rollback();
-            System.err.println(ex);
+            LoggerManager.Logger().info(ex.toString());
             return null;
         }
     }
-    
-   
 
     private EntityManager em = EntityManagerHelper.getInstance().getManager();
     private EntityTransaction et;

@@ -9,6 +9,7 @@ import ferreteria_las_vegas.model.entities.Contacto;
 import ferreteria_las_vegas.model.entities.Direccion;
 import ferreteria_las_vegas.model.entities.Proveedor;
 import ferreteria_las_vegas.utils.EntityManagerHelper;
+import ferreteria_las_vegas.utils.LoggerManager;
 import java.util.List;
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
@@ -51,10 +52,10 @@ public class ProveedorJpaController {
             List<Proveedor> proveedores = qry.getResultList();
             return proveedores;
         } catch (NoResultException ex) {
-            System.err.println(ex);
+            LoggerManager.Logger().info(ex.toString());
             return null;
         } catch (Exception ex) {
-            System.err.println(ex);
+            LoggerManager.Logger().info(ex.toString());
             return null;
         }
     }
@@ -66,13 +67,13 @@ public class ProveedorJpaController {
             Proveedor proveedor = (Proveedor) qry.getSingleResult();
             return proveedor;
         } catch (NoResultException ex) {
-            System.err.println(ex);
+            LoggerManager.Logger().info(ex.toString());
             return null;
         } catch (NonUniqueResultException ex) {
-            System.err.println(ex);
+            LoggerManager.Logger().info(ex.toString());
             return null;
         } catch (Exception ex) {
-            System.err.println(ex);
+            LoggerManager.Logger().info(ex.toString());
             return null;
         }
     }
@@ -84,13 +85,13 @@ public class ProveedorJpaController {
             Proveedor proveedor = (Proveedor) qry.getSingleResult();
             return proveedor;
         } catch (NoResultException ex) {
-            System.err.println(ex);
+            LoggerManager.Logger().info(ex.toString());
             return null;
         } catch (NonUniqueResultException ex) {
-            System.err.println(ex);
+            LoggerManager.Logger().info(ex.toString());
             return null;
         } catch (Exception ex) {
-            System.err.println(ex);
+            LoggerManager.Logger().info(ex.toString());
             return null;
         }
     }
@@ -104,11 +105,11 @@ public class ProveedorJpaController {
             return pProveedor;
         } catch (EntityExistsException ex) {
             et.rollback();
-            System.err.println(ex);
+            LoggerManager.Logger().info(ex.toString());
             return null;
         } catch (Exception ex) {
             et.rollback();
-            System.err.println(ex);
+            LoggerManager.Logger().info(ex.toString());
             return null;
         }
     }
@@ -144,11 +145,11 @@ public class ProveedorJpaController {
             return pProveedor;
         } catch (EntityExistsException ex) {
             et.rollback();
-            System.err.println(ex);
+            LoggerManager.Logger().info(ex.toString());
             return null;
         } catch (Exception ex) {
             et.rollback();
-            System.err.println(ex);
+            LoggerManager.Logger().info(ex.toString());
             return null;
         }
     }

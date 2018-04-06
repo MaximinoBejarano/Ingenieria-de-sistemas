@@ -9,6 +9,7 @@ import ferreteria_las_vegas.model.entities.Contacto;
 import ferreteria_las_vegas.model.entities.Direccion;
 import ferreteria_las_vegas.model.entities.Persona;
 import ferreteria_las_vegas.utils.EntityManagerHelper;
+import ferreteria_las_vegas.utils.LoggerManager;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.persistence.EntityExistsException;
@@ -62,13 +63,13 @@ public class PersonaJpaController {
             Persona persona = (Persona) qry.getSingleResult();// trae el resultado de la consulta  
             return persona;
         } catch (NoResultException ex) {
-            System.err.println(ex);
+            LoggerManager.Logger().info(ex.toString());
             return null;
         } catch (NonUniqueResultException ex) {
-            System.err.println(ex);
+            LoggerManager.Logger().info(ex.toString());
             return null;
         } catch (Exception ex) {
-            System.err.println(ex);
+            LoggerManager.Logger().info(ex.toString());
             return null;
         }
     }
@@ -85,10 +86,10 @@ public class PersonaJpaController {
             List<Persona> personas = qry.getResultList();
             return personas;
         } catch (NoResultException ex) {
-            System.err.println(ex);
+            LoggerManager.Logger().info(ex.toString());
             return null;
         } catch (Exception ex) {
-            System.err.println(ex);
+            LoggerManager.Logger().info(ex.toString());
             return null;
         }
     }
@@ -99,10 +100,10 @@ public class PersonaJpaController {
             List<Persona> personas = qry.getResultList();
             return personas.stream().filter(e -> e.getUsuario() != null).collect(Collectors.toList());
         } catch (NoResultException ex) {
-            System.err.println(ex);
+            LoggerManager.Logger().info(ex.toString());
             return null;
         } catch (Exception ex) {
-            System.err.println(ex);
+            LoggerManager.Logger().info(ex.toString());
             return null;
         }
     }
@@ -113,10 +114,10 @@ public class PersonaJpaController {
             List<Persona> personas = qry.getResultList();
             return personas.stream().filter(e -> e.getCliente() != null).collect(Collectors.toList());
         } catch (NoResultException ex) {
-            System.err.println(ex);
+            LoggerManager.Logger().info(ex.toString());
             return null;
         } catch (Exception ex) {
-            System.err.println(ex);
+            LoggerManager.Logger().info(ex.toString());
             return null;
         }
     }
@@ -136,11 +137,11 @@ public class PersonaJpaController {
             return pPersona;
         } catch (EntityExistsException ex) {
             et.rollback();
-            System.err.println(ex);
+            LoggerManager.Logger().info(ex.toString());
             return null;
         } catch (Exception ex) {
             et.rollback();
-            System.err.println(ex);
+            LoggerManager.Logger().info(ex.toString());
             return null;
         }
     }
@@ -153,19 +154,18 @@ public class PersonaJpaController {
      */
     public Persona ModificarPersona(Persona pPersona) {
         et = em.getTransaction();
-        try {
-            //em.lock(pPersona, LockModeType.PESSIMISTIC_WRITE);
+        try {            
             et.begin();
             em.merge(pPersona);
             et.commit();
             return pPersona;
         } catch (EntityExistsException ex) {
             et.rollback();
-            System.err.println(ex);
+            LoggerManager.Logger().info(ex.toString());
             return null;
         } catch (Exception ex) {
             et.rollback();
-            System.err.println(ex);
+            LoggerManager.Logger().info(ex.toString());
             return null;
         }
     }
@@ -216,11 +216,11 @@ public class PersonaJpaController {
             return pPersona;
         } catch (EntityExistsException ex) {
             et.rollback();
-            System.err.println(ex);
+            LoggerManager.Logger().info(ex.toString());
             return null;
         } catch (Exception ex) {
             et.rollback();
-            System.err.println(ex);
+            LoggerManager.Logger().info(ex.toString());
             return null;
         }
 

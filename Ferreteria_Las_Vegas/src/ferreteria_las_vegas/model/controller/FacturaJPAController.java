@@ -9,10 +9,13 @@ import ferreteria_las_vegas.model.entities.Factura;
 import ferreteria_las_vegas.model.entities.ArticuloXFactura;
 
 import ferreteria_las_vegas.utils.EntityManagerHelper;
+import ferreteria_las_vegas.utils.LoggerManager;
 import java.util.List;
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
+import javax.persistence.NoResultException;
+import javax.persistence.NonUniqueResultException;
 import javax.persistence.Query;
 
 /**
@@ -40,9 +43,7 @@ public class FacturaJPAController {
         }
         return INSTANCE;
     }
-
-    private EntityManager em = EntityManagerHelper.getInstance().getManager();
-    private EntityTransaction et;
+    
     //***************************** Area de Metodos***********************************
     /**
      * Se agrega un nuevo registro a la base de datos
@@ -69,11 +70,11 @@ public class FacturaJPAController {
             
         } catch (EntityExistsException ex) {
             et.rollback();
-            System.err.println(ex);
+            LoggerManager.Logger().info(ex.toString());
             return null;
         } catch (Exception ex) {
             et.rollback();
-            System.err.println(ex);
+            LoggerManager.Logger().info(ex.toString());
             return null;
         }
     }
@@ -93,11 +94,11 @@ public class FacturaJPAController {
             return pFactura;
         } catch (EntityExistsException ex) {
             et.rollback();
-            System.err.println(ex);
+            LoggerManager.Logger().info(ex.toString());
             return null;
         } catch (Exception ex) {
             et.rollback();
-            System.err.println(ex);
+            LoggerManager.Logger().info(ex.toString());
             return null;
         }
     }
@@ -111,7 +112,11 @@ public class FacturaJPAController {
             Query qry = em.createNamedQuery("Factura.findAll", Factura.class);// consulta todos las Facturas
             List<Factura> listfacturas = qry.getResultList();// Recibe el resultado de la consulta  
             return listfacturas;
+        } catch (NoResultException ex) {
+            LoggerManager.Logger().info(ex.toString());
+            return null;
         } catch (Exception ex) {
+            LoggerManager.Logger().info(ex.toString());
             return null;
         }
     }
@@ -126,8 +131,18 @@ public class FacturaJPAController {
             qry.setParameter("facCodigo", pCodigo);
             Factura pFactura = (Factura) qry.getSingleResult();// trae el resultado de la consulta  
             return pFactura;
+        } catch (NoResultException ex) {
+            LoggerManager.Logger().info(ex.toString());
+            return null;
+        } catch (NonUniqueResultException ex) {
+            LoggerManager.Logger().info(ex.toString());
+            return null;
         } catch (Exception ex) {
+            LoggerManager.Logger().info(ex.toString());
             return null;
         }
     }      
+    
+    private EntityManager em = EntityManagerHelper.getInstance().getManager();
+    private EntityTransaction et;
 }

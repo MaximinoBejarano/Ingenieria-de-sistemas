@@ -6,13 +6,15 @@
 package ferreteria_las_vegas.model.controller;
 
 import ferreteria_las_vegas.model.entities.Abono;
-import ferreteria_las_vegas.model.entities.CuentaXCobrar;
 import ferreteria_las_vegas.model.entities.CuentaXPagar;
 import ferreteria_las_vegas.utils.EntityManagerHelper;
+import ferreteria_las_vegas.utils.LoggerManager;
 import java.util.List;
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
+import javax.persistence.NoResultException;
+import javax.persistence.NonUniqueResultException;
 import javax.persistence.Query;
 
 /**
@@ -51,11 +53,11 @@ public class CuentasXPagarJpaController {
             return pCuenta;
         } catch (EntityExistsException ex) {
             et.rollback();
-            System.err.println(ex);
+            LoggerManager.Logger().info(ex.toString());
             return null;
         } catch (Exception ex) {
             et.rollback();
-            System.err.println(ex);
+            LoggerManager.Logger().info(ex.toString());
             return null;
         }
     }
@@ -65,7 +67,11 @@ public class CuentasXPagarJpaController {
             Query qry = em.createQuery("SELECT c FROM CuentaXPagar c", CuentaXPagar.class);
             List<CuentaXPagar> cuentas = qry.getResultList();
             return cuentas;
+        } catch (NoResultException ex) {
+            LoggerManager.Logger().info(ex.toString());
+            return null;
         } catch (Exception ex) {
+            LoggerManager.Logger().info(ex.toString());
             return null;
         }
     }
@@ -79,11 +85,11 @@ public class CuentasXPagarJpaController {
             return pCuenta;
         } catch (EntityExistsException ex) {
             et.rollback();
-            System.err.println(ex);
+            LoggerManager.Logger().info(ex.toString());
             return null;
         } catch (Exception ex) {
             et.rollback();
-            System.err.println(ex);
+            LoggerManager.Logger().info(ex.toString());
             return null;
         }
     }
@@ -94,7 +100,14 @@ public class CuentasXPagarJpaController {
             qry.setParameter("cueCompra", pCuenta);
             CuentaXPagar articulo = (CuentaXPagar) qry.getSingleResult();// trae el resultado de la consulta  
             return articulo;
+        } catch (NoResultException ex) {
+            LoggerManager.Logger().info(ex.toString());
+            return null;
+        } catch (NonUniqueResultException ex) {
+            LoggerManager.Logger().info(ex.toString());
+            return null;
         } catch (Exception ex) {
+            LoggerManager.Logger().info(ex.toString());
             return null;
         }
     }
@@ -113,11 +126,11 @@ public class CuentasXPagarJpaController {
             return pCuenta;
         } catch (EntityExistsException ex) {
             et.rollback();
-            System.err.println(ex);
+            LoggerManager.Logger().info(ex.toString());
             return null;
         } catch (Exception ex) {
             et.rollback();
-            System.err.println(ex);
+            LoggerManager.Logger().info(ex.toString());
             return null;
         }
     }
@@ -136,11 +149,11 @@ public class CuentasXPagarJpaController {
             return pCuenta;
         } catch (EntityExistsException ex) {
             et.rollback();
-            System.err.println(ex);
+            LoggerManager.Logger().info(ex.toString());
             return null;
         } catch (Exception ex) {
             et.rollback();
-            System.err.println(ex);
+            LoggerManager.Logger().info(ex.toString());
             return null;
         }
     }

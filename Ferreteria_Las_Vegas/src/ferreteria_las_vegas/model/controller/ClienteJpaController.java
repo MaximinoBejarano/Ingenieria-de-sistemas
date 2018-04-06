@@ -6,11 +6,13 @@
  */
 package ferreteria_las_vegas.model.controller;
 import ferreteria_las_vegas.model.entities.Cliente;
-import ferreteria_las_vegas.model.entities.Persona;
 import ferreteria_las_vegas.utils.EntityManagerHelper;
+import ferreteria_las_vegas.utils.LoggerManager;
 import java.util.List;
+import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 /**
  *
@@ -49,7 +51,11 @@ public class ClienteJpaController {
             Query qry = em.createNamedQuery("Cliente.findAll", Cliente.class);// consulta definida por folio
             List<Cliente> personas = qry.getResultList();// Recibe el resultado de la consulta  
             return personas;
+        } catch (NoResultException ex) {
+            LoggerManager.Logger().info(ex.toString());
+            return null;
         } catch (Exception ex) {
+            LoggerManager.Logger().info(ex.toString());
             return null;
         }
     }
@@ -61,8 +67,13 @@ public class ClienteJpaController {
             em.persist(pCliente);
             et.commit();
             return pCliente;
+        } catch (EntityExistsException ex) {
+            et.rollback();
+            LoggerManager.Logger().info(ex.toString());
+            return null;
         } catch (Exception ex) {
             et.rollback();
+            LoggerManager.Logger().info(ex.toString());
             return null;
         }
     }
@@ -76,19 +87,21 @@ public class ClienteJpaController {
         
     public Cliente ModificarCliente(Cliente pPersona) {
         et = em.getTransaction();
-        try {          
-          
+        try {
             et.begin();            
             em.merge(pPersona);
             et.commit();            
             return pPersona;
+        } catch (EntityExistsException ex) {
+            et.rollback();
+            LoggerManager.Logger().info(ex.toString());
+            return null;
         } catch (Exception ex) {
             et.rollback();
-            System.out.println(ex);
+            LoggerManager.Logger().info(ex.toString());
             return null;
         }
     } 
-    
     
     private EntityManager em = EntityManagerHelper.getInstance().getManager();
     private EntityTransaction et;

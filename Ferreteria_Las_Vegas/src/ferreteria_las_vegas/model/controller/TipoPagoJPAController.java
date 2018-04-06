@@ -7,11 +7,16 @@ package ferreteria_las_vegas.model.controller;
 
 import ferreteria_las_vegas.model.entities.TipoPago;
 import ferreteria_las_vegas.utils.EntityManagerHelper;
+import ferreteria_las_vegas.utils.LoggerManager;
 import java.util.List;
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.NoResultException;
+<<<<<<< HEAD
+=======
+import javax.persistence.NonUniqueResultException;
+>>>>>>> fac5e3905975db1d856331fdb4f79f0d1149bd5e
 import javax.persistence.Query;
 
 /**
@@ -60,11 +65,11 @@ public class TipoPagoJPAController {
             return pTPago;
         } catch (EntityExistsException ex) {
             et.rollback();
-            System.err.println(ex);
+            LoggerManager.Logger().info(ex.toString());
             return null;
         } catch (Exception ex) {
             et.rollback();
-            System.err.println(ex);
+            LoggerManager.Logger().info(ex.toString());
             return null;
         }
     }
@@ -84,11 +89,11 @@ public class TipoPagoJPAController {
             return pTipoPago;
         } catch (EntityExistsException ex) {
             et.rollback();
-            System.err.println(ex);
+            LoggerManager.Logger().info(ex.toString());
             return null;
         } catch (Exception ex) {
             et.rollback();
-            System.err.println(ex);
+            LoggerManager.Logger().info(ex.toString());
             return null;
         }
     }
@@ -103,7 +108,11 @@ public class TipoPagoJPAController {
             Query qry = em.createQuery("SELECT t FROM TipoPago t", TipoPago.class);// consulta todos los abonos
             List<TipoPago> ListTipoPago = qry.getResultList();// Recibe el resultado de la consulta  
             return ListTipoPago;
+        } catch (NoResultException ex) {
+            LoggerManager.Logger().info(ex.toString());
+            return null;
         } catch (Exception ex) {
+            LoggerManager.Logger().info(ex.toString());
             return null;
         }
     }
@@ -120,7 +129,14 @@ public class TipoPagoJPAController {
             qry.setParameter("tipCodigo", pTipoPago);
             TipoPago pTPago = (TipoPago) qry.getSingleResult();// trae el resultado de la consulta  
             return pTPago;
+        } catch (NoResultException ex) {
+            LoggerManager.Logger().info(ex.toString());
+            return null;
+        } catch (NonUniqueResultException ex) {
+            LoggerManager.Logger().info(ex.toString());
+            return null;
         } catch (Exception ex) {
+            LoggerManager.Logger().info(ex.toString());
             return null;
         }
     }
@@ -138,9 +154,17 @@ public class TipoPagoJPAController {
             TipoPago pTPago = (TipoPago) qry.getSingleResult();// trae el resultado de la consulta  
             return pTPago;
         } catch (NoResultException ex) {
+<<<<<<< HEAD
             System.err.println(ex);
+=======
+            LoggerManager.Logger().info(ex.toString());
+            return null;
+        } catch (NonUniqueResultException ex) {
+            LoggerManager.Logger().info(ex.toString());
+>>>>>>> fac5e3905975db1d856331fdb4f79f0d1149bd5e
             return null;
         } catch (Exception ex) {
+            LoggerManager.Logger().info(ex.toString());
             return null;
         }
     }

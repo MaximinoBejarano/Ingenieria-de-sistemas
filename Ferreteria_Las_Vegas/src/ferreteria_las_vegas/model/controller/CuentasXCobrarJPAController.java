@@ -10,8 +10,11 @@ import ferreteria_las_vegas.utils.EntityManagerHelper;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import ferreteria_las_vegas.model.entities.CuentaXCobrar;
+import ferreteria_las_vegas.utils.LoggerManager;
 import java.util.List;
 import javax.persistence.EntityExistsException;
+import javax.persistence.NoResultException;
+import javax.persistence.NonUniqueResultException;
 import javax.persistence.Query;
 
 /**
@@ -39,10 +42,7 @@ public class CuentasXCobrarJPAController {
             createInstance();
         }
         return INSTANCE;
-    }
-
-    private EntityManager em = EntityManagerHelper.getInstance().getManager();
-    private EntityTransaction et;
+    }    
 
     //***************************** Area de Metodos***********************************
     /**
@@ -60,11 +60,11 @@ public class CuentasXCobrarJPAController {
             return Cuenta;
         } catch (EntityExistsException ex) {
             et.rollback();
-            System.err.println(ex);
+            LoggerManager.Logger().info(ex.toString());
             return null;
         } catch (Exception ex) {
             et.rollback();
-            System.err.println(ex);
+            LoggerManager.Logger().info(ex.toString());
             return null;
         }
     }
@@ -93,11 +93,11 @@ public class CuentasXCobrarJPAController {
             }
         } catch (EntityExistsException ex) {
             et.rollback();
-            System.err.println(ex);
+            LoggerManager.Logger().info(ex.toString());
             return null;
         } catch (Exception ex) {
             et.rollback();
-            System.err.println(ex);
+            LoggerManager.Logger().info(ex.toString());
             return null;
         }
     }
@@ -118,11 +118,11 @@ public class CuentasXCobrarJPAController {
             return pCuentaXCobrar;
         } catch (EntityExistsException ex) {
             et.rollback();
-            System.err.println(ex);
+            LoggerManager.Logger().info(ex.toString());
             return null;
         } catch (Exception ex) {
             et.rollback();
-            System.err.println(ex);
+            LoggerManager.Logger().info(ex.toString());
             return null;
         }
     }
@@ -137,7 +137,11 @@ public class CuentasXCobrarJPAController {
             Query qry = em.createNamedQuery("CuentaXCobrar.findAll", CuentaXCobrar.class);// consulta todos las cuentas por cobrar
             List<CuentaXCobrar> Cuentas = qry.getResultList();// Recibe el resultado de la consulta  
             return Cuentas;
+        } catch (NoResultException ex) {
+            LoggerManager.Logger().info(ex.toString());
+            return null;
         } catch (Exception ex) {
+            LoggerManager.Logger().info(ex.toString());
             return null;
         }
     }
@@ -154,10 +158,20 @@ public class CuentasXCobrarJPAController {
             qry.setParameter("cueCodigo", pCodigo);
             CuentaXCobrar pCuenta = (CuentaXCobrar) qry.getSingleResult();// trae el resultado de la consulta  
             return pCuenta;
+        } catch (NoResultException ex) {
+            LoggerManager.Logger().info(ex.toString());
+            return null;
+        } catch (NonUniqueResultException ex) {
+            LoggerManager.Logger().info(ex.toString());
+            return null;
         } catch (Exception ex) {
+            LoggerManager.Logger().info(ex.toString());
             return null;
         }
     }
+    
+    private EntityManager em = EntityManagerHelper.getInstance().getManager();
+    private EntityTransaction et;
 }
 
 /* No borrar

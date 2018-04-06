@@ -8,10 +8,13 @@ package ferreteria_las_vegas.model.controller;
 import ferreteria_las_vegas.model.entities.ArticuloXCompra;
 import ferreteria_las_vegas.model.entities.Compra;
 import ferreteria_las_vegas.utils.EntityManagerHelper;
+import ferreteria_las_vegas.utils.LoggerManager;
 import java.util.List;
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
+import javax.persistence.NoResultException;
+import javax.persistence.NonUniqueResultException;
 import javax.persistence.Query;
 
 /**
@@ -40,9 +43,7 @@ public class CompraJpaController {
         }
         return INSTANCE;
     }
-
-    private EntityManager em = EntityManagerHelper.getInstance().getManager();
-    private EntityTransaction et;
+    
     //**********************************Area de metodos **************************************************
 
     /**
@@ -57,25 +58,24 @@ public class CompraJpaController {
             et.begin();
             em.persist(Com);
             em.flush();
- 
+
             if (!Lista.isEmpty()) {
                 for (ArticuloXCompra Lista1 : Lista) {
                     em.persist(Lista1);
                     em.flush();
-                    Com.getArticuloXCompraList().add(Lista1);    
+                    Com.getArticuloXCompraList().add(Lista1);
                 }
             }
-            em.merge(Com );
+            em.merge(Com);
             et.commit();
             return Com;
         } catch (EntityExistsException ex) {
             et.rollback();
-            System.err.println(ex);
+            LoggerManager.Logger().info(ex.toString());
             return null;
         } catch (Exception ex) {
-
             et.rollback();
-            System.err.println(ex);
+            LoggerManager.Logger().info(ex.toString());
             return null;
         }
     }
@@ -95,24 +95,24 @@ public class CompraJpaController {
             return pCompra;
         } catch (EntityExistsException ex) {
             et.rollback();
-            System.err.println(ex);
+            LoggerManager.Logger().info(ex.toString());
             return null;
         } catch (Exception ex) {
             et.rollback();
-            System.err.println(ex);
+            LoggerManager.Logger().info(ex.toString());
             return null;
         }
     }
-  public Compra ModificarCompra(Compra Com, List<ArticuloXCompra> Lista) {
+
+    public Compra ModificarCompra(Compra Com, List<ArticuloXCompra> Lista) {
         et = em.getTransaction();
         try {
             et.begin();
-           
- 
+
             if (!Lista.isEmpty()) {
                 for (ArticuloXCompra Lista1 : Lista) {
 
-                    Com.getArticuloXCompraList().add(Lista1);    
+                    Com.getArticuloXCompraList().add(Lista1);
                 }
             }
             em.merge(Com);
@@ -120,15 +120,15 @@ public class CompraJpaController {
             return Com;
         } catch (EntityExistsException ex) {
             et.rollback();
-            System.err.println(ex);
+            LoggerManager.Logger().info(ex.toString());
             return null;
         } catch (Exception ex) {
-
             et.rollback();
-            System.err.println(ex);
+            LoggerManager.Logger().info(ex.toString());
             return null;
         }
     }
+
     //***********************************Area de procedimientos*******************************
     /**
      * Procedimiento para consultar todos los articulos que se encuentren en la
@@ -141,7 +141,11 @@ public class CompraJpaController {
             Query qry = em.createNamedQuery("Compra.findAll", Compra.class);// consulta todos los articulos 
             List<Compra> Compras = qry.getResultList();// Recibe el resultado de la consulta  
             return Compras;
+        } catch (NoResultException ex) {
+            LoggerManager.Logger().info(ex.toString());
+            return null;
         } catch (Exception ex) {
+            LoggerManager.Logger().info(ex.toString());
             return null;
         }
     }
@@ -158,10 +162,19 @@ public class CompraJpaController {
             qry.setParameter("comNumeroFact", pCodigo);
             Compra articulo = (Compra) qry.getSingleResult();// trae el resultado de la consulta  
             return articulo;
+        } catch (NoResultException ex) {
+            LoggerManager.Logger().info(ex.toString());
+            return null;
+        } catch (NonUniqueResultException ex) {
+            LoggerManager.Logger().info(ex.toString());
+            return null;
         } catch (Exception ex) {
+            LoggerManager.Logger().info(ex.toString());
             return null;
         }
     }
 
     //******************************************************************************************
+    private EntityManager em = EntityManagerHelper.getInstance().getManager();
+    private EntityTransaction et;
 }

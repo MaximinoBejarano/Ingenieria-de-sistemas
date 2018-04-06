@@ -8,9 +8,13 @@ package ferreteria_las_vegas.model.controller;
 import ferreteria_las_vegas.model.entities.Direccion;
 import ferreteria_las_vegas.model.entities.Persona;
 import ferreteria_las_vegas.utils.EntityManagerHelper;
+import ferreteria_las_vegas.utils.LoggerManager;
+import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.LockModeType;
+import javax.persistence.NoResultException;
+import javax.persistence.NonUniqueResultException;
 import javax.persistence.Query;
 
 /**
@@ -55,14 +59,18 @@ public class DireccionJpaController {
             qry.setParameter("perCedula", pPersona.getPerCedula());
             Persona persona = (Persona) qry.getSingleResult();// trae el resultado de la consulta  
             return persona.getDireccionList().get(1);
+        } catch (NoResultException ex) {
+            LoggerManager.Logger().info(ex.toString());
+            return null;
+        } catch (NonUniqueResultException ex) {
+            LoggerManager.Logger().info(ex.toString());
+            return null;
         } catch (Exception ex) {
+            LoggerManager.Logger().info(ex.toString());
             return null;
         }
     }
 
-    
-    
-    
     public Direccion AgregarDireccion(Direccion pDireccion) {
         et = em.getTransaction();
         try {                        
@@ -70,8 +78,13 @@ public class DireccionJpaController {
             em.persist(pDireccion);
             et.commit();
             return pDireccion;
+        } catch (EntityExistsException ex) {
+            et.rollback();
+            LoggerManager.Logger().info(ex.toString());
+            return null;
         } catch (Exception ex) {
             et.rollback();
+            LoggerManager.Logger().info(ex.toString());
             return null;
         }
     }
@@ -103,8 +116,13 @@ public class DireccionJpaController {
             et.commit();*/
             
             return pDireccion;
+        } catch (EntityExistsException ex) {
+            et.rollback();
+            LoggerManager.Logger().info(ex.toString());
+            return null;
         } catch (Exception ex) {
             et.rollback();
+            LoggerManager.Logger().info(ex.toString());
             return null;
         }
     }
@@ -127,8 +145,13 @@ public class DireccionJpaController {
             em.persist(pPersona);
             et.commit();
             return pDireccion;
+        } catch (EntityExistsException ex) {
+            et.rollback();
+            LoggerManager.Logger().info(ex.toString());
+            return null;
         } catch (Exception ex) {
             et.rollback();
+            LoggerManager.Logger().info(ex.toString());
             return null;
         }
     }
