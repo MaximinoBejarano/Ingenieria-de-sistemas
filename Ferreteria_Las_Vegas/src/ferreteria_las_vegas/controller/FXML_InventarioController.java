@@ -172,7 +172,7 @@ public class FXML_InventarioController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         ComboBoxProveedores();
-        BloquearBotones();
+        btnEditarFacturas.setDisable(false);
         LimpiarInterface();
     }
 
@@ -711,54 +711,59 @@ public class FXML_InventarioController implements Initializable {
         btnEditarFacturas.setDisable(true);
     }
 
-    private void BloquearBotones() {
-//        btnEliminarProducto.setDisable(true);
-//        btnEliminarFactura.setDisable(true);
-        btnEditarFacturas.setDisable(false);
-
-    }
-
     public void EditarTable() {
         try {
 
             tcPrcioProducto.setOnEditCommit(data -> {
-                boolean procesar=false;
-                for(int i=0; i< data.getNewValue().length();i++){
-                     if (!Character.isDigit(data.getNewValue().charAt(i))&& data.getNewValue().charAt(i)!='.') {
-                        procesar=true;
+                boolean procesar = false;
+                for (int i = 0; i < data.getNewValue().length(); i++) {
+                    if (!Character.isDigit(data.getNewValue().charAt(i)) && data.getNewValue().charAt(i) != '.') {
+                        procesar = true;
                     }
                 }
-               if(!procesar){               
-                if (!txtFlete.getText().isEmpty() && !txtServicioCarga.getText().isEmpty()) {
-                    String valor = data.getNewValue().replace(",", ".");
-                    data.getRowValue().setPrecioArt(Double.valueOf(valor));
-                    data.getRowValue().setPrecioArt(Double.valueOf(data.getNewValue()));
-                    lblSubtotal.setText("0");
-                    lblTotal.setText("0");
-                    GenerarCalculos();
-
-                } else {
-                    Message.getInstance().Error("Error", "Ocurrió un error y se debe completar el campo del valor del flete, servicio de carga y descuento.");
-                    data.consume();
-                    RecargarTblClientes();
-                }
-               }else{
-               Message.getInstance().Error("Error", "Este campo no permite letras en su contenido.");
-                    data.consume();
-                    RecargarTblClientes();
-               }
-            });
-
-            tcCantidad.setOnEditCommit(data -> {
-                if (data.getRowValue().getPrecioArt() != 0) {
+                if (!procesar) {
                     if (!txtFlete.getText().isEmpty() && !txtServicioCarga.getText().isEmpty()) {
-                        data.getRowValue().setCantArticulo(Integer.valueOf(data.getNewValue()));
+                        String valor = data.getNewValue().replace(",", ".");
+                        data.getRowValue().setPrecioArt(Double.valueOf(valor));
+                        data.getRowValue().setPrecioArt(Double.valueOf(data.getNewValue()));
                         lblSubtotal.setText("0");
                         lblTotal.setText("0");
                         GenerarCalculos();
 
                     } else {
                         Message.getInstance().Error("Error", "Ocurrió un error y se debe completar el campo del valor del flete, servicio de carga y descuento.");
+                        data.consume();
+                        RecargarTblClientes();
+                    }
+                } else {
+                    Message.getInstance().Error("Error", "Este campo no permite letras en su contenido.");
+                    data.consume();
+                    RecargarTblClientes();
+                }
+            });
+
+            tcCantidad.setOnEditCommit(data -> {
+                if (data.getRowValue().getPrecioArt() != 0) {
+                    boolean procesar = false;
+                    for (int i = 0; i < data.getNewValue().length(); i++) {
+                        if (!Character.isDigit(data.getNewValue().charAt(i))) {
+                            procesar = true;
+                        }
+                    }
+                    if (!procesar) {
+                        if (!txtFlete.getText().isEmpty() && !txtServicioCarga.getText().isEmpty()) {
+                            data.getRowValue().setCantArticulo(Integer.valueOf(data.getNewValue()));
+                            lblSubtotal.setText("0");
+                            lblTotal.setText("0");
+                            GenerarCalculos();
+
+                        } else {
+                            Message.getInstance().Error("Error", "Ocurrió un error y se debe completar el campo del valor del flete, servicio de carga y descuento.");
+                            data.consume();
+                            RecargarTblClientes();
+                        }
+                    } else {
+                        Message.getInstance().Error("Error", "Este campo no permite letras o caracteres en su contenido.");
                         data.consume();
                         RecargarTblClientes();
                     }

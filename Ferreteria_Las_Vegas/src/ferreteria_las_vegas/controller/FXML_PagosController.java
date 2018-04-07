@@ -21,6 +21,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -114,12 +115,19 @@ public class FXML_PagosController implements Initializable {
     @FXML
     private void txtMontoEfectivo_KeyTyped(KeyEvent event) {
         GeneralUtils.getInstance().ValidarCampos(true, txtMontoEfectivo.getText().length(), 10, event);
+        if(Character.isDigit(event.getCharacter().charAt(0)) ){
+            txtMontoEfectivo.setText(txtMontoEfectivo.getText()+event.getCharacter().charAt(0));
+            event.consume();
+            txtMontoEfectivo.positionCaret(txtMontoEfectivo.getText().length());
+            RecalcularTotalPagar();
+        }
+        
     }
 
     @FXML
     private void txtMontoTarjeta_KeyTyped(KeyEvent event) {
         GeneralUtils.getInstance().ValidarCampos(true, txtMontoTarjeta.getText().length(), 10, event);
-//        txtMontoEfectivo.textProperty().addListener(new ChangeListener<String>{});
+
     }
 
     @FXML
