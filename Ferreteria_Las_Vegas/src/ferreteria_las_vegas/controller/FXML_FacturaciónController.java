@@ -138,7 +138,20 @@ public class FXML_FacturaciónController implements Initializable {
 
     @FXML
     private void btnCredito_Click(ActionEvent event) {
-        Lanzar_FXML_Abonos();
+         if (cliente != null) {
+            if (!ListArticulos.isEmpty()) {
+                AgregarDatosfactura();
+                pFactura.setFactTipoFact("C");
+                AppContext.getInstance().set("Factura", pFactura);
+                AppContext.getInstance().set("ArticulosXFactura", listArticuloXFacturas);
+                Lanzar_FXML_Abonos();
+            } else {
+                Message.getInstance().Information("Información:", "Es requerido agregar articulos a la factura");
+            }
+        } else {
+            Message.getInstance().Information("Información:", "Es requerido seleccionar un cliente para la factura");
+        }
+        
     }
 
     @FXML
@@ -146,6 +159,7 @@ public class FXML_FacturaciónController implements Initializable {
         if (cliente != null) {
             if (!ListArticulos.isEmpty()) {
                 AgregarDatosfactura();
+                pFactura.setFactTipoFact("P");
                 AppContext.getInstance().set("Factura", pFactura);
                 AppContext.getInstance().set("ArticulosXFactura", listArticuloXFacturas);
                 Lanzar_FXMLPagos();
