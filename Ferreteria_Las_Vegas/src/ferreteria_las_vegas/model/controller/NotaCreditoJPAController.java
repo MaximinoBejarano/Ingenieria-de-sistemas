@@ -5,7 +5,7 @@
  */
 package ferreteria_las_vegas.model.controller;
 
-import ferreteria_las_vegas.model.entities.Parametro;
+import ferreteria_las_vegas.model.entities.NotaCredito;
 import ferreteria_las_vegas.utils.EntityManagerHelper;
 import ferreteria_las_vegas.utils.LoggerManager;
 import java.util.List;
@@ -20,22 +20,22 @@ import javax.persistence.Query;
  *
  * @author Maximino
  */
-public class ParametroJPAController {
-     private static ParametroJPAController INSTANCE = null;
+public class NotaCreditoJPAController {
+   private static NotaCreditoJPAController INSTANCE = null;
 
     private static void createInstance() {
         if (INSTANCE == null) {
 
-            synchronized (ParametroJPAController.class) {
+            synchronized (NotaCreditoJPAController.class) {
 
                 if (INSTANCE == null) {
-                    INSTANCE = new ParametroJPAController();
+                    INSTANCE = new NotaCreditoJPAController();
                 }
             }
         }
     }
 
-    public static ParametroJPAController getInstance() {
+    public static NotaCreditoJPAController getInstance() {
         if (INSTANCE == null) {
             createInstance();
         }
@@ -43,12 +43,12 @@ public class ParametroJPAController {
     }
 
     /**
-     * Metodo para insertar parametro
+     * Metodo para insertar NotaCredito
      *
      * @param pParametro
      * @return parametro
      */
-    public Parametro InsertarParametro(Parametro pParametro) {
+    public NotaCredito InsertarNotaCredito(NotaCredito pParametro) {
         et = em.getTransaction();
         try {
             et.begin();
@@ -67,18 +67,18 @@ public class ParametroJPAController {
     }
 
     /**
-     * Metodo para realizar la edicion un parametro
+     * Metodo para realizar la edicion de una Nota de credito
      *
      * @param pParametro 
      * @return
      */
-    public Parametro ModificarParametro(Parametro pParametro) {
+    public NotaCredito ModificarNotaCredito(NotaCredito pNotaCredito) {
         et = em.getTransaction();
         try {
             et.begin();
-            em.merge(pParametro);
+            em.merge(pNotaCredito);
             et.commit();
-            return pParametro;
+            return pNotaCredito;
         } catch (EntityExistsException ex) {
             et.rollback();
             LoggerManager.Logger().info(ex.toString());
@@ -92,16 +92,16 @@ public class ParametroJPAController {
 
 
     /**
-     * Procedimiento para consultar todos los parametros
+     * Procedimiento para consultar todas las notas de credito
      * BD_FV
      *
      * @return
      */
-    public List<Parametro> ConsultarParametros() {
+    public List<NotaCredito> Consultar_NotasCreditos() {
         try {
-            Query qry = em.createNamedQuery("Parametro.findAll",Parametro.class);
-            List<Parametro> listParametros = qry.getResultList();// Recibe el resultado de la consulta  
-            return listParametros;
+            Query qry = em.createNamedQuery("NotaCredito.findAll",NotaCredito.class);
+            List<NotaCredito> listNotaCreditos = qry.getResultList();// Recibe el resultado de la consulta  
+            return listNotaCreditos;
         } catch (NoResultException ex) {
             LoggerManager.Logger().info(ex.toString());
             return null;
@@ -112,16 +112,16 @@ public class ParametroJPAController {
     }
 
     /**
-     * Consulta por codigo ferreteria
+     * Consulta por codigo
      *
      * @param pCodigo
      * @return
      */
-    public Parametro ConsultarParametro_Ferrteria(String pCodigo) {
+    public NotaCredito ConsultarNotaCredito(int pCodigo) {
         try {
-            Query qry = em.createNamedQuery("Parametro.findByParFerreteria", Parametro.class);// consulta definida 
-            qry.setParameter("parFerreteria", pCodigo);
-            Parametro pParametro = (Parametro) qry.getSingleResult();// trae el resultado de la consulta  
+            Query qry = em.createNamedQuery("NotaCredito.findByNotCodigo", NotaCredito.class);// consulta definida 
+            qry.setParameter("notCodigo", pCodigo);
+            NotaCredito pParametro = (NotaCredito) qry.getSingleResult();// trae el resultado de la consulta  
             return pParametro;
         } catch (NoResultException ex) {
             LoggerManager.Logger().info(ex.toString());
@@ -136,5 +136,5 @@ public class ParametroJPAController {
     }
  //******************************************************************************************
     private EntityManager em = EntityManagerHelper.getInstance().getManager();
-    private EntityTransaction et;
+    private EntityTransaction et;  
 }
