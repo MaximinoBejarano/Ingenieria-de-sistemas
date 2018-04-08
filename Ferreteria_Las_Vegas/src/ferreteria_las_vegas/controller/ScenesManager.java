@@ -112,4 +112,8 @@ public class ScenesManager {
         root = FXMLLoader.load(getClass().getResource("/ferreteria_las_vegas/view/FXML_Facturación.fxml"));
         scene.setRoot(root);
     }
+    public void LoadSceneConfiguracion() throws IOException {
+        root = FXMLLoader.load(getClass().getResource("/ferreteria_las_vegas/view/FXML_Configuraciones.fxml"));
+        scene.setRoot(root);
+    }
 }
