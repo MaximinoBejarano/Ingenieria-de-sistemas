@@ -20,12 +20,15 @@ import ferreteria_las_vegas.model.entities.Parametro;
 import ferreteria_las_vegas.utils.AppContext;
 import ferreteria_las_vegas.utils.GeneralUtils;
 import ferreteria_las_vegas.utils.Message;
+import java.io.IOException;
 
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -33,8 +36,11 @@ import javafx.collections.ObservableList;
 import javafx.collections.ObservableListBase;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -42,7 +48,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
 import javafx.scene.input.InputMethodEvent;
 import javafx.scene.input.KeyEvent;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 /**
  * FXML Controller class
@@ -99,27 +107,14 @@ public class FXML_PagosController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-        listPagos = new ArrayList<>();
-        ListArticulosXFactura = new ArrayList<>();
-        listMoneda = FXCollections.observableArrayList();
-        listMoneda.addAll("Colones", "Dolares");
 
+        InicializarVariables();
         pFactura = (Factura) AppContext.getInstance().get("Factura");
         pParametro = ParametroJPAController.getInstance().ConsultarParametro_Ferrteria("3-98736-8799");
         pMontoTotal = pFactura.getFacTotal();
         ListArticulosXFactura = (List<ArticuloXFactura>) AppContext.getInstance().get("ArticulosXFactura");
-
-        cmbMoneda.setItems(listMoneda);
-        cmbMoneda.getSelectionModel().select("Colones");
-        cmbMoneda.valueProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                txtMontoEfectivo.setText("");
-                RecalcularTotalPagar();
-            }
-        });
-        limpiarVista();
         CargarTotales();
+
     }
 
     @FXML
@@ -188,18 +183,39 @@ public class FXML_PagosController implements Initializable {
     }
 
     /*+++++++++++++++++++++++++++++++++++++++++++++++++++++++Procesos fundamentales++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+    /**
+     * Proceso mediante el cual se realizan las validaciones de existencia de
+     * los articulos de la factura y la elaboracion de los pagos.Ademas se
+     * registra la factura en la base de datos y se realiza la disminución del
+     * inventario.
+     */
     public void ProcesarRegistroFactura() {
-        ProcesoPago();
-        CalcularVuelto();
-        if (FacturaJPAController.getInstance().AgregarFactura(pFactura, ListArticulosXFactura, listPagos) != null) {
-            RebajarInventario();
-            //nuevaVentana
-            Message.getInstance().Error("Error", "Vuelto: " + Vuelto);
-        } else {
-            Message.getInstance().Error("Error", "No se ha logrado efectuar el pago");
+        if (pFactura != null && !ListArticulosXFactura.isEmpty()) {
+            ProcesoPago();
+            CalcularVuelto();
+            ValidarExistencias();
+            if (ListExistencias.isEmpty() || ListExistencias == null) {
+                if (FacturaJPAController.getInstance().AgregarFactura(pFactura, ListArticulosXFactura, listPagos) != null) {
+                    RebajarInventario();
+                    AppContext.getInstance().set("Vuelto", Vuelto);
+                    Lanzar_FXMLVuelto();
+                    InicializarVariables();
+                } else {
+                    Message.getInstance().Error("Error", "No se ha logrado efectuar el pago");
+                }
+            } else {
+                String Articulos = "";
+                for (ArticuloXFactura pArt : ListExistencias) {
+                    Articulos = Articulos + "\n " + pArt.getArtArticulo().getArtNombre();
+                }
+                Message.getInstance().Error("Error", "Los articulos sin existencias son:" + Articulos);
+            }
+        }else{
+            Message.getInstance().Information("Informació","La factura ya ha sido cancelada");
         }
     }
 
+    //Se elabora la disminución en inventario de las cantidades vendidas en la factura.
     public void RebajarInventario() {
         Inventario pInventario = new Inventario();
         if (!ListArticulosXFactura.isEmpty()) {
@@ -208,7 +224,7 @@ public class FXML_PagosController implements Initializable {
                     pInventario = InventarioJpaController.getInstance().ConsultarInventarioCodigoProducto(pArtXFact.getArtArticulo().getArtCodigo());
                     if (pInventario.getInvCantidad() >= pArtXFact.getArtCantidad()) {
                         pInventario.setInvCantidad(pInventario.getInvCantidad() - pArtXFact.getArtCantidad());
-                        pInventario=InventarioJpaController.getInstance().ModificarInventario(pInventario);
+                        InventarioJpaController.getInstance().ModificarInventario(pInventario);
                     } else {
                         Message.getInstance().Information("Información", "Cantidad insuficiente del Articulo= " + pArtXFact.getArtArticulo().getArtNombre());
                     }
@@ -217,6 +233,9 @@ public class FXML_PagosController implements Initializable {
         }
     }
 
+    /*Procesdo mediante el cual se extrae los montos pagados en la factura y el tipo de pago
+      y se procede a registrar los pagos
+     */
     public void ProcesoPago() {
         if (!txtMontoEfectivo.getText().isEmpty()) {
             if (cmbMoneda.getSelectionModel().getSelectedItem().equalsIgnoreCase("Dolares")) {
@@ -234,6 +253,7 @@ public class FXML_PagosController implements Initializable {
     }
 
     /*+++++++++++++++++++++++++++++++++++++++++++++++++Metodos importantes que no son procesos+++++++++++++++++++++++++++++++++++++++++*/
+    //Se agregan los pagos con montos mayores a 0 a la lista de pagos
     public void ProcesarPagos(double pMonto, String TipoPago) {
         pPago = new Pago();
         if (pMonto > 0) {
@@ -244,7 +264,7 @@ public class FXML_PagosController implements Initializable {
             pPago.setPagTipoMoneda(" ");
             if (TipoPago.equals("Efectivo")) {
                 if (cmbMoneda.getSelectionModel().getSelectedItem().equalsIgnoreCase("Dolares")) {
-                    pPago.setPagTipoMoneda("Dolarea");
+                    pPago.setPagTipoMoneda("Dolares");
                 } else {
                     pPago.setPagTipoMoneda("Colones");
                 }
@@ -261,6 +281,10 @@ public class FXML_PagosController implements Initializable {
         }
     }
 
+    /*
+      Se realiza la consulta de una nota de credito para verificar su existencia
+      y cargar los montos en la vista
+     */
     public void ConsultarVale() {
         pNotaCredito = new NotaCredito();
         if (!txtNumeroVale.getText().isEmpty()) {
@@ -283,18 +307,37 @@ public class FXML_PagosController implements Initializable {
         }
     }
 
+    /*
+     Se realiza el calculo del vuelto que debe entregar el vendedor
+     */
     public void CalcularVuelto() {
         double subTotal = 0;
         if (!listPagos.isEmpty()) {
             for (Pago p : listPagos) {
-                
-                 subTotal += p.getPagMonto();
-                
+
+                subTotal += p.getPagMonto();
+
             }
             if (subTotal > pFactura.getFacTotal()) {
                 Vuelto = subTotal - pFactura.getFacTotal();
             } else {
                 Vuelto = 0;
+            }
+        }
+    }
+
+    //Se comprueba que exista una cantidad correcta del articulo en inventario
+    public void ValidarExistencias() {
+        Inventario pInventario = new Inventario();
+        ListExistencias= new ArrayList<>();
+        if (!ListArticulosXFactura.isEmpty()) {
+            for (ArticuloXFactura pArtXFact : ListArticulosXFactura) {
+                if (InventarioJpaController.getInstance().ConsultarInventarioCodigoProducto(pArtXFact.getArtArticulo().getArtCodigo()) != null) {
+                    pInventario = InventarioJpaController.getInstance().ConsultarInventarioCodigoProducto(pArtXFact.getArtArticulo().getArtCodigo());
+                    if (pInventario.getInvCantidad() < pArtXFact.getArtCantidad()) {
+                        ListExistencias.add(pArtXFact);
+                    }
+                }
             }
         }
     }
@@ -332,19 +375,6 @@ public class FXML_PagosController implements Initializable {
 
     }
 
-//    public double CalcularVuelto(double pPago) {
-//        if (pMontoTotal != 0) {
-//            if (pPago > pMontoTotal) {
-//                Vuelto= pPago - pMontoTotal;
-//                return Vuelto;
-//            } else {
-//                return 0;
-//            }
-//        } else {
-//            return 0;
-//        }
-//    }
-
     /*+++++++++++++++++++++++++++++++++++++++++++++++++++++++Metodos GUI-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
     public void CargarTotales() {
         lblTotalNotaCredito.setText(String.valueOf(pMontoTotal));
@@ -364,8 +394,47 @@ public class FXML_PagosController implements Initializable {
         txtMontoTarjeta.setText("");
     }
 
+    public void InicializarVariables() {
+
+        listPagos = new ArrayList<>();
+        ListArticulosXFactura = new ArrayList<>();
+        ListExistencias = new ArrayList<>();
+        pFactura = null;
+        pParametro = null;
+        pMontoTotal = 0;
+        listMoneda = FXCollections.observableArrayList();
+        listMoneda.addAll("Colones", "Dolares");
+        cmbMoneda.setItems(listMoneda);
+        cmbMoneda.getSelectionModel().select("Colones");
+        cmbMoneda.valueProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                txtMontoEfectivo.setText("");
+                RecalcularTotalPagar();
+            }
+        });
+        limpiarVista();
+
+    }
+
     /*++++++++++++++++++++++++++++++++++++++++++++++++++++++Metodos Lanzadores+++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
- /*+++++++++++++++++++++++++++++++++++++++++++++++++++++Variables de Clase++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+    public void Lanzar_FXMLVuelto() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/ferreteria_las_vegas/view/FXML_Vuelto.fxml"));
+
+            Parent root1 = (Parent) fxmlLoader.load();
+            Stage stage = new Stage(StageStyle.UTILITY);
+            stage.setScene(new Scene(root1));
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.initOwner(btnPagar.getScene().getWindow());
+            stage.showAndWait();
+
+        } catch (IOException ex) {
+            Logger.getLogger(FXML_FacturaciónController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    /*+++++++++++++++++++++++++++++++++++++++++++++++++++++Variables de Clase++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
     Factura pFactura;
     Parametro pParametro;
     Pago pPago;
@@ -375,4 +444,5 @@ public class FXML_PagosController implements Initializable {
     ObservableList<String> listMoneda;
     List<Pago> listPagos;
     List<ArticuloXFactura> ListArticulosXFactura;
+    List<ArticuloXFactura> ListExistencias;
 }
