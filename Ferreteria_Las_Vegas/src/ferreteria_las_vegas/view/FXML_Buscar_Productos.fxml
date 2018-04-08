@@ -43,7 +43,7 @@
                               <Font name="System Bold" size="20.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="txtCodigoArt" prefHeight="39.0" prefWidth="601.0" promptText="Codigo ,nombre o marca" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                        <TextField fx:id="txtCodigoArt" prefHeight="39.0" prefWidth="601.0" promptText="Buscar Producto" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                            <GridPane.margin>
                               <Insets right="6.0" />
                            </GridPane.margin>

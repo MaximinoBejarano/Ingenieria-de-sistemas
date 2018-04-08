@@ -13,6 +13,9 @@ import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
 
 /**
  * FXML Controller class
@@ -21,6 +24,35 @@ import javafx.fxml.FXML;
  */
 public class FXML_AnulaciónController implements Initializable {
 
+    @FXML
+    private Button btnLimpiarPantalla;
+    @FXML
+    private Label lblFecha;
+    @FXML
+    private Label lblCliente;
+    @FXML
+    private Label lblMontoTotal;
+    @FXML
+    private Label lblUsuario;
+    @FXML
+    private TableColumn<?, ?> tcCodigo;
+    @FXML
+    private TableColumn<?, ?> tcNombre;
+    @FXML
+    private TableColumn<?, ?> tcDescripcion;
+    @FXML
+    private TableColumn<?, ?> tcCantidad;
+    @FXML
+    private TableColumn<?, ?> tcPrecio;
+    @FXML
+    private Button btnAnularFactura;
+    @FXML
+    private Button btnBuscarFactura;
+    @FXML
+    private Button btnReimprimirFactura;
+    @FXML
+    private Label lblCodigoFactura;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
@@ -28,11 +60,27 @@ public class FXML_AnulaciónController implements Initializable {
 
     @FXML
     void SalirClick(ActionEvent event) {
-        try {
+         try {
             ScenesManager.getInstance().LoadSceneMenu();
         } catch (IOException ex) {
             Message.getInstance().Error("Error", "Ocurrió un error y no se pudo volver a la pantalla de menú.");
             LoggerManager.Logger().info(ex.toString());
         }
+    }
+
+    @FXML
+    private void btnLimpiarCampos(ActionEvent event) {
+    }
+
+    @FXML
+    private void btnAnularFactura(ActionEvent event) {
+    }
+
+    @FXML
+    private void btnBuscarFactura(ActionEvent event) {
+    }
+
+    @FXML
+    private void btnReimprimirFactura(ActionEvent event) {
     }
 }

@@ -268,7 +268,6 @@ public class FXML_FacturaciónController implements Initializable {
                 Descuento += (art.getCantArticulo() * art.getArticulo().getArtPrecio()) * art.getArticulo().getArtDescuento();
             }
         }
-
         ImpuestoVenta = (Subtotal - Descuento) * 0.13;
         Total = ((Subtotal - Descuento) + ImpuestoVenta);
         lblTotal.setText(String.valueOf(Total));

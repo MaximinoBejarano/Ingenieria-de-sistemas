@@ -90,6 +90,10 @@ public class PermisosManager {
                 btnProveedores.setDisable(false);
             } else if (permiso.getPerNombre().equalsIgnoreCase("VER_ANULACIONES")) {
                 btnAnulacion.setDisable(false);
+            } else if (permiso.getPerNombre().equalsIgnoreCase("VER_CONFIGURACIONES")) {
+                btnConfiguraciones.setDisable(false);
+            } else if (permiso.getPerNombre().equalsIgnoreCase("VER_ESTADISTICAS")) {
+                btnEstadisticas.setDisable(false);
             }
         }
     }
