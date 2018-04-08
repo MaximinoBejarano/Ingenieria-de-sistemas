@@ -18,7 +18,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ferreteria_las_vegas.view.FXML_Buscar_Factura_ClienteController">
+<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ferreteria_las_vegas.controller.FXML_Buscar_Factura_ClienteController">
    <bottom>
       <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: #2E4053;">
          <children>
@@ -61,10 +61,10 @@
    <center>
       <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER">
          <children>
-            <GridPane layoutX="10.0" layoutY="14.0" prefHeight="46.0" prefWidth="780.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="14.0">
+            <GridPane layoutX="10.0" layoutY="14.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="46.0" prefWidth="780.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="14.0">
                <columnConstraints>
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="300.0" minWidth="10.0" prefWidth="185.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="595.0" minWidth="10.0" prefWidth="595.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="200.0" minWidth="10.0" prefWidth="105.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="707.0" minWidth="10.0" prefWidth="675.0" />
                </columnConstraints>
                <rowConstraints>
                   <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -75,7 +75,7 @@
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <TextField maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" promptText="Buscar una Factura " GridPane.columnIndex="1">
+                  <TextField fx:id="txtBuscarFactura" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" promptText="Buscar una Factura " GridPane.columnIndex="1">
                      <GridPane.margin>
                         <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                      </GridPane.margin>
@@ -85,7 +85,7 @@
                   </TextField>
                </children>
             </GridPane>
-            <TableView layoutX="14.0" layoutY="74.0" prefHeight="274.0" prefWidth="780.0" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="74.0">
+            <TableView fx:id="tblListaFacturas" layoutX="14.0" layoutY="74.0" prefHeight="274.0" prefWidth="780.0" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="74.0">
                <columns>
                   <TableColumn maxWidth="1.7976931348623157E308" minWidth="700.0" prefWidth="-1.0" text="Lista de Facturas ">
                      <columns>

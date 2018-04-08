@@ -229,7 +229,7 @@
          <bottom>
             <AnchorPane minHeight="63.0" prefWidth="1200.0" style="-fx-background-color: #2E4053;" BorderPane.alignment="CENTER">
                <children>
-                  <Label fx:id="lblDate" layoutX="14.0" layoutY="23.0" prefHeight="19.0" text="Bienvenido" textFill="WHITE" AnchorPane.bottomAnchor="18.0" AnchorPane.leftAnchor="14.0">
+                  <Label fx:id="lblDate" layoutX="14.0" layoutY="23.0" prefHeight="19.0" text="Bienvenido" textFill="WHITE" AnchorPane.bottomAnchor="6.0" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="6.0">
                      <font>
                         <Font name="Cambria Bold" size="18.0" />
                      </font>
