@@ -5,10 +5,7 @@
  */
 package ferreteria_las_vegas.model.controller;
 
-import ferreteria_las_vegas.model.entities.Factura;
-import ferreteria_las_vegas.model.entities.ArticuloXFactura;
-import ferreteria_las_vegas.model.entities.Pago;
-
+import ferreteria_las_vegas.model.entities.Parametro;
 import ferreteria_las_vegas.utils.EntityManagerHelper;
 import ferreteria_las_vegas.utils.LoggerManager;
 import java.util.List;
@@ -23,63 +20,41 @@ import javax.persistence.Query;
  *
  * @author Maximino
  */
-public class FacturaJPAController {
-
-    private static FacturaJPAController INSTANCE = null;
+public class ParametroJPAController {
+     private static ParametroJPAController INSTANCE = null;
 
     private static void createInstance() {
         if (INSTANCE == null) {
 
-            synchronized (FacturaJPAController.class) {
+            synchronized (ParametroJPAController.class) {
 
                 if (INSTANCE == null) {
-                    INSTANCE = new FacturaJPAController();
+                    INSTANCE = new ParametroJPAController();
                 }
             }
         }
     }
 
-    public static FacturaJPAController getInstance() {
+    public static ParametroJPAController getInstance() {
         if (INSTANCE == null) {
             createInstance();
         }
         return INSTANCE;
     }
 
-    //***************************** Area de Metodos***********************************
     /**
-     * Se agrega un nuevo registro a la base de datos
+     * Metodo para insertar parametro
      *
-     * @param pFactura
-     * @return
+     * @param pParametro
+     * @return parametro
      */
-    public Factura AgregarFactura(Factura pFactura, List<ArticuloXFactura> ListArticuloXFacturas, List<Pago> ListPago) {
+    public Parametro InsertarParametro(Parametro pParametro) {
         et = em.getTransaction();
         try {
             et.begin();
-            em.persist(pFactura);
-            em.flush();
-         
-            if (!ListArticuloXFacturas.isEmpty()) {
-                for (ArticuloXFactura Objeto : ListArticuloXFacturas) {
-                    em.persist(Objeto);
-                    em.flush();
-                    pFactura.getArticuloXFacturaList().add(Objeto);
-                }
-            }
-            if (!ListPago.isEmpty()) {
-                for (Pago Objeto : ListPago) {
-                    if (Objeto.getPagMonto() != 0) {
-                        em.persist(Objeto);
-                        em.flush();
-                        pFactura.getPagoList().add(Objeto);
-                    }
-                }
-            }
-            em.merge(pFactura);
+            em.persist(pParametro);
             et.commit();
-            return pFactura;
-
+            return pParametro;
         } catch (EntityExistsException ex) {
             et.rollback();
             LoggerManager.Logger().info(ex.toString());
@@ -92,18 +67,18 @@ public class FacturaJPAController {
     }
 
     /**
-     * Metodo para realizar la modificación de un registro de Factura
+     * Metodo para realizar la edicion un parametro
      *
-     * @param pFactura
+     * @param pParametro 
      * @return
      */
-    public Factura ModificarFactura(Factura pFactura) {
+    public Parametro ModificarParametro(Parametro pParametro) {
         et = em.getTransaction();
         try {
             et.begin();
-            em.merge(pFactura);
+            em.merge(pParametro);
             et.commit();
-            return pFactura;
+            return pParametro;
         } catch (EntityExistsException ex) {
             et.rollback();
             LoggerManager.Logger().info(ex.toString());
@@ -115,16 +90,18 @@ public class FacturaJPAController {
         }
     }
 
+
     /**
-     * Se realiza la consulta todos las Factura
+     * Procedimiento para consultar todos los parametros
+     * BD_FV
      *
-     * @return List
+     * @return
      */
-    public List<Factura> ConsultarFacturas() {
+    public List<Parametro> ConsultarParametros() {
         try {
-            Query qry = em.createNamedQuery("Factura.findAll", Factura.class);// consulta todos las Facturas
-            List<Factura> listfacturas = qry.getResultList();// Recibe el resultado de la consulta  
-            return listfacturas;
+            Query qry = em.createNamedQuery("Parametro.findAll",Parametro.class);
+            List<Parametro> listParametros = qry.getResultList();// Recibe el resultado de la consulta  
+            return listParametros;
         } catch (NoResultException ex) {
             LoggerManager.Logger().info(ex.toString());
             return null;
@@ -135,17 +112,17 @@ public class FacturaJPAController {
     }
 
     /**
-     * Realiza la consulta de una factura por medio de su codigo
+     * Consulta por codigo ferreteria
      *
      * @param pCodigo
      * @return
      */
-    public Factura ConsultarFactura_Codigo(int pCodigo) {
+    public Parametro ConsultarParametro_Ferrteria(String pCodigo) {
         try {
-            Query qry = em.createNamedQuery("Factura.findByFacCodigo", Factura.class);// consulta definida 
-            qry.setParameter("facCodigo", pCodigo);
-            Factura pFactura = (Factura) qry.getSingleResult();// trae el resultado de la consulta  
-            return pFactura;
+            Query qry = em.createNamedQuery("Parametro.findByParFerreteria", Parametro.class);// consulta definida 
+            qry.setParameter("parFerreteria", pCodigo);
+            Parametro pParametro = (Parametro) qry.getSingleResult();// trae el resultado de la consulta  
+            return pParametro;
         } catch (NoResultException ex) {
             LoggerManager.Logger().info(ex.toString());
             return null;
@@ -157,7 +134,7 @@ public class FacturaJPAController {
             return null;
         }
     }
-
+ //******************************************************************************************
     private EntityManager em = EntityManagerHelper.getInstance().getManager();
     private EntityTransaction et;
 }

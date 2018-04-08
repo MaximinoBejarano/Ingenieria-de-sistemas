@@ -138,7 +138,20 @@ public class FXML_FacturaciónController implements Initializable {
 
     @FXML
     private void btnCredito_Click(ActionEvent event) {
-        Lanzar_FXML_Abonos();
+        if (cliente != null) {
+            if (!ListArticulos.isEmpty()) {
+                AgregarDatosfactura();
+                pFactura.setFactTipoFact("C");
+                AppContext.getInstance().set("Factura", pFactura);
+                AppContext.getInstance().set("ArticulosXFactura", listArticuloXFacturas);
+                Lanzar_FXML_Abonos();
+            } else {
+                Message.getInstance().Information("Información:", "Es requerido agregar articulos a la factura");
+            }
+        } else {
+            Message.getInstance().Information("Información:", "Es requerido seleccionar un cliente para la factura");
+        }
+
     }
 
     @FXML
@@ -146,6 +159,7 @@ public class FXML_FacturaciónController implements Initializable {
         if (cliente != null) {
             if (!ListArticulos.isEmpty()) {
                 AgregarDatosfactura();
+                pFactura.setFactTipoFact("E");
                 AppContext.getInstance().set("Factura", pFactura);
                 AppContext.getInstance().set("ArticulosXFactura", listArticuloXFacturas);
                 Lanzar_FXMLPagos();
@@ -195,15 +209,6 @@ public class FXML_FacturaciónController implements Initializable {
     public void AgregarDatosfactura() {
         pFactura = new Factura();
         listArticuloXFacturas = new ArrayList<>();
-        for (InventarioCompleto pCompleto : ListArticulos) {
-            ArticuloXFactura temp = new ArticuloXFactura();
-            temp.setArtPrecio(pCompleto.getPrecioArt());
-            temp.setArtCantidad(pCompleto.getCantArticulo());
-            temp.setArtArticulo(pCompleto.getArticulo());
-            temp.setArtDescuento(pCompleto.getArticulo().getArtDescuento());
-            temp.setArtCodigo(Integer.SIZE);
-            listArticuloXFacturas.add(temp);
-        }
         pFactura.setFacCliente(cliente);
         pFactura.setFacFecha(fecha);
         pFactura.setFatSubtotal(Subtotal);
@@ -212,6 +217,16 @@ public class FXML_FacturaciónController implements Initializable {
         pFactura.setFacTotal(Total);
         pFactura.setFactEstadoPago("A");
         pFactura.setFacEstado("A");
+         for (InventarioCompleto pCompleto : ListArticulos) {
+            ArticuloXFactura temp = new ArticuloXFactura();
+            temp.setArtPrecio(pCompleto.getPrecioArt());
+            temp.setArtCantidad(pCompleto.getCantArticulo());
+            temp.setArtArticulo(pCompleto.getArticulo());
+            temp.setArtCodigo(Integer.SIZE);
+            temp.setArtFactura(pFactura);
+            temp.setArtDescuento(pCompleto.getArticulo().getArtDescuento());
+            listArticuloXFacturas.add(temp);
+        }
 
     }
 
@@ -230,6 +245,13 @@ public class FXML_FacturaciónController implements Initializable {
 
             if ((pInventario.getInvCantidad() > cantidad) && (pInventario.getInvCantidad() - cantidad) > 5) {
                 return true;
+            } else {
+                if ((pInventario.getInvCantidad() > cantidad) && (pInventario.getInvCantidad() - cantidad)>0) {
+                    
+                    Message.getInstance().Information("Información", "Artículo con pocas existencias en inventario,"
+                            + "\nCantida Actual: "+(pInventario.getInvCantidad() - cantidad));
+                    return true;
+                }
             }
         }
         return false;
@@ -299,7 +321,7 @@ public class FXML_FacturaciónController implements Initializable {
                             Date.getRowValue().setCantArticulo(Integer.valueOf(Date.getNewValue()));
                             Calcular_Total();
                         } else {
-                            Message.getInstance().Information("Informació", "Artículo con pocas existencias en inventario, imposible incrementar cantida");
+                            Message.getInstance().Information("Informació", "Artículo sin existencias");
                         }
                     } else {
                         Date.getRowValue().setCantArticulo(Integer.valueOf(Date.getOldValue()));
@@ -322,7 +344,7 @@ public class FXML_FacturaciónController implements Initializable {
             ListArticulos.remove(tbl_Factura.getSelectionModel().getSelectedItem());
             Calcular_Total();
         } else {
-            Message.getInstance().Warning("Advertencia:", "Por favor seleccione el artí culo que desea eliminar");
+            Message.getInstance().Warning("Advertencia:", "Por favor seleccione el artículo que desea eliminar");
         }
     }
 
