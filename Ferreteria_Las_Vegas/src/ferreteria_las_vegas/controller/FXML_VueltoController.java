@@ -16,6 +16,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.stage.Stage;
 
 /**
  * FXML Controller class
@@ -43,12 +44,13 @@ public class FXML_VueltoController implements Initializable {
 
     @FXML
     private void btnSalir_Click(ActionEvent event) {
-        Lanzar_FXML_Facturacion();
+          Stage stageAct = (Stage) btnSalir.getScene().getWindow();
+        stageAct.close();
     }
 
     @FXML
     private void btnConfirmar_Click(ActionEvent event) {
-          Lanzar_FXML_Facturacion();
+          
     }
     
     public void CargarVueto(){

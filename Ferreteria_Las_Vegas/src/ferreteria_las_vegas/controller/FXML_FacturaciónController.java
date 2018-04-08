@@ -162,7 +162,10 @@ public class FXML_FacturaciónController implements Initializable {
                 pFactura.setFactTipoFact("E");
                 AppContext.getInstance().set("Factura", pFactura);
                 AppContext.getInstance().set("ArticulosXFactura", listArticuloXFacturas);
-                Lanzar_FXMLPagos();
+                Lanzar_FXMLPagos(); 
+                if((boolean)AppContext.getInstance().get("pago")==true){
+                    Limpiar_Vista();
+                }
             } else {
                 Message.getInstance().Information("Información:", "Es requerido agregar articulos a la factura");
             }

@@ -114,6 +114,14 @@ public class FXML_PagosController implements Initializable {
         pMontoTotal = pFactura.getFacTotal();
         ListArticulosXFactura = (List<ArticuloXFactura>) AppContext.getInstance().get("ArticulosXFactura");
         CargarTotales();
+        AppContext.getInstance().set("pago", false);
+        cmbMoneda.valueProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                txtMontoEfectivo.setText("");
+                RecalcularTotalPagar();
+            }
+        });
 
     }
 
@@ -127,6 +135,9 @@ public class FXML_PagosController implements Initializable {
     private void btnPagar_Click(ActionEvent event) {
         if ((!txtMontoEfectivo.getText().isEmpty() || !txtMontoTarjeta.getText().isEmpty() || !lblMonto.getText().isEmpty()) && pMontoTotal == 0) {
             ProcesarRegistroFactura();
+            
+            Stage stageAct = (Stage) btnPagar.getScene().getWindow();
+        stageAct.close();
         } else {
             Message.getInstance().Warning("Advertencia", "Es necesario cancelar el monto total de la compra");
         }
@@ -174,7 +185,7 @@ public class FXML_PagosController implements Initializable {
 
     @FXML
     void txtMontoEfectivo_OnAction(ActionEvent event) {
-        RecalcularTotalPagar();
+   
     }
 
     @FXML
@@ -199,6 +210,7 @@ public class FXML_PagosController implements Initializable {
                     RebajarInventario();
                     AppContext.getInstance().set("Vuelto", Vuelto);
                     Lanzar_FXMLVuelto();
+                    AppContext.getInstance().set("pago", true);
                     InicializarVariables();
                 } else {
                     Message.getInstance().Error("Error", "No se ha logrado efectuar el pago");
@@ -346,6 +358,7 @@ public class FXML_PagosController implements Initializable {
     // Recalcula el monto total a pagar 
     public void RecalcularTotalPagar() {
         pMontoTotal = pFactura.getFacTotal();
+        
         if (!txtMontoEfectivo.getText().isEmpty() && Double.valueOf(txtMontoEfectivo.getText()) > 0) {
             if (cmbMoneda.getSelectionModel().getSelectedItem().equalsIgnoreCase("Colones")) {
                 CalcularTotal(Double.valueOf(txtMontoEfectivo.getText()));
@@ -356,6 +369,7 @@ public class FXML_PagosController implements Initializable {
                 }
             }
         }
+        
 
         if (!txtMontoTarjeta.getText().isEmpty() && pMontoTotal > 0) {
             CalcularTotal(Double.valueOf(txtMontoTarjeta.getText()));
@@ -406,13 +420,7 @@ public class FXML_PagosController implements Initializable {
         listMoneda.addAll("Colones", "Dolares");
         cmbMoneda.setItems(listMoneda);
         cmbMoneda.getSelectionModel().select("Colones");
-        cmbMoneda.valueProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                txtMontoEfectivo.setText("");
-                RecalcularTotalPagar();
-            }
-        });
+        
         limpiarVista();
 
     }
