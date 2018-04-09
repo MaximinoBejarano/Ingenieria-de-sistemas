@@ -47,6 +47,8 @@ public class FXML_Buscar_FacturaPendiente_Controller implements Initializable {
     @FXML
     private TableColumn<Factura, String> tcSubtotal;
     @FXML
+    private TableColumn<Factura, String> tcDescuento;
+    @FXML
     private TableColumn<Factura, String> tcIVA;
     @FXML
     private TableColumn<Factura, String> tcMontoTotal;
@@ -57,25 +59,31 @@ public class FXML_Buscar_FacturaPendiente_Controller implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-        CargasDatosTabla();
+        List = (List<Factura>) AppContext.getInstance().get("ListPedidos");
+        if (List != null) {
+            CargasDatosTabla();
+        } else {
+            tblListaFacturas.getItems().clear();
+        }
     }
 
     @FXML
     private void btnSalirClick(ActionEvent event) {
-        AppContext.getInstance().set("seleccion-Factura",null);
+        AppContext.getInstance().set("seleccion-Factura", null);
         Stage stageAct = (Stage) btnSalir.getScene().getWindow();
         stageAct.close();
     }
 
     @FXML
     private void btnSelecionarClick(ActionEvent event) {
-         if (tblListaFacturas.getSelectionModel().getSelectedItem() != null) {
-                AppContext.getInstance().set("seleccion-Factura", tblListaFacturas.getSelectionModel().getSelectedItem());
-                Stage stageAct = (Stage) btnSalir.getScene().getWindow();
-                stageAct.close();
-            } else {
-                Message.getInstance().Warning("Cuidado", "Debe seleccionar una fila de la tabla.");
-            }
+        if (tblListaFacturas.getSelectionModel().getSelectedItem() != null) {
+            RemoverFactura(tblListaFacturas.getSelectionModel().getSelectedItem());
+            AppContext.getInstance().set("seleccion-Factura", tblListaFacturas.getSelectionModel().getSelectedItem());
+            Stage stageAct = (Stage) btnSalir.getScene().getWindow();
+            stageAct.close();
+        } else {
+            Message.getInstance().Warning("Cuidado", "Debe seleccionar una fila de la tabla.");
+        }
     }
 
     //++++++++++++++++++++++++++++++++++++++  Area de procesos en GUI ++++++++++++++++++++++++++++++++++++++++++++
@@ -87,15 +95,20 @@ public class FXML_Buscar_FacturaPendiente_Controller implements Initializable {
         tcCliente.setCellValueFactory((cellData -> new SimpleStringProperty(cellData.getValue().getFacCliente().getCliPersona())));
         tcIVA.setCellValueFactory((cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getFacImpVentas()))));
         tcSubtotal.setCellValueFactory((cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getFatSubtotal()))));
+        tcDescuento.setCellValueFactory(cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getFacDescuento())));
         tcMontoTotal.setCellValueFactory((cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getFacTotal()))));
-
-        List<Factura> List = (List<Factura>) AppContext.getInstance().get("ListPedidos");
 
         List = List.stream().filter(x -> x.getFacEstado().equals("A")).collect(Collectors.toList());
 
         ObservableList<Factura> FacturasList = FXCollections.observableArrayList(List);
         tblListaFacturas.setItems(FacturasList);
         FiltroDatosTabla(FacturasList);
+
+    }
+    
+    public void RemoverFactura(Factura pFactura){
+        List.remove(pFactura);
+        AppContext.getInstance().set("ListPedidos",List);
     }
 
     /**
@@ -113,7 +126,7 @@ public class FXML_Buscar_FacturaPendiente_Controller implements Initializable {
                 }
                 String lowerCaseFilter = newValue.toLowerCase();
 
-                if(pFact.getFacCliente().getPersona().getPerCedula().toLowerCase().contains(lowerCaseFilter)) {
+                if (pFact.getFacCliente().getPersona().getPerCedula().toLowerCase().contains(lowerCaseFilter)) {
                     return true;
                 }
                 return false;
@@ -123,4 +136,6 @@ public class FXML_Buscar_FacturaPendiente_Controller implements Initializable {
         sortedData.comparatorProperty().bind(tblListaFacturas.comparatorProperty());
         tblListaFacturas.setItems(sortedData);
     }
+
+    List<Factura> List;
 }

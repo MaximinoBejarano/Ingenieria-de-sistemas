@@ -137,7 +137,9 @@ public class FXML_FacturaciónController implements Initializable {
     @FXML
     private void btnSalir_Click(ActionEvent event) {
         try {
-            ScenesManager.getInstance().LoadSceneMenu();
+            if (Message.getInstance().Confirmation("Confirmación", "Esta seguro que desea salir, perdera los cambios realizados en la factura")) {
+                ScenesManager.getInstance().LoadSceneMenu();
+            }
         } catch (IOException ex) {
             Message.getInstance().Error("Error", "Ocurrió un error y no se pudo lanzar la pantalla de Menu.");
             LoggerManager.Logger().info(ex.toString());
@@ -152,13 +154,11 @@ public class FXML_FacturaciónController implements Initializable {
                 AgregarFacturaCredito();
                 AppContext.getInstance().set("seleccion-FacReimprecion", false);
                 ProcesoGenerarFactura();
-                if (Message.getInstance().Confirmation("Confirmación", "Factura ingresada con exito desea realizar un abono")) {
-                        Lanzar_FXML_Abonos();
-                         InicializarValores();
-                    } else {
-                        Limpiar_Vista();
-                    }
-               
+                if (pRegistro) {
+                    Limpiar_Vista();
+                    InicializarValores();           
+                } 
+
             } else {
                 Message.getInstance().Information("Información:", "Es requerido agregar articulos a la factura");
             }
@@ -193,24 +193,27 @@ public class FXML_FacturaciónController implements Initializable {
 
     @FXML
     private void btnGuardarPedido_Click(ActionEvent event) {
+        //validar no exista una repitidad y que pregunte antes de cerrar
         if (cliente != null) {
             if (!ListArticulos.isEmpty()) {
                 AgregarDatosfactura();
                 pFactura.setArticuloXFacturaList(listArticuloXFacturas);
+                ListPedidos.add(pFactura);
                 Limpiar_Vista();
                 InicializarValores();
-                ListPedidos.add(pFactura);
+
                 AppContext.getInstance().set("ListPedidos", ListPedidos);
                 if (Message.getInstance().Confirmation("Confirmación:", "El pedido se ha guardado de forma exitosa,desea buscar un pedido")) {
                     Lanzar_FXML_FacturaPendiete();
                 }
 
             } else {
-                Message.getInstance().Information("Información:", "Es requerido agregar articulos a la factura");
+                Message.getInstance().Information("Información:", "Es requerido agregar articulos a la factura para guardarla");
             }
         } else {
-            Message.getInstance().Information("Información:", "Es requerido seleccionar un cliente para la factura");
-
+            if (ListArticulos.isEmpty()) {
+                Lanzar_FXML_FacturaPendiete();
+            }
         }
 
     }
@@ -286,10 +289,15 @@ public class FXML_FacturaciónController implements Initializable {
 
                 AppContext.getInstance().set("Factura", pFactura);
                 AppContext.getInstance().set("ArticulosXFactura", listArticuloXFacturas);
+
                 Factura pFacturar = FacturaJPAController.getInstance().AgregarFactura_Credito(pFactura, listArticuloXFacturas, pCuentaXCobrar);
                 if (pFacturar != null) {
                     AppContext.getInstance().set("seleccion-FacCliente", pFacturar);
-                    
+                    if (Message.getInstance().Confirmation("Confirmación", "Factura ingresada con exito desea realizar un abono")) {
+                        Lanzar_FXML_Abonos();
+                    } else {
+                       pRegistro=true;                    
+                    }
                 } else {
                     Message.getInstance().Error("Error", "Error al registrar la factura");
                 }
@@ -508,40 +516,48 @@ public class FXML_FacturaciónController implements Initializable {
     public void CargarInfo_FacturaPendiente() {
         Factura tempFactura = null;
         Articulo tempArticulo = new Articulo();
-        InventarioCompleto pCompleto = new InventarioCompleto();
+
         tempFactura = (Factura) AppContext.getInstance().get("seleccion-Factura");
         if (tempFactura != null) {
             Persona per = tempFactura.getFacCliente().getPersona();
+            cliente = tempFactura.getFacCliente();
             lblCliente.setText(String.valueOf(per.getPerCedula()) + " " + per.getPerNombre() + " " + per.getPerPApellido());
             listArticuloXFacturas = tempFactura.getArticuloXFacturaList();
             for (ArticuloXFactura pArtXFact : listArticuloXFacturas) {
-                tempArticulo = ArticuloJpaController.getInstance().ConsultarArticuloCodigo(pArtXFact.getArtCodigo());
-                if (Validar_ExistenciaArticulo(tempArticulo, pArtXFact.getArtCantidad())) {
-                    pCompleto.setArticulo(tempArticulo);
-                    pCompleto.setCantArticulo(pArtXFact.getArtCantidad());
-                } else {
-                    Inventario pInventario = new Inventario();
-                    if (InventarioJpaController.getInstance().ConsultarInventarioCodigoProducto(tempArticulo.getArtCodigo()) != null) {
-                        pInventario = InventarioJpaController.getInstance().ConsultarInventarioCodigoProducto(tempArticulo.getArtCodigo());
-                        if ((pInventario.getInvCantidad() < pArtXFact.getArtCantidad()) && (pInventario.getInvCantidad() - pArtXFact.getArtCantidad()) < 0) {
-                            pCompleto.setArticulo(tempArticulo);
-                            pCompleto.setCantArticulo(pInventario.getInvCantidad());
-                            pCompleto = CalcularPrecioArticulo(pCompleto);
-                            ListArticulos.add(pCompleto);
-                            Message.getInstance().Warning("Advertencia", "La cantidad del articulo:" + tempArticulo.getArtNombre()
-                                    + " en inventario es insuficiente,la cantidad disponible es:" + pInventario.getInvCantidad());
+                InventarioCompleto pCompleto = new InventarioCompleto();
+                tempArticulo = new Articulo();
+                tempArticulo = ArticuloJpaController.getInstance().ConsultarArticuloCodigo(pArtXFact.getArtArticulo().getArtCodigo());
+                if (tempArticulo != null) {
+                    if (Validar_ExistenciaArticulo(tempArticulo, pArtXFact.getArtCantidad())) {
+                        pCompleto.setArticulo(tempArticulo);
+                        pCompleto.setCantArticulo(pArtXFact.getArtCantidad());
+                        pCompleto = CalcularPrecioArticulo(pCompleto);
+                        ListArticulos.add(pCompleto);
+                    } else {
+                        Inventario pInventario = new Inventario();
+                        if (InventarioJpaController.getInstance().ConsultarInventarioCodigoProducto(tempArticulo.getArtCodigo()) != null) {
+                            pInventario = InventarioJpaController.getInstance().ConsultarInventarioCodigoProducto(tempArticulo.getArtCodigo());
+                            if ((pInventario.getInvCantidad() < pArtXFact.getArtCantidad()) && (pInventario.getInvCantidad() - pArtXFact.getArtCantidad()) < 0) {
+                                pCompleto.setArticulo(tempArticulo);
+                                pCompleto.setCantArticulo(pInventario.getInvCantidad());
+                                pCompleto = CalcularPrecioArticulo(pCompleto);
+                                ListArticulos.add(pCompleto);
+                                Message.getInstance().Warning("Advertencia", "La cantidad del articulo:" + tempArticulo.getArtNombre()
+                                        + " en inventario es insuficiente,la cantidad disponible es:" + pInventario.getInvCantidad());
+                            }
                         }
                     }
                 }
 
             }
-            CargarTabla();
-            Calcular_Total();
-
         }
+        CargarTabla();
+        Calcular_Total();
+
     }
 
-    public void Limpiar_Vista() {
+
+   public void Limpiar_Vista() {
         lblTotal.setText("");
         lblCliente.setText("");
         lblFecha.setText(formatter.format(fecha.getTime()));
@@ -567,7 +583,7 @@ public class FXML_FacturaciónController implements Initializable {
             stage.initOwner(btnCobrarFactura.getScene().getWindow());
             stage.showAndWait();
 
-        } catch (IOException ex) {
+         } catch (IOException ex) {
             Logger.getLogger(FXML_FacturaciónController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -582,10 +598,9 @@ public class FXML_FacturaciónController implements Initializable {
             stage.initModality(Modality.WINDOW_MODAL);
             stage.initOwner(btnCliente.getScene().getWindow());
             stage.showAndWait();
-
-        } catch (IOException ex) {
+            } catch (IOException ex) {
             Logger.getLogger(FXML_FacturaciónController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+            }
     }
 
     public void Lanzar_FXMLBuscarArticulo() {
@@ -600,7 +615,7 @@ public class FXML_FacturaciónController implements Initializable {
             pArticulo = (Articulo) AppContext.getInstance().get("seleccion-Articulo");
             CargasDatos();
 
-        } catch (IOException ex) {
+           } catch (IOException ex) {
             Logger.getLogger(FXML_FacturaciónController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -616,7 +631,7 @@ public class FXML_FacturaciónController implements Initializable {
             stage.showAndWait();
             CargarInfo_FacturaPendiente();
 
-        } catch (IOException ex) {
+            } catch (IOException ex) {
             Logger.getLogger(FXML_FacturaciónController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -692,10 +707,10 @@ public class FXML_FacturaciónController implements Initializable {
     Cliente cliente;
     Articulo pArticulo;
     Factura pFactura;
+    boolean pRegistro=false;
     List<InventarioCompleto> ListArticulos;
     List<Factura> ListPedidos = new ArrayList<>();
     List<ArticuloXFactura> listArticuloXFacturas;
     double Total, Subtotal, Descuento, ImpuestoVenta;
     WorkIndicatorDialog wd;
-
 }

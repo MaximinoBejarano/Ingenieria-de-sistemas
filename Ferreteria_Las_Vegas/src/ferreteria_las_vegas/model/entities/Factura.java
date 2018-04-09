@@ -46,6 +46,11 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Factura.findByFacEstado", query = "SELECT f FROM Factura f WHERE f.facEstado = :facEstado")})
 public class Factura implements Serializable {
 
+    @Column(name = "Fac_Empleado")
+    private String facEmpleado;
+    @Column(name = "Fac_Detalle")
+    private String facDetalle;
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -247,6 +252,22 @@ public class Factura implements Serializable {
     @Override
     public String toString() {
         return "ferreteria_las_vegas.model.entities.Factura[ facCodigo=" + facCodigo + " ]";
+    }
+
+    public String getFacEmpleado() {
+        return facEmpleado;
+    }
+
+    public void setFacEmpleado(String facEmpleado) {
+        this.facEmpleado = facEmpleado;
+    }
+
+    public String getFacDetalle() {
+        return facDetalle;
+    }
+
+    public void setFacDetalle(String facDetalle) {
+        this.facDetalle = facDetalle;
     }
     
 }
