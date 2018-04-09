@@ -92,11 +92,12 @@ public class FXML_MenuController implements Initializable {
     }
 
     void FechaHora() {
-        Date fechaActual = new Date();
+
         DateFormat formatoHora = new SimpleDateFormat("hh:mm:ss a");
         DateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
 
         fechaHora = new Timeline(new KeyFrame(Duration.seconds(1), (ActionEvent event) -> {
+            Date fechaActual = new Date();
             lblDate.setText(formatoFecha.format(fechaActual) + "\n" + formatoHora.format(fechaActual));
         }));
         fechaHora.setCycleCount(Timeline.INDEFINITE);

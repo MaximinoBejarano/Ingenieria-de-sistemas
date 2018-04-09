@@ -70,21 +70,6 @@
                         <Tooltip text="Salir de la ventana" />
                      </tooltip>
                   </Button>
-                  <Button fx:id="btnConfirmar" layoutX="535.0" layoutY="33.0" mnemonicParsing="false" onAction="#btnConfirmar_Click" prefHeight="78.0" prefWidth="104.0" styleClass="boton_Seleccionado" stylesheets="@../../styles/style.css" AnchorPane.bottomAnchor="6.0" AnchorPane.rightAnchor="120.0" AnchorPane.topAnchor="6.0">
-                     <graphic>
-                        <ImageView fitHeight="65.0" fitWidth="91.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../../pictures/comprobar.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                     <effect>
-                        <DropShadow />
-                     </effect>
-                     <tooltip>
-                        <Tooltip text="Confirmar Selección" />
-                     </tooltip>
-                  </Button>
                </children>
             </AnchorPane>
          </bottom>
