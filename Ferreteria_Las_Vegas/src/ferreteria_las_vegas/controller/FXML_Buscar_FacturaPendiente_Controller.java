@@ -61,6 +61,7 @@ public class FXML_Buscar_FacturaPendiente_Controller implements Initializable {
         // TODO
         List = (List<Factura>) AppContext.getInstance().get("ListPedidos");
         if (List != null) {
+            AppContext.getInstance().set("seleccion-Factura", null);
             CargasDatosTabla();
         } else {
             tblListaFacturas.getItems().clear();
@@ -69,7 +70,6 @@ public class FXML_Buscar_FacturaPendiente_Controller implements Initializable {
 
     @FXML
     private void btnSalirClick(ActionEvent event) {
-        AppContext.getInstance().set("seleccion-Factura", null);
         Stage stageAct = (Stage) btnSalir.getScene().getWindow();
         stageAct.close();
     }

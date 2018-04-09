@@ -292,7 +292,7 @@ public class FXML_FacturaciónController implements Initializable {
                     
                 } else {
                     Message.getInstance().Error("Error", "Error al registrar la factura");
-                }
+                 }
             }
         } catch (Exception ex) {
             LoggerManager.Logger().info(ex.toString());
