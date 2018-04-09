@@ -184,18 +184,15 @@ public class FXML_FacturaciónController implements Initializable {
                 ListPedidos.add(pFactura);
                 AppContext.getInstance().set("ListPedidos", ListPedidos);
                 if (Message.getInstance().Confirmation("Confirmación:", "El pedido se ha guardado de forma exitosa,desea buscar un pedido")) {
-
+                   Lanzar_FXML_FacturaPendiete();
                 }
 
             } else {
                 Message.getInstance().Information("Información:", "Es requerido agregar articulos a la factura");
             }
         } else {
-            //
-            ListPedidos = (List<Factura>) AppContext.getInstance().get("LisPedidos");
-            if (!ListPedidos.isEmpty()) {
                 Message.getInstance().Information("Información:", "Es requerido seleccionar un cliente para la factura");
-            }
+            
         }
 
     }
@@ -602,6 +599,7 @@ public class FXML_FacturaciónController implements Initializable {
             stage.initModality(Modality.WINDOW_MODAL);
             stage.initOwner(btnGuardarPedido.getScene().getWindow());
             stage.showAndWait();
+            CargarInfo_FacturaPendiente();
             
             
         } catch (IOException ex) {
