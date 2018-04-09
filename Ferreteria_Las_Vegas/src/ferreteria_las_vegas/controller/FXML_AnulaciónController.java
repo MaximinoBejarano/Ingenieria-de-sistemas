@@ -144,7 +144,7 @@ public class FXML_AnulaciónController implements Initializable {
                         + pFactura.getFacCliente().getPersona().getPerPApellido() + " "
                         + pFactura.getFacCliente().getPersona().getPerSApellido());
                 lblFecha.setText(formateador.format(pFactura.getFacFecha()));
-                lblUsuario.setText("null");
+                lblUsuario.setText(pFactura.getFacEmpleado());
                 lblMontoTotal.setText(String.format("%.2f", pFactura.getFacTotal()));
                 lblTipoFactura.setText(pFactura.getFactTipoFact().replace("E", "Cóntado").replace("K", "Crédito"));
 

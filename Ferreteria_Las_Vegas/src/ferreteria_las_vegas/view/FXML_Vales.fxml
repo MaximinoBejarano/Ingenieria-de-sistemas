@@ -111,7 +111,7 @@
                <children>
                   <TabPane layoutX="16.0" layoutY="2.0" prefHeight="519.0" prefWidth="682.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <tabs>
-                      <Tab style="-fx-font: 150% sans-serif;" text="Nuevo">
+                      <Tab fx:id="tabNuevo" style="-fx-font: 150% sans-serif;" text="Nuevo">
                         <content>
                           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="344.0" prefWidth="200.0">
                                  <children>
@@ -120,7 +120,7 @@
                                           <Font size="18.0" />
                                        </font>
                                     </Label>
-                                    <TextArea layoutX="10.0" layoutY="445.0" prefHeight="60.0" prefWidth="656.0" wrapText="true" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" />
+                                    <TextArea fx:id="txtJustificacionCreacion" layoutX="10.0" layoutY="445.0" prefHeight="60.0" prefWidth="656.0" wrapText="true" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" />
                                     <GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="140.0" prefWidth="700.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
                                        <columnConstraints>
                                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="100.0" />
@@ -256,7 +256,7 @@
                               </ImageView>
                            </graphic>
                       </Tab>
-                      <Tab style="-fx-font: 150% sans-serif;" text="Eliminar">
+                      <Tab fx:id="tabEliminar" style="-fx-font: 150% sans-serif;" text="Eliminar">
                         <content>
                           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                  <children>
@@ -266,6 +266,7 @@
                                         <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="450.0" />
                                       </columnConstraints>
                                       <rowConstraints>
+                                          <RowConstraints minHeight="50.0" prefHeight="50.0" vgrow="SOMETIMES" />
                                         <RowConstraints minHeight="50.0" prefHeight="50.0" vgrow="SOMETIMES" />
                                         <RowConstraints minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
                                         <RowConstraints minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
@@ -278,42 +279,42 @@
                                                 <Font size="18.0" />
                                              </font>
                                           </Label>
-                                          <Label text="Número de Factura:" GridPane.rowIndex="1">
+                                          <Label text="Número de Factura:" GridPane.rowIndex="2">
                                              <font>
                                                 <Font size="18.0" />
                                              </font>
                                           </Label>
-                                          <Label text="Justificación:" GridPane.rowIndex="4">
+                                          <Label text="Justificación:" GridPane.rowIndex="5">
                                              <font>
                                                 <Font size="18.0" />
                                              </font>
                                           </Label>
-                                          <Label text="Fecha de Emisión:" GridPane.rowIndex="3">
+                                          <Label text="Fecha de Emisión:" GridPane.rowIndex="4">
                                              <font>
                                                 <Font size="18.0" />
                                              </font>
                                           </Label>
-                                          <Label text="Monto del Vale:" GridPane.rowIndex="2">
+                                          <Label text="Monto del Vale:" GridPane.rowIndex="3">
                                              <font>
                                                 <Font size="18.0" />
                                              </font>
                                           </Label>
-                                          <TextArea fx:id="txaJustuficacionVales" editable="false" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                                          <TextArea fx:id="txaJustuficacionVales" editable="false" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="5">
                                              <font>
                                                 <Font size="18.0" />
                                              </font>
                                           </TextArea>
-                                          <Label fx:id="lblFechaEmisionVale" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+                                          <Label fx:id="lblFechaEmisionVale" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
                                              <font>
                                                 <Font size="18.0" />
                                              </font>
                                           </Label>
-                                          <Label fx:id="lblMontoVale" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+                                          <Label fx:id="lblMontoVale" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
                                              <font>
                                                 <Font size="18.0" />
                                              </font>
                                           </Label>
-                                          <Label fx:id="lblNumFacVales" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                                          <Label fx:id="lblNumFacVales" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
                                              <font>
                                                 <Font size="18.0" />
                                              </font>
@@ -323,6 +324,16 @@
                                                 <Font size="18.0" />
                                              </font>
                                           </TextField>
+                                          <Label text="Estado:" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                                             <font>
+                                                <Font size="18.0" />
+                                             </font>
+                                          </Label>
+                                          <Label fx:id="lblVales" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                                             <font>
+                                                <Font size="18.0" />
+                                             </font>
+                                          </Label>
                                        </children>
                                     </GridPane>
                                  </children>

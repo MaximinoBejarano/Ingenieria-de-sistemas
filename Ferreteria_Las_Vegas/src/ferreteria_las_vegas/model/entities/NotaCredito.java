@@ -61,7 +61,7 @@ public class NotaCredito implements Serializable {
     private String notEstado;
     @OneToMany(mappedBy = "pagNotaCredito")
     private List<Pago> pagoList;
-    @JoinColumn(name = "Not_Factura", referencedColumnName = "Fac_Cliente")
+    @JoinColumn(name = "Not_Factura", referencedColumnName = "Fac_Codigo")
     @ManyToOne(optional = false)
     private Factura notFactura;
 
