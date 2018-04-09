@@ -206,7 +206,9 @@ public class FXML_PagosController implements Initializable {
             CalcularVuelto();
             ValidarExistencias();
             if (ListExistencias.isEmpty() || ListExistencias == null) {
-                if (FacturaJPAController.getInstance().AgregarFactura(pFactura, ListArticulosXFactura, listPagos) != null) {
+                Factura pFacturar = FacturaJPAController.getInstance().AgregarFactura(pFactura, ListArticulosXFactura, listPagos);
+                if ( pFacturar != null) {
+                    AppContext.getInstance().set("seleccion-FacCliente",pFacturar);
                     RebajarInventario();
                     AppContext.getInstance().set("Vuelto", Vuelto);
                     Lanzar_FXMLVuelto();

@@ -11,6 +11,7 @@ import ferreteria_las_vegas.model.entities.Factura;
 import ferreteria_las_vegas.utils.AppContext;
 import ferreteria_las_vegas.utils.LoggerManager;
 import ferreteria_las_vegas.utils.Message;
+import java.io.IOException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -67,6 +68,14 @@ public class FXML_Buscar_Factura_ClienteController implements Initializable {
 
     @FXML
     private void btnSalirClick(ActionEvent event) {
+        try {
+            Stage stageAct = (Stage) btnSalir.getScene().getWindow();
+            stageAct.close();
+        } catch (Exception ex) {
+            Message.getInstance().Error("Error", "Ocurrió un error y no se pudo Cerrar la pantalla. "
+                    + "El codigo de error es: " + ex.toString());
+            LoggerManager.Logger().info(ex.toString());
+        }
     }
 
     @FXML
@@ -93,19 +102,13 @@ public class FXML_Buscar_Factura_ClienteController implements Initializable {
                 + cellData.getValue().getFacCliente().getPersona().getPerPApellido() + " "
                 + cellData.getValue().getFacCliente().getPersona().getPerSApellido())));
         tcFechaCompra.setCellValueFactory((cellData -> new SimpleStringProperty(formateador.format(cellData.getValue().getFacFecha()))));
-        tcTipoFactura.setCellValueFactory((cellData -> new SimpleStringProperty(cellData.getValue().getFactTipoFact())));
+        tcTipoFactura.setCellValueFactory((cellData -> new SimpleStringProperty(cellData.getValue().getFactTipoFact().replace("E", "Cóntado").replace("K", "Crédito"))));
 
         tcMontoTotal.setCellValueFactory((cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getFacTotal()))));
 
         List<Factura> pListCompras = new FacturaJPAController().ConsultarFacturas().stream().filter(x -> x.getFacEstado().equals("A")).collect(Collectors.toList());
         ObservableList<Factura> pCompras = FXCollections.observableArrayList(pListCompras);
-        for (Factura pCompra : pCompras) {
-            if (pCompra.getFactTipoFact().equals("E")) {
-                pCompra.setFactTipoFact("Contado");
-            } else {
-                pCompra.setFactTipoFact("Crédito");
-            }
-        }
+
         tblListaFacturas.setItems(pCompras);
         FiltroDatosTabla(pCompras);
     }
