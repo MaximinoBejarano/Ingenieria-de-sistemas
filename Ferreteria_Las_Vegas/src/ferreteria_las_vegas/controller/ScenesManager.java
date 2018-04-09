@@ -112,4 +112,9 @@ public class ScenesManager {
         root = FXMLLoader.load(getClass().getResource("/ferreteria_las_vegas/view/FXML_Facturación.fxml"));
         scene.setRoot(root);
     }
+    
+    public void LoadSceneEstadistica() throws IOException {
+        root = FXMLLoader.load(getClass().getResource("/ferreteria_las_vegas/view/FXML_Estadisticas.fxml"));
+        scene.setRoot(root);
+    }
 }

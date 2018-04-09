@@ -441,9 +441,13 @@ public class FXML_ProveedoresController implements Initializable {
                 if (Message.getInstance().Confirmation("Eliminar Proveedor", "Esta seguro.\n"
                         + "¿Desea eliminar al proveedor?")) {
                     proveedor.setProEstado("I");
-                    ProveedorJpaController.getInstance().ModificarProveedor(proveedor);
-                    Message.getInstance().Information("Acción exitosa", "Proveedor eliminado corectamente.");
-                    LimpiarControlesProveedorGUI();
+                    Proveedor prov = ProveedorJpaController.getInstance().ModificarProveedor(proveedor);
+                    if (prov != null) {
+                        Message.getInstance().Information("Acción exitosa", "Proveedor eliminado corectamente.");
+                        LimpiarControlesProveedorGUI();
+                    } else {
+                        Message.getInstance().Error("Acción no exitosa", "Ocurrió un error y no se pudo eliminar al proveedor.");
+                    }
                 }
             } else {
                 Message.getInstance().Warning("Empleado no existente", "No existe un proveedor con los datos ingresados.");
@@ -471,6 +475,7 @@ public class FXML_ProveedoresController implements Initializable {
 
                 cuenta.setCueSaldo(cuenta.getCueSaldo() - nuevoMonto);
                 CuentasXPagarJpaController.getInstance().ModificarCuentaXPagarAgregarAbono(cuenta, abono);
+                
                 CargarCuentasXPagar();
                 tblCuentasXPagar.getSelectionModel().select(cuenta);
                 LimpiarControlesCuentasGUI();
@@ -633,7 +638,7 @@ public class FXML_ProveedoresController implements Initializable {
                 }
             });
             cbxFormaPago.setItems(OMedidorList);
-        } catch (Exception ex) {            
+        } catch (Exception ex) {
             Message.getInstance().Error("Error", "Ocurrió un error y no se pudo cargar la información de formas de pago.");
             LoggerManager.Logger().info(ex.toString());
         }
