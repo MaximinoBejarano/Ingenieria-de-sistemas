@@ -355,8 +355,8 @@ public class FXML_AbonosController implements Initializable {
             Persona pPersona = Cuenta.getCueCliente().getPersona();
             boxCliente_CxC.setValue(Cuenta);
             lblNumFactura.setText(String.valueOf(Cuenta.getCueFactura().getFacCodigo()));
-            lblSaldoFact.setText(String.valueOf(Cuenta.getCueSaldoFac()));
-            lblSaldoTotal.setText(String.valueOf(Cuenta.getCueSaldo()));
+            lblSaldoFact.setText(String.format("%.2f",Cuenta.getCueSaldoFac()));
+            lblSaldoTotal.setText(String.format("%.2f",Cuenta.getCueSaldo()));
             CargarTabla(Cuenta);
         }
     }

@@ -7,6 +7,7 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.effect.InnerShadow?>
 <?import javafx.scene.image.Image?>
@@ -83,13 +84,16 @@
                               <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                            </GridPane.margin>
                         </Button>
-                        <Button fx:id="btnGuardarPedido" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#btnGuardarPedido_Click" styleClass="boton-Facturacion" stylesheets="@../../styles/style.css" text="Guardar Pedido" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
+                        <Button fx:id="btnGuardarPedido" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#btnGuardarPedido_Click" styleClass="boton-Facturacion" stylesheets="@../../styles/style.css" text="Facturas Pendientes" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
                            <font>
                               <Font size="18.0" />
                            </font>
                            <GridPane.margin>
                               <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                            </GridPane.margin>
+                           <tooltip>
+                              <Tooltip text="Guarda o carga una factura pendiente" />
+                           </tooltip>
                         </Button>
                         <Button fx:id="btnCliente" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#btnCliente_Click" styleClass="boton-Facturacion" stylesheets="@../../styles/style.css" text="Cliente" GridPane.rowIndex="2">
                            <font>

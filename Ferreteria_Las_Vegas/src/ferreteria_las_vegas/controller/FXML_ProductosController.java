@@ -237,7 +237,7 @@ public class FXML_ProductosController implements Initializable {
      */
     private Articulo ExtraerDatos(Articulo pArticulo) {
         try {
-            double Precio = Double.valueOf(txtPrecio.getText());
+            double Precio = Double.valueOf(String.format("%.2f",txtPrecio.getText()));
             double Descuento;
             if (pArticulo.getArtCodigo() == null) {
                 pArticulo = new Articulo(Integer.SIZE, txtNombre.getText(), txtDescripcion.getText(), txtMarca.getText(), txtUndMedida.getText(), Precio, "A");
@@ -289,7 +289,7 @@ public class FXML_ProductosController implements Initializable {
             txtDescripcion.setText(pArticulo.getArtDescripcion());
             txtMarca.setText(pArticulo.getArtMarca());
             txtUndMedida.setText(pArticulo.getArtUnidadMedida());
-            txtPrecio.setText(String.valueOf(pArticulo.getArtPrecio()));
+            txtPrecio.setText(String.format("%.2f",pArticulo.getArtPrecio()));
             if (pArticulo.getArtCodBarra() != null) {
                 txtCodBarras.setText(pArticulo.getArtCodBarra());
             } else {

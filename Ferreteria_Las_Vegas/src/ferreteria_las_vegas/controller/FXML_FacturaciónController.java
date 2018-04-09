@@ -128,7 +128,9 @@ public class FXML_FacturaciónController implements Initializable {
     @FXML
     private void btnSalir_Click(ActionEvent event) {
         try {
+            if(Message.getInstance().Confirmation("Confirmación", "Esta seguro que desea salir, perdera los cambios realizados en la factura")){
             ScenesManager.getInstance().LoadSceneMenu();
+            }
         } catch (IOException ex) {
             Message.getInstance().Error("Error", "Ocurrió un error y no se pudo lanzar la pantalla de Menu.");
             LoggerManager.Logger().info(ex.toString());
@@ -175,6 +177,7 @@ public class FXML_FacturaciónController implements Initializable {
 
     @FXML
     private void btnGuardarPedido_Click(ActionEvent event) {
+        //validar no exista una repitidad y que pregunte antes de cerrar
         if (cliente != null) {
             if (!ListArticulos.isEmpty()) {
                 AgregarDatosfactura();
@@ -189,11 +192,12 @@ public class FXML_FacturaciónController implements Initializable {
                 }
 
             } else {
-                Message.getInstance().Information("Información:", "Es requerido agregar articulos a la factura");
+                Message.getInstance().Information("Información:", "Es requerido agregar articulos a la factura para guardarla");
             }
         } else {
-            Message.getInstance().Information("Información:", "Es requerido seleccionar un cliente para la factura");
-
+            if(ListArticulos.isEmpty()){
+              Lanzar_FXML_FacturaPendiete();
+            }
         }
 
     }
