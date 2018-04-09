@@ -209,6 +209,8 @@ public class FXML_PagosController implements Initializable {
                 Factura pFacturar = FacturaJPAController.getInstance().AgregarFactura(pFactura, ListArticulosXFactura, listPagos);
                 if ( pFacturar != null) {
                     AppContext.getInstance().set("seleccion-FacCliente",pFacturar);
+                    pNotaCredito.setNotEstado("I");
+                    NotaCreditoJPAController.getInstance().ModificarNotaCredito(pNotaCredito);
                     RebajarInventario();
                     AppContext.getInstance().set("Vuelto", Vuelto);
                     Lanzar_FXMLVuelto();

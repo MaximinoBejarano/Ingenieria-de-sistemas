@@ -19,6 +19,12 @@ import ferreteria_las_vegas.utils.AppContext;
 import ferreteria_las_vegas.utils.GeneralUtils;
 import ferreteria_las_vegas.utils.LoggerManager;
 import ferreteria_las_vegas.utils.Message;
+import ferreteria_las_vegas.utils.PrinterManagerFacturacion;
+import ferreteria_las_vegas.utils.WorkIndicatorDialog;
+import java.awt.print.PageFormat;
+import java.awt.print.Paper;
+import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
 
 import java.io.IOException;
 import java.net.URL;
@@ -30,6 +36,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -40,7 +47,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.Chart;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -128,7 +137,9 @@ public class FXML_FacturaciónController implements Initializable {
     @FXML
     private void btnSalir_Click(ActionEvent event) {
         try {
-            ScenesManager.getInstance().LoadSceneMenu();
+            if (Message.getInstance().Confirmation("Confirmación", "Esta seguro que desea salir, perdera los cambios realizados en la factura")) {
+                ScenesManager.getInstance().LoadSceneMenu();
+            }
         } catch (IOException ex) {
             Message.getInstance().Error("Error", "Ocurrió un error y no se pudo lanzar la pantalla de Menu.");
             LoggerManager.Logger().info(ex.toString());
@@ -141,6 +152,13 @@ public class FXML_FacturaciónController implements Initializable {
             if (!ListArticulos.isEmpty()) {
                 AgregarDatosfactura();
                 AgregarFacturaCredito();
+                AppContext.getInstance().set("seleccion-FacReimprecion", false);
+                ProcesoGenerarFactura();
+                if (pRegistro) {
+                    Limpiar_Vista();
+                    InicializarValores();           
+                } 
+
             } else {
                 Message.getInstance().Information("Información:", "Es requerido agregar articulos a la factura");
             }
@@ -175,6 +193,7 @@ public class FXML_FacturaciónController implements Initializable {
 
     @FXML
     private void btnGuardarPedido_Click(ActionEvent event) {
+        //validar no exista una repitidad y que pregunte antes de cerrar
         if (cliente != null) {
             if (!ListArticulos.isEmpty()) {
                 AgregarDatosfactura();
@@ -189,11 +208,12 @@ public class FXML_FacturaciónController implements Initializable {
                 }
 
             } else {
-                Message.getInstance().Information("Información:", "Es requerido agregar articulos a la factura");
+                Message.getInstance().Information("Información:", "Es requerido agregar articulos a la factura para guardarla");
             }
         } else {
-            Message.getInstance().Information("Información:", "Es requerido seleccionar un cliente para la factura");
-
+            if (ListArticulos.isEmpty()) {
+                Lanzar_FXML_FacturaPendiete();
+            }
         }
 
     }
@@ -270,16 +290,17 @@ public class FXML_FacturaciónController implements Initializable {
                 AppContext.getInstance().set("Factura", pFactura);
                 AppContext.getInstance().set("ArticulosXFactura", listArticuloXFacturas);
 
-                if (FacturaJPAController.getInstance().AgregarFactura_Credito(pFactura, listArticuloXFacturas, pCuentaXCobrar) != null) {
+                Factura pFacturar = FacturaJPAController.getInstance().AgregarFactura_Credito(pFactura, listArticuloXFacturas, pCuentaXCobrar);
+                if (pFacturar != null) {
+                    AppContext.getInstance().set("seleccion-FacCliente", pFacturar);
                     if (Message.getInstance().Confirmation("Confirmación", "Factura ingresada con exito desea realizar un abono")) {
                         Lanzar_FXML_Abonos();
                     } else {
-                        Limpiar_Vista();
-                        InicializarValores();
+                       pRegistro=true;                    
                     }
                 } else {
                     Message.getInstance().Error("Error", "Error al registrar la factura");
-                }
+                 }
             }
         } catch (Exception ex) {
             LoggerManager.Logger().info(ex.toString());
@@ -495,16 +516,16 @@ public class FXML_FacturaciónController implements Initializable {
     public void CargarInfo_FacturaPendiente() {
         Factura tempFactura = null;
         Articulo tempArticulo = new Articulo();
-       
+
         tempFactura = (Factura) AppContext.getInstance().get("seleccion-Factura");
         if (tempFactura != null) {
             Persona per = tempFactura.getFacCliente().getPersona();
-            cliente=tempFactura.getFacCliente();
+            cliente = tempFactura.getFacCliente();
             lblCliente.setText(String.valueOf(per.getPerCedula()) + " " + per.getPerNombre() + " " + per.getPerPApellido());
             listArticuloXFacturas = tempFactura.getArticuloXFacturaList();
             for (ArticuloXFactura pArtXFact : listArticuloXFacturas) {
                 InventarioCompleto pCompleto = new InventarioCompleto();
-                tempArticulo=new Articulo();
+                tempArticulo = new Articulo();
                 tempArticulo = ArticuloJpaController.getInstance().ConsultarArticuloCodigo(pArtXFact.getArtArticulo().getArtCodigo());
                 if (tempArticulo != null) {
                     if (Validar_ExistenciaArticulo(tempArticulo, pArtXFact.getArtCantidad())) {
@@ -526,16 +547,17 @@ public class FXML_FacturaciónController implements Initializable {
                             }
                         }
                     }
-
                 }
-            }
-            CargarTabla();
-            Calcular_Total();
 
+            }
         }
+        CargarTabla();
+        Calcular_Total();
+
     }
 
-    public void Limpiar_Vista() {
+
+   public void Limpiar_Vista() {
         lblTotal.setText("");
         lblCliente.setText("");
         lblFecha.setText(formatter.format(fecha.getTime()));
@@ -561,7 +583,7 @@ public class FXML_FacturaciónController implements Initializable {
             stage.initOwner(btnCobrarFactura.getScene().getWindow());
             stage.showAndWait();
 
-        } catch (IOException ex) {
+         } catch (IOException ex) {
             Logger.getLogger(FXML_FacturaciónController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -576,10 +598,9 @@ public class FXML_FacturaciónController implements Initializable {
             stage.initModality(Modality.WINDOW_MODAL);
             stage.initOwner(btnCliente.getScene().getWindow());
             stage.showAndWait();
-
-        } catch (IOException ex) {
+            } catch (IOException ex) {
             Logger.getLogger(FXML_FacturaciónController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+            }
     }
 
     public void Lanzar_FXMLBuscarArticulo() {
@@ -594,7 +615,7 @@ public class FXML_FacturaciónController implements Initializable {
             pArticulo = (Articulo) AppContext.getInstance().get("seleccion-Articulo");
             CargasDatos();
 
-        } catch (IOException ex) {
+           } catch (IOException ex) {
             Logger.getLogger(FXML_FacturaciónController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -610,7 +631,7 @@ public class FXML_FacturaciónController implements Initializable {
             stage.showAndWait();
             CargarInfo_FacturaPendiente();
 
-        } catch (IOException ex) {
+            } catch (IOException ex) {
             Logger.getLogger(FXML_FacturaciónController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -623,12 +644,73 @@ public class FXML_FacturaciónController implements Initializable {
             LoggerManager.Logger().info(ex.toString());
         }
     }
+
+    private void ProcesoGenerarFactura() {
+        try {
+            wd = new WorkIndicatorDialog(btnCredito.getScene().getWindow(), "Imprimiendo...");
+
+            wd.exec("123", inputParam -> {
+                try {
+                    PrinterJob pj = PrinterJob.getPrinterJob();
+                    pj.setPrintable(new PrinterManagerFacturacion(), getPageFormat(pj));
+                    pj.print();
+                    return 1;
+                } catch (PrinterException ex) {
+                    LoggerManager.Logger().info(ex.toString());
+                    Platform.runLater(() -> {
+                        new Alert(Alert.AlertType.ERROR, "Ocurrio un error al imprimir la factura. El codigo de error es "
+                                + "el siguiente: " + ex, ButtonType.OK).showAndWait();
+                    });
+                    return 2;
+                }
+            });
+
+        } catch (Exception ex) {
+            LoggerManager.Logger().info(ex.toString());
+            new Alert(Alert.AlertType.ERROR, "Ocurrio un error al generar la factura. El codigo de error es " + "el siguiente: " + ex, ButtonType.OK).showAndWait();
+        }
+    }
+
+    /*--------------------------------------------------------------------------------------------------------------*/
+    public PageFormat getPageFormat(PrinterJob pj) {
+        PageFormat pf = pj.defaultPage();
+        Paper paper = pf.getPaper();
+
+        double headerHeight = 2.0;
+        double middleHeight = 8.0;
+        double footerHeight = 2.0;
+        double width = convert_CM_To_PPI(10);
+        double height = convert_CM_To_PPI(40);
+        paper.setSize(width, height);
+        paper.setImageableArea(
+                0,
+                10,
+                width,
+                height - convert_CM_To_PPI(1)
+        );
+        pf.setOrientation(PageFormat.PORTRAIT);
+        pf.setPaper(paper);
+
+        return pf;
+    }
+
+    private static double convert_CM_To_PPI(double cm) {
+        return toPPI(cm * 0.393600787);
+    }
+
+    private static double toPPI(double inch) {
+        return inch * 72d;
+    }
+
+
     /*+++++++++++++++++++++++++++++++++++++++++++++++++++++Variables de Clase++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
     Cliente cliente;
     Articulo pArticulo;
     Factura pFactura;
+    boolean pRegistro=false;
     List<InventarioCompleto> ListArticulos;
     List<Factura> ListPedidos = new ArrayList<>();
     List<ArticuloXFactura> listArticuloXFacturas;
     double Total, Subtotal, Descuento, ImpuestoVenta;
+    WorkIndicatorDialog wd;
 }
