@@ -30,6 +30,13 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Parametro.findByParTipoCambio", query = "SELECT p FROM Parametro p WHERE p.parTipoCambio = :parTipoCambio")})
 public class Parametro implements Serializable {
 
+    @Basic(optional = false)
+    @Column(name = "Par_ImpuestoVenta")
+    private double parImpuestoVenta;
+    @Basic(optional = false)
+    @Column(name = "Par_SaldoCajaChica")
+    private double parSaldoCajaChica;
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -101,6 +108,22 @@ public class Parametro implements Serializable {
     @Override
     public String toString() {
         return "ferreteria_las_vegas.model.entities.Parametro[ parFerreteria=" + parFerreteria + " ]";
+    }
+
+    public double getParImpuestoVenta() {
+        return parImpuestoVenta;
+    }
+
+    public void setParImpuestoVenta(double parImpuestoVenta) {
+        this.parImpuestoVenta = parImpuestoVenta;
+    }
+
+    public double getParSaldoCajaChica() {
+        return parSaldoCajaChica;
+    }
+
+    public void setParSaldoCajaChica(double parSaldoCajaChica) {
+        this.parSaldoCajaChica = parSaldoCajaChica;
     }
     
 }
