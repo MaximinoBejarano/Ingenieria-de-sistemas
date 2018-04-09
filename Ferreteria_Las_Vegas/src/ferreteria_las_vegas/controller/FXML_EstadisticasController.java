@@ -241,7 +241,7 @@ public class FXML_EstadisticasController implements Initializable {
         List<String> nombres = new ArrayList<>();
         List<BigDecimal> cantidades = new ArrayList<>();
         xAxisArtMasVendido.setAutoRanging(true);
-        xAxisArtMasVendido.setLabel("Articulos y Marca");
+        xAxisArtMasVendido.setLabel("Artículo y Marca");
         yAxisArtMasVendido.setAnimated(true);
         yAxisArtMasVendido.setLabel("Cantidad");
 
@@ -277,7 +277,7 @@ public class FXML_EstadisticasController implements Initializable {
         List<String> nombres = new ArrayList<>();
         List<BigDecimal> cantidades = new ArrayList<>();
         xAxisArtMenosVendido.setAutoRanging(true);
-        xAxisArtMenosVendido.setLabel("Articulos y Marca");
+        xAxisArtMenosVendido.setLabel("Artículo y Marca");
         yAxisArtMenosVendido.setAnimated(true);
         yAxisArtMenosVendido.setLabel("Cantidad");
 

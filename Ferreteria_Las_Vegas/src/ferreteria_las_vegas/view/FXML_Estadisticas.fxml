@@ -54,7 +54,7 @@
                               <DropShadow />
                            </effect>
                            <image>
-                              <Image url="@../../pictures/refresh.png" />
+                              <Image url="@../../pictures/pie-chart.png" />
                            </image>
                         </ImageView>
                      </graphic>
@@ -62,7 +62,7 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                      <tooltip>
-                        <Tooltip />
+                        <Tooltip text="Cargar Datos" />
                      </tooltip>
                   </Button>
                </children>
@@ -77,7 +77,7 @@
                            <content>
                               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                  <children>
-                                    <BarChart fx:id="bcArtMasVendido" alternativeColumnFillVisible="true" layoutX="59.0" layoutY="59.0" legendSide="LEFT" legendVisible="false" prefHeight="349.0" title="Productos Mas Vendidos" AnchorPane.bottomAnchor="65.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <BarChart fx:id="bcArtMasVendido" alternativeColumnFillVisible="true" layoutX="59.0" layoutY="59.0" legendSide="LEFT" legendVisible="false" prefHeight="349.0" title="Artículos Mas Vendidos" AnchorPane.bottomAnchor="65.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                       <xAxis>
                                         <CategoryAxis animated="true" side="BOTTOM" fx:id="xAxisArtMasVendido" />
                                       </xAxis>
@@ -114,6 +114,13 @@
                                  </children>
                               </AnchorPane>
                            </content>
+                           <graphic>
+                              <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../pictures/dollar.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
                         </Tab>
                         <Tab onSelectionChanged="#tabMenosVendidoChange" style="-fx-font: 150% sans-serif;" text="Menos Vendidos">
                           <content>
@@ -145,7 +152,7 @@
                                           </DatePicker>
                                        </children>
                                     </GridPane>
-                                    <BarChart fx:id="bcArtMenosVendido" layoutX="99.0" layoutY="-52.0" legendVisible="false" title="Productos Menos Vendidos" AnchorPane.bottomAnchor="65.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <BarChart fx:id="bcArtMenosVendido" layoutX="99.0" layoutY="-52.0" legendVisible="false" title="Artículos Menos Vendidos" AnchorPane.bottomAnchor="65.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                       <xAxis>
                                         <CategoryAxis side="BOTTOM" fx:id="xAxisArtMenosVendido" />
                                       </xAxis>
@@ -155,6 +162,13 @@
                                     </BarChart>
                                  </children></AnchorPane>
                           </content>
+                           <graphic>
+                              <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../pictures/low-sales.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
                         </Tab>
                         <Tab onSelectionChanged="#tabMejorClienteChange" style="-fx-font: 150% sans-serif;" text="Mejores Clientes">
                           <content>
@@ -197,6 +211,13 @@
                                  </children>
                               </AnchorPane>
                           </content>
+                           <graphic>
+                              <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../pictures/bestcli.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
                         </Tab>
                      </tabs>
                   </TabPane>
