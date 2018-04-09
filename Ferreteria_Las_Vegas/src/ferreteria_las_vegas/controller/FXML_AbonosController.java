@@ -7,9 +7,11 @@ package ferreteria_las_vegas.controller;
 
 import ferreteria_las_vegas.model.controller.AbonosJPAController;
 import ferreteria_las_vegas.model.controller.CuentasXCobrarJPAController;
+import ferreteria_las_vegas.model.controller.FacturaJPAController;
 import ferreteria_las_vegas.model.controller.TipoPagoJPAController;
 import ferreteria_las_vegas.model.entities.CuentaXCobrar;
 import ferreteria_las_vegas.model.entities.Abono;
+import ferreteria_las_vegas.model.entities.Factura;
 import ferreteria_las_vegas.model.entities.Persona;
 import ferreteria_las_vegas.model.entities.TipoPago;
 import ferreteria_las_vegas.utils.AppContext;
@@ -103,6 +105,7 @@ public class FXML_AbonosController implements Initializable {
      */
     Abono nAbono = new Abono();//Nuevo abono
     CuentaXCobrar Cuenta;
+    Factura pFactura;
     TipoPago tipPago;
     SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
     Date fecha = new Date();
@@ -113,11 +116,13 @@ public class FXML_AbonosController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-        nAbono = new Abono();
+        nAbono = null;
         tipPago = new TipoPago();
         Cuenta = null;
+        pFactura=null;
         lblFechaAbono.setText(formatter.format(fecha.getTime()));
         fecha = new Date();
+    
         ComboBoxCliente();
 
     }
@@ -301,7 +306,7 @@ public class FXML_AbonosController implements Initializable {
      */
     public Abono Extraerdatos(Abono pAbono) {
         try {
-            //no borrar Date.from(pickFecha.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant())
+         
             pAbono.setAboFecha(new java.sql.Date(new java.util.Date().getTime()));
             pAbono.setAboMonto(Double.parseDouble(txtAbono.getText()));
             pAbono.setAboEstado("A");
@@ -315,7 +320,15 @@ public class FXML_AbonosController implements Initializable {
                 } else {
                     if ((Cuenta.getCueSaldo() - pAbono.getAboMonto()) == 0) {
                         Cuenta.setCueSaldo(Cuenta.getCueSaldo() - pAbono.getAboMonto());
-                        //Cuenta.setCueEstado("I");
+                        Cuenta.setCueEstado("I");
+                        
+                        //La factura pasa de pendiente de cobro a cancelada
+                        //se consulta la  factura correspondiente a la cuenta por cobrar
+                        if(FacturaJPAController.getInstance().ConsultarFactura_Codigo(Cuenta.getCueFactura().getFacCodigo())!=null){
+                           pFactura=FacturaJPAController.getInstance().ConsultarFactura_Codigo(Cuenta.getCueFactura().getFacCodigo());
+                           pFactura.setFactEstadoPago("I");
+                           FacturaJPAController.getInstance().ModificarFactura(pFactura);
+                        }
                         Message.getInstance().Information("Información:", "Se ha cancelado el saldo total de la cuenta por cobrar");
                     } else {
                         Message.getInstance().Warning("Advertencia:", "El monto a abonar es mayor que el Saldo a pagar");
@@ -425,7 +438,7 @@ public class FXML_AbonosController implements Initializable {
         try {
             boxCliente_CxC = new SearchComboBox<>();
             boxCliente_CxC.setMinHeight(33);
-            boxCliente_CxC.setMinWidth(176);
+            boxCliente_CxC.setMinWidth(200);
             boxCliente_CxC.getSelectionModel().select(0);
             boxCliente_CxC.setPromptText("Selecionar Cliente");
             boxCliente_CxC.setFilter((CuentaXCobrar t, String u) -> (t.getCueCliente().getPersona().getPerCedula()).toUpperCase().contains(u.toUpperCase()));

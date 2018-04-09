@@ -276,6 +276,13 @@
                                  </children>
                               </AnchorPane>
                           </content>
+                           <graphic>
+                              <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../pictures/deal.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
                         </Tab>
                         <Tab onSelectionChanged="#tabCuentasChange" style="-fx-font: 150% sans-serif;" text="Cuentas por Pagar">
                            <content>
@@ -399,6 +406,9 @@
                                                    </tooltip>
                                                 </ComboBox>
                                              </children>
+                                             <rowConstraints>
+                                                <RowConstraints />
+                                             </rowConstraints>
                                           </GridPane>
                                           <DatePicker fx:id="dpkFechaAbono" maxWidth="1.7976931348623157E308" minHeight="30.0" promptText="Campo Requerido" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                              <GridPane.margin>
@@ -469,6 +479,13 @@
                                  </children>
                               </AnchorPane>
                            </content>
+                           <graphic>
+                              <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../pictures/bill.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
                         </Tab>
                         <Tab onSelectionChanged="#tabAbonosChange" style="-fx-font: 150% sans-serif;" text="Historial de Abonos">
                           <content>
@@ -511,6 +528,13 @@
                                  </children>
                               </AnchorPane>
                           </content>
+                           <graphic>
+                              <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../pictures/cash.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
                         </Tab>
                      </tabs>
                   </TabPane>

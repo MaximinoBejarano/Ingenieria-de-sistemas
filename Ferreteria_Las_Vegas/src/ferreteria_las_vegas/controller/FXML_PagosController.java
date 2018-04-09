@@ -213,7 +213,7 @@ public class FXML_PagosController implements Initializable {
                     AppContext.getInstance().set("Vuelto", Vuelto);
                     Lanzar_FXMLVuelto();
                     AppContext.getInstance().set("pago", true);
-                    InicializarVariables();
+                  
                 } else {
                     Message.getInstance().Error("Error", "No se ha logrado efectuar el pago");
                 }
@@ -393,9 +393,9 @@ public class FXML_PagosController implements Initializable {
 
     /*+++++++++++++++++++++++++++++++++++++++++++++++++++++++Metodos GUI-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
     public void CargarTotales() {
-        lblTotalNotaCredito.setText(String.valueOf(pMontoTotal));
-        lbl_TotalEfectivo.setText(String.valueOf(pMontoTotal));
-        lblTotalTarjeta.setText(String.valueOf(pMontoTotal));
+        lblTotalNotaCredito.setText(String.format("%.2f",pMontoTotal));
+        lbl_TotalEfectivo.setText(String.format("%.2f",pMontoTotal));
+        lblTotalTarjeta.setText(String.format("%.2f",pMontoTotal));
     }
 
     //Limpia los campos de la vista

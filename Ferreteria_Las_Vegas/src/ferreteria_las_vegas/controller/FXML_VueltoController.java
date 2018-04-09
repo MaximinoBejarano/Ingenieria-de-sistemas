@@ -55,7 +55,7 @@ public class FXML_VueltoController implements Initializable {
 
     @FXML
     private void btnSalir_Click(ActionEvent event) {
-          Stage stageAct = (Stage) btnSalir.getScene().getWindow();
+        Stage stageAct = (Stage) btnSalir.getScene().getWindow();
         stageAct.close();
     }
 
@@ -69,6 +69,7 @@ public class FXML_VueltoController implements Initializable {
      }
     }
   /*++++++++++++++++++++++++++++++++++++++++++++++++++++++Metodos Lanzadores+++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
     public void Lanzar_FXML_Facturacion() {
         try {
             ScenesManager.getInstance().LoadSceneFacturacion();
@@ -137,5 +138,5 @@ public class FXML_VueltoController implements Initializable {
 
     /*--------------------------------------------------------------------------------------------------------------*/
     WorkIndicatorDialog wd;
-    
+
 }
