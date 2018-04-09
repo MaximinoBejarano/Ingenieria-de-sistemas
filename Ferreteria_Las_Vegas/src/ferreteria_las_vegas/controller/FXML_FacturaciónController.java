@@ -138,7 +138,7 @@ public class FXML_FacturaciónController implements Initializable {
 
     @FXML
     private void btnCredito_Click(ActionEvent event) {
-         if (cliente != null) {
+        if (cliente != null) {
             if (!ListArticulos.isEmpty()) {
                 AgregarDatosfactura();
                 pFactura.setFactTipoFact("C");
@@ -151,7 +151,7 @@ public class FXML_FacturaciónController implements Initializable {
         } else {
             Message.getInstance().Information("Información:", "Es requerido seleccionar un cliente para la factura");
         }
-        
+
     }
 
     @FXML
@@ -159,10 +159,13 @@ public class FXML_FacturaciónController implements Initializable {
         if (cliente != null) {
             if (!ListArticulos.isEmpty()) {
                 AgregarDatosfactura();
-                pFactura.setFactTipoFact("P");
+                pFactura.setFactTipoFact("E");
                 AppContext.getInstance().set("Factura", pFactura);
                 AppContext.getInstance().set("ArticulosXFactura", listArticuloXFacturas);
-                Lanzar_FXMLPagos();
+                Lanzar_FXMLPagos(); 
+                if((boolean)AppContext.getInstance().get("pago")==true){
+                    Limpiar_Vista();
+                }
             } else {
                 Message.getInstance().Information("Información:", "Es requerido agregar articulos a la factura");
             }
@@ -209,15 +212,6 @@ public class FXML_FacturaciónController implements Initializable {
     public void AgregarDatosfactura() {
         pFactura = new Factura();
         listArticuloXFacturas = new ArrayList<>();
-        for (InventarioCompleto pCompleto : ListArticulos) {
-            ArticuloXFactura temp = new ArticuloXFactura();
-            temp.setArtPrecio(pCompleto.getPrecioArt());
-            temp.setArtCantidad(pCompleto.getCantArticulo());
-            temp.setArtArticulo(pCompleto.getArticulo());
-            temp.setArtDescuento(pCompleto.getArticulo().getArtDescuento());
-            temp.setArtCodigo(Integer.SIZE);
-            listArticuloXFacturas.add(temp);
-        }
         pFactura.setFacCliente(cliente);
         pFactura.setFacFecha(fecha);
         pFactura.setFatSubtotal(Subtotal);
@@ -226,6 +220,16 @@ public class FXML_FacturaciónController implements Initializable {
         pFactura.setFacTotal(Total);
         pFactura.setFactEstadoPago("A");
         pFactura.setFacEstado("A");
+        for (InventarioCompleto pCompleto : ListArticulos) {
+            ArticuloXFactura temp = new ArticuloXFactura();
+            temp.setArtPrecio(pCompleto.getArticulo().getArtPrecio());
+            temp.setArtCantidad(pCompleto.getCantArticulo());
+            temp.setArtArticulo(pCompleto.getArticulo());
+            temp.setArtCodigo(Integer.SIZE);
+            temp.setArtFactura(pFactura);
+            temp.setArtDescuento(pCompleto.getArticulo().getArtDescuento());
+            listArticuloXFacturas.add(temp);
+        }
 
     }
 
@@ -244,6 +248,13 @@ public class FXML_FacturaciónController implements Initializable {
 
             if ((pInventario.getInvCantidad() > cantidad) && (pInventario.getInvCantidad() - cantidad) > 5) {
                 return true;
+            } else {
+                if ((pInventario.getInvCantidad() >= cantidad) && (pInventario.getInvCantidad() - cantidad) >= 0) {
+
+                    Message.getInstance().Information("Información", "Artículo con pocas existencias en inventario,"
+                            + "\nCantida Actual: " + (pInventario.getInvCantidad() - cantidad));
+                    return true;
+                }
             }
         }
         return false;
@@ -260,7 +271,6 @@ public class FXML_FacturaciónController implements Initializable {
                 Descuento += (art.getCantArticulo() * art.getArticulo().getArtPrecio()) * art.getArticulo().getArtDescuento();
             }
         }
-
         ImpuestoVenta = (Subtotal - Descuento) * 0.13;
         Total = ((Subtotal - Descuento) + ImpuestoVenta);
         lblTotal.setText(String.valueOf(Total));
@@ -314,7 +324,7 @@ public class FXML_FacturaciónController implements Initializable {
                             Date.getRowValue().setCantArticulo(Integer.valueOf(Date.getNewValue()));
                             Calcular_Total();
                         } else {
-                            Message.getInstance().Information("Informació", "Artículo con pocas existencias en inventario, imposible incrementar cantida");
+                            Message.getInstance().Information("Informació", "Artículo sin existencias");
                         }
                     } else {
                         Date.getRowValue().setCantArticulo(Integer.valueOf(Date.getOldValue()));
@@ -337,7 +347,7 @@ public class FXML_FacturaciónController implements Initializable {
             ListArticulos.remove(tbl_Factura.getSelectionModel().getSelectedItem());
             Calcular_Total();
         } else {
-            Message.getInstance().Warning("Advertencia:", "Por favor seleccione el artí culo que desea eliminar");
+            Message.getInstance().Warning("Advertencia:", "Por favor seleccione el artículo que desea eliminar");
         }
     }
 
@@ -391,16 +401,16 @@ public class FXML_FacturaciónController implements Initializable {
 
                 //Si el articulo no existe en la lista se agrega uno nuevo
                 if (bandera) {
+                    pCompleto.setCantArticulo(1);
                     if (Validar_ExistenciaArticulo(pCompleto.getArticulo(), pCompleto.getCantArticulo())) {
-                        pCompleto.setCantArticulo(1);
                         ListArticulos.add(pCompleto);
                     } else {
                         Message.getInstance().Information("Información", "El artículo no se puede agregar debido a que se agoto o no existe en bodega");
                     }
                 }
             } else {
-                if (Validar_ExistenciaArticulo(pCompleto.getArticulo(), pCompleto.getCantArticulo())) {
-                    pCompleto.setCantArticulo(1);
+                 pCompleto.setCantArticulo(1);
+                if (Validar_ExistenciaArticulo(pCompleto.getArticulo(), pCompleto.getCantArticulo())) { 
                     ListArticulos.add(pCompleto);
                 } else {
                     Message.getInstance().Information("Información", "El artículo no se puede agregar debido a que se agoto o no existe en bodega");

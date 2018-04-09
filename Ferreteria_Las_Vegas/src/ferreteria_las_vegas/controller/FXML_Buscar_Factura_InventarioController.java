@@ -5,9 +5,7 @@
  */
 package ferreteria_las_vegas.controller;
 
-import ferreteria_las_vegas.model.controller.ArticuloJpaController;
 import ferreteria_las_vegas.model.controller.CompraJpaController;
-import ferreteria_las_vegas.model.entities.Articulo;
 import ferreteria_las_vegas.model.entities.Compra;
 import ferreteria_las_vegas.utils.AppContext;
 import ferreteria_las_vegas.utils.LoggerManager;
@@ -17,7 +15,6 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
