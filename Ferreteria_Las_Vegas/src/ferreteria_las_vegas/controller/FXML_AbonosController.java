@@ -116,7 +116,7 @@ public class FXML_AbonosController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-        nAbono = new Abono();
+        nAbono = null;
         tipPago = new TipoPago();
         Cuenta = null;
         pFactura=null;
