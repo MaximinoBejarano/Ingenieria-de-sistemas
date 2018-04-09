@@ -7,6 +7,7 @@ package ferreteria_las_vegas.model.controller;
 
 import ferreteria_las_vegas.model.entities.Factura;
 import ferreteria_las_vegas.model.entities.ArticuloXFactura;
+import ferreteria_las_vegas.model.entities.CuentaXCobrar;
 import ferreteria_las_vegas.model.entities.Pago;
 
 import ferreteria_las_vegas.utils.EntityManagerHelper;
@@ -91,6 +92,44 @@ public class FacturaJPAController {
         }
     }
 
+    /**
+     * Se agrega una nueva factura a credito a la base de datos
+     *
+     * @param pFactura
+     * @return
+     */
+    public Factura AgregarFactura_Credito(Factura pFactura,List<ArticuloXFactura> ListArticuloXFacturas,CuentaXCobrar pCuenta) {
+        et = em.getTransaction();
+        try {
+            et.begin();
+            em.persist(pFactura);
+            em.flush();
+            if (!ListArticuloXFacturas.isEmpty()) {
+                for (ArticuloXFactura Objeto : ListArticuloXFacturas) {
+                    em.persist(Objeto);
+                    em.flush();
+                    pFactura.getArticuloXFacturaList().add(Objeto);
+                }
+            }
+            if(pCuenta!=null){
+                em.persist(pCuenta);
+                em.flush();
+                pFactura.getCuentaXCobrarList().add(pCuenta);
+            }
+            em.merge(pFactura);
+            et.commit();
+            return pFactura;
+
+        } catch (EntityExistsException ex) {
+            et.rollback();
+            LoggerManager.Logger().info(ex.toString());
+            return null;
+        } catch (Exception ex) {
+            et.rollback();
+            LoggerManager.Logger().info(ex.toString());
+            return null;
+        }
+    }
     /**
      * Metodo para realizar la modificación de un registro de Factura
      *

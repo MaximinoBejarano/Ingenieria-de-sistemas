@@ -12,6 +12,7 @@ import ferreteria_las_vegas.model.entities.Factura;
 import ferreteria_las_vegas.model.entities.Articulo;
 import ferreteria_las_vegas.model.entities.ArticuloXFactura;
 import ferreteria_las_vegas.model.entities.Cliente;
+import ferreteria_las_vegas.model.entities.CuentaXCobrar;
 import ferreteria_las_vegas.model.entities.Inventario;
 import ferreteria_las_vegas.model.entities.Persona;
 import ferreteria_las_vegas.utils.AppContext;
@@ -116,9 +117,7 @@ public class FXML_FacturaciónController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         lblFecha.setText(formatter.format(fecha.getTime()));
-        cliente = null;
-        pFactura = null;
-        ListArticulos = new ArrayList<>();
+        InicializarValores();
     }
 
     @FXML
@@ -141,10 +140,7 @@ public class FXML_FacturaciónController implements Initializable {
         if (cliente != null) {
             if (!ListArticulos.isEmpty()) {
                 AgregarDatosfactura();
-                pFactura.setFactTipoFact("C");
-                AppContext.getInstance().set("Factura", pFactura);
-                AppContext.getInstance().set("ArticulosXFactura", listArticuloXFacturas);
-                Lanzar_FXML_Abonos();
+                AgregarFacturaCredito();
             } else {
                 Message.getInstance().Information("Información:", "Es requerido agregar articulos a la factura");
             }
@@ -159,12 +155,15 @@ public class FXML_FacturaciónController implements Initializable {
         if (cliente != null) {
             if (!ListArticulos.isEmpty()) {
                 AgregarDatosfactura();
+                pFactura.setFactEstadoPago("I");
                 pFactura.setFactTipoFact("E");
                 AppContext.getInstance().set("Factura", pFactura);
                 AppContext.getInstance().set("ArticulosXFactura", listArticuloXFacturas);
-                Lanzar_FXMLPagos(); 
-                if((boolean)AppContext.getInstance().get("pago")==true){
+                Lanzar_FXMLPagos();
+                //Se encarga de volver al estado inicial la pantalla de factura si esta ya fue cancelada
+                if ((boolean) AppContext.getInstance().get("pago") == true) {
                     Limpiar_Vista();
+                    InicializarValores();
                 }
             } else {
                 Message.getInstance().Information("Información:", "Es requerido agregar articulos a la factura");
@@ -234,6 +233,36 @@ public class FXML_FacturaciónController implements Initializable {
     }
 
     /**
+     * Se registra una factura a credito
+     */
+    public void AgregarFacturaCredito() {
+        CuentaXCobrar pCuentaXCobrar = new CuentaXCobrar();
+        try {
+            if (pFactura != null) {
+                pFactura.setFactTipoFact("K");
+                pCuentaXCobrar.setCueCliente(pFactura.getFacCliente());
+                pCuentaXCobrar.setCueCodigo(Integer.SIZE);
+                pCuentaXCobrar.setCueSaldo(pFactura.getFacTotal());
+                pCuentaXCobrar.setCueSaldoFac(pFactura.getFacTotal());
+                pCuentaXCobrar.setCueFactura(pFactura);
+                pCuentaXCobrar.setCueEstado("A");
+                if (FacturaJPAController.getInstance().AgregarFactura_Credito(pFactura,listArticuloXFacturas,pCuentaXCobrar) != null) {
+                    if(Message.getInstance().Confirmation("Confirmación","Factura ingresada con exito desea realizar un abono")){
+                       Lanzar_FXML_Abonos();
+                    }else{
+                      Limpiar_Vista();
+                      InicializarValores();
+                    }
+                } else {
+                    Message.getInstance().Error("Error", "Error al registrar la factura");
+                }
+            }
+        } catch (Exception ex) {
+            LoggerManager.Logger().info(ex.toString());
+        }
+    }
+
+    /**
      * Se valida la existencia de un artículo en inventario y si posee con una
      * cantidad suficinte para cubrir con la demanda del producto
      *
@@ -273,7 +302,7 @@ public class FXML_FacturaciónController implements Initializable {
         }
         ImpuestoVenta = (Subtotal - Descuento) * 0.13;
         Total = ((Subtotal - Descuento) + ImpuestoVenta);
-        lblTotal.setText(String.valueOf(Total));
+        lblTotal.setText(String.format("%.2f",Total));
 
     }
 
@@ -409,8 +438,8 @@ public class FXML_FacturaciónController implements Initializable {
                     }
                 }
             } else {
-                 pCompleto.setCantArticulo(1);
-                if (Validar_ExistenciaArticulo(pCompleto.getArticulo(), pCompleto.getCantArticulo())) { 
+                pCompleto.setCantArticulo(1);
+                if (Validar_ExistenciaArticulo(pCompleto.getArticulo(), pCompleto.getCantArticulo())) {
                     ListArticulos.add(pCompleto);
                 } else {
                     Message.getInstance().Information("Información", "El artículo no se puede agregar debido a que se agoto o no existe en bodega");
@@ -422,7 +451,6 @@ public class FXML_FacturaciónController implements Initializable {
         } catch (Exception ex) {
             System.err.println(ex);
         }
-
     }
 
     public void Limpiar_Vista() {
@@ -431,6 +459,12 @@ public class FXML_FacturaciónController implements Initializable {
         lblFecha.setText(formatter.format(fecha.getTime()));
         txtCodigoArticulo.setText("");
         tbl_Factura.getItems().clear();
+    }
+
+    public void InicializarValores() {
+        cliente = null;
+        pFactura = null;
+        ListArticulos = new ArrayList<>();
     }
 
     /*++++++++++++++++++++++++++++++++++++++++++++++++++++++Metodos Lanzadores+++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/

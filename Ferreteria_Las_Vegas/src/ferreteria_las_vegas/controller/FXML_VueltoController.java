@@ -44,12 +44,14 @@ public class FXML_VueltoController implements Initializable {
 
     @FXML
     private void btnSalir_Click(ActionEvent event) {
-          Stage stageAct = (Stage) btnSalir.getScene().getWindow();
+        Stage stageAct = (Stage) btnSalir.getScene().getWindow();
         stageAct.close();
     }
 
     @FXML
     private void btnConfirmar_Click(ActionEvent event) {
+        Stage stageAct = (Stage) btnConfirmar.getScene().getWindow();
+        stageAct.close();
           
     }
     
@@ -62,12 +64,4 @@ public class FXML_VueltoController implements Initializable {
      }
     }
   /*++++++++++++++++++++++++++++++++++++++++++++++++++++++Metodos Lanzadores+++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-    public void Lanzar_FXML_Facturacion() {
-        try {
-            ScenesManager.getInstance().LoadSceneFacturacion();
-        } catch (IOException ex) {
-            Message.getInstance().Error("Error", "Ocurrió un error y no se pudo lanzar la pantalla de Facturación.");
-            LoggerManager.Logger().info(ex.toString());
-        }
-    }
 }
