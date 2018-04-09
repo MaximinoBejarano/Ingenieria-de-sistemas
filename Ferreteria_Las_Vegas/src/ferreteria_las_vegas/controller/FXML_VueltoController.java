@@ -25,6 +25,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 /**
@@ -39,7 +40,16 @@ public class FXML_VueltoController implements Initializable {
 
     @FXML
     private Label lblVuelto;
+    
+    @FXML
+    private AnchorPane acpVuelto;
 
+        @FXML
+    private Button btnImprimir;
+
+ 
+
+    
     /**
      * Initializes the controller class.
      */
@@ -49,8 +59,6 @@ public class FXML_VueltoController implements Initializable {
         lblVuelto.setText("");
         
         CargarVueto();
-         AppContext.getInstance().set("seleccion-FacReimprecion", false);
-        ProcesoGenerarFactura();
     }    
 
     @FXML
@@ -70,6 +78,12 @@ public class FXML_VueltoController implements Initializable {
     }
   /*++++++++++++++++++++++++++++++++++++++++++++++++++++++Metodos Lanzadores+++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
+       @FXML
+    void btnImprimirClick(ActionEvent event) {
+         AppContext.getInstance().set("seleccion-FacReimprecion", false);
+        ProcesoGenerarFactura();
+    }
+    
     public void Lanzar_FXML_Facturacion() {
         try {
             ScenesManager.getInstance().LoadSceneFacturacion();
@@ -78,9 +92,10 @@ public class FXML_VueltoController implements Initializable {
             LoggerManager.Logger().info(ex.toString());
         }
     }
-        private void ProcesoGenerarFactura() {
+   
+    private void ProcesoGenerarFactura() {
         try {
-            wd = new WorkIndicatorDialog(btnSalir.getScene().getWindow(), "Imprimiendo...");
+            wd = new WorkIndicatorDialog(btnImprimir.getScene().getWindow(), "Imprimiendo...");
 
             wd.exec("123", inputParam -> {
                 try {
@@ -97,8 +112,7 @@ public class FXML_VueltoController implements Initializable {
                     return 2;
                 }
             });
-
-
+            
         } catch (Exception ex) {
             LoggerManager.Logger().info(ex.toString());
             new Alert(Alert.AlertType.ERROR, "Ocurrio un error al generar la factura. El codigo de error es " + "el siguiente: " + ex, ButtonType.OK).showAndWait();

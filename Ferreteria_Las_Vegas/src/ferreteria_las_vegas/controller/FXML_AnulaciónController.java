@@ -160,6 +160,7 @@ public class FXML_AnulaciónController implements Initializable {
     private void btnReimprimirFactura(ActionEvent event) {
         AppContext.getInstance().set("seleccion-FacReimprecion", true);
         ProcesoGenerarFactura();
+       
 
     }
 
@@ -228,7 +229,7 @@ public class FXML_AnulaciónController implements Initializable {
                     return 2;
                 }
             });
-            LimpiarInterface();
+            
         } catch (Exception ex) {
             LoggerManager.Logger().info(ex.toString());
             new Alert(Alert.AlertType.ERROR, "Ocurrio un error al generar la factura. El codigo de error es " + "el siguiente: " + ex, ButtonType.OK).showAndWait();
