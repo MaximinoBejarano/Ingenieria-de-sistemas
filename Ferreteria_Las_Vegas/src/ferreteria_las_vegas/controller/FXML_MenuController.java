@@ -205,13 +205,14 @@ public class FXML_MenuController implements Initializable {
     }
 
     @FXML
-    void btnEstadisticasClick(ActionEvent event) {
-        /*try {
+    void btnEstadisticasClick(ActionEvent event) {                   
+        try {
             fechaHora.stop();
+            ScenesManager.getInstance().LoadSceneEstadistica();
         } catch (IOException ex) {
             Message.getInstance().Error("Error", "Ocurrió un error y no se pudo lanzar la pantalla de estadisticas.");
             LoggerManager.Logger().info(ex.toString());
-        }*/
+        }
     }
 
     @FXML

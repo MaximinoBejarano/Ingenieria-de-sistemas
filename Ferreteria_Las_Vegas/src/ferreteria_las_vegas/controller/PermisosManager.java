@@ -24,9 +24,7 @@ public class PermisosManager {
 
     private static void createInstance() {
         if (INSTANCE == null) {
-
             synchronized (PermisosManager.class) {
-
                 if (INSTANCE == null) {
                     INSTANCE = new PermisosManager();
                 }
@@ -69,8 +67,8 @@ public class PermisosManager {
         btnEmpleados.setDisable(true);
         btnProveedores.setDisable(true);
         btnAnulacion.setDisable(true);
-        btnEstadisticas.setDisable(true);
-        btnConfiguraciones.setDisable(true);
+        //btnEstadisticas.setDisable(true);
+        //btnConfiguraciones.setDisable(true);
 
         for (Permiso permiso : usuario.getPermisoList()) {
 

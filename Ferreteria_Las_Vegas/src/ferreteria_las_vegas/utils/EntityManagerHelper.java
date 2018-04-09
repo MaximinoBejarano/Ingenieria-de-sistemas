@@ -33,7 +33,7 @@ public class EntityManagerHelper {
         return SINGLENTON;
     }
 
-    public static EntityManager getManager() {
+    public EntityManager getManager() {
         if (em == null) {
             emf = Persistence.createEntityManagerFactory("Ferreteria_Las_VegasPU");
             em = emf.createEntityManager();

@@ -27,7 +27,7 @@ public class Ferreteria_Las_Vegas extends Application {
             Message.getInstance().Error("Error", "Ocurrió un error y no se pudo lanzar la aplicación.");            
             LoggerManager.Logger().info(ex.toString());
             LoggerManager.Close();
-        }
+        }                
     }
     
     @Override
