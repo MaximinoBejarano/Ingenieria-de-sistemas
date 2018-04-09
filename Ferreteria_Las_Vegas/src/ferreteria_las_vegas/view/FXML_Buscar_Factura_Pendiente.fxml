@@ -94,6 +94,7 @@
                      <columns>
                         <TableColumn fx:id="tcCliente" maxWidth="1.7976931348623157E308" minWidth="147.0" prefWidth="216.0" text="Cliente " />
                         <TableColumn fx:id="tcSubtotal" maxWidth="321.0" minWidth="100.0" prefWidth="174.0" text="Subtotal" />
+                        <TableColumn fx:id="tcDescuento" maxWidth="321.0" minWidth="100.0" prefWidth="174.0" text="Descuento" />
                         <TableColumn fx:id="tcIVA" maxWidth="273.0" minWidth="150.0" prefWidth="228.0" text="IVA" />
                         <TableColumn fx:id="tcMontoTotal" maxWidth="160.0" minWidth="160.0" prefWidth="160.0" text="Monto Total de la Factura" />
                      </columns>

@@ -47,6 +47,8 @@ public class FXML_Buscar_FacturaPendiente_Controller implements Initializable {
     @FXML
     private TableColumn<Factura, String> tcSubtotal;
     @FXML
+    private TableColumn<Factura, String> tcDescuento;
+    @FXML
     private TableColumn<Factura, String> tcIVA;
     @FXML
     private TableColumn<Factura, String> tcMontoTotal;
@@ -87,6 +89,7 @@ public class FXML_Buscar_FacturaPendiente_Controller implements Initializable {
         tcCliente.setCellValueFactory((cellData -> new SimpleStringProperty(cellData.getValue().getFacCliente().getCliPersona())));
         tcIVA.setCellValueFactory((cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getFacImpVentas()))));
         tcSubtotal.setCellValueFactory((cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getFatSubtotal()))));
+        tcDescuento.setCellValueFactory(cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getFacDescuento())));
         tcMontoTotal.setCellValueFactory((cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getFacTotal()))));
 
         List<Factura> List = (List<Factura>) AppContext.getInstance().get("ListPedidos");
