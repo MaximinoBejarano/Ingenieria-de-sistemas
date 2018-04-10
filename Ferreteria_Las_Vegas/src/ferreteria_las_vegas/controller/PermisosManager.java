@@ -8,8 +8,6 @@ package ferreteria_las_vegas.controller;
 import ferreteria_las_vegas.model.entities.Permiso;
 import ferreteria_las_vegas.model.entities.Usuario;
 import ferreteria_las_vegas.utils.LoggerManager;
-import ferreteria_las_vegas.utils.Message;
-import java.io.IOException;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Tab;

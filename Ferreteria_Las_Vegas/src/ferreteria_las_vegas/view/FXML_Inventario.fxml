@@ -389,7 +389,7 @@
                         <TableColumn fx:id="tcNombreProducto" maxWidth="170.0" minWidth="100.0" prefWidth="150.0" text="Nombre" />
                         <TableColumn fx:id="tcMarcaProducto" maxWidth="190.0" minWidth="100.0" prefWidth="150.0" text="Marca" />
                         <TableColumn fx:id="tcUnidadProducto" maxWidth="150.0" minWidth="100.0" prefWidth="150.0" text="Unidad/Medida" />
-                        <TableColumn fx:id="tcDescripcionProducto" maxWidth="1.7976931348623157E308" minWidth="100.0" prefWidth="250.0" text="Descripción" />
+                        <TableColumn fx:id="tcDescripcionProducto" maxWidth="1.7976931348623157E308" minWidth="100.0" prefWidth="150.0" text="Descripción" />
                         <TableColumn fx:id="tcPrcioProducto" maxWidth="150.0" minWidth="100.0" prefWidth="150.0" text="Precio (₡)" />
                         <TableColumn fx:id="tcCantidad" maxWidth="100.0" minWidth="60.0" prefWidth="100.0" text="Cantidad" />
                      </columns>
