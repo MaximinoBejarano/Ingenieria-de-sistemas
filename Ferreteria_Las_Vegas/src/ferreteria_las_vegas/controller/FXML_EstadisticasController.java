@@ -27,6 +27,7 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.TabPane;
 
 /**
@@ -92,6 +93,19 @@ public class FXML_EstadisticasController implements Initializable {
 
     @FXML
     private DatePicker dpkMCFechaFinal;
+    
+    /*---------Parte de Cierre---------*/
+    @FXML
+    private Label lblDiario;
+
+    @FXML
+    private Label lblFC;
+
+    @FXML
+    private Label lblNC;
+
+    @FXML
+    private Label lblFCO;
 
 
     /*--------------------------------------------------------------------------------------------------------------*/
