@@ -109,7 +109,7 @@
          <center>
             <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER">
                <children>
-                  <TabPane layoutX="16.0" layoutY="2.0" prefHeight="519.0" prefWidth="682.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <TabPane fx:id="tabPane" layoutX="16.0" layoutY="2.0" prefHeight="519.0" prefWidth="682.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <tabs>
                       <Tab fx:id="tabNuevo" style="-fx-font: 150% sans-serif;" text="Nuevo">
                         <content>

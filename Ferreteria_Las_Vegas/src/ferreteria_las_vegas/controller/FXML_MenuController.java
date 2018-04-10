@@ -220,7 +220,7 @@ public class FXML_MenuController implements Initializable {
     void btnConfiguracionesClick(ActionEvent event) {
         try {
             fechaHora.stop();
-            ScenesManager.getInstance().LoadSceneConfiguracion();
+            ScenesManager.getInstance().LoadSceneParametros();
         } catch (IOException ex) {
             Message.getInstance().Error("Error", "Ocurrió un error y no se pudo lanzar la pantalla de configuraciones.");
             LoggerManager.Logger().info(ex.toString());

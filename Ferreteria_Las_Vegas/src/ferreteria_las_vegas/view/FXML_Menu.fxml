@@ -279,7 +279,7 @@
                               <DropShadow />
                            </effect>
                            <tooltip>
-                              <Tooltip text="Configuraciones" />
+                              <Tooltip text="Parametros" />
                            </tooltip>
                            <cursor>
                               <Cursor fx:constant="HAND" />
