@@ -61,6 +61,21 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </Button>
+                  <Button fx:id="btnLimpiar" layoutX="14.0" layoutY="6.0" minHeight="80.0" mnemonicParsing="false" onAction="#btnLimpiarFactura_Click" prefWidth="80.0" styleClass="botones_Mantenimiento" stylesheets="@../../styles/style.css">
+                     <graphic>
+                        <ImageView fitHeight="60.0" fitWidth="65.0" pickOnBounds="true" preserveRatio="true">
+                           <effect>
+                              <DropShadow />
+                           </effect>
+                           <image>
+                              <Image url="@../../pictures/refresh.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <tooltip>
+                        <Tooltip text="Limpiar factura" />
+                     </tooltip>
+                  </Button>
                </children></AnchorPane>
          </bottom>
          <center>
