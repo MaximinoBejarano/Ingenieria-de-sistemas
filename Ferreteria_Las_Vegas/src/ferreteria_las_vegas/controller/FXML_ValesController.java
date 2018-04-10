@@ -10,6 +10,7 @@ import ferreteria_las_vegas.model.entities.ArticuloXFactura;
 import ferreteria_las_vegas.model.entities.Factura;
 import ferreteria_las_vegas.model.entities.NotaCredito;
 import ferreteria_las_vegas.utils.AppContext;
+import ferreteria_las_vegas.utils.GeneralUtils;
 import ferreteria_las_vegas.utils.LoggerManager;
 import ferreteria_las_vegas.utils.Message;
 import ferreteria_las_vegas.utils.PrinterManagerFacturacion;
@@ -126,6 +127,7 @@ public class FXML_ValesController implements Initializable {
 
         try {
             Factura pFactura = (Factura) AppContext.getInstance().get("seleccion-FacCliente");
+            if(pFactura!=null){
             if (pFactura.getFactTipoFact().equals("E")) {
                 NotaCredito pNotaCredito = new NotaCredito();
                 pNotaCredito.setNotCodigo(Integer.SIZE);
@@ -140,11 +142,15 @@ public class FXML_ValesController implements Initializable {
                     AppContext.getInstance().set("seleccion-vales", new NotaCreditoJPAController().InsertarNotaCredito(pNotaCredito));
                     ProcesoGenerarFactura();
                     Message.getInstance().Information("Éxito", "Se creo el vale con éxito");
+                    LimpiarInterface();
                 } else {
                     Message.getInstance().Error("Error", "Ya se encuentra una nota de crédito registrada con este código de factura");
                 }
             } else {
                 Message.getInstance().Error("Error", "Éste proceso solo es permitido para facturas de Cóntado");
+            }
+            }else{
+                Message.getInstance().Error("Error", "Para poder realizar este proceso se debe cargar una Factura.");
             }
         } catch (Exception ex) {
             Message.getInstance().Error("Error", "Ocurrió un error al intentar cargar los datos de la factura. "
@@ -178,22 +184,32 @@ public class FXML_ValesController implements Initializable {
                         + "El codigo de error es: " + ex.toString());
                 LoggerManager.Logger().info(ex.toString());
             }
-        }else{
-        if(!txtNumVale.getText().isEmpty()){
-            BuscarVales();
-        }else{
-        Message.getInstance().Error("Error", "Se necesita Ingresar un número de vale para realizar la busqueda");
-        }
-        
+        } else {
+            if (!txtNumVale.getText().isEmpty()) {
+                BuscarVales();
+            } else {
+                Message.getInstance().Error("Error", "Se necesita Ingresar un número de vale para realizar la busqueda");
+            }
+
         }
     }
 
     @FXML
     private void btnEliminarValesClick(ActionEvent event) {
+        NotaCredito pCredito=(NotaCredito)AppContext.getInstance().get("seleccion-vales");
+        if(pCredito!=null){
+            pCredito.setNotEstado("I");
+            new NotaCreditoJPAController().ModificarNotaCredito(pCredito);
+            Message.getInstance().Information("Información", "Se logro eliminar con exito el vale.");
+            LimpiarInterface();
+        }else{
+         Message.getInstance().Error("Error", "Se necesita buscar un vale.");
+        }
     }
 
     @FXML
     private void btnLimpiarCampos(ActionEvent event) {
+        LimpiarInterface();
     }
 
     @FXML
@@ -205,13 +221,14 @@ public class FXML_ValesController implements Initializable {
         try {
             NotaCredito pCredito = new NotaCreditoJPAController().ConsultarNotaCredito(Integer.valueOf(txtNumVale.getText()));
             txtNumVale.setText(String.format("%08d", Integer.valueOf(txtNumVale.getText())));
+            
             if (pCredito != null && pCredito.getNotEstado().equals("A")) {
                 lblVales.setText("Sin Utilizar");
                 lblNumFacVales.setText(pCredito.getNotFactura().getFacCodigo().toString());
                 lblMontoVale.setText(String.format("%.2f", pCredito.getNotMonto()));
                 lblFechaEmisionVale.setText(formateador.format(pCredito.getNotFecha()));
                 txaJustuficacionVales.setText(pCredito.getNotJustificacion());
-
+                AppContext.getInstance().set("seleccion-vales", pCredito);
             } else {
                 Message.getInstance().Error("Error", "No se encontro el número de vale o el vale ya fue cobrado.");
             }
@@ -224,6 +241,7 @@ public class FXML_ValesController implements Initializable {
 
     @FXML
     private void txtNumValeTyped(KeyEvent event) {
+         GeneralUtils.getInstance().ValidarCampos(true, txtNumVale.getText().length(), 8, event);
     }
 
     public void LanzarFacturas() {
@@ -271,6 +289,12 @@ public class FXML_ValesController implements Initializable {
         tblListaArticulos.getItems().clear();
         AppContext.getInstance().set("seleccion-FacCliente", null);
         AppContext.getInstance().set("seleccion-vales", null);
+        txtNumVale.setText("");
+        lblVales.setText("");
+        lblNumFacVales.setText("");
+        lblMontoVale.setText("");
+        lblFechaEmisionVale.setText("");
+        txaJustuficacionVales.setText("");
     }
 
     private void ProcesoGenerarFactura() {
