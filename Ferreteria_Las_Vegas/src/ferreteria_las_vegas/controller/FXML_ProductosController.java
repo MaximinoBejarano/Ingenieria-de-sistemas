@@ -168,6 +168,8 @@ public class FXML_ProductosController implements Initializable {
                 if (articulo != null) {
                     Message.getInstance().Information("Información:", "Se han ingresado los datos de forma exitosa ");
                     LimpiarCampos();
+                    Stage stageAct = (Stage) btnSalir.getScene().getWindow();
+                    stageAct.close();
                 } else {
                     Message.getInstance().Error("Error:", "No se han guardado los datos");
                 }
@@ -237,7 +239,7 @@ public class FXML_ProductosController implements Initializable {
      */
     private Articulo ExtraerDatos(Articulo pArticulo) {
         try {
-            double Precio = Double.valueOf(String.format("%.2f",txtPrecio.getText()));
+            double Precio = Double.valueOf(txtPrecio.getText());
             double Descuento;
             if (pArticulo.getArtCodigo() == null) {
                 pArticulo = new Articulo(Integer.SIZE, txtNombre.getText(), txtDescripcion.getText(), txtMarca.getText(), txtUndMedida.getText(), Precio, "A");

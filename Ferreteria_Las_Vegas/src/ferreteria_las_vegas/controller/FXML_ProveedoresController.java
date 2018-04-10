@@ -221,16 +221,16 @@ public class FXML_ProveedoresController implements Initializable {
     @FXML
     void btnSalirClick(ActionEvent event) {
         try {
-            ScenesManager.getInstance().LoadSceneMenu();
+            ScenesManager.getInstance().LoadSceneAnterior();
         } catch (IOException ex) {
-            Message.getInstance().Error("Error", "Ocurrió un error y no se pudo volver a la pantalla de menú.");
+            Message.getInstance().Error("Error", "Ocurrió un error y no se pudo volver a la pantalla anterior.");
             LoggerManager.Logger().info(ex.toString());
         }
     }
 
     @FXML
     void txtCedulaJuridicaTyped(KeyEvent event) {
-        GeneralUtils.getInstance().ValidarCampos(true, txtCedulaJuridica.getText().length(), 30, event);
+        GeneralUtils.getInstance().ValidarCampos(false, txtCedulaJuridica.getText().length(), 30, event);
     }
 
     @FXML
