@@ -281,11 +281,11 @@ public class FXML_InventarioController implements Initializable {
 
     @FXML
     private void BuscarFacturaInventario(ActionEvent event) {
-        try {
-            LimpiarInterface();
+        try {            
             LanzarBusquedaFactura();
             Compra pCompra = (Compra) AppContext.getInstance().get("seleccion-FacInventario");
             if (pCompra != null) {
+                LimpiarInterface();
                 boxProveedores.getSelectionModel().select(pCompra.getComProveedor());
                 txtNomProveedor.setText(pCompra.getComNombre());
                 txtNumFactura.setText(pCompra.getComNumeroFact());
