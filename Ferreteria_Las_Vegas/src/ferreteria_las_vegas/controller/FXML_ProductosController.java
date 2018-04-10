@@ -11,6 +11,7 @@ import ferreteria_las_vegas.model.controller.ArticuloJpaController;
 import ferreteria_las_vegas.model.entities.Articulo;
 import ferreteria_las_vegas.utils.AppContext;
 import ferreteria_las_vegas.utils.GeneralUtils;
+import ferreteria_las_vegas.utils.LoggerManager;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.beans.value.ChangeListener;
@@ -127,12 +128,12 @@ public class FXML_ProductosController implements Initializable {
 
     @FXML
     private void KeyTyped_txtPrecio(KeyEvent event) {
-       GeneralUtils.getInstance().ValidarCampos(true, txtPrecio.getText().length(), 10, event);
+        GeneralUtils.getInstance().ValidarCampos(true, txtPrecio.getText().length(), 10, event);
     }
 
     @FXML
     private void KeyType_txtDescuento(KeyEvent event) {
-       GeneralUtils.getInstance().ValidarCampos(true, txtDescuento.getText().length(),4, event);
+        GeneralUtils.getInstance().ValidarCampos(true, txtDescuento.getText().length(), 4, event);
         txtDescuento.focusedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
@@ -149,35 +150,40 @@ public class FXML_ProductosController implements Initializable {
     @FXML
     private void KeyTyped_txtUndMedida(KeyEvent event) {
     }
+
     @FXML
     void txtCodBarras_OnAction(ActionEvent event) {
-     
+
     }
-    
+
     //*****************************************************++ Area de Procesos ++****************************************************************+
     /**
      * Se realiza la insercion de articulos a la Base de datos
      */
     private void GuardarProducto() {
-        Articulo articulo = new Articulo();
-        articulo = ExtraerDatos(articulo);
-        if (ArticuloJpaController.getInstance().ConsultarArticuloCodBarras(articulo.getArtCodBarra()) == null) {
-            if (ArticuloJpaController.getInstance().ComprobarExistenciaArticulo(articulo) == null) {
-                articulo = ArticuloJpaController.getInstance().InsertarArticulo(articulo);
-                AppContext.getInstance().set("articulo-Ingresado", articulo);
-                if (articulo != null) {
-                    Message.getInstance().Information("Información:", "Se han ingresado los datos de forma exitosa ");
-                    LimpiarCampos();
-                    Stage stageAct = (Stage) btnSalir.getScene().getWindow();
-                    stageAct.close();
+        try {
+            Articulo articulo = new Articulo();
+            articulo = ExtraerDatos(articulo);
+            if (ArticuloJpaController.getInstance().ConsultarArticuloCodBarras(articulo.getArtCodBarra()) == null) {
+                if (ArticuloJpaController.getInstance().ComprobarExistenciaArticulo(articulo) == null) {
+                    articulo = ArticuloJpaController.getInstance().InsertarArticulo(articulo);
+                    AppContext.getInstance().set("articulo-Ingresado", articulo);
+                    if (articulo != null) {
+                        Message.getInstance().Information("Información:", "Se han ingresado los datos de forma exitosa ");
+                        LimpiarCampos();
+                        Stage stageAct = (Stage) btnSalir.getScene().getWindow();
+                        stageAct.close();
+                    } else {
+                        Message.getInstance().Error("Error:", "No se han guardado los datos");
+                    }
                 } else {
-                    Message.getInstance().Error("Error:", "No se han guardado los datos");
+                    Message.getInstance().Warning("Cuidado:", "Este articulo ya existe registrado");
                 }
             } else {
-                Message.getInstance().Warning("Cuidado:", "Este articulo ya existe registrado");
+                Message.getInstance().Warning("Cuidado:", "Existe un articulo con este Codigo");
             }
-        } else {
-            Message.getInstance().Warning("Cuidado:", "Existe un articulo con este Codigo");
+        } catch (Exception ex) {
+            LoggerManager.Logger().info(ex.toString().concat(" Error en el proceso del registro del producto"));
         }
     }
 
@@ -186,25 +192,29 @@ public class FXML_ProductosController implements Initializable {
      * registrado en la base de datos
      */
     private void EditarProductos() {
-        Articulo pArticulo = (Articulo) AppContext.getInstance().get("seleccion-Articulo");
-        if (pArticulo != null) {
-            pArticulo = ArticuloJpaController.getInstance().ConsultarArticuloCodigo(pArticulo.getArtCodigo());
+        try {
+            Articulo pArticulo = (Articulo) AppContext.getInstance().get("seleccion-Articulo");
             if (pArticulo != null) {
-                pArticulo = ExtraerDatos(pArticulo);
-                pArticulo = ArticuloJpaController.getInstance().ModificarArticulos(pArticulo);
+                pArticulo = ArticuloJpaController.getInstance().ConsultarArticuloCodigo(pArticulo.getArtCodigo());
                 if (pArticulo != null) {
-                    Message.getInstance().Confirmation("Confirmación", "Se edito el articulo con exito");
-                    btnEditarProducto.setDisable(true);
-                    btnEliminarProducto.setDisable(true);
-                    LimpiarCampos();
+                    pArticulo = ExtraerDatos(pArticulo);
+                    pArticulo = ArticuloJpaController.getInstance().ModificarArticulos(pArticulo);
+                    if (pArticulo != null) {
+                        Message.getInstance().Confirmation("Confirmación", "Se edito el articulo con exito");
+                        btnEditarProducto.setDisable(true);
+                        btnEliminarProducto.setDisable(true);
+                        LimpiarCampos();
+                    } else {
+                        Message.getInstance().Error("Error:", "Ocurrio un error y no se pudo editar el Producto");
+                    }
                 } else {
-                    Message.getInstance().Error("Error:", "Ocurrio un error y no se pudo editar el Producto");
+                    Message.getInstance().Warning("Cuidado:", "No existe un Producto con el codigo ingresado");
                 }
             } else {
-                Message.getInstance().Warning("Cuidado:", "No existe un Producto con el codigo ingresado");
+                Message.getInstance().Warning("Cuidado:", "Debe consultar un producto existente");
             }
-        } else {
-            Message.getInstance().Warning("Cuidado:", "Debe consultar un producto existente");
+        } catch (Exception ex) {
+            LoggerManager.Logger().info(ex.toString().concat(" Error en el proceso de modificación del producto"));
         }
     }
 
@@ -213,23 +223,27 @@ public class FXML_ProductosController implements Initializable {
      * de Activo a Inactivo
      */
     private void EliminarProductos() {
-        Articulo pArticulo = (Articulo) AppContext.getInstance().get("seleccion-Articulo");
-        if (pArticulo != null) {
-            pArticulo = ArticuloJpaController.getInstance().ConsultarArticuloCodigo(pArticulo.getArtCodigo());
-            pArticulo.setArtEstado("I");
+        try {
+            Articulo pArticulo = (Articulo) AppContext.getInstance().get("seleccion-Articulo");
             if (pArticulo != null) {
-                pArticulo = ArticuloJpaController.getInstance().ModificarArticulos(pArticulo);
+                pArticulo = ArticuloJpaController.getInstance().ConsultarArticuloCodigo(pArticulo.getArtCodigo());
+                pArticulo.setArtEstado("I");
                 if (pArticulo != null) {
-                    Message.getInstance().Confirmation("Confirmación", "Se elimino el Producto con exito");
-                    btnEditarProducto.setDisable(true);
-                    btnEliminarProducto.setDisable(true);
-                    LimpiarCampos();
+                    pArticulo = ArticuloJpaController.getInstance().ModificarArticulos(pArticulo);
+                    if (pArticulo != null) {
+                        Message.getInstance().Confirmation("Confirmación", "Se elimino el Producto con exito");
+                        btnEditarProducto.setDisable(true);
+                        btnEliminarProducto.setDisable(true);
+                        LimpiarCampos();
+                    } else {
+                        Message.getInstance().Error("Error:", "Ocurrio un error y no se pudo eliminar el Producto");
+                    }
                 } else {
-                    Message.getInstance().Error("Error:", "Ocurrio un error y no se pudo eliminar el Producto");
+                    Message.getInstance().Warning("Cuidado:", "No existe un Producto con el codigo ingresado");
                 }
-            } else {
-                Message.getInstance().Warning("Cuidado:", "No existe un Producto con el codigo ingresado");
             }
+        } catch (Exception ex) {
+            LoggerManager.Logger().info(ex.toString().concat(" Error en el proceso de eliminación del producto"));
         }
     }
 
@@ -270,6 +284,7 @@ public class FXML_ProductosController implements Initializable {
             return pArticulo;
         } catch (Exception e) {
             System.err.println(e);
+            LoggerManager.Logger().info(e.toString().concat(" Error al extrar los datos de la vista en articulos"));
             return null;
         }
     }
@@ -285,30 +300,35 @@ public class FXML_ProductosController implements Initializable {
     }
 
     public void CargasDatos() {
-        Articulo pArticulo = (Articulo) AppContext.getInstance().get("seleccion-Articulo");
-        if (pArticulo != null) {
-            txtNombre.setText(pArticulo.getArtNombre());
-            txtDescripcion.setText(pArticulo.getArtDescripcion());
-            txtMarca.setText(pArticulo.getArtMarca());
-            txtUndMedida.setText(pArticulo.getArtUnidadMedida());
-            txtPrecio.setText(String.format("%.2f",pArticulo.getArtPrecio()));
-            if (pArticulo.getArtCodBarra() != null) {
-                txtCodBarras.setText(pArticulo.getArtCodBarra());
+        try {
+            Articulo pArticulo = (Articulo) AppContext.getInstance().get("seleccion-Articulo");
+            if (pArticulo != null) {
+                txtNombre.setText(pArticulo.getArtNombre());
+                txtDescripcion.setText(pArticulo.getArtDescripcion());
+                txtMarca.setText(pArticulo.getArtMarca());
+                txtUndMedida.setText(pArticulo.getArtUnidadMedida());
+                txtPrecio.setText(String.format("%.2f", pArticulo.getArtPrecio()));
+                if (pArticulo.getArtCodBarra() != null) {
+                    txtCodBarras.setText(pArticulo.getArtCodBarra());
+                } else {
+                    txtCodBarras.setText("");
+                }
+                if (pArticulo.getArtDescuento() != null) {
+                    txtDescuento.setText(pArticulo.getArtDescuento().toString());
+                } else {
+                    txtDescuento.setText("");
+                }
+                btnEditarProducto.setDisable(false);
+                btnEliminarProducto.setDisable(false);
             } else {
-                txtCodBarras.setText("");
-            }
-            if (pArticulo.getArtDescuento() != null) {
-                txtDescuento.setText(pArticulo.getArtDescuento().toString());
-            } else {
-                txtDescuento.setText("");
-            }
-            btnEditarProducto.setDisable(false);
-            btnEliminarProducto.setDisable(false);
-        } else {
-            btnEditarProducto.setDisable(true);
-            btnEliminarProducto.setDisable(true);
-            LimpiarCampos();
+                btnEditarProducto.setDisable(true);
+                btnEliminarProducto.setDisable(true);
+                LimpiarCampos();
 
+            }
+        } catch (Exception e) {
+            System.err.println(e);
+            LoggerManager.Logger().info(e.toString().concat(" Error en el proceso de carga de datos en productos"));
         }
     }
 

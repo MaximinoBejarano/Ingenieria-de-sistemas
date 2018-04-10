@@ -393,8 +393,12 @@ public class FXML_PagosController implements Initializable {
                     CalcularTotal(Double.valueOf(txtMontoEfectivo.getText()));
                 } else {
                     if (cmbMoneda.getSelectionModel().getSelectedItem().equalsIgnoreCase("Dolares")) {
+                        if(pParametro!=null){
                         double SubMonto = Double.valueOf(txtMontoEfectivo.getText()) * pParametro.getParTipoCambio();
                         CalcularTotal(SubMonto);
+                        }else{
+                           Message.getInstance().Error("Error","No existe ingresado un tipo de cambio para el dolar");
+                        }
                     }
                 }
             }
