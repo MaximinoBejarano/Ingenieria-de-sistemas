@@ -169,6 +169,8 @@ public class FXML_InventarioController implements Initializable {
         ComboBoxProveedores();
         btnEditarFacturas.setDisable(false);
         LimpiarInterface();
+        
+        PermisosManager.getInstance().Invetario();
     }
 
     /*Evenetos FXML-----------------------------------------------------------*/
