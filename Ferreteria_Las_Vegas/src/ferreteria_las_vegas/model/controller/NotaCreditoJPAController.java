@@ -144,7 +144,7 @@ public class NotaCreditoJPAController {
     public NotaCredito ConsultarNotaCreditoXFactura(int pCodigo) {
         try {
             Query qry = em.createNamedQuery("NotaCredito.findByNotCodigoXFactura", NotaCredito.class);// consulta definida 
-            qry.setParameter("notFacCodigo", pCodigo);
+            qry.setParameter("facCodigo", pCodigo);
             NotaCredito pParametro = (NotaCredito) qry.getSingleResult();// trae el resultado de la consulta  
             return pParametro;
         } catch (NoResultException ex) {
