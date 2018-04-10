@@ -61,46 +61,46 @@ import javafx.stage.StageStyle;
  * @author wili
  */
 public class FXML_PagosController implements Initializable {
-
+    
     @FXML
     private Button btnSalir;
-
+    
     @FXML
     private Button btnPagar;
-
+    
     @FXML
     private TitledPane tpanelEfectivo;
-
+    
     @FXML
     private Label lbl_TotalEfectivo;
-
+    
     @FXML
     private ComboBox<String> cmbMoneda;
-
+    
     @FXML
     private TextField txtMontoEfectivo;
-
+    
     @FXML
     private TitledPane tpanelTarjeta;
-
+    
     @FXML
     private Label lblTotalTarjeta;
-
+    
     @FXML
     private TextField txtMontoTarjeta;
-
+    
     @FXML
     private TextField txtCodigoTarjeta;
-
+    
     @FXML
     private TitledPane tpanelNotaCredito;
-
+    
     @FXML
     private Label lblTotalNotaCredito;
-
+    
     @FXML
     private TextField txtNumeroVale;
-
+    
     @FXML
     private Label lblMonto;
 
@@ -125,45 +125,45 @@ public class FXML_PagosController implements Initializable {
                 RecalcularTotalPagar();
             }
         });
-
+        
     }
-
+    
     @FXML
     private void btnSalir_Click(ActionEvent event) {
         Stage stageAct = (Stage) btnSalir.getScene().getWindow();
         stageAct.close();
     }
-
+    
     @FXML
     private void btnPagar_Click(ActionEvent event) {
         if ((!txtMontoEfectivo.getText().isEmpty() || !txtMontoTarjeta.getText().isEmpty() || !lblMonto.getText().isEmpty()) && pMontoTotal == 0) {
             ProcesarRegistroFactura();
-
+            
             Stage stageAct = (Stage) btnPagar.getScene().getWindow();
             stageAct.close();
         } else {
             Message.getInstance().Warning("Advertencia", "Es necesario cancelar el monto total de la compra");
         }
     }
-
+    
     @FXML
     private void txtMontoEfectivo_KeyTyped(KeyEvent event) {
         GeneralUtils.getInstance().ValidarCampos(true, txtMontoEfectivo.getText().length(), 8, event);
-
+        
         if (Character.isDigit(event.getCharacter().charAt(0)) || event.getCharacter().charAt(0) == 8) {
-
+            
             txtMontoEfectivo.setText(txtMontoEfectivo.getText() + event.getCharacter().charAt(0));
             event.consume();
             txtMontoEfectivo.positionCaret(txtMontoEfectivo.getText().length());
             RecalcularTotalPagar();
         }
-
+        
     }
-
+    
     @FXML
     private void txtMontoTarjeta_KeyTyped(KeyEvent event) {
         GeneralUtils.getInstance().ValidarCampos(true, txtMontoTarjeta.getText().length(), 8, event);
-
+        
         if (Character.isDigit(event.getCharacter().charAt(0)) || event.getCharacter().charAt(0) == 8) {
             txtMontoTarjeta.setText(txtMontoTarjeta.getText() + event.getCharacter().charAt(0));
             event.consume();
@@ -171,12 +171,12 @@ public class FXML_PagosController implements Initializable {
             RecalcularTotalPagar();
         }
     }
-
+    
     @FXML
     private void txtCodigoTarjeta_KeyTyped(KeyEvent event) {
         GeneralUtils.getInstance().ValidarCampos(true, txtCodigoTarjeta.getText().length(), 4, event);
     }
-
+    
     @FXML
     private void txtNumeroVale_KeyTyped(KeyEvent event) {
         GeneralUtils.getInstance().ValidarCampos(true, txtNumeroVale.getText().length(), 8, event);
@@ -185,12 +185,12 @@ public class FXML_PagosController implements Initializable {
             lblMonto.setText("");
         }
     }
-
+    
     @FXML
     void txtMontoEfectivo_OnAction(ActionEvent event) {
-
+        
     }
-
+    
     @FXML
     void txtNumeroVale_OnAction(ActionEvent event) {
         ConsultarVale();
@@ -224,7 +224,7 @@ public class FXML_PagosController implements Initializable {
                         AppContext.getInstance().set("Vuelto", Vuelto);
                         Lanzar_FXMLVuelto();
                         AppContext.getInstance().set("pago", true);
-
+                        
                     } else {
                         Message.getInstance().Error("Error", "No se ha logrado efectuar el pago");
                     }
@@ -238,26 +238,30 @@ public class FXML_PagosController implements Initializable {
             } else {
                 Message.getInstance().Information("Informació", "La factura ya ha sido cancelada");
             }
-        }catch(Exception ex){
-            LoggerManager.Logger().info(ex.toString());
+        } catch (Exception ex) {
+            LoggerManager.Logger().info(ex.toString().concat(" Error al realizar el proceso de registro factura"));
         }
     }
 
     //Se elabora la disminución en inventario de las cantidades vendidas en la factura.
     public void RebajarInventario() {
-        Inventario pInventario = new Inventario();
-        if (!ListArticulosXFactura.isEmpty()) {
-            for (ArticuloXFactura pArtXFact : ListArticulosXFactura) {
-                if (InventarioJpaController.getInstance().ConsultarInventarioCodigoProducto(pArtXFact.getArtArticulo().getArtCodigo()) != null) {
-                    pInventario = InventarioJpaController.getInstance().ConsultarInventarioCodigoProducto(pArtXFact.getArtArticulo().getArtCodigo());
-                    if (pInventario.getInvCantidad() >= pArtXFact.getArtCantidad()) {
-                        pInventario.setInvCantidad(pInventario.getInvCantidad() - pArtXFact.getArtCantidad());
-                        InventarioJpaController.getInstance().ModificarInventario(pInventario);
-                    } else {
-                        Message.getInstance().Information("Información", "Cantidad insuficiente del Articulo= " + pArtXFact.getArtArticulo().getArtNombre());
+        try {
+            Inventario pInventario = new Inventario();
+            if (!ListArticulosXFactura.isEmpty()) {
+                for (ArticuloXFactura pArtXFact : ListArticulosXFactura) {
+                    if (InventarioJpaController.getInstance().ConsultarInventarioCodigoProducto(pArtXFact.getArtArticulo().getArtCodigo()) != null) {
+                        pInventario = InventarioJpaController.getInstance().ConsultarInventarioCodigoProducto(pArtXFact.getArtArticulo().getArtCodigo());
+                        if (pInventario.getInvCantidad() >= pArtXFact.getArtCantidad()) {
+                            pInventario.setInvCantidad(pInventario.getInvCantidad() - pArtXFact.getArtCantidad());
+                            InventarioJpaController.getInstance().ModificarInventario(pInventario);
+                        } else {
+                            Message.getInstance().Information("Información", "Cantidad insuficiente del Articulo= " + pArtXFact.getArtArticulo().getArtNombre());
+                        }
                     }
                 }
             }
+        } catch (Exception ex) {
+            LoggerManager.Logger().info(ex.toString().concat(" Error al realizar el proceso de rebajar inventario"));
         }
     }
 
@@ -284,30 +288,34 @@ public class FXML_PagosController implements Initializable {
     //Se agregan los pagos con montos mayores a 0 a la lista de pagos
     public void ProcesarPagos(double pMonto, String TipoPago) {
         pPago = new Pago();
-        if (pMonto > 0) {
-            pPago.setPagEstado("A");
-            pPago.setPagMonto(pMonto);
-            pPago.setPagFactura(pFactura);
-            pPago.setPagCodigo(Integer.SIZE);
-            pPago.setPagTipoMoneda(" ");
-           
-            if (TipoPago.equals("Efectivo")) {
-                if (cmbMoneda.getSelectionModel().getSelectedItem().equalsIgnoreCase("Dolares")) {
-                    pPago.setPagTipoMoneda("Dolares");
-                } else {
-                    pPago.setPagTipoMoneda("Colones");
+        try {
+            if (pMonto > 0) {
+                pPago.setPagEstado("A");
+                pPago.setPagMonto(pMonto);
+                pPago.setPagFactura(pFactura);
+                pPago.setPagCodigo(Integer.SIZE);
+                pPago.setPagTipoMoneda(" ");
+                
+                if (TipoPago.equals("Efectivo")) {
+                    if (cmbMoneda.getSelectionModel().getSelectedItem().equalsIgnoreCase("Dolares")) {
+                        pPago.setPagTipoMoneda("Dolares");
+                    } else {
+                        pPago.setPagTipoMoneda("Colones");
+                    }
+                    pPago.setPagTipoCambio(pParametro.getParTipoCambio());
+                    pPago.setPagTipoPago(TipoPagoJPAController.getInstance().Consultar_TipoPagoNombre("Contado"));
                 }
-                pPago.setPagTipoCambio(pParametro.getParTipoCambio());
-                pPago.setPagTipoPago(TipoPagoJPAController.getInstance().Consultar_TipoPagoNombre("Contado"));
+                if (TipoPago.equals("Tarjeta")) {
+                    pPago.setPagTipoPago(TipoPagoJPAController.getInstance().Consultar_TipoPagoNombre("Credito"));
+                }
+                if (TipoPago.equals("NotaCredito")) {
+                    pPago.setPagTipoPago(TipoPagoJPAController.getInstance().Consultar_TipoPagoNombre("NotaCredito"));
+                    pPago.setPagNotaCredito(pNotaCredito);
+                }
+                listPagos.add(pPago);
             }
-            if (TipoPago.equals("Tarjeta")) {
-                pPago.setPagTipoPago(TipoPagoJPAController.getInstance().Consultar_TipoPagoNombre("Credito"));
-            }
-            if (TipoPago.equals("NotaCredito")) {
-                pPago.setPagTipoPago(TipoPagoJPAController.getInstance().Consultar_TipoPagoNombre("NotaCredito"));
-                pPago.setPagNotaCredito(pNotaCredito);
-            }
-            listPagos.add(pPago);
+        } catch (Exception ex) {
+            LoggerManager.Logger().info(ex.toString().concat("\n Error en el proceso de pagos"));
         }
     }
 
@@ -317,17 +325,21 @@ public class FXML_PagosController implements Initializable {
      */
     public void ConsultarVale() {
         pNotaCredito = new NotaCredito();
-        if (!txtNumeroVale.getText().isEmpty()) {
-            pNotaCredito = NotaCreditoJPAController.getInstance().ConsultarNotaCredito(Integer.parseInt(txtNumeroVale.getText()));
-            if (pNotaCredito != null && pNotaCredito.getNotEstado().equalsIgnoreCase("A")) {
+        try {
+            if (!txtNumeroVale.getText().isEmpty()) {
+                pNotaCredito = NotaCreditoJPAController.getInstance().ConsultarNotaCredito(Integer.parseInt(txtNumeroVale.getText()));
+                if (pNotaCredito != null && pNotaCredito.getNotEstado().equalsIgnoreCase("A")) {
                     lblMonto.setText(String.valueOf(pNotaCredito.getNotMonto()));
-                    RecalcularTotalPagar();            
+                    RecalcularTotalPagar();
+                } else {
+                    txtNumeroVale.setText("");
+                    Message.getInstance().Error("Error", "El vale es invalido o no existe");
+                }
             } else {
-                txtNumeroVale.setText("");
-                Message.getInstance().Error("Error", "El vale es invalido o no existe");
+                lblMonto.setText("");
             }
-        } else {
-            lblMonto.setText("");
+        } catch (Exception ex) {
+            LoggerManager.Logger().info(ex.toString().concat("\n Error proceso consulta de vale "));
         }
     }
 
@@ -338,9 +350,9 @@ public class FXML_PagosController implements Initializable {
         double subTotal = 0;
         if (!listPagos.isEmpty()) {
             for (Pago p : listPagos) {
-
+                
                 subTotal += p.getPagMonto();
-
+                
             }
             if (subTotal > pFactura.getFacTotal()) {
                 Vuelto = subTotal - pFactura.getFacTotal();
@@ -352,52 +364,60 @@ public class FXML_PagosController implements Initializable {
 
     //Se comprueba que exista una cantidad correcta del articulo en inventario
     public void ValidarExistencias() {
-        Inventario pInventario = new Inventario();
-        ListExistencias = new ArrayList<>();
-        if (!ListArticulosXFactura.isEmpty()) {
-            for (ArticuloXFactura pArtXFact : ListArticulosXFactura) {
-                if (InventarioJpaController.getInstance().ConsultarInventarioCodigoProducto(pArtXFact.getArtArticulo().getArtCodigo()) != null) {
-                    pInventario = InventarioJpaController.getInstance().ConsultarInventarioCodigoProducto(pArtXFact.getArtArticulo().getArtCodigo());
-                    if (pInventario.getInvCantidad() < pArtXFact.getArtCantidad()) {
-                        ListExistencias.add(pArtXFact);
+        try {
+            Inventario pInventario = new Inventario();
+            ListExistencias = new ArrayList<>();
+            if (!ListArticulosXFactura.isEmpty()) {
+                for (ArticuloXFactura pArtXFact : ListArticulosXFactura) {
+                    if (InventarioJpaController.getInstance().ConsultarInventarioCodigoProducto(pArtXFact.getArtArticulo().getArtCodigo()) != null) {
+                        pInventario = InventarioJpaController.getInstance().ConsultarInventarioCodigoProducto(pArtXFact.getArtArticulo().getArtCodigo());
+                        if (pInventario.getInvCantidad() < pArtXFact.getArtCantidad()) {
+                            ListExistencias.add(pArtXFact);
+                        }
                     }
                 }
             }
+        } catch (Exception ex) {
+            LoggerManager.Logger().info(ex.toString().concat("\n Proceso validación existencias"));
         }
     }
 
     /*+++++++++++++++++++++++++++++++++++++++++++++++++++++++Otros metodos+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
     // Recalcula el monto total a pagar 
     public void RecalcularTotalPagar() {
-        pMontoTotal = pFactura.getFacTotal();
-
-        if (!txtMontoEfectivo.getText().isEmpty() && Double.valueOf(txtMontoEfectivo.getText()) > 0) {
-            if (cmbMoneda.getSelectionModel().getSelectedItem().equalsIgnoreCase("Colones")) {
-                CalcularTotal(Double.valueOf(txtMontoEfectivo.getText()));
-            } else {
-                if (cmbMoneda.getSelectionModel().getSelectedItem().equalsIgnoreCase("Dolares")) {
-                    double SubMonto = Double.valueOf(txtMontoEfectivo.getText()) * pParametro.getParTipoCambio();
-                    CalcularTotal(SubMonto);
+        try {
+            pMontoTotal = pFactura.getFacTotal();
+            
+            if (!txtMontoEfectivo.getText().isEmpty() && Double.valueOf(txtMontoEfectivo.getText()) > 0) {
+                if (cmbMoneda.getSelectionModel().getSelectedItem().equalsIgnoreCase("Colones")) {
+                    CalcularTotal(Double.valueOf(txtMontoEfectivo.getText()));
+                } else {
+                    if (cmbMoneda.getSelectionModel().getSelectedItem().equalsIgnoreCase("Dolares")) {
+                        double SubMonto = Double.valueOf(txtMontoEfectivo.getText()) * pParametro.getParTipoCambio();
+                        CalcularTotal(SubMonto);
+                    }
                 }
             }
+            
+            if (!txtMontoTarjeta.getText().isEmpty() && pMontoTotal > 0) {
+                CalcularTotal(Double.valueOf(txtMontoTarjeta.getText()));
+            }
+            if (!lblMonto.getText().isEmpty() && pMontoTotal > 0) {
+                CalcularTotal(Double.valueOf(lblMonto.getText()));
+            }
+            CargarTotales();
+        } catch (Exception ex) {
+            LoggerManager.Logger().info(ex.toString().concat("\n Error producido en el proceso de RecalcularTotal"));
         }
-
-        if (!txtMontoTarjeta.getText().isEmpty() && pMontoTotal > 0) {
-            CalcularTotal(Double.valueOf(txtMontoTarjeta.getText()));
-        }
-        if (!lblMonto.getText().isEmpty() && pMontoTotal > 0) {
-            CalcularTotal(Double.valueOf(lblMonto.getText()));
-        }
-        CargarTotales();
     }
-
+    
     public void CalcularTotal(double pPago) {
         if (pPago < pMontoTotal) {
             pMontoTotal -= pPago;
         } else {
             pMontoTotal = 0;
         }
-
+        
     }
 
     /*+++++++++++++++++++++++++++++++++++++++++++++++++++++++Metodos GUI-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
@@ -418,9 +438,9 @@ public class FXML_PagosController implements Initializable {
         txtNumeroVale.setText("");
         txtMontoTarjeta.setText("");
     }
-
+    
     public void InicializarVariables() {
-
+        
         listPagos = new ArrayList<>();
         ListArticulosXFactura = new ArrayList<>();
         ListExistencias = new ArrayList<>();
@@ -431,23 +451,23 @@ public class FXML_PagosController implements Initializable {
         listMoneda.addAll("Colones", "Dolares");
         cmbMoneda.setItems(listMoneda);
         cmbMoneda.getSelectionModel().select("Colones");
-
+        
         limpiarVista();
-
+        
     }
 
     /*++++++++++++++++++++++++++++++++++++++++++++++++++++++Metodos Lanzadores+++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
     public void Lanzar_FXMLVuelto() {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/ferreteria_las_vegas/view/FXML_Vuelto.fxml"));
-
+            
             Parent root1 = (Parent) fxmlLoader.load();
             Stage stage = new Stage(StageStyle.UTILITY);
             stage.setScene(new Scene(root1));
             stage.initModality(Modality.WINDOW_MODAL);
             stage.initOwner(btnPagar.getScene().getWindow());
             stage.showAndWait();
-
+            
         } catch (IOException ex) {
             Logger.getLogger(FXML_FacturaciónController.class.getName()).log(Level.SEVERE, null, ex);
         }
