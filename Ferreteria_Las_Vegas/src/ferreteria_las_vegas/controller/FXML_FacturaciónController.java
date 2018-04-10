@@ -208,7 +208,6 @@ public class FXML_FacturaciónController implements Initializable {
             }
         } else {
             Message.getInstance().Information("Información:", "Es requerido seleccionar un cliente para la factura");
-
         }
 
     }
