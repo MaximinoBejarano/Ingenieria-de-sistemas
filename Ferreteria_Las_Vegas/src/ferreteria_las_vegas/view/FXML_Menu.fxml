@@ -143,9 +143,9 @@
                               <Tooltip text="Módulo de Inventario" />
                            </tooltip>
                         </Button>
-                        <Button fx:id="btnClientes" alignment="BOTTOM_CENTER" contentDisplay="TOP" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#btnClientesClick" styleClass="boton-Cli" stylesheets="@../../styles/style.css" text="Clientes" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                        <Button fx:id="btnClientes" alignment="CENTER" contentDisplay="TOP" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#btnClientesClick" styleClass="boton-Cli" stylesheets="@../../styles/style.css" text="Clientes" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                            <graphic>
-                              <ImageView fitHeight="134.0" fitWidth="179.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../../pictures/clientes.png" />
                                  </image>
