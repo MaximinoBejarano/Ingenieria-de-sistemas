@@ -153,11 +153,11 @@ public class FXML_FacturaciónController implements Initializable {
         if (cliente != null) {
             if (!ListArticulos.isEmpty()) {
                 AgregarDatosfactura();
-                pLimpiar=AgregarFacturaCredito();
+                pLimpiar = AgregarFacturaCredito();
                 AppContext.getInstance().set("seleccion-FacReimprecion", false);
-               
-                if(pLimpiar){
-                 if (Message.getInstance().Confirmation("Confirmación", "Factura ingresada de forma exitosa.\n Desea imprimir la factura")) {
+
+                if (pLimpiar) {
+                    if (Message.getInstance().Confirmation("Confirmación", "Factura ingresada de forma exitosa.\n Desea imprimir la factura")) {
                         ProcesoGenerarFactura();
                         Limpiar_Vista();
                         InicializarValores();
@@ -227,9 +227,11 @@ public class FXML_FacturaciónController implements Initializable {
     @FXML
     private void btnCliente_Click(ActionEvent event) {
         Lanzar_FXMLBuscarCliente();
-        cliente = (Cliente) AppContext.getInstance().get("selected-Cliente");
-        Persona per = cliente.getPersona();
-        lblCliente.setText(String.valueOf(per.getPerCedula()) + " " + per.getPerNombre() + " " + per.getPerPApellido());
+        cliente = (Cliente) AppContext.getInstance().get("select-Cliente");
+        if (cliente!=null) {
+            Persona per = cliente.getPersona();
+            lblCliente.setText(String.valueOf(per.getPerCedula()) + " " + per.getPerNombre() + " " + per.getPerPApellido());
+        }
     }
 
     @FXML
@@ -298,7 +300,7 @@ public class FXML_FacturaciónController implements Initializable {
     /**
      * Se registra una factura a credito
      */
-    public boolean AgregarFacturaCredito() {  
+    public boolean AgregarFacturaCredito() {
         try {
             CuentaXCobrar pCuentaXCobrar = new CuentaXCobrar();
             if (pFactura != null) {
@@ -321,8 +323,9 @@ public class FXML_FacturaciónController implements Initializable {
                     return false;
                 }
             }
+
         } catch (Exception ex) {
-           
+
             LoggerManager.Logger().info(ex.toString());
             return false;
         }

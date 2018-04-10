@@ -63,6 +63,7 @@ public class FXML_Buscar_ClientesController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         RecargarTblClientes();
+         AppContext.getInstance().set("select-Cliente", null);
 
         FilteredList<Cliente> filteredData = new FilteredList<>(FXCollections.observableArrayList(new ClienteJpaController().ConsultarPersonasTodos().stream().filter(e -> e.getCliEstado().equalsIgnoreCase("A")).collect(Collectors.toList())), p -> true);
 
@@ -103,7 +104,8 @@ public class FXML_Buscar_ClientesController implements Initializable {
         
         if (tblClientes.getSelectionModel().getSelectedItem() != null) {
             AppContext.getInstance().set("selected-Cliente", tblClientes.getSelectionModel().getSelectedItem());
-
+            AppContext.getInstance().set("select-Cliente", tblClientes.getSelectionModel().getSelectedItem());
+            
             Stage stageAct = (Stage) btnSalirCliente.getScene().getWindow();
             stageAct.close();
         } else {
