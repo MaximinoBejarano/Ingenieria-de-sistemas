@@ -6,6 +6,7 @@
 package ferreteria_las_vegas.controller;
 
 import java.io.IOException;
+import java.util.Stack;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -21,6 +22,7 @@ public class ScenesManager {
     private static Parent root;
     private static Stage stage;
     private static Scene scene;
+    private static Stack<String> scenes;
 
     private ScenesManager() {
         stage = new Stage();
@@ -56,71 +58,89 @@ public class ScenesManager {
         //stage.getIcons().add(new Image("src/pictures/logo.png"));
         stage.setTitle("Sistema de Facturación Ferretería las Vegas");
         stage.show();
+        scenes = new Stack<>();
         PermisosManager.getInstance().setScene(scene);
     }
 
     public void LoadSceneLogin() throws IOException {
         root = FXMLLoader.load(getClass().getResource("/ferreteria_las_vegas/view/FXML_Login.fxml"));
+        scenes.push("/ferreteria_las_vegas/view/FXML_Login.fxml");
         scene.setRoot(root);
     }
 
     public void LoadSceneMenu() throws IOException {
         root = FXMLLoader.load(getClass().getResource("/ferreteria_las_vegas/view/FXML_Menu.fxml"));
+        scenes.push("/ferreteria_las_vegas/view/FXML_Menu.fxml");
         scene.setRoot(root);
         PermisosManager.getInstance().Menu();
     }
 
     public void LoadSceneEmpleados() throws IOException {
         root = FXMLLoader.load(getClass().getResource("/ferreteria_las_vegas/view/FXML_Empleados.fxml"));
+        scenes.push("/ferreteria_las_vegas/view/FXML_Empleados.fxml");
         scene.setRoot(root);
         PermisosManager.getInstance().Empleados();
     }
 
     public void LoadSceneClientes() throws IOException {
         root = FXMLLoader.load(getClass().getResource("/ferreteria_las_vegas/view/FXML_Clientes.fxml"));
+        scenes.push("/ferreteria_las_vegas/view/FXML_Clientes.fxml");
         scene.setRoot(root);
         PermisosManager.getInstance().Clientes();
     }
 
     public void LoadSceneInventario() throws IOException {
         root = FXMLLoader.load(getClass().getResource("/ferreteria_las_vegas/view/FXML_Inventario.fxml"));
+        scenes.push("/ferreteria_las_vegas/view/FXML_Inventario.fxml");
         scene.setRoot(root);
-        PermisosManager.getInstance().Invetario();
+        //PermisosManager.getInstance().Invetario();
     }
 
     public void LoadSceneProveedores() throws IOException {
         root = FXMLLoader.load(getClass().getResource("/ferreteria_las_vegas/view/FXML_Proveedores.fxml"));
+        scenes.push("/ferreteria_las_vegas/view/FXML_Proveedores.fxml");
         scene.setRoot(root);
     }
 
     public void LoadSceneAnulacion() throws IOException {
         root = FXMLLoader.load(getClass().getResource("/ferreteria_las_vegas/view/FXML_Anulación.fxml"));
+        scenes.push("/ferreteria_las_vegas/view/FXML_Anulación.fxml");
         scene.setRoot(root);
     }
 
     public void LoadSceneAbonos() throws IOException {
         root = FXMLLoader.load(getClass().getResource("/ferreteria_las_vegas/view/FXML_Abonos.fxml"));
+        scenes.push("/ferreteria_las_vegas/view/FXML_Abonos.fxml");
         scene.setRoot(root);
     }
 
     public void LoadSceneVales() throws IOException {
         root = FXMLLoader.load(getClass().getResource("/ferreteria_las_vegas/view/FXML_Vales.fxml"));
+        scenes.push("/ferreteria_las_vegas/view/FXML_Vales.fxml");
         scene.setRoot(root);
     }
 
     public void LoadSceneFacturacion() throws IOException {
         root = FXMLLoader.load(getClass().getResource("/ferreteria_las_vegas/view/FXML_Facturación.fxml"));
+        scenes.push("/ferreteria_las_vegas/view/FXML_Facturación.fxml");
         scene.setRoot(root);
     }
-
     
     public void LoadSceneEstadistica() throws IOException {
         root = FXMLLoader.load(getClass().getResource("/ferreteria_las_vegas/view/FXML_Estadisticas.fxml"));
+        scenes.push("/ferreteria_las_vegas/view/FXML_Estadisticas.fxml");
         scene.setRoot(root);
     }
 
     public void LoadSceneConfiguracion() throws IOException {
         root = FXMLLoader.load(getClass().getResource("/ferreteria_las_vegas/view/FXML_Configuraciones.fxml"));
+        scenes.push("/ferreteria_las_vegas/view/FXML_Configuraciones.fxml");
+        scene.setRoot(root);
+    }
+    
+    public void LoadSceneAnterior() throws IOException {
+        scenes.pop();
+        root = FXMLLoader.load(getClass().getResource(scenes.pop()));
         scene.setRoot(root);
     }
 }

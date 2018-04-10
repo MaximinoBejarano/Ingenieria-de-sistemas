@@ -291,7 +291,8 @@
                         </Label>
                         <GridPane fx:id="SearchBoxGrid" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.valignment="CENTER">
                            <columnConstraints>
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="43.0" minWidth="43.0" prefWidth="43.0" />
                            </columnConstraints>
                            <rowConstraints>
                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -299,6 +300,17 @@
                            <GridPane.margin>
                               <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
                            </GridPane.margin>
+                           <children>
+                              <Button fx:id="btnProveedores" mnemonicParsing="false" onAction="#btnProveedoresClick" GridPane.columnIndex="1" GridPane.halignment="RIGHT">
+                                 <graphic>
+                                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../../pictures/mas.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                           </children>
                         </GridPane>
                         <Label text="Descuento (%): " GridPane.halignment="LEFT" GridPane.rowIndex="4" GridPane.valignment="CENTER">
                            <font>

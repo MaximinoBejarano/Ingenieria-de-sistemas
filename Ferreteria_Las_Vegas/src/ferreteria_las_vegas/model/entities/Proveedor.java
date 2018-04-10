@@ -178,7 +178,7 @@ public class Proveedor implements Serializable {
 
     @Override
     public String toString() {
-        return this.proEstado;
+        return this.proNombre;
     }
     
 }

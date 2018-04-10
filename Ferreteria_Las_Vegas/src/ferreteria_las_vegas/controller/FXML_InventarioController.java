@@ -46,6 +46,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.Control;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
@@ -78,6 +79,9 @@ public class FXML_InventarioController implements Initializable {
     @FXML
     private Button btnSalir;
 
+    @FXML
+    private Button btnProveedores;
+    
     @FXML
     private Button btnLimpiarPantalla;
 
@@ -160,9 +164,6 @@ public class FXML_InventarioController implements Initializable {
     @FXML
     private Label lblTotal;
 
-    /**
-     * Initializes the controller class.
-     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         ComboBoxProveedores();
@@ -350,6 +351,16 @@ public class FXML_InventarioController implements Initializable {
         } catch (Exception ex) {
             Message.getInstance().Error("Error", "Ocurrió un error y no se pudo eliminar un producto de la tabla. "
                     + "El codigo de error es: " + ex.toString());
+            LoggerManager.Logger().info(ex.toString());
+        }
+    }
+    
+    @FXML
+    void btnProveedoresClick(ActionEvent event) {
+        try {
+            ScenesManager.getInstance().LoadSceneProveedores();
+        } catch (IOException ex) {
+            Message.getInstance().Error("Error", "Ocurrió un error y no se pudo ir a la pantalla de proveedores.");
             LoggerManager.Logger().info(ex.toString());
         }
     }
@@ -660,7 +671,8 @@ public class FXML_InventarioController implements Initializable {
         try {
             boxProveedores = new SearchComboBox<>();
             boxProveedores.setMinHeight(33);
-            boxProveedores.setMinWidth(176);
+            boxProveedores.setMinWidth(Control.USE_COMPUTED_SIZE);
+            
             boxProveedores.getSelectionModel().select(0);
             boxProveedores.setPromptText("Selecionar Proveedor");
             boxProveedores.setFilter((Proveedor t, String u) -> (t.getProNombre()).toUpperCase().contains(u.toUpperCase()));
