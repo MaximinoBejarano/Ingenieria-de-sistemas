@@ -5,12 +5,16 @@
  */
 package ferreteria_las_vegas.controller;
 
+import ferreteria_las_vegas.model.controller.NotaCreditoJPAController;
 import ferreteria_las_vegas.model.entities.ArticuloXFactura;
 import ferreteria_las_vegas.model.entities.Factura;
+import ferreteria_las_vegas.model.entities.NotaCredito;
 import ferreteria_las_vegas.utils.AppContext;
+import ferreteria_las_vegas.utils.GeneralUtils;
 import ferreteria_las_vegas.utils.LoggerManager;
 import ferreteria_las_vegas.utils.Message;
 import ferreteria_las_vegas.utils.PrinterManagerFacturacion;
+import ferreteria_las_vegas.utils.PrinterManagerVales;
 import ferreteria_las_vegas.utils.WorkIndicatorDialog;
 import java.awt.print.PageFormat;
 import java.awt.print.Paper;
@@ -19,6 +23,7 @@ import java.awt.print.PrinterJob;
 import java.io.IOException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.ResourceBundle;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
@@ -33,6 +38,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tab;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
@@ -51,6 +57,10 @@ import javafx.stage.StageStyle;
 public class FXML_ValesController implements Initializable {
 
     @FXML
+    private Tab tabNuevo;
+    @FXML
+    private Tab tabEliminar;
+    @FXML
     private Button btnAgregarVales;
     @FXML
     private Button btnBuscarVales;
@@ -60,6 +70,10 @@ public class FXML_ValesController implements Initializable {
     private Button btnLimpiarPantalla;
     @FXML
     private Label lblFecha;
+    @FXML
+    private TextArea txtJustificacionCreacion;
+    @FXML
+    private Label lblVales;
     @FXML
     private Label lblCliente;
     @FXML
@@ -92,12 +106,11 @@ public class FXML_ValesController implements Initializable {
     private Label lblNumFacVales;
     @FXML
     private TextField txtNumVale;
-    
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
     }
-
 
     @FXML
     void SalirClick(ActionEvent event) {
@@ -111,49 +124,126 @@ public class FXML_ValesController implements Initializable {
 
     @FXML
     private void btnAgregarValesCllick(ActionEvent event) {
-    }
 
-    @FXML
-    private void btnBuscarValesClick(ActionEvent event) {
-         LanzarFacturas();
         try {
             Factura pFactura = (Factura) AppContext.getInstance().get("seleccion-FacCliente");
-            if (pFactura != null) {
-                RecargarTblListaAriticulos();
-                lblCodigoFactura.setText(pFactura.getFacCodigo().toString());
-                lblCliente.setText(pFactura.getFacCliente().getPersona().getPerNombre() + " "
-                        + pFactura.getFacCliente().getPersona().getPerPApellido() + " "
-                        + pFactura.getFacCliente().getPersona().getPerSApellido());
-                lblFecha.setText(formateador.format(pFactura.getFacFecha()));
-                lblUsuario.setText("null");
-                lblMontoTotal.setText(String.format("%.2f", pFactura.getFacTotal()));
-                lblTipoFactura.setText(pFactura.getFactTipoFact().replace("E", "Cóntado").replace("K", "Crédito"));
+            if(pFactura!=null){
+            if (pFactura.getFactTipoFact().equals("E")) {
+                NotaCredito pNotaCredito = new NotaCredito();
+                pNotaCredito.setNotCodigo(Integer.SIZE);
+                pNotaCredito.setNotFactura(pFactura);
 
+                pNotaCredito.setNotFecha(new Date());
+                pNotaCredito.setNotMonto(pFactura.getFacTotal());
+                pNotaCredito.setNotJustificacion(txtJustificacionCreacion.getText());
+                pNotaCredito.setNotEstado("A");
+                NotaCredito pCredito = new NotaCreditoJPAController().ConsultarNotaCreditoXFactura(pFactura.getFacCodigo());
+                if (pCredito == null) {
+                    AppContext.getInstance().set("seleccion-vales", new NotaCreditoJPAController().InsertarNotaCredito(pNotaCredito));
+                    ProcesoGenerarFactura();
+                    Message.getInstance().Information("Éxito", "Se creo el vale con éxito");
+                    LimpiarInterface();
+                } else {
+                    Message.getInstance().Error("Error", "Ya se encuentra una nota de crédito registrada con este código de factura");
+                }
+            } else {
+                Message.getInstance().Error("Error", "Éste proceso solo es permitido para facturas de Cóntado");
+            }
+            }else{
+                Message.getInstance().Error("Error", "Para poder realizar este proceso se debe cargar una Factura.");
             }
         } catch (Exception ex) {
             Message.getInstance().Error("Error", "Ocurrió un error al intentar cargar los datos de la factura. "
                     + "El codigo de error es: " + ex.toString());
             LoggerManager.Logger().info(ex.toString());
         }
+
+    }
+
+    @FXML
+    private void btnBuscarValesClick(ActionEvent event) {
+        if (tabNuevo.isSelected()) {
+            LanzarFacturas();
+
+            try {
+                Factura pFactura = (Factura) AppContext.getInstance().get("seleccion-FacCliente");
+                if (pFactura != null) {
+                    RecargarTblListaAriticulos();
+                    lblCodigoFactura.setText(pFactura.getFacCodigo().toString());
+                    lblCliente.setText(pFactura.getFacCliente().getPersona().getPerNombre() + " "
+                            + pFactura.getFacCliente().getPersona().getPerPApellido() + " "
+                            + pFactura.getFacCliente().getPersona().getPerSApellido());
+                    lblFecha.setText(formateador.format(pFactura.getFacFecha()));
+                    lblUsuario.setText(pFactura.getFacEmpleado());
+                    lblMontoTotal.setText(String.format("%.2f", pFactura.getFacTotal()));
+                    lblTipoFactura.setText(pFactura.getFactTipoFact().replace("E", "Cóntado").replace("K", "Crédito"));
+
+                }
+            } catch (Exception ex) {
+                Message.getInstance().Error("Error", "Ocurrió un error al intentar cargar los datos de la factura. "
+                        + "El codigo de error es: " + ex.toString());
+                LoggerManager.Logger().info(ex.toString());
+            }
+        } else {
+            if (!txtNumVale.getText().isEmpty()) {
+                BuscarVales();
+            } else {
+                Message.getInstance().Error("Error", "Se necesita Ingresar un número de vale para realizar la busqueda");
+            }
+
+        }
     }
 
     @FXML
     private void btnEliminarValesClick(ActionEvent event) {
+        NotaCredito pCredito=(NotaCredito)AppContext.getInstance().get("seleccion-vales");
+        if(pCredito!=null){
+            pCredito.setNotEstado("I");
+            new NotaCreditoJPAController().ModificarNotaCredito(pCredito);
+            Message.getInstance().Information("Información", "Se logro eliminar con exito el vale.");
+            LimpiarInterface();
+        }else{
+         Message.getInstance().Error("Error", "Se necesita buscar un vale.");
+        }
     }
 
     @FXML
     private void btnLimpiarCampos(ActionEvent event) {
+        LimpiarInterface();
     }
 
     @FXML
     private void onActiontxtNumVale(ActionEvent event) {
+        BuscarVales();
+    }
+
+    public void BuscarVales() {
+        try {
+            NotaCredito pCredito = new NotaCreditoJPAController().ConsultarNotaCredito(Integer.valueOf(txtNumVale.getText()));
+            txtNumVale.setText(String.format("%08d", Integer.valueOf(txtNumVale.getText())));
+            
+            if (pCredito != null && pCredito.getNotEstado().equals("A")) {
+                lblVales.setText("Sin Utilizar");
+                lblNumFacVales.setText(pCredito.getNotFactura().getFacCodigo().toString());
+                lblMontoVale.setText(String.format("%.2f", pCredito.getNotMonto()));
+                lblFechaEmisionVale.setText(formateador.format(pCredito.getNotFecha()));
+                txaJustuficacionVales.setText(pCredito.getNotJustificacion());
+                AppContext.getInstance().set("seleccion-vales", pCredito);
+            } else {
+                Message.getInstance().Error("Error", "No se encontro el número de vale o el vale ya fue cobrado.");
+            }
+        } catch (NumberFormatException ex) {
+            Message.getInstance().Error("Error", "Ocurrio un error al consultar este vale. "
+                    + "El codigo de error es: " + ex.toString());
+            LoggerManager.Logger().info(ex.toString());
+        }
     }
 
     @FXML
     private void txtNumValeTyped(KeyEvent event) {
+         GeneralUtils.getInstance().ValidarCampos(true, txtNumVale.getText().length(), 8, event);
     }
-    
-    
+
     public void LanzarFacturas() {
         try {
             Parent root = FXMLLoader.load(getClass().getResource("/ferreteria_las_vegas/view/FXML_Buscar_Factura_Cliente.fxml"));
@@ -198,6 +288,13 @@ public class FXML_ValesController implements Initializable {
         lblTipoFactura.setText("");
         tblListaArticulos.getItems().clear();
         AppContext.getInstance().set("seleccion-FacCliente", null);
+        AppContext.getInstance().set("seleccion-vales", null);
+        txtNumVale.setText("");
+        lblVales.setText("");
+        lblNumFacVales.setText("");
+        lblMontoVale.setText("");
+        lblFechaEmisionVale.setText("");
+        txaJustuficacionVales.setText("");
     }
 
     private void ProcesoGenerarFactura() {
@@ -207,7 +304,7 @@ public class FXML_ValesController implements Initializable {
             wd.exec("123", inputParam -> {
                 try {
                     PrinterJob pj = PrinterJob.getPrinterJob();
-                    pj.setPrintable(new PrinterManagerFacturacion(), getPageFormat(pj));
+                    pj.setPrintable(new PrinterManagerVales(), getPageFormat(pj));
                     pj.print();
                     return 1;
                 } catch (PrinterException ex) {
@@ -219,7 +316,7 @@ public class FXML_ValesController implements Initializable {
                     return 2;
                 }
             });
-            
+
         } catch (Exception ex) {
             LoggerManager.Logger().info(ex.toString());
             new Alert(Alert.AlertType.ERROR, "Ocurrio un error al generar la factura. El codigo de error es " + "el siguiente: " + ex, ButtonType.OK).showAndWait();
@@ -261,5 +358,5 @@ public class FXML_ValesController implements Initializable {
     WorkIndicatorDialog wd;
 
     SimpleDateFormat formateador = new SimpleDateFormat("dd-MM-yy");
-    
+
 }

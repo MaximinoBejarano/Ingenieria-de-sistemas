@@ -56,11 +56,11 @@ public class PrinterManagerFacturacion implements Printable {
                 y += yShift;
                 g2d.drawString(" Fecha: " + new SimpleDateFormat("dd/MM/yyyy").format(pFactura.getFacFecha()), x, y);
                 y += yShift;
-                g2d.drawString(" Número de Factura: " + String.format("%06d", pFactura.getFacCodigo()), x, y);
+                g2d.drawString(" Número de Factura: " + String.format("%08d", pFactura.getFacCodigo()), x, y);
                 y += yShift;
                 g2d.drawString("-----------------------------------------", x, y);
                 y += yShift;
-                g2d.drawString(" Cliente: " + pFactura.getFacCliente().getPersona().getPerNombre() + " " + pFactura.getFacCliente().getPersona().getPerSApellido(), x, y);
+                g2d.drawString(" Cliente: " + pFactura.getFacCliente().getPersona().getPerNombre() + " " + pFactura.getFacCliente().getPersona().getPerPApellido(), x, y);
                 y += yShift;
                 g2d.drawString(" Número de Cédula: " + pFactura.getFacCliente().getPersona().getPerCedula(), x, y);
                 y += yShift;
@@ -71,7 +71,7 @@ public class PrinterManagerFacturacion implements Printable {
                 for (ArticuloXFactura articuloXFacturaList : pFactura.getArticuloXFacturaList()) {
                     g2d.drawString(articuloXFacturaList.getArtArticulo().getArtNombre() + " " + articuloXFacturaList.getArtArticulo().getArtMarca() + " " + articuloXFacturaList.getArtArticulo().getArtUnidadMedida(), x, y);
                     y += yShift;
-                    g2d.drawString(String.format("%07d", articuloXFacturaList.getArtCantidad()) + "    " + articuloXFacturaList.getArtArticulo().getArtCodigo().toString() + "        "
+                    g2d.drawString(String.format("%08d", articuloXFacturaList.getArtCantidad()) + "    " + articuloXFacturaList.getArtArticulo().getArtCodigo().toString() + "        "
                             + String.format("%.2f", articuloXFacturaList.getArtPrecio() + (articuloXFacturaList.getArtPrecio() * 0.13)), x, y);
                     y += yShift;
                     y += yShift;

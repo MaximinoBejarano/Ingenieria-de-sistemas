@@ -35,6 +35,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "NotaCredito.findAll", query = "SELECT n FROM NotaCredito n")
     , @NamedQuery(name = "NotaCredito.findByNotCodigo", query = "SELECT n FROM NotaCredito n WHERE n.notCodigo = :notCodigo")
+    , @NamedQuery(name = "NotaCredito.findByNotCodigoXFactura", query = "SELECT n FROM NotaCredito n WHERE n.notFactura.facCodigo = :facCodigo")    
     , @NamedQuery(name = "NotaCredito.findByNotFecha", query = "SELECT n FROM NotaCredito n WHERE n.notFecha = :notFecha")
     , @NamedQuery(name = "NotaCredito.findByNotMonto", query = "SELECT n FROM NotaCredito n WHERE n.notMonto = :notMonto")
     , @NamedQuery(name = "NotaCredito.findByNotJustificacion", query = "SELECT n FROM NotaCredito n WHERE n.notJustificacion = :notJustificacion")

@@ -134,6 +134,30 @@ public class NotaCreditoJPAController {
             return null;
         }
     }
+    
+        /**
+     * Consulta por codigo
+     *
+     * @param pCodigo
+     * @return
+     */
+    public NotaCredito ConsultarNotaCreditoXFactura(int pCodigo) {
+        try {
+            Query qry = em.createNamedQuery("NotaCredito.findByNotCodigoXFactura", NotaCredito.class);// consulta definida 
+            qry.setParameter("facCodigo", pCodigo);
+            NotaCredito pParametro = (NotaCredito) qry.getSingleResult();// trae el resultado de la consulta  
+            return pParametro;
+        } catch (NoResultException ex) {
+            LoggerManager.Logger().info(ex.toString());
+            return null;
+        } catch (NonUniqueResultException ex) {
+            LoggerManager.Logger().info(ex.toString());
+            return null;
+        } catch (Exception ex) {
+            LoggerManager.Logger().info(ex.toString());
+            return null;
+        }
+    }
  //******************************************************************************************
     private EntityManager em = EntityManagerHelper.getInstance().getManager();
     private EntityTransaction et;  
