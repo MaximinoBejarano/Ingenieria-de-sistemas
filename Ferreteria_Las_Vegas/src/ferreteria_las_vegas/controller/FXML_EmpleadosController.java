@@ -336,6 +336,14 @@ public class FXML_EmpleadosController implements Initializable {
                 } else {
                     Message.getInstance().Error("Accion no exitosa", "Ocurrió un error y no se pudo agregar el empleado.");
                 }
+            } else if (persona.getUsuario() == null) {
+                Usuario usuario = new Usuario(persona.getPerCedula(), persona.getPerCedula(), String.valueOf(txtContraseñaEmp.getText()), "A");
+                Usuario user = UsuarioJpaController.getInstance().ModificarPeroUsuario(persona,usuario);
+                if (user != null) {
+                    Message.getInstance().Information("Acción exitosa", "Empleado agregado correctamente.");
+                    LimpiarControlesGUI();
+                }
+
             } else {
                 if (Message.getInstance().Confirmation("Empleado existente", "Ya existe un empleado registrado con el mismo número de cédula.\n"
                         + "¿Desea actualizar la informacón?")) {
@@ -352,39 +360,47 @@ public class FXML_EmpleadosController implements Initializable {
         try {
             Persona persona = PersonaJpaController.getInstance().ConsultarPersonaCedula(txtCedulaEmp.getText());
             if (persona != null) {
+                if (persona.getUsuario() != null) {
+                    persona.setPerNombre(txtNombreEmp.getText());
+                    persona.setPerPApellido(txtPrimerAEmp.getText());
+                    persona.setPerSApellido(txtSegundoAEmp.getText());
 
-                persona.setPerNombre(txtNombreEmp.getText());
-                persona.setPerPApellido(txtPrimerAEmp.getText());
-                persona.setPerSApellido(txtSegundoAEmp.getText());
+                    Contacto contactoTel = BuscarContactoTipo(persona, "TEL");
+                    Contacto contactoTel2 = BuscarContactoTipo(persona, "TEL2");
+                    Contacto contactoEma = BuscarContactoTipo(persona, "EMAIL");
 
-                Contacto contactoTel = BuscarContactoTipo(persona, "TEL");
-                Contacto contactoTel2 = BuscarContactoTipo(persona, "TEL2");
-                Contacto contactoEma = BuscarContactoTipo(persona, "EMAIL");
+                    Direccion direcion = persona.getDireccionList().get(0);
 
-                Direccion direcion = persona.getDireccionList().get(0);
+                    contactoTel.setConContacto(txtTelefonoEmp.getText());
 
-                contactoTel.setConContacto(txtTelefonoEmp.getText());
+                    if (contactoTel2 != null) {
+                        contactoTel2.setConContacto(txtTelefonoEmp2.getText());
+                    }
 
-                if (contactoTel2 != null) {
-                    contactoTel2.setConContacto(txtTelefonoEmp2.getText());
-                }
+                    if (contactoEma != null) {
+                        contactoEma.setConContacto(txtCorreoEmp.getText());
+                    }
+                    direcion.setDirDirExacta(txtDireccionEmp.getText());
 
-                if (contactoEma != null) {
-                    contactoEma.setConContacto(txtCorreoEmp.getText());
-                }
-                direcion.setDirDirExacta(txtDireccionEmp.getText());
+                    persona.getUsuario().setUsuContraseña(String.valueOf(txtContraseñaEmp.getText()));
 
-                persona.getUsuario().setUsuContraseña(String.valueOf(txtContraseñaEmp.getText()));
+                    persona.setPerEstado("A");
+                    persona.getUsuario().setUsuEstado("A");
+                    persona.getCliente().setCliEstado("A");
 
-                persona.setPerEstado("A");
-                persona.getUsuario().setUsuEstado("A");
-                persona.getCliente().setCliEstado("A");
-
-                persona = PersonaJpaController.getInstance().ModificarPersona(persona);
-                if (persona != null) {
-                    Message.getInstance().Information("Acción exitosa", "Empleado editado corectamente.");
+                    persona = PersonaJpaController.getInstance().ModificarPersona(persona);
+                    if (persona != null) {
+                        Message.getInstance().Information("Acción exitosa", "Empleado editado corectamente.");
+                    } else {
+                        Message.getInstance().Error("Accion no exitosa", "Ocurrió un error y no se pudieron editar los datos del empleado.");
+                    }
                 } else {
-                    Message.getInstance().Error("Accion no exitosa", "Ocurrió un error y no se pudieron editar los datos del empleado.");
+                    Usuario usuario = new Usuario(persona.getPerCedula(), persona.getPerCedula(), String.valueOf(txtContraseñaEmp.getText()), "A");
+                    Usuario user = UsuarioJpaController.getInstance().ModificarPeroUsuario(persona,usuario);
+                    if (user != null) {
+                        Message.getInstance().Information("Acción exitosa", "Empleado agregado correctamente.");
+                        LimpiarControlesGUI();
+                    }
                 }
             } else {
                 Message.getInstance().Warning("Empleado no existente", "No existe un empleado con la cédula ingresada.");
@@ -544,7 +560,7 @@ public class FXML_EmpleadosController implements Initializable {
             stage.initModality(Modality.WINDOW_MODAL);
             stage.showAndWait();
         } catch (IOException ex) {
-            Message.getInstance().Error("Error", "Ocurrió un error y no se pudo lanzar la pantalla de búsqueda.");                    
+            Message.getInstance().Error("Error", "Ocurrió un error y no se pudo lanzar la pantalla de búsqueda.");
             LoggerManager.Logger().info(ex.toString());
         }
     }

@@ -5,6 +5,7 @@
  */
 package ferreteria_las_vegas.model.controller;
 
+import ferreteria_las_vegas.model.entities.Persona;
 import ferreteria_las_vegas.model.entities.Usuario;
 import ferreteria_las_vegas.utils.EntityManagerHelper;
 import ferreteria_las_vegas.utils.LoggerManager;
@@ -176,6 +177,29 @@ public class UsuarioJpaController {
             et.begin();
             //em.lock(pUsuario, LockModeType.PESSIMISTIC_WRITE);
             em.merge(pUsuario);
+            et.commit();
+            return pUsuario;
+        } catch (EntityExistsException ex) {
+            et.rollback();
+            LoggerManager.Logger().info(ex.toString());
+            return null;
+        } catch (Exception ex) {
+            et.rollback();
+            LoggerManager.Logger().info(ex.toString());
+            return null;
+        }
+    }
+    
+    public Usuario ModificarPeroUsuario(Persona persona, Usuario pUsuario) {
+        et = em.getTransaction();
+        try {
+            et.begin();            
+            em.persist(pUsuario);
+            em.flush();
+            
+            persona.setUsuario(pUsuario);
+            em.merge(persona);
+                    
             et.commit();
             return pUsuario;
         } catch (EntityExistsException ex) {
