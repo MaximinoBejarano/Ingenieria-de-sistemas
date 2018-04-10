@@ -290,6 +290,7 @@ public class FXML_PagosController implements Initializable {
             pPago.setPagFactura(pFactura);
             pPago.setPagCodigo(Integer.SIZE);
             pPago.setPagTipoMoneda(" ");
+           
             if (TipoPago.equals("Efectivo")) {
                 if (cmbMoneda.getSelectionModel().getSelectedItem().equalsIgnoreCase("Dolares")) {
                     pPago.setPagTipoMoneda("Dolares");
@@ -303,6 +304,7 @@ public class FXML_PagosController implements Initializable {
                 pPago.setPagTipoPago(TipoPagoJPAController.getInstance().Consultar_TipoPagoNombre("Credito"));
             }
             if (TipoPago.equals("NotaCredito")) {
+                pPago.setPagTipoPago(TipoPagoJPAController.getInstance().Consultar_TipoPagoNombre("NotaCredito"));
                 pPago.setPagNotaCredito(pNotaCredito);
             }
             listPagos.add(pPago);
