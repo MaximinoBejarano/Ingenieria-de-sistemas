@@ -71,20 +71,20 @@ public class PrinterManagerFacturacion implements Printable {
                 for (ArticuloXFactura articuloXFacturaList : pFactura.getArticuloXFacturaList()) {
                     g2d.drawString(articuloXFacturaList.getArtArticulo().getArtNombre() + " " + articuloXFacturaList.getArtArticulo().getArtMarca() + " " + articuloXFacturaList.getArtArticulo().getArtUnidadMedida(), x, y);
                     y += yShift;
-                    g2d.drawString(String.format("%08d", articuloXFacturaList.getArtCantidad()) + "    " + articuloXFacturaList.getArtArticulo().getArtCodigo().toString() + "        "
-                            + String.format("%.2f", articuloXFacturaList.getArtPrecio() + (articuloXFacturaList.getArtPrecio() * 0.13)), x, y);
+                    g2d.drawString(String.format("%08d", articuloXFacturaList.getArtArticulo().getArtCodigo()) + "    " + articuloXFacturaList.getArtCantidad() + "        "
+                            + String.format("%.2f",CalcularPrecioArticulo(articuloXFacturaList)), x, y);
                     y += yShift;
                     y += yShift;
                 }
                 g2d.drawString("-----------------------------------------", x, y);
                 y += yShift;
-                g2d.drawString("SubTotal: " +  String.format("%.2f",pFactura.getFatSubtotal()), x, y);
+                g2d.drawString("SubTotal: " + String.format("%.2f", pFactura.getFatSubtotal()), x, y);
                 y += yShift;
-                g2d.drawString("Descuento: " +  String.format("%.2f",pFactura.getFacDescuento()), x, y);
+                g2d.drawString("Descuento: " + String.format("%.2f", pFactura.getFacDescuento()), x, y);
                 y += yShift;
-                g2d.drawString("Impuesto: " +  String.format("%.2f",pFactura.getFacImpVentas()), x, y);
+                g2d.drawString("Impuesto: " + String.format("%.2f", pFactura.getFacImpVentas()), x, y);
                 y += yShift;
-                g2d.drawString("Total: " +  String.format("%.2f",pFactura.getFacTotal()), x, y);
+                g2d.drawString("Total: " + String.format("%.2f", pFactura.getFacTotal()), x, y);
                 y += yShift;
                 double TotalVuelto = 0;
                 double TotalPago = 0;
@@ -93,7 +93,7 @@ public class PrinterManagerFacturacion implements Printable {
                         TotalPago = TotalPago + pagoList.getPagMonto();
                     }
                     TotalVuelto = TotalPago - pFactura.getFacTotal();
-                } 
+                }
                 g2d.drawString("Vuelto: " + String.format("%.2f", TotalVuelto), x, y);
                 y += yShift;
                 g2d.drawString("-----------------------------------------", x, y);
@@ -130,5 +130,12 @@ public class PrinterManagerFacturacion implements Printable {
             result = PAGE_EXISTS;
         }
         return result;
+    }
+
+    public double CalcularPrecioArticulo(ArticuloXFactura parametro) {
+        double Descuentop, subPrecio;
+        Descuentop = parametro.getArtPrecio() * parametro.getArtDescuento();
+        subPrecio = parametro.getArtPrecio() - Descuentop;
+        return subPrecio + (subPrecio * 0.13);
     }
 }
